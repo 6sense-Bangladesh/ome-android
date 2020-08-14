@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">iNirv</string>
+    <string name="action_setup_account">Set Up My First Device</string>
+    <string name="action_goto_login">Login</string>
+    <string name="action_login_confirm">Confirm</string>
+    <string name="login_prompt_email">Email</string>
+    <string name="login_prompt_password">Password</string>
+    <string name="setupAccount_first_name">First Name</string>
+    <string name="setupAccount_last_name">Last Name</string>
+    <string name="setupAccount_prompt_phone_number">Phone Number</string>
+    <string name="confirm_Button">Confirm</string>
 </resources>
