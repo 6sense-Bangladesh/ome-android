@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/appBlueColor">
 
     <EditText
         android:id="@+id/loginEmailEditText"
@@ -41,6 +42,7 @@
         android:layout_marginLeft="120dp"
         android:layout_marginRight="120dp"
         android:layout_marginTop="50dp"
+        android:onClick="confirmPressed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/loginPasswordEditText" />

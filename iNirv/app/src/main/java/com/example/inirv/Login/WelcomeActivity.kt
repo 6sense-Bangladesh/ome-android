@@ -3,8 +3,10 @@ package com.example.inirv.Login
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.amplifyframework.core.Amplify
 import com.example.inirv.R
 
 class WelcomeActivity: AppCompatActivity() {
@@ -19,9 +21,10 @@ class WelcomeActivity: AppCompatActivity() {
 
         // Setup the layout for this activity
         setContentView(R.layout.activity_welcome)
+
     }
 
-    //
+    // on resume
     override fun onResume() {
         super.onResume()
 
@@ -64,4 +67,7 @@ class WelcomeActivity: AppCompatActivity() {
 
     // Check for the button pressed booleans
     fun checkButtonsAlreadyPressed(): Boolean = loginPressed || setupAccountPressed
+
+    // Disable back button functionality
+    override fun onBackPressed() {}
 }
