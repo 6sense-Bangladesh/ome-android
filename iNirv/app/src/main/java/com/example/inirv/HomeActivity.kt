@@ -79,6 +79,9 @@ class HomeActivity : AppCompatActivity(){
         val menuIntent : Intent = Intent(this, MenuActivity::class.java)
         startActivity(menuIntent);
 
+        // Make the view slide in from the left
+        overridePendingTransition(R.anim.slide_left_in, R.anim.nav_default_pop_exit_anim)
+
     }
 
 }

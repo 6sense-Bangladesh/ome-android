@@ -34,5 +34,8 @@ class MenuActivity: AppCompatActivity() {
 
         // Run the back button pressed function
         onBackPressed()
+
+        // Run the appropriate animations
+        overridePendingTransition(R.anim.nav_default_pop_enter_anim,R.anim.slide_left_out )
     }
 }
