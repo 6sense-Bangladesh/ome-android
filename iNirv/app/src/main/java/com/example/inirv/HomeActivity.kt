@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.inirv.Knob.KnobActivity
-import com.example.inirv.Login.LoginActivity
+import com.example.inirv.Menu.MenuActivity
 
 class HomeActivity : AppCompatActivity(){
 
@@ -13,6 +13,7 @@ class HomeActivity : AppCompatActivity(){
     var turnOffKnobsPressed: Boolean = false;   // Boolean to keep track of the state of the turnofknob button
     var enableSafetyLockPressed: Boolean = false // Boolean to keep track of the state for the enable safety lock button
     var knobPressed: Boolean = false    // Boolean to keep track of when a knob is pressed
+    var menuPressed: Boolean = false    // Boolean for the menu button being pressed
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +27,8 @@ class HomeActivity : AppCompatActivity(){
 
         // Reset necessary button values
         knobPressed = false;
+
+        menuPressed = false;
     }
 
     // Take the appropriate action when a knob is clicked on
@@ -61,6 +64,21 @@ class HomeActivity : AppCompatActivity(){
         enableSafetyLockPressed = !enableSafetyLockPressed;
 
         // Set the state of the enable safety lock button
+    }
+
+    // Bring out the menu fragment
+    fun menuButtonPressed(view: View){
+
+        if (menuPressed){
+            return
+        }
+
+        menuPressed = true
+
+        // Go to the Menu activity
+        val menuIntent : Intent = Intent(this, MenuActivity::class.java)
+        startActivity(menuIntent);
+
     }
 
 }

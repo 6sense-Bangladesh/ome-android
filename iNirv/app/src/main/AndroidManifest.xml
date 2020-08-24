@@ -30,6 +30,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Knob.KnobActivity"/>
+        <activity android:name=".Menu.MenuActivity"/>
     </application>
 
 </manifest>

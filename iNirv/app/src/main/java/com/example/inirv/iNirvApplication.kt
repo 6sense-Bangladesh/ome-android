@@ -2,13 +2,14 @@ package com.example.inirv
 
 import android.app.Application
 import android.util.Log
+import androidx.multidex.MultiDexApplication
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.datastore.AWSDataStorePlugin
 
-class iNirvApplication: Application() {
+class iNirvApplication: MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()

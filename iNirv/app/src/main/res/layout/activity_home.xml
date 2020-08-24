@@ -6,6 +6,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/appBlueColor">
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/homeToolBar"
+        android:background="@color/appBlueColor"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_menu"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:background="@color/appBlueColor"
+                android:layout_centerVertical="true"
+                android:onClick="menuButtonPressed"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_logo"
+                android:layout_centerInParent="true"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:maxHeight="100dp"
+                android:maxWidth="100dp"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_settings"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:paddingRight="25dp"
+                android:background="@color/appBlueColor"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <LinearLayout
         android:id="@+id/homeLinearLayout"
         android:layout_width="0dp"

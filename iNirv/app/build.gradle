@@ -14,6 +14,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Enable multidex
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -46,5 +49,19 @@ dependencies {
     implementation 'com.amplifyframework:aws-datastore:1.1.2'
     implementation 'com.amplifyframework:aws-api:1.1.2'
     implementation 'com.amplifyframework:aws-auth-cognito:1.1.2'
+
+    // Navigation
+    def nav_version = "2.3.0"
+
+    // Java language implementation
+    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-ui:$nav_version"
+
+    // Kotlin
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    // Multidex
+    implementation 'com.android.support:multidex:1.0.3'
 
 }
