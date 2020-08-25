@@ -31,6 +31,8 @@
         </activity>
         <activity android:name=".Knob.KnobActivity"/>
         <activity android:name=".Menu.MenuActivity"/>
+        <activity android:name=".Settings.SettingsActivity"/>
+
     </application>
 
 </manifest>

@@ -48,7 +48,8 @@
                 android:layout_alignParentEnd="true"
                 android:paddingRight="25dp"
                 android:background="@color/appBlueColor"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:onClick="settingsButtonPressed"/>
 
         </RelativeLayout>
 

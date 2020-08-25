@@ -1,17 +1,16 @@
-package com.example.inirv.Menu
+package com.example.inirv.Settings
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.RotateAnimation
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.example.inirv.R
-import kotlinx.android.synthetic.main.activity_menu.view.*
 
-
-class MenuActivity: AppCompatActivity() {
+class SettingsActivity: AppCompatActivity(){
 
     // Variables
     var backButtonPressed: Boolean = false
@@ -19,12 +18,12 @@ class MenuActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Set the appropriate activity
-        setContentView(R.layout.activity_menu)
+        // Set the content view
+        setContentView(R.layout.activity_settings)
     }
 
     // Handles when the back button is pressed
-    fun menuBackButtonPressed(view: View){
+    fun settingsBackButtonPressed(view: View){
 
         // Check if the button has already been pressed
         if (backButtonPressed){
@@ -35,6 +34,6 @@ class MenuActivity: AppCompatActivity() {
         onBackPressed()
 
         // Run the appropriate animations
-        overridePendingTransition(R.anim.nav_default_pop_enter_anim,R.anim.slide_left_out )
+        overridePendingTransition(R.anim.nav_default_pop_enter_anim,R.anim.slide_right_out )
     }
 }
