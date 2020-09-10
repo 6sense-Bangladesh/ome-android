@@ -77,21 +77,22 @@
             android:layout_weight="1"
             android:weightSum="2">
 
-            <ImageView
-                android:id="@+id/imageView6"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/homeknob1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_launcher_foreground"
                 android:layout_weight="1"
-                android:onClick="knobPressed"/>
+                android:onClick="knobPressed"
+                class="com.example.inirv.Knob.HomeKnobFragment" />
 
-            <ImageView
-                android:id="@+id/imageView7"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/homeknob2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_launcher_foreground"
                 android:layout_weight="1"
-                android:onClick="knobPressed"/>
+                android:onClick="knobPressed"
+                class="com.example.inirv.Knob.HomeKnobFragment" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -101,21 +102,22 @@
             android:layout_weight="1"
             android:weightSum="2">
 
-            <ImageView
-                android:id="@+id/imageView8"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/homeknob3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_launcher_foreground"
                 android:layout_weight="1"
+                class="com.example.inirv.Knob.HomeKnobFragment"
                 android:onClick="knobPressed"/>
 
-            <ImageView
-                android:id="@+id/imageView9"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/homeknob4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_launcher_foreground"
                 android:layout_weight="1"
-                android:onClick="knobPressed"/>
+                android:onClick="knobPressed"
+                class="com.example.inirv.Knob.HomeKnobFragment" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -125,21 +127,22 @@
             android:layout_weight="1"
             android:weightSum="2">
 
-            <ImageView
-                android:id="@+id/imageView10"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/homeknob5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_launcher_foreground"
                 android:layout_weight="1"
-                android:onClick="knobPressed"/>
+                android:onClick="knobPressed"
+                class="com.example.inirv.Knob.HomeKnobFragment" />
 
-            <ImageView
-                android:id="@+id/imageView11"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/homeknob6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_launcher_foreground"
                 android:layout_weight="1"
-                android:onClick="knobPressed"/>
+                android:onClick="knobPressed"
+                class="com.example.inirv.Knob.HomeKnobFragment" />
+
         </LinearLayout>
     </LinearLayout>
 
@@ -152,6 +155,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="100dp"
         android:layout_marginBottom="10dp"
+        android:onClick="turnOffKnobs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/homeLinearLayout"
@@ -165,6 +169,7 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="100dp"
+        android:onClick="enableSafetyLock"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/homeTurnOffBurners" />

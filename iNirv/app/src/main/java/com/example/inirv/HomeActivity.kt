@@ -22,6 +22,7 @@ class HomeActivity : AppCompatActivity(){
 
         // Set the content view
         setContentView(R.layout.activity_home);
+
     }
 
     override fun onResume() {

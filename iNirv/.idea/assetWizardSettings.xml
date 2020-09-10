@@ -24,7 +24,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="/private/var/folders/2b/8fkqjqkx24lg8phks_gb0fj80000gn/T/baseline_arrow_back_ios_24.xml" />
+                                                <entry key="imagePath" value="/private/var/folders/2b/8fkqjqkx24lg8phks_gb0fj80000gn/T/baseline_arrow_back_24.xml" />
                                                 <entry key="opacityPercent" value="80" />
                                               </map>
                                             </option>
@@ -36,7 +36,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/arrow_back_ios/baseline_arrow_back_ios_24.xml" />
+                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/arrow_back/baseline_arrow_back_24.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -48,7 +48,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="$USER_HOME$/Desktop/iNirv pics/icDeviceList.png" />
+                                                <entry key="imagePath" value="$PROJECT_DIR$/../../inirv_iOS/iNirv/iNirv/Assets.xcassets/4 Burner (1).imageset/4 Burner (2).png" />
                                                 <entry key="opacityPercent" value="80" />
                                               </map>
                                             </option>
@@ -83,10 +83,11 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="imageAsset" value="$USER_HOME$/Desktop/iNirv pics/icDeviceList.png" />
-                                      <entry key="outputName" value="ic_drop_down_arrow" />
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="$PROJECT_DIR$/../../inirv_iOS/iNirv/iNirv/Assets.xcassets/4 Burner (1).imageset/4 Burner (2).png" />
+                                      <entry key="outputName" value="ic_4_burner_1" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="4086c9" />
+                                      <entry key="themeColor" value="ffffff" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -97,6 +98,17 @@
                                 <PersistentState>
                                   <option name="children">
                                     <map>
+                                      <entry key="backgroundImage">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="scalingPercent" value="0" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                       <entry key="foregroundClipArt">
                                         <value>
                                           <PersistentState>
@@ -114,6 +126,9 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="imagePath" value="$USER_HOME$/Desktop/iNirv pics/circlePartOfKnobtest.png" />
+                                                <entry key="scalingPercent" value="160" />
+                                                <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -143,6 +158,11 @@
                                       </entry>
                                     </map>
                                   </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="outputName" value="ic_test_knob_base" />
+                                    </map>
+                                  </option>
                                 </PersistentState>
                               </value>
                             </entry>
@@ -158,6 +178,18 @@
                                               <map>
                                                 <entry key="color" value="000000" />
                                                 <entry key="imagePath" value="/private/var/folders/2b/8fkqjqkx24lg8phks_gb0fj80000gn/T/ic_android_black_24dp.xml" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="color" value="000000" />
+                                                <entry key="imagePath" value="$USER_HOME$/Desktop/iNirv pics/knobHand.png" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -185,6 +217,12 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                    </map>
+                                  </option>
+                                  <option name="values">
+                                    <map>
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Desktop/iNirv pics/knobHand.png" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -322,6 +360,11 @@
                 </map>
               </option>
             </PersistentState>
+          </value>
+        </entry>
+        <entry key="vectorWizard">
+          <value>
+            <PersistentState />
           </value>
         </entry>
       </map>
