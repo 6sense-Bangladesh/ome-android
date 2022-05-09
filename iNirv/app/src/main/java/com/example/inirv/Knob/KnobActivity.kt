@@ -1,6 +1,8 @@
 package com.example.inirv.Knob
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Layout
 import android.util.Log
@@ -9,6 +11,7 @@ import android.view.View
 import android.view.animation.RotateAnimation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.inirv.HomeActivity
 import com.example.inirv.R
 import kotlinx.android.synthetic.main.activity_knob.*
 import java.util.*
@@ -17,9 +20,11 @@ import kotlin.math.atan2
 class KnobActivity: AppCompatActivity()  {
 
     // Variables
-    var backButtonPressed: Boolean = false
+    private var backButtonPressed: Boolean = false
     private var mCurrAngle: Double = 0.0
     private var mPrevAngle: Double = 0.0
+    var knob: Knob? = null;
+    var mAngle: Int? = null;
 
 
     var angleInRadians: Float? = null
@@ -31,6 +36,9 @@ class KnobActivity: AppCompatActivity()  {
 
         // Set the appropriate activity
         setContentView(R.layout.activity_knob)
+
+        // Set the appropriate variables for the
+        mCurrAngle = intent.getIntExtra("angle", 0).toDouble()
 
         // TODO: Remove when done testing out the rotations
         var listener = View.OnTouchListener { view, motionEvent ->
@@ -56,7 +64,7 @@ class KnobActivity: AppCompatActivity()  {
                 }
                 MotionEvent.ACTION_UP -> {
                     val prevAngle = knobActivityKnobHand.rotation.toDouble()
-                    animate(prevAngle, mCurrAngle, 1000, "knobActivityKnobHand");
+                    animate(prevAngle, mCurrAngle, 500, "knobActivityKnobHand");
 
                 }
                 else -> {
@@ -89,6 +97,11 @@ class KnobActivity: AppCompatActivity()  {
 
         //  Set the button pressed variable
         backButtonPressed = true
+
+        val intent = Intent()
+        intent.putExtra("knobActivityAngle", mCurrAngle)
+        setResult(Activity.RESULT_OK, intent)
+        Log.d("Activity Result", mCurrAngle.toString())
 
         // Run the back button pressed function
         onBackPressed()

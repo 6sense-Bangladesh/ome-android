@@ -83,7 +83,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="knobPressed"
-                class="com.example.inirv.Knob.HomeKnobFragment" />
+                android:name="com.example.inirv.Knob.HomeKnobFragment"
+                android:tag="homeKnob1"/>
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/homeknob2"
@@ -91,7 +92,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="knobPressed"
-                class="com.example.inirv.Knob.HomeKnobFragment" />
+                android:name="com.example.inirv.Knob.HomeKnobFragment" />
 
         </LinearLayout>
 
@@ -107,7 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                class="com.example.inirv.Knob.HomeKnobFragment"
+                android:name="com.example.inirv.Knob.HomeKnobFragment"
                 android:onClick="knobPressed"/>
 
             <androidx.fragment.app.FragmentContainerView
@@ -116,7 +117,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:onClick="knobPressed"
-                class="com.example.inirv.Knob.HomeKnobFragment" />
+                android:name="com.example.inirv.Knob.HomeKnobFragment" />
 
         </LinearLayout>
 
