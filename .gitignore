@@ -1,0 +1,14 @@
+*.iml
+iNirv/.gradle
+iNirv/local.properties
+iNirv/.idea/caches
+iNirv/.idea/libraries
+iNirv/.idea/modules.xml
+iNirv/.idea/workspace.xml
+iNirv/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+iNirv/build
+iNirv/captures
+iNirv/.externalNativeBuild
+iNirv/.cxx
