@@ -3,20 +3,22 @@ package com.example.inirv
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.findFragment
+import androidx.lifecycle.lifecycleScope
+import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
+import com.example.inirv.Knob.HomeKnobFragment
 import com.example.inirv.Knob.Knob
 import com.example.inirv.Knob.KnobActivity
 import com.example.inirv.Menu.MenuActivity
-import com.example.inirv.Settings.SettingsActivity
-import android.util.Log
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.findFragment
-import com.example.inirv.Knob.HomeKnobFragment
+import com.example.inirv.managers.AmplifyManager
+import com.example.inirv.managers.RESTManager
+import com.example.inirv.managers.UserManager
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.activity_knob.*
+import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity(){
 
@@ -31,14 +33,61 @@ class HomeActivity : AppCompatActivity(){
     var menuPressed: Boolean = false    // Boolean for the menu button being pressed
     var settingsPressed: Boolean = false    // Boolean to keep track of the settings button being pressed
 
+    // TODO: Remove when done testing
+    companion object {
+        //  You define a companion object to hold the API endpoint (URL),
+        //  a search term and a concatenated string of the two.
+        private const val URL = "https://api.github.com/search/repositories"
+        //    private const val SEARCH = "q=super+mario+language:kotlin&sort=stars&order=desc"
+        private const val SEARCH = "q=language:kotlin&sort=stars&order=desc&?per_page=50"
+        private const val COMPLETE_URL = "https://app-dev.api.omekitchen.com/user"//"$URL?$SEARCH"
+    }
+    // End of Remove
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Set the content view
         setContentView(R.layout.activity_home);
 
+        // TODO: Remove when done with RESTmanager tests
+//        //  You execute the actual request using readText().
+////        doAsync {
+////            val builder = Uri.Builder()
+////            builder.scheme("https")
+////                .authority("app-dev.api.omekitchen.com")
+////                .appendPath("user")
+////                .appendQueryParameter("x-inirv-auth", "eyJraWQiOiJTc1ZGUmkxaWlXWGljUnFFTFE1UFFucm9kTDNqM0tLaUlKWEljU0VpYkl3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI5Yjc1Zjc5MS03MjM2LTQ0YmEtOGJkOC01ZTMyZDYwOGJjYWYiLCJldmVudF9pZCI6IjJkMTczMzkzLWE3MmUtNDM2Ni04ZDMwLWYwNTEzOTYwODZmMyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE2NTI0NzQ3OTEsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0yX2twaEE0Q1RURSIsImV4cCI6MTY1MjcyMzM1NSwiaWF0IjoxNjUyNzE5NzU1LCJqdGkiOiI1MTIxMzFlMi0xM2YzLTQ1MGItYWMzMS1jN2QyMDJlODVmOWQiLCJjbGllbnRfaWQiOiIxZnAyMzg2Ym5nYTY2MW03ZDdudjV2aTd2IiwidXNlcm5hbWUiOiI5Yjc1Zjc5MS03MjM2LTQ0YmEtOGJkOC01ZTMyZDYwOGJjYWYifQ.TnxV5biMgdVKu9c647CwIHfzTv-TRWnPkP0nK_FpoY7uWacXRgo8LdvWYHYqGckszgvDeiEBjtqHAni1VWl8zy15iZxolppBQn-YzpZS-RYyzzYTuHbQZSryOO1BFlMwz0HlVLruAkxUDh20oA3T1AV7SeeLMJ5DEaW-PX443Q0fBEskDHOMlWwE-9b75f791-7236-44ba-8bd8-5e32d608bcaf")
+////                .appendQueryParameter("x-inirv-vsn", "6")
+////                .appendQueryParameter("x-inirv-uid", "9b75f791-7236-44ba-8bd8-5e32d608bcaf")
+////            val repoListJsonStr = java.net.URL(builder.toString()).readText()
+////            Log.d("RestManagerTests", "URL: $repoListJsonStr")
+////        }
+//        // TODO: EoR
+//
+//        // TODO: Remove when done with AmplifyManager Tests
+//        try {
+//            testAPICommands()
+//        } catch (error: Error){
+//            Log.v("AmplifyManager", "Error running the test API command")
+//        }
+        // TODO: EoR
+
+
         // TODO: Remove/setup the appropriate way when moving past Investor build
         setupKnobArray()
+    }
+
+    fun testAPICommands(){
+
+//        var amplifyManager = AmplifyManager
+
+//        amplifyManager.fetchAuthSession()
+//        amplifyManager.signUserIn("tjgriffi357+3@gmail.com", "Tester123?")
+//        amplifyManager.signUserOut()
+
+        var restManager = RESTManager
+
     }
 
     override fun onResume() {
@@ -75,7 +124,7 @@ class HomeActivity : AppCompatActivity(){
 
         // TODO: Make sure to send over all the necessary information for the knob
         // Set the appropriate variables for the KnobActivity
-        knobIntent.putExtra("angle", knobToAdd.mAngle)
+        knobIntent.putExtra("angle", knobToAdd.mCurrLevel)
 
         // TODO: Use startactivitywithresult while we're not grabbing the info from the backend, and potentially if it just makes sense moving forward to pass some data
 //        startActivity(knobIntent);
@@ -85,9 +134,54 @@ class HomeActivity : AppCompatActivity(){
     // Turn off all knobs for the user
     fun turnOffKnobs(view: View){
 
-        // Set the state of the turnofknob boolean
-        turnOffKnobsPressed = !turnOffKnobsPressed
 
+        var amplifyManager = AmplifyManager
+
+        lifecycleScope.launch {
+//            amplifyManager.signUserIn("tjgriffi357+2@gmail.com", "Tester123@"){
+//
+//            }
+
+//            amplifyManager.signUserOut {
+//                println("User is signed out")
+//            }
+            amplifyManager.fetchAuthSession{ resultValue ->
+                println("resultValue Session: ${resultValue.session}")
+
+                if (resultValue.wasCallSuccessful){
+                    Log.i("AmplifyQuickstart", "Auth session: ${resultValue.session}")
+                    (resultValue.session as? AWSCognitoAuthSession)?.let { authSession ->
+
+                        if (authSession.isSignedIn) {
+
+
+                            val tokens = authSession.userPoolTokens
+
+                            val cognitoUserPoolTokens = tokens.value?.let { tokens.value }
+
+                            val accessToken = cognitoUserPoolTokens!!.accessToken?.let {
+                                cognitoUserPoolTokens!!.accessToken
+                            }
+
+                            val userID = authSession.userSub.value?.let { userID ->
+                                RESTManager.setUserID(userID)
+                            }
+                        } else {
+                            println("User is signed out")
+                        }
+
+                    }
+                } else {
+                    Log.e("AmplifyQuickstart", "Failed to fetch auth session", resultValue.authException)
+                }
+            }
+        }
+
+
+        // Set the state of the turnofknob boolean
+        // TODO: Uncomment when done testing
+//        turnOffKnobsPressed = !turnOffKnobsPressed
+        // TODO: EoUn
         // Set the state of the button
 
     }
@@ -95,8 +189,10 @@ class HomeActivity : AppCompatActivity(){
     // Enable safety lock
     fun enableSafetyLock(view: View){
 
+        UserManager.sendRestCmd()
         // Set the state of the enablesafetylock boolean
-        enableSafetyLockPressed = !enableSafetyLockPressed;
+        //TODO: Undo comments when done with rest tests
+//        enableSafetyLockPressed = !enableSafetyLockPressed;
 
         // Set the state of the enable safety lock button
     }
@@ -157,7 +253,15 @@ class HomeActivity : AppCompatActivity(){
             // Setup the knob with the appropriate variables
             macID = "Test $knobIndex"
             id = "Test $knobIndex"
-            knobToAdd = Knob(angle = angle, angles = angles, batteryLevel = batteryLevel, macID = macID, id = id)
+            knobToAdd = Knob(
+                macID = "",
+                firmwareVersion = "",
+                ipAddress = "",
+                safetyLockEnabled = false,
+                stoveID = "",
+                stovePosition = -1,
+                userID = ""
+            )
 
             // Add the knob to the array of knobs
             knobArray.add(knobToAdd);
@@ -180,13 +284,13 @@ class HomeActivity : AppCompatActivity(){
     }
 
     // Function to rotate the knob
-    fun rotateKnob(index: Int, angle: Double){
+    fun rotateKnob(index: Int, angle: Int){
 
         // Rotate the handle/arrow of the homeknobfragment
 //        homeKnobFragList[index].rotateByAngle(angle)
 //        homeknob1.rotateByAngle(angle)
 //        (testList[0] as HomeKnobFragment).rotateByAngle(angle);
-        testList[0].findFragment<HomeKnobFragment>().rotateByAngle(angle)
+        testList[0].findFragment<HomeKnobFragment>().rotateByAngle(angle.toDouble())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -194,8 +298,8 @@ class HomeActivity : AppCompatActivity(){
 
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK){
-                knobArray[0].mAngle  = data?.getDoubleExtra("knobActivityAngle", -1.0) ?: 0.0
-                rotateKnob(0, knobArray[0].mAngle)
+                knobArray[0].mCurrLevel  = data?.getIntExtra("knobActivityAngle", -1) ?: 0
+                rotateKnob(0, knobArray[0].mCurrLevel)
             }
         }
     }

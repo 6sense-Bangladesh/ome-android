@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.inirv.Home.Stove.StoveViewModel
 import com.example.inirv.R
 import kotlinx.android.synthetic.main.fragment_home_knob.*
 
@@ -17,6 +18,7 @@ class HomeKnobFragment: Fragment() {
             return HomeKnobFragment()
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,6 +26,11 @@ class HomeKnobFragment: Fragment() {
     ): View? {
 
         return inflater.inflate(R.layout.fragment_home_knob, container, false)
+    }
+
+    fun setup(viewModel: StoveViewModel, macID: String){
+
+
     }
 
     fun rotateByAngle(angle: Double){

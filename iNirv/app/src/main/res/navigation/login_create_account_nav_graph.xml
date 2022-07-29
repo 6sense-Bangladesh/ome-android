@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_nav_graph"
+    app:startDestination="@id/welcomeFragment">
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.example.inirv.LoginAndCreateAccount.Welcome.WelcomeFragment"
+        android:label="WelcomeFragment" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_createAccountNameFragment"
+            app:destination="@id/createAccountNameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.inirv.LoginAndCreateAccount.LoginFlow.Login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_forgotFragment"
+            app:destination="@id/placeholder5" />
+<!--        <action-->
+<!--            android:id="@+id/action_loginFragment_to_app_level_nav_graph"-->
+<!--            app:destination="@id/app_level_nav_graph"-->
+<!--            app:popUpTo="@navigation/app_level_nav_graph"-->
+<!--            app:popUpToInclusive="true" />-->
+        <action
+            android:id="@+id/action_loginFragment_to_caConfirmFragment"
+            app:destination="@id/placeholder8" />
+<!--        <action-->
+<!--            android:id="@+id/action_loginFragment_to_stove_tab_nav_graph"-->
+<!--            app:destination="@id/stove_tab_nav_graph"-->
+<!--            app:popUpTo="@navigation/app_level_nav_graph"-->
+<!--            app:popUpToInclusive="true"/>-->
+    </fragment>
+    <fragment
+        android:id="@+id/createAccountNameFragment"
+        android:name="com.example.inirv.LoginAndCreateAccount.CreateAccountFlow.CAName.ui.CreateAccountNameFragment"
+        android:label="CreateAccountNameFragment" >
+        <action
+            android:id="@+id/action_createAccountNameFragment_to_placeholder6"
+            app:destination="@id/placeholder6" />
+    </fragment>
+    <fragment android:id="@+id/placeholder5" />
+    <fragment android:id="@+id/placeholder6" >
+        <action
+            android:id="@+id/action_placeholder6_to_placeholder7"
+            app:destination="@id/placeholder7" />
+    </fragment>
+    <fragment android:id="@+id/placeholder7" >
+        <action
+            android:id="@+id/action_placeholder7_to_placeholder8"
+            app:destination="@id/placeholder8" />
+    </fragment>
+    <fragment android:id="@+id/placeholder8" >
+        <action
+            android:id="@+id/action_placeholder8_to_placeholder9"
+            app:destination="@id/placeholder9" />
+    </fragment>
+    <fragment android:id="@+id/placeholder9" >
+<!--        <action-->
+<!--            android:id="@+id/action_placeholder9_to_app_level_nav_graph"-->
+<!--            app:destination="@id/app_level_nav_graph"-->
+<!--            app:popUpTo="@navigation/app_level_nav_graph"-->
+<!--            app:popUpToInclusive="true"/>-->
+    </fragment>
+<!--    <include app:graph="@navigation/app_level_nav_graph" />-->
+</navigation>

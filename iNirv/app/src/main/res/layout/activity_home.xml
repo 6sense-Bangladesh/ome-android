@@ -43,13 +43,13 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_settings"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:paddingRight="25dp"
-                android:background="@color/appBlueColor"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:onClick="settingsButtonPressed"/>
+                android:background="@color/appBlueColor"
+                android:onClick="settingsButtonPressed"
+                android:paddingRight="25dp"
+                android:src="@drawable/ic_settings" />
 
         </RelativeLayout>
 

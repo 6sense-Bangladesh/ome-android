@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="appBlueColor">#4086C9</color>  <!-- App Blue Background Color -->
+    <color name="grey">#808080</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gradientStartColor">#3BC1DF</color>
+    <color name="gradientEndColor">#363A95</color>
 </resources>
