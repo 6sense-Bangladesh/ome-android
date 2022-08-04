@@ -13,7 +13,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.inirv"
+        applicationId "com.ome.Ome"
         minSdkVersion 21
         targetSdkVersion 32
         versionCode 1

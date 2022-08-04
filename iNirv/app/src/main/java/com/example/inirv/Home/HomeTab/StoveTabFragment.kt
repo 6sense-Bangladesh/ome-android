@@ -5,7 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.inirv.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -19,7 +20,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [StoveTabFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class StoveTabFragment : NavHostFragment() {
+class StoveTabFragment : Fragment() {
 
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
@@ -40,24 +41,15 @@ class StoveTabFragment : NavHostFragment() {
     override fun onStart() {
         super.onStart()
 
-//        stoveBottomNavigationBar = this.view?.findViewById(R.id.stove_bottom_navigation_bar)
-//        stoveBottomNavigationBar?.selectedItemId = R.id.stove_tab_action_my_stove
-//
-//        val settingsFragment: Fragment = SettingsFragment()
-//        val stoveFragment: Fragment = StoveFragment(StoveViewModel(null))
-//        val profileFragment: Fragment = ProfileFragment()
-//
-//        setCurrentFragment(stoveFragment)
-//
-//        stoveBottomNavigationBar?.setOnNavigationItemSelectedListener {
-//
-//            when(it.itemId){
-//                R.id.stove_tab_action_settings -> setCurrentFragment(settingsFragment)
-//                R.id.stove_tab_action_my_stove -> setCurrentFragment(stoveFragment)
-//                R.id.stove_tab_action_profile -> setCurrentFragment(profileFragment)
-//            }
-//            true
-//        }
+        stoveBottomNavigationBar = this.view?.findViewById(R.id.stove_bottom_navigation_bar)
+        stoveBottomNavigationBar?.selectedItemId = R.id.stove_tab_action_my_stove
+        val stoveTabNavHost: View? =  this.view?.findViewById(R.id.stove_tab_nav_host_fragment)
+
+
+        if (stoveTabNavHost != null) {
+            stoveBottomNavigationBar?.setupWithNavController(stoveTabNavHost.findNavController())
+        }
+
     }
 
 //    private fun setCurrentFragment(fragment: Fragment) =

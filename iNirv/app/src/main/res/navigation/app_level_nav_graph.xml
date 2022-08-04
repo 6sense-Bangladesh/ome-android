@@ -6,9 +6,9 @@
     app:startDestination="@id/launchFragment">
 
     <include app:graph="@navigation/login_create_account_nav_graph" />
-    <include app:graph="@navigation/stove_tab_nav_graph" />
     <include app:graph="@navigation/initial_setup_nav_graph" />
     <include app:graph="@navigation/setup_a_new_device_nav_graph" />
+    <include app:graph="@navigation/outer_stove_tab_nav_graph"/>
 
     <fragment
         android:id="@+id/launchFragment"
@@ -19,14 +19,14 @@
             android:id="@+id/action_launchFragment_to_login_nav_graph"
             app:destination="@id/login_nav_graph" />
         <action
-            android:id="@+id/action_launchFragment_to_stove_tab_nav_graph"
-            app:destination="@id/stove_tab_nav_graph" />
-        <action
             android:id="@+id/action_launchFragment_to_initial_setup_nav_graph"
             app:destination="@id/initial_setup_nav_graph" />
         <action
             android:id="@+id/action_launchFragment_to_setup_a_new_device_nav_graph"
             app:destination="@id/setup_a_new_device_nav_graph" />
+        <action
+            android:id="@+id/action_launchFragment_to_outer_stove_tab_nav_graph"
+            app:destination="@id/outer_stove_tab_nav_graph" />
     </fragment>
     <action android:id="@+id/action_global_launchFragment"
         app:destination="@id/launchFragment"

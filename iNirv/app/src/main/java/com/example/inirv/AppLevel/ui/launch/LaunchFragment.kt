@@ -51,7 +51,7 @@ class LaunchFragment(
                 }
                 AppNavigatorScreen.home -> {
 
-                    action = LaunchFragmentDirections.actionLaunchFragmentToStoveTabNavGraph()
+                    action = LaunchFragmentDirections.actionLaunchFragmentToOuterStoveTabNavGraph()
                 }
                 AppNavigatorScreen.knobInstallationOne -> {
 

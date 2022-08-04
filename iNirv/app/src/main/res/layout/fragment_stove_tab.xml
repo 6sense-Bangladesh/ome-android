@@ -51,7 +51,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/stove_tab_nav_graph"/>
+        app:navGraph="@navigation/inner_stove_tab_nav_graph"/>
 
 <!--    android:name="androidx.navigation.fragment.NavHostFragment"-->
 <!--    app:navGraph="@navigation/stove_tab_nav_graph"-->

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/outer_stove_tab_nav_graph"
+    app:startDestination="@id/stove_tab_fragment">
+
+    <fragment
+        android:id="@+id/stove_tab_fragment"
+        android:name="com.example.inirv.Home.HomeTab.StoveTabFragment"
+        android:label="fragment_stove_tab"
+        tools:layout="@layout/fragment_stove_tab"
+        >
+    </fragment>
+    <action android:id="@+id/action_global_stove_tab_fragment"
+        app:destination="@id/stove_tab_fragment"/>
+
+</navigation>
