@@ -3,8 +3,10 @@ package com.example.inirv.Home.Stove
 import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.inirv.Knob.Knob
 import com.example.inirv.managers.*
+import kotlinx.coroutines.launch
 
 class StoveViewModel(
     _sharedPreferences: SharedPreferences? = null,
@@ -63,7 +65,10 @@ class StoveViewModel(
         if (commandType == RESTCmdType.ALLKNOBS &&
             methodType == RESTMethodType.GET){
 
-            knobs.value = knobManager.knobs
+            viewModelScope.launch {
+                knobs.value = knobManager.knobs
+            }
+
         } else if (
             (commandType == RESTCmdType.SAFETYLOCKOFF &&
                     methodType == RESTMethodType.POST) ||
@@ -122,7 +127,7 @@ class StoveViewModel(
     }
 
     override fun getStoveOrientation(): Int {
-        return userManager.stoveOrientation
+        return userManager.user?.stoveOrientation.let { -1 }
     }
 
 }

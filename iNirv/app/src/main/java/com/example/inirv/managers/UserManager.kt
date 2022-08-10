@@ -54,7 +54,7 @@ object UserManager: RESTManagerDelegate, WebsocketManagerDelegate{
         private set
     var amplifyManager: AmplifyManager = AmplifyManager
         private set
-    var deviceTokens: MutableList<String> = mutableListOf()
+    var deviceTokens: List<String> = listOf()
         private set
     var stoveOrientation: Int = -1
         private set
@@ -64,7 +64,7 @@ object UserManager: RESTManagerDelegate, WebsocketManagerDelegate{
         private set
     var firstName: String = ""
         private set
-    var middleName: String = ""
+    var middleName: String? = ""
         private set
     var lastName: String = ""
         private set
@@ -79,6 +79,9 @@ object UserManager: RESTManagerDelegate, WebsocketManagerDelegate{
     var uiAppVersion: String = "1.0"
         private set
     var user: UserResponse? = null
+        private set
+
+    var stoveGasOrElectric: String = ""
         private set
 
 
@@ -234,7 +237,27 @@ object UserManager: RESTManagerDelegate, WebsocketManagerDelegate{
 
     private fun setupUser(user: UserResponse){
 
-        Log.i("parseMessage","parseMessage message: $user")
+        this.userID = user.userId
+        this.firstName = user.firstName
+        this.lastName = user.lastName
+        this.middleName = user.middleName
+        this.email = user.email
+        this.phoneNumber = user.phone
+        this.deviceTokens = user.deviceTokens
+        this.stoveMakeModel = user.stoveMakeModel
+        this.stoveOrientation = user.stoveOrientation
+
+        this.knobListSize = when(stoveOrientation){
+            51 -> 5
+            21 -> 2
+            else -> stoveOrientation
+        }
+
+        this.numKnobs = user.numKnobs
+        this.stoveGasOrElectric = user.stoveGasOrElectric
+        this.stoveSetupComplete = user.stoveSetupComplete
+        this.stoveAutoOffMins = user.stoveAutoOffMins
+        this.uiAppVersion = user.uiAppVersion
     }
 
     // MARK: WebsocketManagerDelegate

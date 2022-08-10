@@ -30,7 +30,7 @@ class WelcomeCoordinatorTests {
 
         val mock_WelcomeViewModel: WelcomeViewModel = mockk<WelcomeViewModel>()
 
-        every { mock_WelcomeViewModel.loginButtonPressed } returns true
+        every { mock_WelcomeViewModel.loginButtonPressed.value } returns true
 
         welcomeCoordinator.coordinatorInteractorFinished(mock_WelcomeViewModel)
 
@@ -42,7 +42,7 @@ class WelcomeCoordinatorTests {
 
         val mock_WelcomeViewModel: WelcomeViewModel = mockk<WelcomeViewModel>()
 
-        every { mock_WelcomeViewModel.loginButtonPressed } returns false
+        every { mock_WelcomeViewModel.loginButtonPressed.value } returns false
 
         welcomeCoordinator.coordinatorInteractorFinished(mock_WelcomeViewModel)
 

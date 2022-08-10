@@ -139,7 +139,7 @@ class LaunchViewModelTests {
         systemUnderTest.kmHandleResponse(response, RESTCmdType.TEST, RESTMethodType.PATCH)
 
         verify { mockCoordinator.coordinatorInteractorFinished(systemUnderTest) }
-        assert(systemUnderTest.screen == AppNavigatorScreen.knobInstallationOne)
+        assert(systemUnderTest.screen.value == AppNavigatorScreen.knobInstallationOne)
     }
 
     @Test
@@ -152,7 +152,7 @@ class LaunchViewModelTests {
         systemUnderTest.kmHandleResponse(response, RESTCmdType.TEST, RESTMethodType.PATCH)
 
         verify { mockCoordinator.coordinatorInteractorFinished(systemUnderTest) }
-        assert(systemUnderTest.screen == AppNavigatorScreen.home)
+        assert(systemUnderTest.screen.value == AppNavigatorScreen.home)
     }
 
     @Test
@@ -165,7 +165,7 @@ class LaunchViewModelTests {
         systemUnderTest.kmHandleResponse(response, RESTCmdType.TEST, RESTMethodType.PATCH)
 
         verify { mockCoordinator.coordinatorInteractorFinished(systemUnderTest) }
-        assert(systemUnderTest.screen == AppNavigatorScreen.home)
+        assert(systemUnderTest.screen.value == AppNavigatorScreen.home)
     }
 
 //    @Test
@@ -240,7 +240,7 @@ class LaunchViewModelTests {
         verify { mock_sharedPreferences.edit().putBoolean("appConfigure", false) }
         verify { mock_sharedPreferences.edit().putBoolean("setupFirstDevice", true) }
         verify { mockCoordinator.coordinatorInteractorFinished(systemUnderTest) }
-        assert(systemUnderTest.screen == AppNavigatorScreen.stoveBrand)
+        assert(systemUnderTest.screen.value == AppNavigatorScreen.stoveBrand)
     }
 
     @Test
@@ -254,7 +254,7 @@ class LaunchViewModelTests {
 
         verify { mock_sharedPreferences.edit().putBoolean("setupFirstDevice", true) }
         verify { mockCoordinator.coordinatorInteractorFinished(systemUnderTest) }
-        assert(systemUnderTest.screen == AppNavigatorScreen.knobInstallationOne)
+        assert(systemUnderTest.screen.value == AppNavigatorScreen.knobInstallationOne)
 
     }
 
@@ -269,7 +269,7 @@ class LaunchViewModelTests {
 
         verify { mock_sharedPreferences.edit().putBoolean("setupFirstDevice", true) }
         verify { mockCoordinator.coordinatorInteractorFinished(systemUnderTest) }
-        assert(systemUnderTest.screen == AppNavigatorScreen.home)
+        assert(systemUnderTest.screen.value == AppNavigatorScreen.home)
     }
 
     @Test

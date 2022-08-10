@@ -57,107 +57,53 @@ class StoveVMTests {
         }
     }
 
-//    @Test
-//    fun test_turnOffPressed(){
-//
-//        val testMACIDs: List<String> = listOf(
-//            "TestMacID1",
-//            "TestMacID2",
-//            "TestMacID3",
-//            "TestMacID4"
-//        )
-//
-//        val knobsList: List<Knob> = listOf(
-//            Knob(
-//                macID = testMACIDs[0],
-//                safetyLockEnabled = false,
-//                stoveID = "",
-//                userID = "",
-//                firmwareVersion = "",
-//                stovePosition = 0,
-//                ipAddress = "",
-//                currLevel = -2
-//            ),
-//            Knob(
-//                macID = testMACIDs[1],
-//                safetyLockEnabled = false,
-//                stoveID = "",
-//                userID = "",
-//                firmwareVersion = "",
-//                stovePosition = 0,
-//                ipAddress = "",
-//                currLevel = -2
-//            ),
-//            Knob(
-//                macID = testMACIDs[2],
-//                safetyLockEnabled = false,
-//                stoveID = "",
-//                userID = "",
-//                firmwareVersion = "",
-//                stovePosition = 0,
-//                ipAddress = "",
-//                currLevel = -2
-//            ),
-//            Knob(
-//                macID = testMACIDs[3],
-//                safetyLockEnabled = false,
-//                stoveID = "",
-//                userID = "",
-//                firmwareVersion = "",
-//                stovePosition = 0,
-//                ipAddress = "",
-//                currLevel = -2
-//            )
-//        )
-//
-//        every { mock_knobManager.knobs } returns knobsList
-//
-//        stoveVM.turnOffPressed()
-//
-//        verify {
-//            mock_knobManager.sendRestCommand(
-//                mutableMapOf(
-//                    Pair("macID",knobsList[0].mMacID),
-//                    Pair("level", knobsList[0].mAngles[0])
-//                ),
-//                commandType = RESTCmdType.KNOBANGLE,
-//                methodType = RESTMethodType.POST
-//            )
-//        }
-//
-//        verify {
-//            mock_knobManager.sendRestCommand(
-//                mutableMapOf(
-//                    Pair("macID",knobsList[1].mMacID),
-//                    Pair("level", knobsList[1].mAngles[0])
-//                ),
-//                commandType = RESTCmdType.KNOBANGLE,
-//                methodType = RESTMethodType.POST
-//            )
-//        }
-//
-//        verify {
-//            mock_knobManager.sendRestCommand(
-//                mutableMapOf(
-//                    Pair("macID",knobsList[2].mMacID),
-//                    Pair("level", knobsList[2].mAngles[0])
-//                ),
-//                commandType = RESTCmdType.KNOBANGLE,
-//                methodType = RESTMethodType.POST
-//            )
-//        }
-//
-//        verify {
-//            mock_knobManager.sendRestCommand(
-//                mutableMapOf(
-//                    Pair("macID",knobsList[3].mMacID),
-//                    Pair("level", knobsList[3].mAngles[0])
-//                ),
-//                commandType = RESTCmdType.KNOBANGLE,
-//                methodType = RESTMethodType.POST
-//            )
-//        }
-//    }
+    @Test
+    fun test_safetyLockPressedOn(){
+
+        val isOn: Boolean = true
+        val macID: String = "TestMacID"
+
+        stoveVM.safetyLockPressed(
+            isOn = isOn,
+            macID = macID
+        )
+
+        val params: MutableMap<String, Any> = mutableMapOf(
+            Pair("macID", macID)
+        )
+
+        verify {
+            mock_knobManager.sendRestCommand(
+                params = params,
+                commandType = RESTCmdType.SAFETYLOCKOFF,
+                methodType = RESTMethodType.POST
+            )
+        }
+    }
+
+    @Test
+    fun test_safetyLockPressedOff(){
+
+        val isOn: Boolean = false
+        val macID: String = "TestMacID"
+
+        stoveVM.safetyLockPressed(
+            isOn = isOn,
+            macID = macID
+        )
+
+        val params: MutableMap<String, Any> = mutableMapOf(
+            Pair("macID", macID)
+        )
+
+        verify {
+            mock_knobManager.sendRestCommand(
+                params = params,
+                commandType = RESTCmdType.SAFETYLOCKON,
+                methodType = RESTMethodType.POST
+            )
+        }
+    }
 
     @Test
     fun test_(){

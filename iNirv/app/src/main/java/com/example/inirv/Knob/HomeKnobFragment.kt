@@ -19,6 +19,9 @@ class HomeKnobFragment: Fragment() {
         }
     }
 
+    var macID: String = ""
+        private set
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,7 +33,13 @@ class HomeKnobFragment: Fragment() {
 
     fun setup(viewModel: StoveViewModel, macID: String){
 
+        this.macID = macID
 
+        if (macID != " "){
+
+        } else {
+
+        }
     }
 
     fun rotateByAngle(angle: Double){

@@ -33,24 +33,10 @@ class StoveFragment: Fragment() {
 
     private var homeKnobs: List<HomeKnobFragment> = listOf()
 
-//    var homeKnob1: HomeKnobFragment? = null
-//    var homeKnob2: HomeKnobFragment? = null
-//    var homeKnob3: HomeKnobFragment? = null
-//    var homeKnob4: HomeKnobFragment? = null
-//    var homeKnob5: HomeKnobFragment? = null
-//    var homeKnob6: HomeKnobFragment? = null
-//    var homeKnob7: HomeKnobFragment? = null
-//    var homeKnob8: HomeKnobFragment? = null
-//    var homeKnob9: HomeKnobFragment? = null
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        viewModel = StoveViewModel(null)
-        delegate = viewModel as StoveFragmentDelegate
 
         if (viewModel is StoveViewModel){
             val knobListObserver = Observer<List<Knob>> {
@@ -59,7 +45,7 @@ class StoveFragment: Fragment() {
             }
 
             (viewModel as StoveViewModel).knobs.observe(viewLifecycleOwner, knobListObserver)
-            (viewModel as StoveViewModel).getAllKnobs()
+            (viewModel as StoveViewModel).onStart()
         }
 
         return inflater.inflate(R.layout.fragment_stove, container, false)
@@ -71,19 +57,25 @@ class StoveFragment: Fragment() {
 
     private fun addKnobsToHomeKnobViews(){
 
-        when((viewModel as StoveViewModel).userManager.stoveOrientation){
+        when((viewModel as StoveViewModel).userManager.user?.stoveOrientation){
             2 -> {
 
                 homeKnobs = listOf(
-                    homeknob3,
-                    homeknob4
+                    homeknob3.getFragment(),
+                    homeknob4.getFragment()
                 )
+
+                homeknob1.visibility = View.INVISIBLE
+                homeknob2.visibility = View.INVISIBLE
+                homeknob5.visibility = View.INVISIBLE
+                homeknob6.visibility = View.INVISIBLE
+                homeLinearLayout.visibility = View.VISIBLE
             }
             21 -> {
 
                 homeKnobs = listOf(
-                    homeknob8,
-                    homeknob9
+                    homeknob8.getFragment(),
+                    homeknob9.getFragment()
                 )
 
                 stoveTwoVerticalLayout.visibility = View.VISIBLE
@@ -91,37 +83,44 @@ class StoveFragment: Fragment() {
             4 -> {
 
                 homeKnobs = listOf(
-                    homeknob1,
-                    homeknob2,
-                    homeknob3,
-                    homeknob4
+                    homeknob1.getFragment(),
+                    homeknob2.getFragment(),
+                    homeknob3.getFragment(),
+                    homeknob4.getFragment()
                 )
 
                 homeLinearLayout.visibility = View.VISIBLE
+                homeknob5.visibility = View.INVISIBLE
+                homeknob6.visibility = View.INVISIBLE
+
             }
             5, 51 -> {
 
                 homeKnobs = listOf(
-                    homeknob1,
-                    homeknob2,
-                    homeknob5,
-                    homeknob6,
-                    homeknob7
+                    homeknob1.getFragment(),
+                    homeknob2.getFragment(),
+                    homeknob5.getFragment(),
+                    homeknob6.getFragment(),
+                    homeknob7.getFragment()
                 )
 
+                homeknob3.visibility = View.INVISIBLE
+                homeknob4.visibility = View.INVISIBLE
                 homeLinearLayout.visibility = View.VISIBLE
 
             }
             6 -> {
 
                 homeKnobs = listOf(
-                    homeknob1,
-                    homeknob2,
-                    homeknob3,
-                    homeknob4,
-                    homeknob5,
-                    homeknob6
+                    homeknob1.getFragment(),
+                    homeknob2.getFragment(),
+                    homeknob3.getFragment(),
+                    homeknob4.getFragment(),
+                    homeknob5.getFragment(),
+                    homeknob6.getFragment()
                 )
+
+                homeLinearLayout.visibility = View.VISIBLE
             }
         }
 
@@ -162,6 +161,8 @@ class StoveFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel = StoveViewModel(null)
+        delegate = viewModel as StoveFragmentDelegate
     }
 
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {
