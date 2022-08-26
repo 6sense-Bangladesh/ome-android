@@ -5,7 +5,9 @@ import com.example.inirv.managers.KnobManager
 import com.example.inirv.managers.UserManager
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
@@ -16,7 +18,7 @@ import okio.ByteString
 import java.util.concurrent.TimeUnit
 
 interface WebsocketManagerDelegate{
-    fun handleWebsocketResponse(response: MutableMap<String, Any>)
+    fun handleWebsocketResponse(response: WebsocketManager.WebsocketResponse)
 }
 
 object WebsocketManager: OmeWebsocketListenerDelegate {
@@ -28,6 +30,7 @@ object WebsocketManager: OmeWebsocketListenerDelegate {
     var webSocket: WebSocket? = null
     var userManager: UserManager = UserManager
     var knobManager: KnobManager = KnobManager
+    private var isConnected: Boolean = false
 
 
 
@@ -79,8 +82,11 @@ object WebsocketManager: OmeWebsocketListenerDelegate {
         this.delegate = delegate
     }
 
-    // TODO: Finish connectToWebsocket Implementation
     fun connectToWebsocket(macIDList: List<String>) = runBlocking{
+
+        if (isConnected){
+            return@runBlocking
+        }
 
         // Put the macIDs in a comma separated list
         var macIDs = ""
@@ -97,14 +103,17 @@ object WebsocketManager: OmeWebsocketListenerDelegate {
         builder.scheme("wss")
             .authority(websocketGateway)
             .appendQueryParameter("knobMacAddr", macIDs)
-            .appendQueryParameter(wsQueryString, UserManager.userID)
+            .appendQueryParameter(wsQueryString, UserManager.user?.userId)
             .build()
 
-         launch {
-            val request = Request.Builder().url(builder.toString()).build()
-            println("WM: request: $request")
+        print("WM: builder: ${builder}")
+        print("")
 
-            webSocket = client.newWebSocket(request, websocketListener!!)
+         launch {
+             val request = Request.Builder().url(builder.toString()).build()
+             println("WM: request: $request")
+             isConnected = true
+             webSocket = client.newWebSocket(request, websocketListener!!)
         }
 
 //        Thread.sleep(2000)
@@ -115,17 +124,20 @@ object WebsocketManager: OmeWebsocketListenerDelegate {
     fun disconnectFromWebsocket(){
 
         // Tells the websocket to close off it's connection
-        webSocket?.close(0, "User is logging out")
+        webSocket?.close(1000, "User is logging out")
     }
 
     override fun receivedWebsocketMsg(responseText: String, responseBytes: ByteString?) {
 //        TODO("Not yet implemented")
-        println("WM: receivedWebsocketMsg: responseText $responseText")
-        parseMessage(responseText)
+//        println("WM: receivedWebsocketMsg: responseText $responseText")
+//        parseMessage(responseText)
+        val response: WebsocketResponse = Json.decodeFromString(responseText)
+        delegate?.handleWebsocketResponse(response)
     }
 
     override fun websocketClosing(code: Int, reason: String) {
 //        TODO("Not yet implemented")
+        isConnected = false
     }
 
     override fun websocketFailed(throwable: Throwable, response: Response?) {
@@ -133,12 +145,19 @@ object WebsocketManager: OmeWebsocketListenerDelegate {
         println("WM: websocketFailed, throwable: $throwable,\nWM: websocketFailed, response: $response")
     }
 
+    @Serializable
+    data class WebsocketResponse(
+        val macAddr: String,
+        val name: String,
+        val value: @Contextual Any
+    )
+
     // Parse the given message from JSON to a dictionary
     fun parseMessage(message: String){
 
         println("WM: parseMessage: message: $message")
 
-        val response = Json.decodeFromString<MutableMap<String,@Polymorphic Any>>(message)
+        val response = Json.decodeFromString<Map<String, @Polymorphic Any>>(message) //decodeFromString<MutableMap<String,@Polymorphic Any>>(message)
 
         println("WM: parseMessage: response: $response")
     }

@@ -11,15 +11,19 @@
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/activity_main.xml" value="0.16134751773049646" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/activity_welcome.xml" value="0.24074074074074073" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_ca_confirm.xml" value="0.2101851851851852" />
+        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_ca_contact.xml" value="0.21808510638297873" />
+        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_ca_password.xml" value="0.21808510638297873" />
+        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_contact_support.xml" value="0.19701086956521738" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_create_account_name.xml" value="0.16134751773049646" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_home_knob.xml" value="0.24074074074074073" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_knob.xml" value="0.2373353596757852" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_launch.xml" value="0.25" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_login.xml" value="0.25" />
-        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_profile.xml" value="0.1" />
+        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
+        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_profile_nav_host.xml" value="0.19701086956521738" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_settings.xml" value="0.14513677811550152" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_stove.xml" value="0.1" />
-        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_stove_tab.xml" value="0.18" />
+        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_stove_tab.xml" value="0.1" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_welcome.xml" value="0.17401215805471124" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/menu/stove_tab_navigation_items.xml" value="0.2101851851851852" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/xml/stove_tab_secondary_selected_item.xml" value="0.2101851851851852" />

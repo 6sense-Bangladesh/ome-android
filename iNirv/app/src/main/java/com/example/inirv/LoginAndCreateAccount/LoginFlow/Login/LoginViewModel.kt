@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.example.inirv.Interfaces.CoordinatorInteractor
 import com.example.inirv.managers.*
+import com.example.inirv.managers.WebsocketManager.WebsocketManager
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -263,7 +264,11 @@ class LoginViewModel(
         }
     }
 
-    override fun kmWebsocketResponse(response: MutableMap<String, Any>) {
+//    override fun kmWebsocketResponse(response: MutableMap<String, Any>) {
+////        TODO("Not yet implemented")
+//    }
+
+    override fun kmWebsocketResponse(response: WebsocketManager.WebsocketResponse) {
 //        TODO("Not yet implemented")
     }
 

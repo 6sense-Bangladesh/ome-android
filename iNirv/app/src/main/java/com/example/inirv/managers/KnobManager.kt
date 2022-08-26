@@ -18,7 +18,8 @@ interface KnobManagerDelegate{
     )
 
     fun kmWebsocketResponse(
-        response: MutableMap<String, Any>
+        //response: MutableMap<String, Any>
+        response: WebsocketManager.WebsocketResponse
     )
 }
 
@@ -79,6 +80,7 @@ object KnobManager: WebsocketManagerDelegate, RESTManagerDelegate {
     fun connectWebsocket(){
 
         val macIDArray: List<String> = getKnobList()
+        webSocketManager.setDelegate(this)
         webSocketManager.connectToWebsocket(macIDArray)
     }
 
@@ -163,12 +165,23 @@ object KnobManager: WebsocketManagerDelegate, RESTManagerDelegate {
         return listOfMacIDs.toList()
     }
 
+    fun removeAllKnobs(){
+        knobs = listOf()
+    }
+
     fun setDelegate(delegate: KnobManagerDelegate){
         this.knobManagerDelegate = delegate
     }
 
     fun setRESTManager(restManager: RESTManager){
         this.restManager = restManager
+    }
+
+    fun removeDelegate(delegate: KnobManagerDelegate){
+
+        if(delegate == this.knobManagerDelegate){
+            knobManagerDelegate = null
+        }
     }
 
     fun setWebsocketManager(websocketManager: WebsocketManager){
@@ -181,9 +194,13 @@ object KnobManager: WebsocketManagerDelegate, RESTManagerDelegate {
     }
 
     // MARK: WebsocketManagerDelegate
-    override fun handleWebsocketResponse(response: MutableMap<String, Any>) {
-        TODO("Not yet implemented")
+    override fun handleWebsocketResponse(response: WebsocketManager.WebsocketResponse) {
+        this.knobManagerDelegate?.kmWebsocketResponse(response)
     }
+//    override fun handleWebsocketResponse(response: MutableMap<String, Any>) {
+//
+//        this.knobManagerDelegate?.kmWebsocketResponse(response)
+//    }
 
     // MARK: RESTManagerDelegate
     override fun handleResponse(

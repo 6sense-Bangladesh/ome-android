@@ -15,13 +15,17 @@
     </fragment>
     <fragment
         android:id="@+id/stove_tab_action_profile"
-        android:name="com.example.inirv.Home.Profile.ProfileFragment"
+        android:name="com.example.inirv.Home.Profile.ProfileNavHostFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
-        <action
-            android:id="@+id/action_profileFragment_to_placeholder4"
-            app:destination="@id/placeholder4" />
+        tools:layout="@layout/fragment_profile_nav_host" >
+<!--        <action-->
+<!--            android:id="@+id/action_profileFragment_to_contactSupportFragment"-->
+<!--            app:destination="@id/contactSupport" />-->
     </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/contactSupport"-->
+<!--        android:name="com.example.inirv.Home.Profile.Support.ContactSupportFragment"-->
+<!--        tools:layout="@layout/fragment_contact_support" />-->
     <fragment
         android:id="@+id/stove_tab_action_settings"
         android:name="com.example.inirv.Home.Settings.Settings.SettingsFragment"
@@ -37,5 +41,4 @@
     <fragment android:id="@+id/placeholder" />
     <fragment android:id="@+id/placeholder2" />
     <fragment android:id="@+id/placeholder3" />
-    <fragment android:id="@+id/placeholder4" />
 </navigation>

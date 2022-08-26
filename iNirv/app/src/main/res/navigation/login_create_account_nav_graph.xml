@@ -29,7 +29,7 @@
 <!--            app:popUpToInclusive="true" />-->
         <action
             android:id="@+id/action_loginFragment_to_caConfirmFragment"
-            app:destination="@id/placeholder8" />
+            app:destination="@id/caConfirmFragment" />
 <!--        <action-->
 <!--            android:id="@+id/action_loginFragment_to_stove_tab_nav_graph"-->
 <!--            app:destination="@id/stove_tab_nav_graph"-->
@@ -42,30 +42,36 @@
         android:label="CreateAccountNameFragment" >
         <action
             android:id="@+id/action_createAccountNameFragment_to_placeholder6"
-            app:destination="@id/placeholder6" />
+            app:destination="@id/CAContactFragment" />
     </fragment>
     <fragment android:id="@+id/placeholder5" />
-    <fragment android:id="@+id/placeholder6" >
+    <fragment
+        android:id="@+id/CAContactFragment"
+        android:name="com.example.inirv.LoginAndCreateAccount.CreateAccountFlow.CAContact.CAContactFragment"
+        tools:layout="@layout/fragment_ca_contact">
         <action
             android:id="@+id/action_placeholder6_to_placeholder7"
-            app:destination="@id/placeholder7" />
+            app:destination="@id/caPasswordFragment" />
     </fragment>
-    <fragment android:id="@+id/placeholder7" >
+    <fragment
+        android:id="@+id/caPasswordFragment"
+        android:name="com.example.inirv.LoginAndCreateAccount.CreateAccountFlow.CAPassword.CAPasswordFragment"
+        tools:layout="@layout/fragment_ca_password">
         <action
             android:id="@+id/action_placeholder7_to_placeholder8"
-            app:destination="@id/placeholder8" />
+            app:destination="@id/caConfirmFragment" />
     </fragment>
-    <fragment android:id="@+id/placeholder8" >
+    <fragment
+        android:id="@+id/caConfirmFragment"
+        android:name="com.example.inirv.LoginAndCreateAccount.CreateAccountFlow.CAConfirm.CAConfirmFragment"
+        tools:layout="@layout/fragment_ca_confirm">
         <action
             android:id="@+id/action_placeholder8_to_placeholder9"
             app:destination="@id/placeholder9" />
     </fragment>
     <fragment android:id="@+id/placeholder9" >
-<!--        <action-->
-<!--            android:id="@+id/action_placeholder9_to_app_level_nav_graph"-->
-<!--            app:destination="@id/app_level_nav_graph"-->
-<!--            app:popUpTo="@navigation/app_level_nav_graph"-->
-<!--            app:popUpToInclusive="true"/>-->
     </fragment>
+    <action android:id="@+id/action_global_caPasswordFragment"
+        app:destination="@id/caPasswordFragment" />
 <!--    <include app:graph="@navigation/app_level_nav_graph" />-->
 </navigation>

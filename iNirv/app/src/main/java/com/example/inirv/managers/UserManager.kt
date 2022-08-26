@@ -163,6 +163,13 @@ object UserManager: RESTManagerDelegate, WebsocketManagerDelegate{
         this.restManager = restManager
     }
 
+    fun removeDelegate(delegate: UserManagerDelegate){
+
+        if (delegate == this.userManagerDelegate){
+            userManagerDelegate = null
+        }
+    }
+
 
     // MARK: RESTManager Delegate functions
     override fun handleResponse(
@@ -261,7 +268,11 @@ object UserManager: RESTManagerDelegate, WebsocketManagerDelegate{
     }
 
     // MARK: WebsocketManagerDelegate
-    override fun handleWebsocketResponse(response: MutableMap<String, Any>) {
+//    override fun handleWebsocketResponse(response: MutableMap<String, Any>) {
+////        TODO("Not yet implemented")
+//    }
+
+    override fun handleWebsocketResponse(response: WebsocketManager.WebsocketResponse) {
 //        TODO("Not yet implemented")
     }
 

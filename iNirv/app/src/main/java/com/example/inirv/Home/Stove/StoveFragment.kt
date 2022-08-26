@@ -148,6 +148,7 @@ class StoveFragment: Fragment() {
                     viewModel = (viewModel as StoveViewModel),
                     macID = macID
                 )
+
             } else {
                 homeknob.setup(
                     viewModel as StoveViewModel,

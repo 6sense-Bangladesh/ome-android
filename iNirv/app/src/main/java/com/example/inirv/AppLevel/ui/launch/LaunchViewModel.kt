@@ -8,6 +8,7 @@ import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.example.inirv.AppLevel.AppNavigatorScreen
 import com.example.inirv.Interfaces.CoordinatorInteractor
 import com.example.inirv.managers.*
+import com.example.inirv.managers.WebsocketManager.WebsocketManager
 import kotlinx.coroutines.launch
 
 class LaunchViewModel(
@@ -79,6 +80,7 @@ class LaunchViewModel(
                  */
                 var cognitoAccessToken = ""
                 if (resultValue.session is AWSCognitoAuthSession) {
+
                     cognitoAccessToken = (resultValue.session as AWSCognitoAuthSession)
                         .userPoolTokens.value!!.accessToken
                 }
@@ -153,9 +155,13 @@ class LaunchViewModel(
 //        }
     }
 
-    override fun kmWebsocketResponse(response: MutableMap<String, Any>) {
+    override fun kmWebsocketResponse(response: WebsocketManager.WebsocketResponse) {
 //        TODO("Not yet implemented")
     }
+
+//    override fun kmWebsocketResponse(response: MutableMap<String, Any>) {
+//        TODO("Not yet implemented")
+//    }
 
 
     // MARK: UserManagerDelegate

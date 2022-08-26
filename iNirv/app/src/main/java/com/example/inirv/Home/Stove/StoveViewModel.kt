@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inirv.Knob.Knob
 import com.example.inirv.managers.*
+import com.example.inirv.managers.WebsocketManager.WebsocketManager
 import kotlinx.coroutines.launch
 
 class StoveViewModel(
@@ -78,8 +79,14 @@ class StoveViewModel(
         }
     }
 
-    override fun kmWebsocketResponse(response: MutableMap<String, Any>) {
+//    override fun kmWebsocketResponse(response: MutableMap<String, Any>) {
+////        TODO("Not yet implemented")
+//        print("StoveVM: Websocket response received: $response")
+//    }
+
+    override fun kmWebsocketResponse(response: WebsocketManager.WebsocketResponse) {
 //        TODO("Not yet implemented")
+        print("StoveVM: Websocket response received: $response")
     }
 
     // MARK: StoveFragmentDelegate

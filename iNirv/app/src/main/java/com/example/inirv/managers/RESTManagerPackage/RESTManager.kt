@@ -206,6 +206,7 @@ object RESTManager: WebSocketListener() {
 
         var bodyParams: MutableMap<String, Any> = mutableMapOf()
         val pass = Unit
+
         // Add the appropriate parameters if it's a given command/method pair
         when {
             ((command == RESTCmdType.USER) && (method == RESTMethodType.POST)) ||
@@ -240,7 +241,6 @@ object RESTManager: WebSocketListener() {
                     bodyParams[entry.key] = entry.value
                 }
             }
-            else -> pass
         }
 
         val builder = Uri.Builder()
