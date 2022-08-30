@@ -6,7 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.inirv.Knob.Knob
 import com.example.inirv.R
+
+interface SettingsFragmentDelegate{
+
+    fun getKnobs(): List<Knob>
+}
 
 class SettingsFragment : Fragment() {
 
@@ -20,6 +28,8 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
@@ -27,6 +37,24 @@ class SettingsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
         // TODO: Use the ViewModel
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+//        this.activity?.findViewById<RecyclerView>(R.id.settings_fragment_recycler_view_settings)?.let { settingsRecyclerView ->
+//
+//            settingsRecyclerView.layoutManager = LinearLayoutManager(this.context)
+//        }
+
+        this.activity?.findViewById<RecyclerView>(R.id.settings_fragment_recycler_view_my_devices)?.let { recyclerView ->
+
+            recyclerView.layoutManager = LinearLayoutManager(this.context)
+
+            val adapter = MyDevicesCardViewAdapter(viewModel.getKnobs())
+            recyclerView.adapter = adapter
+        }
+
     }
 
 }

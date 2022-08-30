@@ -28,17 +28,15 @@
 <!--        tools:layout="@layout/fragment_contact_support" />-->
     <fragment
         android:id="@+id/stove_tab_action_settings"
-        android:name="com.example.inirv.Home.Settings.Settings.SettingsFragment"
+        android:name="com.example.inirv.Home.Settings.Settings.SettingsNavHostFragment"
         android:label="fragment_settings"
-        tools:layout="@layout/fragment_settings" >
-        <action
-            android:id="@+id/action_settingsFragment_to_placeholder"
-            app:destination="@id/placeholder" />
-        <action
-            android:id="@+id/action_settingsFragment_to_placeholder2"
-            app:destination="@id/placeholder2" />
+        tools:layout="@layout/fragment_settings_nav_host" >
+<!--        <action-->
+<!--            android:id="@+id/action_settingsFragment_to_auto_shutoff"-->
+<!--            app:destination="@id/auto_shutoff" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_settingsFragment_to_device_settings"-->
+<!--            app:destination="@id/device_settings" />-->
     </fragment>
-    <fragment android:id="@+id/placeholder" />
-    <fragment android:id="@+id/placeholder2" />
     <fragment android:id="@+id/placeholder3" />
 </navigation>
