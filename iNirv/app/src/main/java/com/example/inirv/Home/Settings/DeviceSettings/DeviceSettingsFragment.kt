@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.example.inirv.R
 
 class DeviceSettingsFragment : Fragment() {
+
+    private val deviceSettingsFragmentArgs: DeviceSettingsFragmentArgs by navArgs()
+    private var macID: String = ""
 
     companion object {
         fun newInstance() = DeviceSettingsFragment()
@@ -20,13 +23,12 @@ class DeviceSettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_device_settings, container, false)
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(DeviceSettingsViewModel::class.java)
-        // TODO: Use the ViewModel
+        // Setup the initial variables
+        macID = deviceSettingsFragmentArgs.macID
+        viewModel = DeviceSettingsViewModel(macID)
+
+        return inflater.inflate(R.layout.fragment_device_settings, container, false)
     }
 
 }

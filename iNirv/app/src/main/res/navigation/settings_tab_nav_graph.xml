@@ -23,7 +23,12 @@
         />
     <fragment android:id="@+id/device_settings"
         android:name="com.example.inirv.Home.Settings.DeviceSettings.DeviceSettingsFragment"
-        tools:layout="@layout/fragment_device_settings"
-        />
+        tools:layout="@layout/fragment_device_settings">
+        <argument
+            android:name="macID"
+            app:argType="string"
+            android:defaultValue=""
+            />
+    </fragment>
 
 </navigation>

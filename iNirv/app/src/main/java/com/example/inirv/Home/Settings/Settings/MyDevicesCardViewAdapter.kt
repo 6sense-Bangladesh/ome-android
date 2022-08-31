@@ -9,14 +9,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.inirv.Knob.Knob
 import com.example.inirv.R
 
+interface MyDevicesCardViewAdapterDelegate{
+
+    fun mdcvadOnClick(macID: String)
+}
+
 class MyDevicesCardViewAdapter(
-    private val mList: List<Knob>
+    private val mList: List<Knob>,
+    private var delegate: MyDevicesCardViewAdapterDelegate? = null
+
     ): RecyclerView.Adapter<MyDevicesCardViewAdapter.ViewHolder>() {
 
     // Holds the views for adding it to image and text
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         val imageView: ImageView = itemView.findViewById(R.id.my_devices_card_view_image_view)
         val textView: TextView = itemView.findViewById(R.id.my_devices_card_view_text_view)
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,6 +42,11 @@ class MyDevicesCardViewAdapter(
         val knob = mList[position]
         holder.textView.text = "Knob #${knob.mStovePosition}"
 
+        holder.itemView.setOnClickListener{ view ->
+
+            delegate?.mdcvadOnClick(knob.mMacID)
+        }
+
 //        holder.imageView.setImageResource(R.drawable.ic_drop_down_arrow)
 //        holder.imageView.rotationX = 180F
     }
@@ -41,4 +55,10 @@ class MyDevicesCardViewAdapter(
 
         return mList.size
     }
+
+    fun setDelegate(delegate: MyDevicesCardViewAdapterDelegate){
+
+        this.delegate = delegate
+    }
+
 }
