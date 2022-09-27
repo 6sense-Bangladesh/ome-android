@@ -1,5 +1,6 @@
 package com.example.inirv.Home.Profile
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -42,7 +43,7 @@ class ProfileFragment : Fragment() {
     private var profileFragmentButtonPressed: Boolean = false
 
     init {
-        viewModel = ProfileViewModel()
+        viewModel = ProfileViewModel(_sharedPreferences = activity?.getSharedPreferences("omePreferences", Context.MODE_PRIVATE))
     }
 
     override fun onCreateView(

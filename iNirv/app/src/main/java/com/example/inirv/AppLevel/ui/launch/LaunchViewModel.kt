@@ -87,7 +87,7 @@ class LaunchViewModel(
 
                 viewModelScope.launch {
                     // Setup the User Manager
-                    userManager?.setup(cognitoAccessToken)
+                    userManager?.setup()
                 }
 
             } else {
@@ -200,16 +200,19 @@ class LaunchViewModel(
         if (sharedPreferences != null && userManager != null) {
             val deviceToken = sharedPreferences.getString("omePreferences", "deviceToken")
 
-            if (!userManager.user?.deviceTokens!!.contains(deviceToken) && deviceToken != null){
+            userManager.user?.deviceTokens?.let {
 
-                val deviceTokenList = userManager.user?.deviceTokens?.toMutableList()
+                if (!userManager.user?.deviceTokens!!.contains(deviceToken) && deviceToken != null){
 
-                deviceTokenList?.add(deviceToken)
+                    val deviceTokenList = userManager.user?.deviceTokens?.toMutableList()
 
-                val deviceTokenString = deviceTokenList?.joinToString(separator = ",")
+                    deviceTokenList?.add(deviceToken)
 
-                val params = mapOf<String, String>(Pair("deviceTokens", deviceTokenString!!))
-                userManager.updateUserProfile(params = params)
+                    val deviceTokenString = deviceTokenList?.joinToString(separator = ",")
+
+                    val params = mapOf<String, String>(Pair("deviceTokens", deviceTokenString!!))
+                    userManager.updateUserProfile(params = params)
+                }
             }
         }
 
@@ -222,7 +225,8 @@ class LaunchViewModel(
                 sharedPreferences?.edit()?.putBoolean("setupFirstDevice", true)?.apply()
 
                 // Tell the coordinator to go to a new screen
-                screen.value = AppNavigatorScreen.stoveBrand
+//                screen.value = AppNavigatorScreen.stoveBrand
+                screen.postValue(AppNavigatorScreen.stoveBrand)
 
 //                onFinished?.invoke(this)
                 return

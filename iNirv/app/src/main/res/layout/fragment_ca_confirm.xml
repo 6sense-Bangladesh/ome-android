@@ -5,9 +5,66 @@
     android:layout_height="match_parent"
     tools:context=".LoginAndCreateAccount.CreateAccountFlow.CAConfirm.CAConfirmFragment">
 
-    <TextView
+    <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:background="@color/appBlueColor"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ca_confirm_check_email"
+            android:layout_gravity="start"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            />
+
+
+        <EditText
+            android:id="@+id/fragment_ca_confirm_edit_text"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/ca_confirm_edit_text_hint"
+            android:textColor="@color/white"
+            />
+
+        <Button
+            android:id="@+id/fragment_ca_confirm_confirm_button"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ca_confirm_confirm_button_text"
+            />
+
+        <TextView
+            android:id="@+id/fragment_ca_confirm_censored_email_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ca_confirm_confirmation_code_sent"
+            android:layout_marginTop="18dp"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            />
+
+        <Button
+            android:id="@+id/fragment_ca_confirm_resend_code_btn"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="68dp"
+            android:layout_gravity="center"
+            android:text="@string/ca_confirm_resend_code"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
 
 </FrameLayout>

@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/drawable/ic_launcher_background.xml" value="0.415" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/activity_app_level.xml" value="0.2101851851851852" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/activity_create_account.xml" value="0.16134751773049646" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/activity_home.xml" value="0.24074074074074073" />
@@ -12,9 +13,11 @@
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/activity_welcome.xml" value="0.24074074074074073" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/card_view_my_devices.xml" value="0.1" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_auto_shutoff.xml" value="0.19701086956521738" />
-        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_ca_confirm.xml" value="0.2101851851851852" />
-        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_ca_contact.xml" value="0.21808510638297873" />
+        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_ca_confirm.xml" value="0.22" />
+        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_ca_contact.xml" value="0.25" />
+        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_ca_name.xml" value="0.1" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_ca_password.xml" value="0.21808510638297873" />
+        <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_ca_success.xml" value="0.21574074074074073" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_contact_support.xml" value="0.19701086956521738" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_create_account_name.xml" value="0.16134751773049646" />
         <entry key="..\:/Users/tjgriffi357/inirv/Android/inirv_Android/iNirv/app/src/main/res/layout/fragment_device_settings.xml" value="0.19701086956521738" />

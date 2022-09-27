@@ -88,7 +88,7 @@ class LoginViewModel(
 
                 viewModelScope.launch {
                     // Setup the User Manager
-                    userManager.setup(cognitoAccessToken)
+                    userManager.setup()
                 }
             }
         } else {

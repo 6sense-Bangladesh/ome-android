@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">iNirv</string>
-    <string name="action_setup_account">Set Up My First Device</string>
-    <string name="action_goto_login">Login</string>
+    <string name="action_setup_account">Create Account</string>
+    <string name="action_goto_login">Sign In</string>
     <string name="action_login_confirm">Confirm</string>
     <string name="action_login_forgot_password">Forgot Password</string>
     <string name="login_prompt_email">Email</string>
@@ -13,6 +13,31 @@
     <string name="stove_tab_settings">Settings</string>
     <string name="stove_tab_stove">My Stove</string>
     <string name="stove_tab_profile">Profile</string>
+    <string name="ca_name_lets_setup_your_account">Let\'s setup your account</string>
+    <string name="ca_name_what_is_your_name">What is your name?</string>
+    <string name="ca_name_first_name">First Name</string>
+    <string name="ca_name_last_name">Last Name</string>
+    <string name="ca_name_continue_btn_text">CONTINUE</string>
+    <string name="ca_contact_how_can_we_contact_you">How can we contact you?</string>
+    <string name="ca_contact_we_dont_spam">We don\'t spam people, it\'s not nice.  Phone number is optional</string>
+    <string name="ca_contact_email_address_placeholder">Email Address</string>
+    <string name="ca_contact_phone_number_placeholder">Phone Number</string>
+    <string name="ca_contact_continue_btn_text">CONTINUE</string>
+    <string name="ca_password_enter_a_password">Enter a password</string>
+    <string name="ca_password_password_hint">Password</string>
+    <string name="ca_password_confirm_password_hint">Confirm Password</string>
+    <string name="ca_password_password_specifics">Password must have 9 characters or more and contain at least 3 of the following types: upper-case, lower-case, special character, and number</string>
+    <string name="ca_password_continue_btn_text">CONTINUE</string>
+    <string name="ca_password_by_clicking_agreement">By clicking continue and creating an account you agree to Ome\'s Terms of Service and Privacy Policy</string>
+    <string name="ca_confirm_check_email">Check email for code</string>
+    <string name="ca_confirm_edit_text_hint">Confirmation Number</string>
+    <string name="ca_confirm_confirm_button_text">CONFIRM</string>
+    <string name="ca_confirm_confirmation_code_sent">Confirmation code sent via email to: j***@g***.com</string>
+    <string name="ca_confirm_resend_code">Resend Code</string>
+    <string name="ca_success_welcome_text_view_text">Welcome to Ome!</string>
+    <string name="ca_success_now_lets_text_view_text">Now let\'s get information about your stove</string>
+    <string name="ca_success_start_setup_btn_text">START SETUP</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

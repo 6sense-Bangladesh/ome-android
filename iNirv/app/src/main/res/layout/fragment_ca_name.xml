@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginAndCreateAccount.CreateAccountFlow.CAContact.CAContactFragment">
+    tools:context=".LoginAndCreateAccount.CreateAccountFlow.CAName.CaNameFragment">
 
     <View
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/ca_contact_how_can_we_contact_you"
+            android:text="@string/ca_name_lets_setup_your_account"
             android:layout_gravity="start"
             android:textColor="@color/white"
             android:textSize="23sp"
@@ -30,37 +30,39 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="We don\'t spam people, it\'s not nice.  Phone number is optional"
-            android:layout_marginTop="11dp"
+            android:text="@string/ca_name_what_is_your_name"
+            android:gravity="start"
+            android:layout_marginTop="20dp"
             android:textColor="@color/white"
-            android:textSize="12sp"
+            android:textSize="20sp"
             />
 
         <EditText
-            android:id="@+id/fragment_ca_contact_email_edit_text"
-            android:layout_marginTop="21dp"
+            android:id="@+id/fragment_ca_name_first_name_edit_text"
+            android:layout_marginTop="23dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/ca_contact_email_address_placeholder"
+            android:hint="@string/ca_name_first_name"
             android:textColor="@color/white"
             />
 
         <EditText
-            android:id="@+id/fragment_ca_contact_phone_number_edit_text"
-            android:layout_marginTop="15dp"
+            android:id="@+id/fragment_ca_name_last_name_edit_text"
+            android:layout_marginTop="14dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/ca_contact_phone_number_placeholder"
+            android:hint="@string/ca_name_last_name"
             android:textColor="@color/white"
             />
 
         <Button
-            android:id="@+id/fragment_ca_contact_continue_button"
+            android:id="@+id/fragment_ca_name_continue_button"
             android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/ca_contact_continue_btn_text"
+            android:text="@string/ca_name_continue_btn_text"
             />
     </LinearLayout>
+
 
 </FrameLayout>

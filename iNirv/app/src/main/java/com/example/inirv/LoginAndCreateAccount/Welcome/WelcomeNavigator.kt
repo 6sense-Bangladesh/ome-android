@@ -3,8 +3,6 @@ package com.example.inirv.LoginAndCreateAccount.Welcome
 import androidx.fragment.app.FragmentActivity
 import com.example.inirv.Interfaces.Coordinator
 import com.example.inirv.Interfaces.Navigator
-import com.example.inirv.LoginAndCreateAccount.CreateAccountFlow.CAName.CreateAccountNameNavigator
-import com.example.inirv.LoginAndCreateAccount.LoginFlow.Login.LoginNavigator
 
 enum class WelcomeGoToScreens{
     login,
@@ -41,11 +39,12 @@ class WelcomeNavigator(
 
         if (coordinator is WelcomeCoordinator){
 
-            navigator = if (coordinator.screen ==WelcomeGoToScreens.login){
-                LoginNavigator(this.activity, this::childNavigatorFinished)
-            } else {
-                CreateAccountNameNavigator(this.activity, this::childNavigatorFinished)
-            }
+//            navigator = if (coordinator.screen ==WelcomeGoToScreens.login){
+//                LoginNavigator(this.activity, this::childNavigatorFinished)
+//            }
+//            else {
+//                CreateAccountNameNavigator(this.activity, this::childNavigatorFinished)
+//            }
         }
 
 

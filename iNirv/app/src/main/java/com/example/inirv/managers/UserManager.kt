@@ -10,23 +10,23 @@ import kotlinx.serialization.json.Json
 
 @Serializable
 data class UserResponse(
-    val userId: String,
-    val firstName: String,
-    val lastName: String,
-    val middleName: String?,
-    val email: String,
-    val phone: String,
-    val uiAppType: String,
-    val uiAppVersion: String,
-    val deviceTokens: List<String>,
-    val stoveId: String,
-    val stoveMakeModel: String,
-    val stoveOrientation: Int,
-    val stoveGasOrElectric: String,
-    val stoveAutoOffMins: Int,
-    val stoveSetupComplete: Boolean,
-    val numKnobs: Int,
-    val knobMacAddrs: List<String>,
+    val userId: String = "",
+    val firstName: String = "First",
+    val lastName: String = "Last",
+    val middleName: String = "",
+    val email: String = "",
+    val phone: String = "",
+    val uiAppType: String = "",
+    val uiAppVersion: String = "",
+    val deviceTokens: List<String> = listOf(),
+    val stoveId: String = "",
+    val stoveMakeModel: String = "",
+    val stoveOrientation: Int = -1,
+    val stoveGasOrElectric: String = "",
+    val stoveAutoOffMins: Int = 15,
+    val stoveSetupComplete: Boolean = false,
+    val numKnobs: Int = 0,
+    val knobMacAddrs: List<String> = listOf()
 )
 
 interface UserManagerDelegate{
@@ -78,7 +78,7 @@ object UserManager: RESTManagerDelegate, WebsocketManagerDelegate{
         private set
     var uiAppVersion: String = "1.0"
         private set
-    var user: UserResponse? = null
+    var user: UserResponse = UserResponse()
         private set
 
     var stoveGasOrElectric: String = ""
@@ -102,7 +102,7 @@ object UserManager: RESTManagerDelegate, WebsocketManagerDelegate{
     }
     // TODO: EoR
 
-    suspend fun setup(cognitoToken: String){
+    suspend fun setup(){
 
         amplifyManager.fetchUserAttributes { amplifyResultValue ->
 
@@ -189,7 +189,15 @@ object UserManager: RESTManagerDelegate, WebsocketManagerDelegate{
             )
         ){
             Log.i("parseMessage","parseMessage message: $response")
-            user = Json.decodeFromString(response)
+
+            try {
+                user = Json.decodeFromString(response)
+            } catch (error: Error){
+                print("error: $error")
+            } catch (exception: Exception){
+                print("exception: $exception")
+            }
+
         } else if (commandType == RESTCmdType.USERIMG && methodType == RESTMethodType.GET){
 
             restManager.addUserImageToBackend(parsedResponse.getValue("uploadTo")!!)
