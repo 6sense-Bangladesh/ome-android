@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/initial_setup_nav_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/initial_setup_nav_graph"
+    app:startDestination="@id/ISBrandFragment">
 
+    <fragment
+        android:id="@+id/ISBrandFragment"
+        android:name="com.example.inirv.InititalSetup.ISBrand.ISBrandFragment"
+        android:label="fragment_is_brand"
+        tools:layout="@layout/fragment_is_brand" >
+        <action
+            android:id="@+id/action_ISBrandFragment_to_ISGasOrElectricFragment"
+            app:destination="@id/ISGasOrElectricFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ISGasOrElectricFragment"
+        android:name="com.example.inirv.InititalSetup.ISGasOrElectric.ISGasOrElectricFragment"
+        android:label="fragment_is_gas_or_electric"
+        tools:layout="@layout/fragment_is_gas_or_electric" >
+        <action
+            android:id="@+id/action_ISGasOrElectricFragment_to_ISPhotoFragment"
+            app:destination="@id/ISPhotoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ISPhotoFragment"
+        android:name="com.example.inirv.InititalSetup.ISPhoto.ISPhotoFragment"
+        android:label="fragment_is_photo"
+        tools:layout="@layout/fragment_is_photo" >
+        <action
+            android:id="@+id/action_ISPhotoFragment_to_ISOrientationFragment"
+            app:destination="@id/ISOrientationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ISCompleteFragment"
+        android:name="com.example.inirv.InititalSetup.ISComplete.ISCompleteFragment"
+        android:label="fragment_is_complete"
+        tools:layout="@layout/fragment_is_complete" />
+    <fragment
+        android:id="@+id/ISOrientationFragment"
+        android:name="com.example.inirv.InititalSetup.ISOrientation.ISOrientationFragment"
+        android:label="fragment_is_orientation"
+        tools:layout="@layout/fragment_is_orientation" >
+        <action
+            android:id="@+id/action_ISOrientationFragment_to_ISCompleteFragment"
+            app:destination="@id/ISCompleteFragment" />
+    </fragment>
+    <action android:id="@+id/action_global_isOrientation"
+        app:destination="@id/ISOrientationFragment" />
 </navigation>

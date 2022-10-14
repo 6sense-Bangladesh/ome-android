@@ -37,6 +37,22 @@
     <string name="ca_success_welcome_text_view_text">Welcome to Ome!</string>
     <string name="ca_success_now_lets_text_view_text">Now let\'s get information about your stove</string>
     <string name="ca_success_start_setup_btn_text">START SETUP</string>
+    <string name="is_brand_what_brand_is_your_stove_tv_text">What brand is your stove?</string>
+    <string name="is_brand_continue_button_text">Continue</string>
+    <string name="is_gas_or_electric_gas_text">Gas</string>
+    <string name="is_gas_or_electric_electric_text">Electric</string>
+    <string name="is_gas_or_electric_continue_button_text">Continue</string>
+    <string name="is_gas_or_electric_is_your_stove_tv">Is your stove gas or electric?</string>
+    <string name="is_photo_lets_take_a_photo_text">Lets take a photo of your knob shaft</string>
+    <string name="is_photo_before_taking_a_picture_text">Before taking a picture make sure to take off one knob as shown above</string>
+    <string name="is_photo_take_photo_button_text">Take photo</string>
+    <string name="is_orientation_how_are_the_burners_button_text">How are the burners on your stove organized?</string>
+    <string name="is_orientation_continue_button_text">Finish</string>
+    <string name="is_complete_stove_configuration_tv_text">What brand is your stove?</string>
+    <string name="is_complete_next_lets_set_up_tv_text">What brand is your stove?</string>
+    <string name="is_complete_continue_button_text">CONTINUE</string>
+    <string name="is_complete_skip_knob_setup_button_text">SKIP KNOB SETUP</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

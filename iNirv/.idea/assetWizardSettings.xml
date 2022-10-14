@@ -24,7 +24,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="\" />
+                                                <entry key="imagePath" value="C:\Users\tjgriffi357\AppData\Local\Temp\ic_android_black_24dp.xml" />
                                                 <entry key="opacityPercent" value="80" />
                                               </map>
                                             </option>
@@ -37,7 +37,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\Users\tjgriffi357\Downloads\750_1624.png" />
+                                                <entry key="imagePath" value="C:\Users\tjgriffi357\Downloads\OmeAppAssets-20221003T234458Z-001\OmeAppAssets\iconsGasflameBlue.png" />
                                                 <entry key="opacityPercent" value="80" />
                                               </map>
                                             </option>
@@ -73,10 +73,10 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\tjgriffi357\Downloads\750_1624.png" />
-                                      <entry key="outputName" value="ic_inirv_login_background2" />
+                                      <entry key="imageAsset" value="C:\Users\tjgriffi357\Downloads\OmeAppAssets-20221003T234458Z-001\OmeAppAssets\iconsGasflameBlue.png" />
+                                      <entry key="outputName" value="ic_gas_flame_blue" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="ffffff" />
+                                      <entry key="themeColor" value="28b3e7" />
                                     </map>
                                   </option>
                                 </PersistentState>
