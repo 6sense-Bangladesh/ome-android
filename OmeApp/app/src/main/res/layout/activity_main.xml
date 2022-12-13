@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="32dp"
+    android:paddingVertical="16dp"
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
+
+<!--        <androidx.fragment.app.FragmentContainerView-->
+<!--            android:id="@+id/navHost"-->
+<!--            android:name="androidx.navigation.fragment.NavHostFragment"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:navGraph="@navigation/onboarding_nav_graph" />-->
+
+<!--    <com.ome.app.ui.views.OmeTextInput-->
+<!--        android:id="@+id/omeTextInput2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:inputType="password"-->
+<!--        app:hint="First Name"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/materialButton"-->
+<!--        style="@style/OmeButton.White"-->
+<!--        android:text="Continue"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/omeTextInput2" />-->
+
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        style="@style/OmeButton.Gradient"-->
+<!--        android:text="Continue"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/materialButton" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
