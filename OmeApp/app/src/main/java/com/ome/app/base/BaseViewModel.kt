@@ -16,7 +16,6 @@ abstract class BaseViewModel : ViewModel() {
     protected val mainContext: CoroutineContext = Dispatchers.Main
     protected val ioContext: CoroutineContext = Dispatchers.IO
 
-
     protected open var defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
         sendError(throwable)
     }
