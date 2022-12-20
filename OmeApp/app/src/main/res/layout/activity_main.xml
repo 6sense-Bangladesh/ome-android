@@ -4,42 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="32dp"
-    android:paddingVertical="16dp"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     tools:context=".MainActivity">
 
-<!--        <androidx.fragment.app.FragmentContainerView-->
-<!--            android:id="@+id/navHost"-->
-<!--            android:name="androidx.navigation.fragment.NavHostFragment"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            app:navGraph="@navigation/onboarding_nav_graph" />-->
-
-<!--    <com.ome.app.ui.views.OmeTextInput-->
-<!--        android:id="@+id/omeTextInput2"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:inputType="password"-->
-<!--        app:hint="First Name"-->
+<!--    <include-->
+<!--        android:id="@+id/include"-->
+<!--        layout="@layout/ome_background_gradient"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
 <!--        app:layout_constraintEnd_toEndOf="parent"-->
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-<!--    <com.google.android.material.button.MaterialButton-->
-<!--        android:id="@+id/materialButton"-->
-<!--        style="@style/OmeButton.White"-->
-<!--        android:text="Continue"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/omeTextInput2" />-->
-
-
-<!--    <com.google.android.material.button.MaterialButton-->
-<!--        style="@style/OmeButton.Gradient"-->
-<!--        android:text="Continue"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/materialButton" />-->
-
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/navHost"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/onboarding_nav_graph" />
 </androidx.constraintlayout.widget.ConstraintLayout>

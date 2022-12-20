@@ -2,14 +2,17 @@
 
     <style name="OmeButton">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">52dp</item>
         <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">.01</item>
+
     </style>
 
 
     <style name="OmeButton.Gradient" >
         <item name="android:layout_height">40dp</item>
         <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/open_sans_regular</item>
         <item name="backgroundTint">@null</item>
         <item name="android:background">@drawable/ome_gradient_button_selector</item>
         <item name="android:textColor">@color/white</item>
@@ -17,10 +20,17 @@
 
 
     <style name="OmeButton.White" >
-        <item name="android:layout_height">50dp</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/open_sans_regular</item>
         <item name="backgroundTint">@color/white</item>
         <item name="cornerRadius">0dp</item>
         <item name="android:textColor">@drawable/ome_white_button_color_selector</item>
+    </style>
+
+    <style name="OmeButton.TransparentBackground" >
+        <item name="android:fontFamily">@font/open_sans_regular</item>
+        <item name="android:background">@drawable/ome_transparent_background_button</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="cornerRadius">0dp</item>
+        <item name="android:textColor">@drawable/ome_white_transparent_button_color_selector</item>
     </style>
 </resources>

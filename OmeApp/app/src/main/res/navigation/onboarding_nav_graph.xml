@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/onboarding_nav_graph">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/onboarding_nav_graph"
+    app:startDestination="@id/welcomeFragment">
 
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.ome.app.ui.WelcomeFragment"
+        android:label="ome_background_gradient"
+        tools:layout="@layout/fragment_welcome" />
 </navigation>
