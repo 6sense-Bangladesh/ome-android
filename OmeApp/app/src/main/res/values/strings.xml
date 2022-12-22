@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Ome App</string>
+    <string name="create_account">Create account</string>
+    <string name="sign_in">Sign in</string>
+    <string name="continue_btn">Continue</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
 </resources>

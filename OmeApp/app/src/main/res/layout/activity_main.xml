@@ -7,16 +7,6 @@
     android:fitsSystemWindows="false"
     tools:context=".MainActivity">
 
-<!--    <include-->
-<!--        android:id="@+id/include"-->
-<!--        layout="@layout/ome_background_gradient"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/navHost"
         android:name="androidx.navigation.fragment.NavHostFragment"

@@ -1,6 +1,7 @@
 package com.ome.app.ui.views
 
 import android.content.Context
+import android.graphics.Typeface
 import android.text.InputType
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -43,6 +44,7 @@ class OmeTextInput @JvmOverloads constructor(
                     else -> {
                         binding.editText.inputType =
                             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                        binding.editText.typeface = Typeface.DEFAULT
                         binding.passwordVisibilityIv.makeVisible()
                     }
 
@@ -52,6 +54,11 @@ class OmeTextInput @JvmOverloads constructor(
                 hint =
                     typedArray.getString(R.styleable.OmeInput_hint) ?: ""
                 binding.editText.hint = hint
+            }
+            if (typedArray.hasValue(R.styleable.OmeInput_size)) {
+                val size =
+                    typedArray.getDimensionPixelSize(R.styleable.OmeInput_size, 0)
+                binding.editText.textSize = size.toFloat()
             }
             typedArray.recycle()
         }
@@ -74,6 +81,7 @@ class OmeTextInput @JvmOverloads constructor(
                     inputType =
                         InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                     setSelection(cursorPosition)
+                    binding.editText.typeface = Typeface.DEFAULT
                 }
 
             } else {
@@ -86,6 +94,7 @@ class OmeTextInput @JvmOverloads constructor(
                 binding.editText.apply {
                     inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                     setSelection(cursorPosition)
+                    binding.editText.typeface = Typeface.DEFAULT
                 }
 
 

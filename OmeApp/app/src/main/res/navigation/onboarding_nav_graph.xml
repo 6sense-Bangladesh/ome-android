@@ -7,7 +7,21 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.ome.app.ui.WelcomeFragment"
+        android:name="com.ome.app.ui.welcome.WelcomeFragment"
         android:label="ome_background_gradient"
-        tools:layout="@layout/fragment_welcome" />
+        tools:layout="@layout/fragment_welcome">
+        <action
+            android:id="@+id/action_welcomeFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/> />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.ome.app.ui.signin.SignInFragment"
+        android:label="SignInFragment" />
+
+
 </navigation>

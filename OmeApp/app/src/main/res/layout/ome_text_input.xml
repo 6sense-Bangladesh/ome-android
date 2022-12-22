@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.WelcomeFragment">
+    tools:context=".ui.welcome.WelcomeFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +21,7 @@
         <EditText
             android:id="@+id/editText"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
             android:background="#00000000"
             android:fontFamily="@font/open_sans_regular"
             android:paddingHorizontal="12dp"
