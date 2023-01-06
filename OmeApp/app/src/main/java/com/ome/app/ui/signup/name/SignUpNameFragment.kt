@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.ome.Ome.databinding.FragmentSignUpNameBinding
 import com.ome.app.base.BaseFragment
-import com.ome.app.databinding.FragmentSignUpNameBinding
 import com.ome.app.ui.signup.email.NameParams
 import com.ome.app.utils.subscribe
 import dev.chrisbanes.insetter.applyInsetter

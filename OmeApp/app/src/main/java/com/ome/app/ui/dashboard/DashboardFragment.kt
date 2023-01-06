@@ -3,10 +3,10 @@ package com.ome.app.ui.dashboard
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import com.ome.app.R
+import com.ome.Ome.R
+import com.ome.Ome.databinding.FragmentDashboardBinding
 import com.ome.app.base.BaseFragment
 import com.ome.app.base.navigation.BottomNavigationController
-import com.ome.app.databinding.FragmentDashboardBinding
 import com.ome.app.ui.views.BottomItem
 import dagger.hilt.android.AndroidEntryPoint
 

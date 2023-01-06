@@ -3,7 +3,7 @@ package com.ome.app.ui.signin
 import android.os.Bundle
 import com.amplifyframework.auth.AuthException
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
-import com.ome.app.R
+import com.ome.Ome.R
 import com.ome.app.base.BaseViewModel
 import com.ome.app.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider

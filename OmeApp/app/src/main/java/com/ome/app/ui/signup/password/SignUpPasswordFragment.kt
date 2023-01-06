@@ -8,9 +8,9 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.ome.app.R
+import com.ome.Ome.R
+import com.ome.Ome.databinding.FragmentSignUpPasswordBinding
 import com.ome.app.base.BaseFragment
-import com.ome.app.databinding.FragmentSignUpPasswordBinding
 import com.ome.app.utils.applyMaskToEmail
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint

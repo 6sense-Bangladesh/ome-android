@@ -3,8 +3,8 @@ package com.ome.app.ui.dashboard.settings
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import com.ome.Ome.databinding.FragmentSettingsBinding
 import com.ome.app.base.BaseFragment
-import com.ome.app.databinding.FragmentSettingsBinding
 import com.ome.app.ui.dashboard.profile.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -3,8 +3,8 @@ package com.ome.app.ui.signup.welcome
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import com.ome.Ome.databinding.FragmentWelcomeBinding
 import com.ome.app.base.BaseFragment
-import com.ome.app.databinding.FragmentWelcomeBinding
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter

@@ -13,8 +13,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.doOnLayout
-import com.ome.app.R
-import com.ome.app.databinding.ViewBotttomNavBarBinding
+import com.ome.Ome.R
+import com.ome.Ome.databinding.ViewBotttomNavBarBinding
 
 
 class OmeNavBar @JvmOverloads constructor(

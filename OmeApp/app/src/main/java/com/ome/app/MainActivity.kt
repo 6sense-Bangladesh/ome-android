@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.fragment.NavHostFragment
+import com.ome.Ome.R
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 

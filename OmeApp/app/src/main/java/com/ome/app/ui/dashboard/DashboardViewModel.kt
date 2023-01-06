@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import com.ome.app.R
+import com.ome.Ome.R
 import com.ome.app.base.BaseViewModel
 import com.ome.app.data.local.PreferencesProvider
 import dagger.hilt.android.lifecycle.HiltViewModel

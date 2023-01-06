@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.ome.app.R
+import com.ome.Ome.R
+import com.ome.Ome.databinding.FragmentSignInBinding
 import com.ome.app.base.BaseFragment
-import com.ome.app.databinding.FragmentSignInBinding
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter

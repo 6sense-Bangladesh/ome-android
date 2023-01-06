@@ -1,7 +1,7 @@
 package com.ome.app.di
 
 import android.content.Context
-import com.ome.app.BuildConfig
+import com.ome.Ome.BuildConfig
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.local.PreferencesProviderImpl
 import com.ome.app.data.remote.AmplifyManager

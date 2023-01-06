@@ -1,7 +1,7 @@
 package com.ome.app.utils
 
 import android.util.Log
-import com.ome.app.BuildConfig
+import com.ome.Ome.BuildConfig
 
 var LOGGING_ENABLED = BuildConfig.DEBUG
 
