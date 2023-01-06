@@ -11,12 +11,16 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel : ViewModel() {
     val defaultErrorLiveData: SingleLiveEvent<String?> = SingleLiveEvent()
+    val successMessageLiveData: SingleLiveEvent<String?> = SingleLiveEvent()
     val loadingFlow = MutableStateFlow(false)
+
+    val loadingLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     protected val mainContext: CoroutineContext = Dispatchers.Main
     protected val ioContext: CoroutineContext = Dispatchers.IO
 
     protected open var defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
+        loadingLiveData.postValue(false)
         sendError(throwable)
     }
 
