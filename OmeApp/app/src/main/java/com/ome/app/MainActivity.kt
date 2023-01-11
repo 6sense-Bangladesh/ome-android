@@ -5,10 +5,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.whenStarted
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.ome.Ome.R
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -50,7 +54,21 @@ class MainActivity : AppCompatActivity() {
                 }
 
         navHostFragment.navController.setGraph(graph, startDestinationBundle)
+        onNavGraphInited()
         viewModel._isSplashScreenLoading.value = false
+
+    }
+
+    private fun onNavGraphInited() {
+        lifecycle.coroutineScope.launch {
+            val fragment = supportFragmentManager.findFragmentById(R.id.navHost)
+
+            fragment?.lifecycle?.whenStarted {
+                fragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
+                    viewModel.currentDestination.value = destination
+                }
+            }
+        }
     }
 
 

@@ -10,6 +10,8 @@ interface PreferencesProvider {
 
     fun saveAccessToken(accessToken: String?)
 
+    fun clearData()
+
     fun getAccessToken(): String?
 
     fun saveUserId(userId: String?)

@@ -30,6 +30,7 @@ class MainVM @Inject constructor(
     val isSplashScreenLoading = _isSplashScreenLoading.asStateFlow()
 
     fun initStartDestination() = launch(dispatcher = ioContext) {
+        //startDestinationInitialized.postValue(R.id.dashboardFragment to null)
         val authSession =
             withContext(Dispatchers.Default) { amplifyManager.fetchAuthSession() }
 

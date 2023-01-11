@@ -31,6 +31,14 @@
     <string name="menu_my_stove">My Stove</string>
     <string name="menu_members">Members</string>
     <string name="menu_profile">Profile</string>
+    <string name="account">Account</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="membership">Membership</string>
+    <string name="change_password">Change Password</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="old_password">Old Password</string>
+    <string name="newPassword">New Password</string>
 
 
 </resources>

@@ -1,14 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:fitsSystemWindows="false"
+    android:paddingBottom="75dp">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="24sp"
-        android:text="Profile"/>
+        android:layout_height="wrap_content"
+        android:paddingBottom="25dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/titleTv"
+            style="@style/Title.18sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="@string/account"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/messageIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/ic_message"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleTv" />
+
+        <ImageView
+            android:id="@+id/circleIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-4dp"
+            android:layout_marginEnd="-4dp"
+            android:src="@drawable/ic_yellow_circle"
+            app:layout_constraintEnd_toEndOf="@+id/messageIv"
+            app:layout_constraintTop_toTopOf="@+id/messageIv" />
+
+
+        <ImageView
+            android:id="@+id/avatarIv"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/messageIv" />
+
+        <TextView
+            android:id="@+id/fullName"
+            style="@style/Title.16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_yellow_circle"
+            android:text="Alex Sipko"
+            android:textColor="@color/gradient_mid_unpressed_color"
+            app:layout_constraintEnd_toEndOf="@+id/avatarIv"
+            app:layout_constraintStart_toStartOf="@+id/avatarIv"
+            app:layout_constraintTop_toBottomOf="@+id/avatarIv" />
+
+
+        <TextView
+            android:id="@+id/firstNameTv"
+            style="@style/Label.12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ic_yellow_circle"
+            android:text="@string/first_name"
+            android:textAllCaps="true"
+            android:textColor="@color/gray_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullName" />
+
+        <EditText
+            android:id="@+id/firstNameEt"
+            style="@style/ProfileEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="36dp"
+            android:text="Alex"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/firstNameTv"
+            app:layout_constraintTop_toBottomOf="@+id/firstNameTv" />
+
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/gray_color"
+            app:layout_constraintEnd_toEndOf="@+id/firstNameEt"
+            app:layout_constraintStart_toStartOf="@+id/firstNameEt"
+            app:layout_constraintTop_toBottomOf="@+id/firstNameEt" />
+
+
+        <TextView
+            android:id="@+id/lastNameTv"
+            style="@style/Label.12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/ic_yellow_circle"
+            android:text="@string/first_name"
+            android:textAllCaps="true"
+            android:textColor="@color/gray_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider1" />
+
+        <EditText
+            android:id="@+id/lastNameEt"
+            style="@style/ProfileEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="36dp"
+            android:text="Sipko"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/lastNameTv"
+            app:layout_constraintTop_toBottomOf="@+id/lastNameTv" />
+
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/gray_color"
+            app:layout_constraintEnd_toEndOf="@+id/lastNameEt"
+            app:layout_constraintStart_toStartOf="@+id/lastNameEt"
+            app:layout_constraintTop_toBottomOf="@+id/lastNameEt" />
+
+
+        <TextView
+            android:id="@+id/emailTv"
+            style="@style/Label.12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/ic_yellow_circle"
+            android:text="@string/first_name"
+            android:textAllCaps="true"
+            android:textColor="@color/gray_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+        <EditText
+            android:id="@+id/emailEt"
+            style="@style/ProfileEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="36dp"
+            android:text="sipko.photography@gmail.com"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/emailTv"
+            app:layout_constraintTop_toBottomOf="@+id/emailTv" />
+
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/gray_color"
+            app:layout_constraintEnd_toEndOf="@+id/lastNameEt"
+            app:layout_constraintStart_toStartOf="@+id/lastNameEt"
+            app:layout_constraintTop_toBottomOf="@+id/emailEt" />
+
+
+        <TextView
+            android:id="@+id/membershipTv"
+            style="@style/Label.14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/membership"
+            android:textColor="@drawable/ome_light_blue_color_selector"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/gray_color"
+            app:layout_constraintEnd_toEndOf="@+id/lastNameEt"
+            app:layout_constraintStart_toStartOf="@+id/lastNameEt"
+            app:layout_constraintTop_toBottomOf="@+id/membershipTv" />
+
+        <TextView
+            android:id="@+id/changePasswordTv"
+            style="@style/Label.14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/change_password"
+            android:textColor="@drawable/ome_light_blue_color_selector"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
+
+        <View
+            android:id="@+id/divider5"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="6dp"
+            android:background="@color/gray_color"
+            app:layout_constraintEnd_toEndOf="@+id/lastNameEt"
+            app:layout_constraintStart_toStartOf="@+id/lastNameEt"
+            app:layout_constraintTop_toBottomOf="@+id/changePasswordTv" />
+
+        <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+            android:id="@+id/signOut"
+            style="@style/OmeButton.LightBlue"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="48dp"
+            android:text="@string/sign_out"
+            android:textAllCaps="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/divider5"
+            app:layout_constraintStart_toStartOf="@+id/divider5"
+            app:layout_constraintTop_toBottomOf="@+id/divider5"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

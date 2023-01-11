@@ -6,12 +6,41 @@
         <item name="android:textSize">12sp</item>
         <item name="android:letterSpacing">.01</item>
     </style>
+    <style name="ProfileEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/open_sans_regular</item>
+        <item name="android:textCursorDrawable">@drawable/ome_input_cursor_drawable</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">#00000000</item>
+        <item name="android:letterSpacing">.01</item>
+    </style>
+
 
     <style name="Label">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/open_sans_regular</item>
         <item name="android:letterSpacing">.01</item>
+    </style>
+
+    <style name="Title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/open_sans_regular</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">.01</item>
+    </style>
+
+    <style name="Title.18sp">
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="Title.16sp">
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="Title.14sp">
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Menu">
@@ -27,13 +56,18 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-  <style name="Label.19sp">
+    <style name="Label.19sp">
         <item name="android:textSize">19sp</item>
     </style>
 
     <style name="Label.12sp">
         <item name="android:textSize">12sp</item>
     </style>
+
+    <style name="Label.14sp">
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="Label.23sp">
         <item name="android:textSize">23sp</item>
     </style>
@@ -54,6 +88,14 @@
         <item name="android:fontFamily">@font/open_sans_regular</item>
         <item name="backgroundTint">@null</item>
         <item name="android:background">@drawable/ome_blue_button_selector</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="OmeButton.LightBlue" >
+        <item name="android:layout_height">40dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/open_sans_regular</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:background">@drawable/ome_light_blue_button_selector</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
@@ -80,5 +122,20 @@
         <item name="backgroundTint">@color/white</item>
         <item name="cornerRadius">0dp</item>
         <item name="android:textColor">@drawable/ome_white_transparent_button_color_selector</item>
+    </style>
+
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_dialog</item>
     </style>
 </resources>

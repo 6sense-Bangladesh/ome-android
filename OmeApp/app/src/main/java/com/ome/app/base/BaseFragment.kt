@@ -2,6 +2,7 @@ package com.ome.app.base
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,9 +47,10 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
     }
 
 
-    fun setStatusBarColor(isLight: Boolean = true) {
+    fun setStatusBarTheme(isLight: Boolean = true) {
         view?.let {
-            WindowInsetsControllerCompat(requireActivity().window, it).isAppearanceLightStatusBars = isLight
+            WindowInsetsControllerCompat(requireActivity().window, it).isAppearanceLightStatusBars =
+                isLight
         }
     }
 
@@ -56,17 +58,35 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
         title: String = "Success",
         message: String,
         onDismiss: () -> Unit = {}
-    ) =
-        AlertDialog.Builder(context)
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(
-                "Ok"
-            ) { dialog, p1 ->
-                onDismiss()
-                dialog.cancel()
-            }
-            .show()
+    ): AlertDialog = AlertDialog.Builder(context)
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton(
+            "Ok"
+        ) { dialog, p1 ->
+            onDismiss()
+            dialog.cancel()
+        }
+        .show()
+
+    protected open fun showDialog(
+        title: String = "",
+        positiveButtonText: String = "Ok",
+        negativeButtonText: String = "Cancel",
+        message: SpannableStringBuilder,
+        onPositiveButtonClick: () -> Unit = {},
+        onNegativeButtonClick: () -> Unit = {}
+    ): AlertDialog = AlertDialog.Builder(context)
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton(
+            positiveButtonText
+        ) { dialog, p1 ->
+            onPositiveButtonClick()
+        }.setNegativeButton(negativeButtonText) { dialog, p1 ->
+            onNegativeButtonClick
+        }
+        .show()
 
     protected open fun onError(errorMessage: String) = AlertDialog.Builder(context)
         .setTitle("Error")

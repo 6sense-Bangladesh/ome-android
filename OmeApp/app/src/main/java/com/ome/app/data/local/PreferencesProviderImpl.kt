@@ -33,6 +33,8 @@ class PreferencesProviderImpl(context: Context) : PreferencesProvider {
         sharedPreferences.edit().putString(ACCESS_TOKEN_KEY, accessToken).apply()
     }
 
+    override fun clearData() = sharedPreferences.edit().clear().apply()
+
     override fun getAccessToken(): String? = sharedPreferences.getString(ACCESS_TOKEN_KEY, "")
 
     override fun saveUserId(userId: String?) = if (userId == null) {

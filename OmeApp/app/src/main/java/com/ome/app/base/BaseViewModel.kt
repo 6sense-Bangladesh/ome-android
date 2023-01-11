@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavDestination
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.coroutines.CoroutineContext
@@ -15,6 +16,7 @@ abstract class BaseViewModel : ViewModel() {
     val loadingFlow = MutableStateFlow(false)
 
     val loadingLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    val currentDestination = MutableStateFlow<NavDestination?>(null)
 
     protected val mainContext: CoroutineContext = Dispatchers.Main
     protected val ioContext: CoroutineContext = Dispatchers.IO

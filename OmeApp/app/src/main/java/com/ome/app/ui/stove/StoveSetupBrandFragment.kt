@@ -16,7 +16,7 @@ class StoveSetupBrandFragment:
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setStatusBarColor(true)
+        setStatusBarTheme(true)
     }
 
     override fun observeLiveData() {

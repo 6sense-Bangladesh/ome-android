@@ -24,6 +24,7 @@ class WelcomeFragment :
                 margin(top = true)
             }
         }
+        setStatusBarTheme(true)
         binding.continueBtn.setOnClickListener {
 //            binding.continueBtn.startAnimation()
             viewModel.setup()

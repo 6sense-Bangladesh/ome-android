@@ -9,6 +9,8 @@ import com.amplifyframework.auth.result.AuthSignUpResult
 import com.amplifyframework.auth.result.step.AuthSignInStep
 import com.amplifyframework.kotlin.auth.KotlinAuthFacade
 import com.amplifyframework.kotlin.core.Amplify
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 class AmplifyResultValue {
     var attributes: List<AuthUserAttribute>? = null
@@ -32,6 +34,12 @@ class AmplifyManager {
     var kotAuth: KotlinAuthFacade = Amplify.Auth
 //    private var restManager: RESTManager = RESTManager
 
+    val signOutFlow: MutableSharedFlow<Boolean> =
+        MutableSharedFlow(
+            replay = 1,
+            onBufferOverflow = BufferOverflow.DROP_OLDEST
+        )
+
     suspend fun fetchAuthSession(): AmplifyResultValue {
         val resultValue: AmplifyResultValue = AmplifyResultValue()
         return try {
@@ -54,22 +62,8 @@ class AmplifyManager {
         return resultValue
     }
 
-    suspend fun signUserOut(completion: (AmplifyResultValue) -> Unit) {
+    suspend fun signUserOut() = kotAuth.signOut()
 
-        val resultValue = AmplifyResultValue()
-
-        try {
-            kotAuth.signOut()
-
-            resultValue.wasCallSuccessful = true
-        } catch (error: AuthException) {
-
-            resultValue.authException = error
-            resultValue.wasCallSuccessful = false
-        }
-
-        completion(resultValue)
-    }
 
     suspend fun signUserIn(
         username: String,
@@ -119,25 +113,12 @@ class AmplifyManager {
     suspend fun updatePassword(
         oldPassword: String,
         newPassword: String,
-        completion: (AmplifyResultValue) -> Unit
-    ) {
-
+    ): AmplifyResultValue {
         val resultValue = AmplifyResultValue()
+        kotAuth.updatePassword(oldPassword, newPassword)
+        resultValue.message = "Change password succeeded"
 
-        try {
-
-            kotAuth.updatePassword(oldPassword, newPassword)
-
-            resultValue.wasCallSuccessful = true
-            resultValue.message = "Change password succeeded"
-        } catch (error: AuthException) {
-
-            resultValue.authException = error
-            resultValue.wasCallSuccessful = false
-        }
-
-        completion(resultValue)
-
+        return resultValue
     }
 
     suspend fun confirmResetPassword(

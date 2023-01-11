@@ -11,7 +11,7 @@ import javax.inject.Inject
 class SignUpPasswordViewModel @Inject constructor(private val amplifyManager: AmplifyManager) :
     BaseViewModel() {
 
-    val isPasswordValidLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    val validationSuccessLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val signUpResultLiveData: SingleLiveEvent<AmplifyResultValue> = SingleLiveEvent()
     val passwordResetLiveData: SingleLiveEvent<AmplifyResultValue> = SingleLiveEvent()
 
@@ -108,7 +108,7 @@ class SignUpPasswordViewModel @Inject constructor(private val amplifyManager: Am
         }
 
         currentPassword = password
-        isPasswordValidLiveData.setNewValue(true)
+        validationSuccessLiveData.setNewValue(true)
     }
 
     private fun containsSpecialCharacter(sequence: String): Boolean {
