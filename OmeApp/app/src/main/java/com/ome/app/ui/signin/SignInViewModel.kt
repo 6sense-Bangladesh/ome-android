@@ -9,6 +9,8 @@ import com.ome.app.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.user.UserRepository
+import com.ome.app.model.base.ResponseWrapper
+import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -73,35 +75,37 @@ class SignInViewModel @Inject constructor(
         if (authSession.session is AWSCognitoAuthSession) {
             val accessToken =
                 (authSession.session as AWSCognitoAuthSession).userPoolTokens.value?.accessToken
+            logi("accessToken: $accessToken")
             preferencesProvider.saveAccessToken(accessToken)
 
             userAttributes.attributes?.forEach { attr ->
                 if (attr.key.keyString == "sub") {
+                    logi("userId: ${attr.value}")
                     preferencesProvider.saveUserId(attr.value)
                 }
             }
+            when (val result = userRepository.getUserData()) {
+                is ResponseWrapper.NetworkError -> {
+                    loadingLiveData.postValue(false)
+                }
+                is ResponseWrapper.GenericError -> {
+                    result.response?.message?.let { message ->
+                        loadingLiveData.postValue(false)
+                        if (message.contains("Not found")) {
 
-            destinationAfterSignInLiveData.postValue(R.id.action_signInFragment_to_dashboardFragment to null)
-//            when (val result = userRepository.getUserData()) {
-//                is ResponseWrapper.NetworkError -> {
-//                    loadingLiveData.postValue(false)
-//                }
-//                is ResponseWrapper.GenericError -> {
-//                    result.response?.message?.let { message ->
-//                        loadingLiveData.postValue(false)
-//                        if (message.contains("Not found")) {
-//
-//                        } else {
-//                            loadingLiveData.postValue(false)
-//                        }
-//                    }
-//                }
-//                is ResponseWrapper.Success -> {
-//                    loadingLiveData.postValue(false)
-//                }
-//            }
+                        } else {
+                            loadingLiveData.postValue(false)
+                        }
+                    }
+                }
+                is ResponseWrapper.Success -> {
+                    loadingLiveData.postValue(false)
+                    destinationAfterSignInLiveData.postValue(R.id.action_signInFragment_to_dashboardFragment to null)
+                }
+            }
+
+
+
         }
     }
-
-
 }

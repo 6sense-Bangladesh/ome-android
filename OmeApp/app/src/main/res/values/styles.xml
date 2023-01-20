@@ -12,6 +12,9 @@
         <item name="android:fontFamily">@font/open_sans_regular</item>
         <item name="android:textCursorDrawable">@drawable/ome_input_cursor_drawable</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:inputType">text</item>
+        <item name="android:imeOptions">actionDone</item>
         <item name="android:textSize">14sp</item>
         <item name="android:background">#00000000</item>
         <item name="android:letterSpacing">.01</item>
@@ -33,6 +36,9 @@
         <item name="android:letterSpacing">.01</item>
     </style>
 
+    <style name="Title.20sp">
+        <item name="android:textSize">18sp</item>
+    </style>
     <style name="Title.18sp">
         <item name="android:textSize">18sp</item>
     </style>
@@ -59,6 +65,9 @@
     <style name="Label.19sp">
         <item name="android:textSize">19sp</item>
     </style>
+    <style name="Label.17sp">
+        <item name="android:textSize">17sp</item>
+    </style>
 
     <style name="Label.12sp">
         <item name="android:textSize">12sp</item>
@@ -72,6 +81,10 @@
         <item name="android:textSize">23sp</item>
     </style>
 
+    <style name="Label.30sp">
+        <item name="android:textSize">30sp</item>
+    </style>
+
 
 
     <style name="OmeButton.Gradient" >
@@ -82,6 +95,15 @@
         <item name="android:background">@drawable/ome_gradient_button_selector</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+
+    <style name="OmeButton.Gradient.WithLoadingState" >
+        <item name="spinning_bar_color">@color/white</item>
+        <item name="spinning_bar_padding">5dp</item>
+        <item name="spinning_bar_width">3dp</item>
+        <item name="android:background">@drawable/ome_gradient_button_unpressed_color</item>
+    </style>
+
     <style name="OmeButton.Blue" >
         <item name="android:layout_height">40dp</item>
         <item name="android:textSize">12sp</item>
@@ -113,7 +135,6 @@
         <item name="spinning_bar_padding">5dp</item>
         <item name="spinning_bar_width">3dp</item>
         <item name="android:background">@drawable/ome_button_corners_shape</item>
-
     </style>
 
     <style name="OmeButton.TransparentBackground" >

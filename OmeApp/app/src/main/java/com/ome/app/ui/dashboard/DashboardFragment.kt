@@ -15,6 +15,7 @@ import com.ome.app.ui.views.BottomItem
 import com.ome.app.utils.getCurrentFragment
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.insetter.applyInsetter
 
 
 @AndroidEntryPoint
@@ -28,8 +29,6 @@ class DashboardFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//           if (viewModel.isStoveInfoExist()) R.id.myStoveFragment else R.id.welcomeFragment
-
 
         bottomNavigationController = BottomNavigationController(
             bottomGraphs = listOf(
@@ -42,7 +41,7 @@ class DashboardFragment :
                     BottomItem.MY_STOVE,
                     R.navigation.my_stove_navigation,
                     R.id.myStoveNavigation,
-                    R.id.welcomeFragment
+                    if (viewModel.isStoveInfoExist()) R.id.myStoveFragment else R.id.welcomeFragment
                 ),
                 BottomNavigationController.BottomGraph(
                     BottomItem.MEMBERS,
@@ -59,10 +58,17 @@ class DashboardFragment :
             fragmentManager = childFragmentManager,
             containerId = R.id.dashboardContainer
         )
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.bottomNavigation.applyInsetter {
+            type(navigationBars = true) {
+                margin(bottom = true)
+            }
+        }
+
         //           if (viewModel.isStoveInfoExist()) R.id.myStoveFragment else R.id.welcomeFragment
         binding.bottomNavigation.setEnabledTabState(BottomItem.SETTINGS, false)
         binding.bottomNavigation.setEnabledTabState(BottomItem.MEMBERS, false)

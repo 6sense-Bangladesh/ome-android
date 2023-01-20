@@ -145,5 +145,17 @@
             app:popUpToInclusive="true" />
     </fragment>
 
+    <action
+        android:id="@+id/actionInternetConnectionFragment"
+        app:destination="@id/noInternetConnectionFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <fragment
+        android:id="@+id/noInternetConnectionFragment"
+        android:name="com.ome.app.ui.internet_error.NoInternetConnectionFragment"
+        android:label="NoInternetConnectionFragment" />
+
 
 </navigation>

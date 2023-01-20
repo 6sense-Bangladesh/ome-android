@@ -3,28 +3,72 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
-    android:background="@color/white">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:fitsSystemWindows="false">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="86dp"
+        android:src="@drawable/ic_setup_stove"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="match_parent"
+        style="@style/Title.20sp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Stove Setup"
-        android:textSize="24dp"
-        android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="36dp"
+        android:text="@string/stove_setup_brand_label"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
 
-    <TextView
-        android:id="@+id/textView4"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/stoveSelectorContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="(under construction)"
-        android:textSize="24sp"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/stove_brand_selector_shape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/stoveSelector"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_margin="1dp"
+            style="@style/Label.14sp"
+            tools:text="Samsung"
+            android:fontFamily="@font/open_sans_regular"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:ms_arrow_tint="@color/gradient_end_unpressed_color"
+            app:ms_text_color="@color/gradient_end_unpressed_color" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/continueBtn"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        style="@style/OmeButton.Gradient"
+        android:layout_marginTop="16dp"
+        android:text="@string/continue_btn"
+        app:layout_constraintEnd_toEndOf="@+id/stoveSelectorContainer"
+        app:layout_constraintStart_toStartOf="@+id/stoveSelectorContainer"
+        app:layout_constraintTop_toBottomOf="@+id/stoveSelectorContainer" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

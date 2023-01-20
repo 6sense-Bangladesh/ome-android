@@ -58,13 +58,13 @@
             app:layout_constraintTop_toBottomOf="@+id/messageIv" />
 
         <TextView
-            android:id="@+id/fullName"
+            android:id="@+id/fullNameTv"
             style="@style/Title.16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:src="@drawable/ic_yellow_circle"
-            android:text="Alex Sipko"
+            tools:text="Alex Sipko"
             android:textColor="@color/gradient_mid_unpressed_color"
             app:layout_constraintEnd_toEndOf="@+id/avatarIv"
             app:layout_constraintStart_toStartOf="@+id/avatarIv"
@@ -83,7 +83,7 @@
             android:textAllCaps="true"
             android:textColor="@color/gray_color"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fullName" />
+            app:layout_constraintTop_toBottomOf="@+id/fullNameTv" />
 
         <EditText
             android:id="@+id/firstNameEt"
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="36dp"
-            android:text="Alex"
+            tools:text="Alex"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/firstNameTv"
             app:layout_constraintTop_toBottomOf="@+id/firstNameTv" />
@@ -117,7 +117,7 @@
             android:layout_marginStart="36dp"
             android:layout_marginTop="24dp"
             android:src="@drawable/ic_yellow_circle"
-            android:text="@string/first_name"
+            android:text="@string/last_name"
             android:textAllCaps="true"
             android:textColor="@color/gray_color"
             app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="36dp"
-            android:text="Sipko"
+            tools:text="Sipko"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/lastNameTv"
             app:layout_constraintTop_toBottomOf="@+id/lastNameTv" />
@@ -155,7 +155,7 @@
             android:layout_marginStart="36dp"
             android:layout_marginTop="24dp"
             android:src="@drawable/ic_yellow_circle"
-            android:text="@string/first_name"
+            android:text="@string/email"
             android:textAllCaps="true"
             android:textColor="@color/gray_color"
             app:layout_constraintStart_toStartOf="parent"
@@ -168,11 +168,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="36dp"
-            android:text="sipko.photography@gmail.com"
+            android:enabled="false"
+            tools:text="sipko.photography@gmail.com"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/emailTv"
-            app:layout_constraintTop_toBottomOf="@+id/emailTv" />
-
+            app:layout_constraintTop_toBottomOf="@+id/emailTv"
+            tools:ignore="TextFields" />
 
         <View
             android:id="@+id/divider3"
@@ -247,6 +248,21 @@
             app:layout_constraintEnd_toEndOf="@+id/divider5"
             app:layout_constraintStart_toStartOf="@+id/divider5"
             app:layout_constraintTop_toBottomOf="@+id/divider5"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+            android:id="@+id/deleteAccount"
+            style="@style/OmeButton.LightBlue"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="24dp"
+            android:visibility="gone"
+            android:text="@string/delete_account"
+            android:textAllCaps="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/divider5"
+            app:layout_constraintStart_toStartOf="@+id/divider5"
+            app:layout_constraintTop_toBottomOf="@+id/signOut"
             app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

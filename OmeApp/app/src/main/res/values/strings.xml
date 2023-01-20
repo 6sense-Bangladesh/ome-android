@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ome App</string>
+    <string name="app_name">Ome</string>
     <string name="create_account">Create account</string>
     <string name="sign_in">Sign in</string>
     <string name="continue_btn">Continue</string>
@@ -37,8 +37,22 @@
     <string name="membership">Membership</string>
     <string name="change_password">Change Password</string>
     <string name="sign_out">Sign Out</string>
+    <string name="delete_account">Delete Account</string>
     <string name="old_password">Old Password</string>
     <string name="newPassword">New Password</string>
+    <string name="stove_setup_brand_label">What brand is your stove?</string>
+    <string name="gas">Gas</string>
+    <string name="electric">Electric</string>
+    <string name="take_a_shalf_photo_desc1">Let\'s take a photo of your knob shaft</string>
+    <string name="take_a_shalf_photo_desc2">Before taking a picture, make sure to take off one knob as shown above</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="permission_denied">Permission not granted.</string>
+    <string name="how_are_the_burners_on_your_stove_organized">How are the burners on your stove organized?</string>
+    <string name="finish">Finish</string>
+    <string name="stove_configuration_complete">Stove configuration complete</string>
+    <string name="next_nlet_s_setup_your_smart_knob">Next,\nlet\'s setup your smart knob!</string>
+    <string name="skip_knob_setup">Skip knob setup</string>
+    <string name="no_internet_connection">No Internet Connection</string>
 
 
 </resources>

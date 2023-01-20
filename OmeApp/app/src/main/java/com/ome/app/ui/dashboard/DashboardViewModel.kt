@@ -9,6 +9,7 @@ import com.ome.app.base.BaseViewModel
 import com.ome.app.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
+import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.utils.mutable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     val preferencesProvider: PreferencesProvider,
-    val amplifyManager: AmplifyManager
+    val amplifyManager: AmplifyManager,
+    val userRepository: UserRepository
 ) : BaseViewModel() {
 
     lateinit var isStartDestination: LiveData<Boolean>
@@ -31,15 +33,19 @@ class DashboardViewModel @Inject constructor(
     init {
         launch {
             currentDestination.collect {
+
                 bottomBarVisible.mutable().value = when (it?.id) {
-                    R.id.changePasswordFragment -> false
-                    else -> true
+                    R.id.settingsFragment,
+                    R.id.myStoveFragment,
+                    R.id.membersFragment,
+                    R.id.profileFragment,
+                    R.id.welcomeFragment -> true
+                    else -> false
                 }
             }
         }
 
     }
-
 
     fun connectBottomNavController(navControllerFlow: StateFlow<NavController>) {
         currentBottomNavController = navControllerFlow.asLiveData()
@@ -73,6 +79,6 @@ class DashboardViewModel @Inject constructor(
             }.asLiveData()
     }
 
-    fun isStoveInfoExist(): Boolean = preferencesProvider.getUserData() != null
+    fun isStoveInfoExist(): Boolean = userRepository.userFlow.value?.stoveId != null
 
 }

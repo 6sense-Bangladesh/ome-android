@@ -13,5 +13,95 @@
     <fragment
         android:id="@+id/welcomeFragment"
         android:name="com.ome.app.ui.signup.welcome.WelcomeFragment"
-        android:label="WelcomeFragment" />
+        android:label="WelcomeFragment">
+        <action
+            android:id="@+id/action_welcomeFragment_to_stoveSetupBrandFragment"
+            app:destination="@id/stoveSetupBrandFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/stoveSetupBrandFragment"
+        android:name="com.ome.app.ui.stove.StoveSetupBrandFragment"
+        android:label="StoveSetupBrandFragment">
+        <action
+            android:id="@+id/action_stoveSetupBrandFragment_to_stoveSetupTypeFragment"
+            app:destination="@id/stoveSetupTypeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/stoveSetupTypeFragment"
+        android:name="com.ome.app.ui.stove.StoveSetupTypeFragment"
+        android:label="StoveSetupTypeFragment">
+        <argument
+            android:name="brand"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_stoveSetupTypeFragment_to_stoveSetupPhotoFragment"
+            app:destination="@id/stoveSetupPhotoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/stoveSetupPhotoFragment"
+        android:name="com.ome.app.ui.stove.StoveSetupPhotoFragment"
+        android:label="StoveSetupPhotoFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.stove.StoveSetupPhotoArgs"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_stoveSetupPhotoFragment_to_stoveSetupBurnersFragment"
+            app:destination="@id/stoveSetupBurnersFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/stoveSetupBurnersFragment"
+        android:name="com.ome.app.ui.stove.StoveSetupBurnersFragment"
+        android:label="StoveSetupBurnersFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.stove.StoveSetupBurnersArgs"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_stoveSetupBurnersFragment_to_stoveSetupCompletedFragment"
+            app:destination="@id/stoveSetupCompletedFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/stoveSetupCompletedFragment"
+        android:name="com.ome.app.ui.stove.StoveSetupCompletedFragment"
+        android:label="StoveSetupCompletedFragment" >
+        <action
+            android:id="@+id/action_stoveSetupCompletedFragment_to_myStoveFragment"
+            app:destination="@id/myStoveFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/myStoveNavigation"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+
 </navigation>

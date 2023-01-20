@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="navigation_bar_color">#40000000</color>
+    <color name="no_internet_connection_background">#5086c3</color>
 
     <color name="textInputBorderColor">#000000</color>
     <color name="colorShadowDark">#8D8F94</color>

@@ -1,6 +1,9 @@
 package com.ome.app.utils
 
+import android.os.Handler
+import android.os.Looper
 import android.view.View
+
 
 fun View.makeGoneIf(predicate: Boolean) {
     if (predicate) makeGone() else makeVisible()
@@ -30,4 +33,8 @@ fun View.makeInvisible() {
 
 fun View.makeGone() {
     visibility = View.GONE
+}
+
+fun withDelay(delay : Long, block : () -> Unit) {
+    Handler(Looper.getMainLooper()).postDelayed(Runnable(block), delay)
 }

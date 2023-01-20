@@ -41,7 +41,8 @@ class SignUpConfirmationFragment :
             viewModel.resendCode(viewModel.email.trim())
         }
 
-        binding.textLabel.text = getString(R.string.confirmation_label, args.params.email.applyMaskToEmail())
+        binding.textLabel.text =
+            getString(R.string.confirmation_label, args.params.email.applyMaskToEmail())
         viewModel.firstName = args.params.firstName
         viewModel.lastName = args.params.lastName
         viewModel.email = args.params.email
@@ -54,18 +55,25 @@ class SignUpConfirmationFragment :
         super.observeLiveData()
         subscribe(viewModel.signUpConfirmationResultLiveData) {
             binding.continueBtn.revertAnimation()
-            findNavController().navigate(
-                SignUpConfirmationFragmentDirections.actionSignUpConfirmationFragmentToDashboardFragment()
-            )
+            if (it) {
+                findNavController().navigate(
+                    SignUpConfirmationFragmentDirections.actionSignUpConfirmationFragmentToDashboardFragment()
+                )
+            }
+
         }
         subscribe(viewModel.resendClickedResultLiveData) {
-            showSuccessDialog(message = getString(R.string.confirmation_label_dialog, viewModel.email.applyMaskToEmail()))
+            showSuccessDialog(
+                message = getString(
+                    R.string.confirmation_label_dialog,
+                    viewModel.email.applyMaskToEmail()
+                )
+            )
         }
 
         subscribe(viewModel.loadingLiveData) {
             binding.continueBtn.revertAnimation()
         }
-
 
 
         subscribe(viewModel.codeValidationLiveData) {

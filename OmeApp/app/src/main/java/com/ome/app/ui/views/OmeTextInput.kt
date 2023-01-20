@@ -45,6 +45,10 @@ class OmeTextInput @JvmOverloads constructor(
                         binding.editText.inputType = InputType.TYPE_CLASS_TEXT
                         binding.passwordVisibilityIv.makeGone()
                     }
+                    1 -> {
+                        binding.editText.inputType = InputType.TYPE_CLASS_NUMBER
+                        binding.passwordVisibilityIv.makeGone()
+                    }
                     else -> {
                         binding.editText.inputType =
                             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD

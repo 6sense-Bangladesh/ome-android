@@ -1,6 +1,6 @@
 package com.ome.app.data.local
 
-import com.ome.app.model.User
+import com.ome.app.model.local.User
 
 
 interface PreferencesProvider {
