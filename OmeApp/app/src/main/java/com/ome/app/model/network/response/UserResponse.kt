@@ -1,12 +1,12 @@
-package com.ome.app.model.network
+package com.ome.app.model.network.response
 
-data class UserRequest(
-    val deviceTokens: List<Any>?,
+data class UserResponse(
+    val deviceTokens: List<String> = listOf(),
     val email: String?,
     val firstName: String?,
-    val knobMacAddrs: List<Any>?,
+    val knobMacAddrs: List<String> = listOf(),
     val lastName: String?,
-    val middleName: Any?,
+    val middleName: String?,
     val numKnobs: Int?,
     val phone: String?,
     val stoveAutoOffMins: Int?,
@@ -14,7 +14,7 @@ data class UserRequest(
     val stoveId: String?,
     val stoveMakeModel: String?,
     val stoveOrientation: Int?,
-    val stoveSetupComplete: Any?,
+    val stoveSetupComplete: String?,
     val uiAppType: String?,
     val uiAppVersion: String?,
     val userId: String?

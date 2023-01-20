@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/menu_item_blue_color" android:state_pressed="true"/>
+    <item android:color="@color/light_blue_button_unpressed_state" />
+</selector>

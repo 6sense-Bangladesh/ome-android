@@ -3,6 +3,8 @@ package com.ome.app.ui.signup.welcome
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentWelcomeBinding
 import com.ome.app.base.BaseFragment
 import com.ome.app.utils.subscribe
@@ -24,7 +26,15 @@ class WelcomeFragment :
                 margin(top = true)
             }
         }
+        binding.continueBtn.applyInsetter {
+            type(navigationBars = true, statusBars = true) {
+                margin(bottom = true)
+            }
+        }
+        setStatusBarTheme(true)
         binding.continueBtn.setOnClickListener {
+
+            findNavController().navigate(R.id.action_welcomeFragment_to_stoveSetupBrandFragment)
 //            binding.continueBtn.startAnimation()
             viewModel.setup()
         }

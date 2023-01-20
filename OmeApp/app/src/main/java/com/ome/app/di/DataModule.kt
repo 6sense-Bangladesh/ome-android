@@ -30,7 +30,6 @@ object DataModule {
     fun provideRetrofit(preferencesProvider: PreferencesProvider): Retrofit {
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-
         val client: OkHttpClient =
             OkHttpClient.Builder().addInterceptor(interceptor).addInterceptor(Interceptor { chain ->
                 val original = chain.request()
@@ -59,7 +58,6 @@ object DataModule {
         UserRepositoryImpl(userService)
 
     @Provides
-    @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): PreferencesProvider =
         PreferencesProviderImpl(context)
 

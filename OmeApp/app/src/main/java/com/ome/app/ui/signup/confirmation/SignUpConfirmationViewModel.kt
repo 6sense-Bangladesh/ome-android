@@ -7,7 +7,9 @@ import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
 import com.ome.app.data.remote.user.UserRepository
-import com.ome.app.model.User
+import com.ome.app.model.network.request.CreateUserRequest
+import com.ome.app.model.local.User
+import com.ome.app.model.base.ResponseWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -35,13 +37,45 @@ class SignUpConfirmationViewModel @Inject constructor(
     val codeValidationLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     fun confirmSignUp() = launch(dispatcher = ioContext) {
-
         amplifyManager.confirmSignUp(email, code)
-
-        saveUserData()
-
         signIn(email, currentPassword)
+        saveUserData()
         fetchUserData()
+        createUser()
+    }
+
+
+    private suspend fun createUser()  {
+        preferencesProvider.getUserId()?.let {
+            when (val result = userRepository.createUser(
+                CreateUserRequest(
+                    deviceTokens = listOf(),
+                    email = email,
+                    firstName = firstName,
+                    lastName = lastName,
+                    phone = phone,
+                    uiAppType = "Android",
+                    uiAppVersion = "1.7 (10)",
+                    userId = it
+                )
+            )) {
+                is ResponseWrapper.NetworkError -> {
+                    loadingLiveData.postValue(false)
+                }
+                is ResponseWrapper.GenericError -> {
+                    result.response?.message?.let { message ->
+                        defaultErrorLiveData.postValue(message)
+                        signUpConfirmationResultLiveData.postValue(false)
+                        loadingLiveData.postValue(false)
+                    }
+                }
+                is ResponseWrapper.Success -> {
+                    signUpConfirmationResultLiveData.postValue(true)
+                }
+            }
+        } ?: run {
+            signUpConfirmationResultLiveData.postValue(false)
+        }
     }
 
     fun validateConfirmationCode(code: String) {
@@ -55,22 +89,20 @@ class SignUpConfirmationViewModel @Inject constructor(
         codeValidationLiveData.postValue(true)
     }
 
-    private fun saveUserData() = launch(dispatcher = ioContext) {
-        preferencesProvider.saveUserData(
-            User(
-                firstName = firstName,
-                lastName = lastName,
-                phoneNumber = phone,
-                email = email
-            )
+    private fun saveUserData() = preferencesProvider.saveUserData(
+        User(
+            firstName = firstName,
+            lastName = lastName,
+            phoneNumber = phone,
+            email = email
         )
-    }
+    )
 
     suspend fun signIn(username: String, password: String): AmplifyResultValue =
         amplifyManager.signUserIn(username.trim(), password)
 
 
-    private fun fetchUserData() = launch(dispatcher = ioContext) {
+    private suspend fun fetchUserData()  {
         val userAttributes =
             withContext(Dispatchers.Default) { amplifyManager.fetchUserAttributes() }
         val authSession =
@@ -86,24 +118,6 @@ class SignUpConfirmationViewModel @Inject constructor(
                     preferencesProvider.saveUserId(attr.value)
                 }
             }
-
-            signUpConfirmationResultLiveData.postValue(true)
-//            when (val result = userRepository.getUserData()) {
-//                is ResponseWrapper.NetworkError -> {
-//                    loadingLiveData.postValue(false)
-//                }
-//                is ResponseWrapper.GenericError -> {
-//                    result.response?.message?.let { message ->
-//                        loadingLiveData.postValue(false)
-//                        if (message.contains("Not found")) {
-//                            signUpConfirmationResultLiveData.postValue(true)
-//                        }
-//                    }
-//                }
-//                is ResponseWrapper.Success -> {
-//                    loadingLiveData.postValue(false)
-//                }
-//            }
         }
     }
 

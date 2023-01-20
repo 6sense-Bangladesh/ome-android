@@ -58,7 +58,7 @@ class SignUpPasswordFragment :
 
     override fun observeLiveData() {
         super.observeLiveData()
-        subscribe(viewModel.isPasswordValidLiveData) {
+        subscribe(viewModel.validationSuccessLiveData) {
             if (viewModel.isForgotPassword) {
                 viewModel.confirmResetPassword()
             } else {

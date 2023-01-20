@@ -2,18 +2,25 @@ package com.ome.app.ui.dashboard
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentDashboardBinding
-import com.ome.app.base.BaseFragment
+import com.ome.app.base.BaseHostFragment
 import com.ome.app.base.navigation.BottomNavigationController
 import com.ome.app.ui.views.BottomItem
+import com.ome.app.utils.getCurrentFragment
+import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.insetter.applyInsetter
 
 
 @AndroidEntryPoint
 class DashboardFragment :
-    BaseFragment<DashboardViewModel, FragmentDashboardBinding>(FragmentDashboardBinding::inflate) {
+    BaseHostFragment<DashboardViewModel, FragmentDashboardBinding>(FragmentDashboardBinding::inflate) {
 
     private lateinit var bottomNavigationController: BottomNavigationController
 
@@ -22,8 +29,6 @@ class DashboardFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//           if (viewModel.isStoveInfoExist()) R.id.myStoveFragment else R.id.welcomeFragment
-
 
         bottomNavigationController = BottomNavigationController(
             bottomGraphs = listOf(
@@ -36,7 +41,7 @@ class DashboardFragment :
                     BottomItem.MY_STOVE,
                     R.navigation.my_stove_navigation,
                     R.id.myStoveNavigation,
-                    R.id.welcomeFragment
+                    if (viewModel.isStoveInfoExist()) R.id.myStoveFragment else R.id.welcomeFragment
                 ),
                 BottomNavigationController.BottomGraph(
                     BottomItem.MEMBERS,
@@ -53,14 +58,21 @@ class DashboardFragment :
             fragmentManager = childFragmentManager,
             containerId = R.id.dashboardContainer
         )
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.bottomNavigation.applyInsetter {
+            type(navigationBars = true) {
+                margin(bottom = true)
+            }
+        }
+
         //           if (viewModel.isStoveInfoExist()) R.id.myStoveFragment else R.id.welcomeFragment
         binding.bottomNavigation.setEnabledTabState(BottomItem.SETTINGS, false)
         binding.bottomNavigation.setEnabledTabState(BottomItem.MEMBERS, false)
-        binding.bottomNavigation.setEnabledTabState(BottomItem.PROFILE, false)
+        binding.bottomNavigation.setEnabledTabState(BottomItem.PROFILE, true)
         initBottomNavigation()
     }
 
@@ -76,6 +88,14 @@ class DashboardFragment :
 
     override fun observeLiveData() {
         super.observeLiveData()
+        subscribe(viewModel.bottomBarVisible) {
+            binding.bottomNavigation.isVisible = it
+        }
+        subscribe(viewModel.signOutLiveData) {
+            findNavController().navigate(R.id.action_dashboardFragment_to_launchFragment)
+        }
     }
 
+    override fun getCurrentFragment(): Fragment? =
+        (childFragmentManager.findFragmentById(R.id.dashboardContainer) as? NavHostFragment)?.getCurrentFragment()
 }

@@ -9,6 +9,7 @@ import com.ome.Ome.databinding.FragmentLaunchBinding
 import com.ome.app.base.BaseFragment
 import com.ome.app.base.EmptyViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.insetter.applyInsetter
 
 @AndroidEntryPoint
 class LaunchFragment :
@@ -18,6 +19,11 @@ class LaunchFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.signInBtn.applyInsetter {
+            type(navigationBars = true, statusBars = true) {
+                margin(bottom = true)
+            }
+        }
         binding.createAccountBtn.setOnClickListener {
             findNavController().navigate(R.id.action_welcomeFragment_to_signUpNameFragment)
         }

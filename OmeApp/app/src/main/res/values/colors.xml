@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="navigation_bar_color">#40000000</color>
+    <color name="no_internet_connection_background">#5086c3</color>
 
     <color name="textInputBorderColor">#000000</color>
     <color name="colorShadowDark">#8D8F94</color>
@@ -24,9 +26,17 @@
 
     <color name="blue_button_unpressed_state">#3CC4DF</color>
     <color name="blue_button_pressed_state">#34ADC5</color>
+
+    <color name="light_blue_button_unpressed_state">#0371B6</color>
+    <color name="light_blue_button_pressed_state">#014C7C</color>
+
     <color name="menu_item_gray_color">#848591</color>
     <color name="menu_item_blue_color">#373A8F</color>
 
+    <color name="gray_color">#939393</color>
+
     <color name="button_color_white_background">#635E83</color>
+
+    <color name="read_message_color">#666666</color>
 
 </resources>

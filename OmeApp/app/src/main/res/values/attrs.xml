@@ -4,7 +4,8 @@
     <declare-styleable name="OmeInput">
         <attr name="inputType" format="enum">
             <enum name="text" value="0" />
-            <enum name="password" value="1" />
+            <enum name="numberDecimal" value="1" />
+            <enum name="password" value="2" />
         </attr>
         <attr name="hint" format="string"/>
         <attr name="size" format="dimension"/>

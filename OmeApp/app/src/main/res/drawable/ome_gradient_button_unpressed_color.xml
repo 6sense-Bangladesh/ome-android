@@ -5,4 +5,5 @@
         android:centerColor="@color/gradient_mid_unpressed_color"
         android:endColor="@color/gradient_end_unpressed_color"
         android:angle="360" />
+    <corners android:radius="1dp" />
 </shape>

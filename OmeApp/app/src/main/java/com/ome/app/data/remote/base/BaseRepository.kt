@@ -22,7 +22,7 @@ open class BaseRepository {
                         ResponseWrapper.GenericError(code, errorResponse)
                     }
                     else -> {
-                        ResponseWrapper.GenericError(null, null)
+                        ResponseWrapper.GenericError(null, ErrorResponse(throwable.message))
                     }
                 }
             }

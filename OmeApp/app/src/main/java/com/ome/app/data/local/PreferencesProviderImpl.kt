@@ -2,7 +2,7 @@ package com.ome.app.data.local
 
 import android.content.Context
 import com.google.gson.Gson
-import com.ome.app.model.User
+import com.ome.app.model.local.User
 
 
 class PreferencesProviderImpl(context: Context) : PreferencesProvider {
@@ -32,6 +32,8 @@ class PreferencesProviderImpl(context: Context) : PreferencesProvider {
     } else {
         sharedPreferences.edit().putString(ACCESS_TOKEN_KEY, accessToken).apply()
     }
+
+    override fun clearData() = sharedPreferences.edit().clear().apply()
 
     override fun getAccessToken(): String? = sharedPreferences.getString(ACCESS_TOKEN_KEY, "")
 
