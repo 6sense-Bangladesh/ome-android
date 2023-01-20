@@ -3,11 +3,130 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/onboarding_nav_graph"
-    app:startDestination="@id/welcomeFragment">
+    app:startDestination="@id/launchFragment">
 
     <fragment
-        android:id="@+id/welcomeFragment"
-        android:name="com.ome.app.ui.WelcomeFragment"
+        android:id="@+id/launchFragment"
+        android:name="com.ome.app.ui.launch.LaunchFragment"
         android:label="ome_background_gradient"
-        tools:layout="@layout/fragment_welcome" />
+        tools:layout="@layout/fragment_welcome">
+        <action
+            android:id="@+id/action_welcomeFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_signUpNameFragment"
+            app:destination="@id/signUpNameFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.ome.app.ui.signin.SignInFragment"
+        android:label="SignInFragment">
+        <action
+            android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_signInFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpNameFragment"
+        android:name="com.ome.app.ui.signup.name.SignUpNameFragment"
+        android:label="SignUpNameFragment">
+        <action
+            android:id="@+id/action_signUpNameFragment_to_signUpEmailAndPasswordFragment"
+            app:destination="@id/signUpEmailAndPhoneFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpEmailAndPhoneFragment"
+        android:name="com.ome.app.ui.signup.email.SignUpEmailAndPhoneFragment"
+        android:label="SignUpEmailAndPasswordFragment">
+        <action
+            android:id="@+id/action_signUpEmailAndPhoneFragment_to_signUpPasswordFragment"
+            app:destination="@id/signUpPasswordFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.signup.email.NameParams" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpPasswordFragment"
+        android:name="com.ome.app.ui.signup.password.SignUpPasswordFragment"
+        android:label="SignUpPasswordFragment">
+        <action
+            android:id="@+id/action_signUpPasswordFragment_to_signUpConfirmationFragment"
+            app:destination="@id/signUpConfirmationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.signup.password.AuthParams" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpConfirmationFragment"
+        android:name="com.ome.app.ui.signup.confirmation.SignUpConfirmationFragment"
+        android:label="SignUpConfirmationFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.signup.password.AuthParams" />
+        <action
+            android:id="@+id/action_signUpConfirmationFragment_to_signUpPasswordFragment"
+            app:destination="@id/signUpPasswordFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_signUpConfirmationFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.ome.app.ui.signin.forgotpassword.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment">
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_signUpConfirmationFragment"
+            app:destination="@id/signUpConfirmationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.signup.password.AuthParams" />
+    </fragment>
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.ome.app.ui.dashboard.DashboardFragment"
+        android:label="DashboardFragment" />
+
+
 </navigation>

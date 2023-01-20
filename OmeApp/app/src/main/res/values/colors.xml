@@ -16,10 +16,17 @@
     <color name="gradient_mid_unpressed_color">#0371B6</color>
     <color name="gradient_end_unpressed_color">#383893</color>
 
+
     <color name="gradient_start_pressed_color">#346473</color>
     <color name="gradient_mid_pressed_color">#274461</color>
     <color name="gradient_end_pressed_color">#274461</color>
 
 
+    <color name="blue_button_unpressed_state">#3CC4DF</color>
+    <color name="blue_button_pressed_state">#34ADC5</color>
+    <color name="menu_item_gray_color">#848591</color>
+    <color name="menu_item_blue_color">#373A8F</color>
+
+    <color name="button_color_white_background">#635E83</color>
 
 </resources>

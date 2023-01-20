@@ -5,8 +5,39 @@
         <item name="android:layout_height">52dp</item>
         <item name="android:textSize">12sp</item>
         <item name="android:letterSpacing">.01</item>
-
     </style>
+
+    <style name="Label">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/open_sans_regular</item>
+        <item name="android:letterSpacing">.01</item>
+    </style>
+
+    <style name="Menu">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/open_sans_regular</item>
+        <item name="android:letterSpacing">.01</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+
+    <style name="Label.20sp">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+  <style name="Label.19sp">
+        <item name="android:textSize">19sp</item>
+    </style>
+
+    <style name="Label.12sp">
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="Label.23sp">
+        <item name="android:textSize">23sp</item>
+    </style>
+
 
 
     <style name="OmeButton.Gradient" >
@@ -17,6 +48,14 @@
         <item name="android:background">@drawable/ome_gradient_button_selector</item>
         <item name="android:textColor">@color/white</item>
     </style>
+    <style name="OmeButton.Blue" >
+        <item name="android:layout_height">40dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/open_sans_regular</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:background">@drawable/ome_blue_button_selector</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
 
     <style name="OmeButton.White" >
@@ -24,6 +63,15 @@
         <item name="backgroundTint">@color/white</item>
         <item name="cornerRadius">0dp</item>
         <item name="android:textColor">@drawable/ome_white_button_color_selector</item>
+    </style>
+
+
+    <style name="OmeButton.White.WithLoadingState" >
+        <item name="spinning_bar_color">@color/button_color_white_background</item>
+        <item name="spinning_bar_padding">5dp</item>
+        <item name="spinning_bar_width">3dp</item>
+        <item name="android:background">@drawable/ome_button_corners_shape</item>
+
     </style>
 
     <style name="OmeButton.TransparentBackground" >

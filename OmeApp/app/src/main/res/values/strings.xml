@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">Ome App</string>
+    <string name="create_account">Create account</string>
+    <string name="sign_in">Sign in</string>
+    <string name="continue_btn">Continue</string>
+    <string name="add_a_stove">Add a Stove</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="what_is_your_name">What is your name?</string>
+    <string name="let_s_setup_your_account">Let\'s setup your account</string>
+    <string name="email">Email</string>
+    <string name="phone_prefix">+1</string>
+    <string name="how_can_we_contact_you">How can we contact you?</string>
+    <string name="we_don_t_spam_people_it_s_not_nice_phone_number_is_optional">We don\'t spam people, it\'s not nice. Phone number is optional</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="enter_a_password">Enter a password</string>
+    <string name="by_clicking_continue_and_creating_an_account_you_agree_to_ome_s_terms_of_service_and_privacy_policy">By clicking continue and creating an account, you agree to <a href="https://www.omekitchen.com/pages/terms">Ome\'s Terms of Service</a> and <a href="https://www.omekitchen.com/pages/privacy-policy"> Privacy Policy</a></string>
+    <string name="password_rules">Password must have 9 characters or more and contains at least 3 of the following types: upper-case lower-case, and number.</string>
+    <string name="check_email_for_code">Check email for code</string>
+    <string name="confirmation_label">Confirmation code sent via email to: email(%1$s) Make sure to check your spam folder</string>
+    <string name="confirmation_label_dialog">Confirmation code sent via email to: email(%1$s)</string>
+    <string name="resend_code">Resend Code</string>
+    <string name="welcome_to_ome">Hello!,\nWelcome to Ome App\nTo use our app to manage.</string>
+    <string name="now_let_s_get_information_about_your_stove">Now let\'s get information about your stove.</string>
+    <string name="enter_email_to_reset_password">Enter email to reset password</string>
+    <string name="password_reset">Your password was successfully reset.</string>
+    <string name="back_to_login">Back to Login</string>
+    <string name="under_construction">Under construction</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_my_stove">My Stove</string>
+    <string name="menu_members">Members</string>
+    <string name="menu_profile">Profile</string>
+
+
 </resources>

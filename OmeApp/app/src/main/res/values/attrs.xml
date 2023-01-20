@@ -7,5 +7,6 @@
             <enum name="password" value="1" />
         </attr>
         <attr name="hint" format="string"/>
+        <attr name="size" format="dimension"/>
     </declare-styleable>
 </resources>

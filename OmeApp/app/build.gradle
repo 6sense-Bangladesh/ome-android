@@ -3,14 +3,16 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'kotlin-android-extensions'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
-    namespace 'com.ome.app'
+    namespace 'com.ome.Ome'
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.ome.app"
+        applicationId "com.ome.Ome"
         minSdk 21
         targetSdk 32
         versionCode 1
@@ -21,11 +23,24 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://s3-us-west-2.amazonaws.com/\"")
+            buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
+            //buildConfigField("String", "BASE_URL", "\"app-ws-dev.api.omekitchen.com\"")
         }
+
+        sandbox {
+            buildConfigField("String", "BASE_URL", "\"https://app-sandbox.api.omekitchen.com/\"")
+            buildConfigField("String", "BASE_URL", "\"wss://app-ws-sandbox.api.omekitchen.com\"")
+        }
+
+        demo {
+            buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
+            buildConfigField("String", "BASE_URL", "\"wss://app-ws-dev.api.omekitchen.com\"")
+        }
+
         release {
             minifyEnabled false
-            buildConfigField("String", "BASE_URL", "\"https://s3-us-west-2.amazonaws.com/\"")
+            buildConfigField("String", "BASE_URL", "\"https://app.api.omekitchen.com/\"")
+            buildConfigField("String", "BASE_URL", "\"wss://app-ws.api.omekitchen.com\"")
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -74,6 +89,32 @@ dependencies {
     //UI
     implementation 'com.github.fornewid:neumorphism:0.3.2'
     implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.github.GrenderG:Toasty:1.5.2'
+
+    // Amplify frameworks
+    implementation 'com.amplifyframework:core:1.1.2'
+    implementation 'com.amplifyframework:aws-datastore:1.35.3'
+    implementation 'com.amplifyframework:aws-api:1.35.3'
+    implementation 'com.amplifyframework:aws-auth-cognito:1.35.3'
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+
+    //Phone validator
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.13.3'
+
+    // Amplify coroutines
+    implementation 'com.amplifyframework:core-kotlin:0.19.3'
+
+    implementation("com.squareup.moshi:moshi:1.14.0")
+
+    implementation group: 'com.apachat', name: 'loadingbutton-android', version: '1.0.11'
+
+    //Splash screen API
+    implementation 'androidx.core:core-splashscreen:1.0.0'
+
+    implementation "dev.chrisbanes.insetter:insetter:0.6.1"
+
+    implementation 'com.github.santalu:maskara:1.0.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
