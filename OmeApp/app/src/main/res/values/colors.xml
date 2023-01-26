@@ -37,6 +37,8 @@
 
     <color name="button_color_white_background">#635E83</color>
 
+    <color name="light_blue_color">#019DDA</color>
+
     <color name="read_message_color">#666666</color>
     <color name="divider_color">#F0F0F5</color>
 

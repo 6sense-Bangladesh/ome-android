@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/backIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_arrow_left"
+        android:tint="@color/light_blue_color" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topicCl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/stove_brand_selector_shape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/backIv">
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/topicSelector"
+            style="@style/Label.14sp"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_margin="1dp"
+            android:fontFamily="@font/open_sans_regular"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:ms_arrow_tint="@color/gradient_end_unpressed_color"
+            app:ms_text_color="@color/gradient_end_unpressed_color"
+            tools:text="Samsung" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/textView5"
+        style="@style/Label.17sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="42dp"
+        android:text="@string/how_can_we_help"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/topicCl"
+        app:layout_constraintTop_toBottomOf="@+id/topicCl" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/textCl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/stove_brand_selector_shape"
+        app:layout_constraintEnd_toEndOf="@+id/topicCl"
+        app:layout_constraintStart_toStartOf="@+id/topicCl"
+        app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+        <EditText
+            style="@style/ProfileEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|start"
+            android:inputType="textMultiLine"
+            android:maxLines="15"
+            android:minLines="15"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendBtn"
+            style="@style/OmeButton.Gradient"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/ome_gradient_button_selector"
+            android:text="@string/send"
+            android:textAllCaps="true"
+            app:layout_constraintEnd_toEndOf="@+id/topicCl"
+            app:layout_constraintStart_toStartOf="@+id/topicCl"
+            app:layout_constraintTop_toBottomOf="@+id/textCl" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
