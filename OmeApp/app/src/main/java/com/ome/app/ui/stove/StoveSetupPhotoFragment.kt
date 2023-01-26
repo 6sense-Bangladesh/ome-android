@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,13 +14,15 @@ import androidx.navigation.fragment.navArgs
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentStoveSetupPhotoBinding
 import com.ome.app.base.BaseFragment
-import com.ome.app.utils.convertToFile
-import com.ome.app.utils.getTmpFileUri
+import com.ome.app.utils.getRealPathFromUri
+import com.ome.app.utils.savePhotoToExternalStorage
 import com.ome.app.utils.subscribe
 import com.ome.app.utils.withDelay
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.android.parcel.Parcelize
+import java.io.File
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -32,22 +35,26 @@ class StoveSetupPhotoFragment :
 
     private val args by navArgs<StoveSetupPhotoFragmentArgs>()
 
+
     private val takePicture =
-        registerForActivityResult(TakePictureWithUriReturnContract()) { (isSuccess, imageUri) ->
-            if (isSuccess) {
-                binding.shaftIv.setImageURI(imageUri)
-                viewModel.currentUri = imageUri
-                viewModel.uploadImage(imageUri.convertToFile(requireActivity()))
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) {
+            viewModel.fileName = UUID.randomUUID().toString()
+            val uri = requireActivity().savePhotoToExternalStorage(viewModel.fileName, it)
+            uri?.let {
+                val filePath = uri.getRealPathFromUri(requireContext())
+                filePath?.let { path ->
+                    binding.shaftIv.setImageURI(uri)
+                    viewModel.currentContentUri = uri
+                    viewModel.uploadImage(File(path))
+                }
             }
-
         }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setStatusBarTheme(true)
 
-        viewModel.currentUri?.let {
+        viewModel.currentContentUri?.let {
             binding.shaftIv.setImageURI(it)
         }
 
@@ -80,9 +87,7 @@ class StoveSetupPhotoFragment :
                 }
             }
             if (isAllPermissionsGranted) {
-                requireActivity().getTmpFileUri(viewModel.fileName).let {
-                    takePicture.launch(it)
-                }
+                takePicture.launch()
             } else {
                 onError(getString(R.string.permission_denied))
             }
@@ -109,9 +114,7 @@ class StoveSetupPhotoFragment :
             activityResultLauncher.launch(permissionArray)
         } else {
             binding.takeAphoto.startAnimation()
-            requireActivity().getTmpFileUri(viewModel.fileName).let {
-                takePicture.launch(it)
-            }
+            takePicture.launch()
         }
     }
 

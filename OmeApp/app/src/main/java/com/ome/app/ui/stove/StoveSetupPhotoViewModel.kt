@@ -16,14 +16,15 @@ import javax.inject.Inject
 class StoveSetupPhotoViewModel @Inject constructor(val userRepository: UserRepository) :
     BaseViewModel() {
 
-    val fileName = "shaft"
+    var fileName = "shaft"
 
-    var currentUri: Uri? = null
+    var currentContentUri: Uri? = null
+    var currentFile: File? = null
 
     val imageUploadedLiveData = SingleLiveEvent<Boolean>()
 
     fun uploadImage(file: File) = launch(dispatcher = ioContext) {
-
+        currentFile = file
         val urlToUploadResponse = userRepository.getUrlToUploadImage("$fileName.png")
         if(urlToUploadResponse is ResponseWrapper.Success){
             val uploadTo = urlToUploadResponse.value.uploadTo

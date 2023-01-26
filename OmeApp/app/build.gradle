@@ -12,14 +12,7 @@ android {
     compileSdk 32
 
     signingConfigs {
-        release {
-            storeFile file("path to your keystore file")
-            storePassword "your store password "
-            keyAlias "your keystore alias"
-            keyPassword "your key password"
-        }
 
-        signingConfigs {
             release {
                 storeFile file("ome.jks")
                 storePassword "ome-eH6MiV"
@@ -33,14 +26,14 @@ android {
 //            demo {
 //                initWith signingConfigs.debug
 //            }
-        }
+
     }
 
     defaultConfig {
         applicationId "com.ome.Ome"
         minSdk 21
         targetSdk 32
-        versionCode 1
+        versionCode 3
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -64,7 +57,7 @@ android {
 
         release {
             minifyEnabled false
-            debuggable true
+            debuggable false
             buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
            // buildConfigField("String", "BASE_URL", "\"wss://app-ws.api.omekitchen.com\"")
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

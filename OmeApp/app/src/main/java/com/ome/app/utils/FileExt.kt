@@ -1,87 +1,63 @@
 package com.ome.app.utils
 
-import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
+import android.graphics.Bitmap
 import android.net.Uri
-import android.provider.OpenableColumns
-import androidx.core.content.FileProvider
-import com.ome.Ome.BuildConfig
-import java.io.File
-import java.io.FileInputStream
-import java.io.InputStream
+import android.os.Build
+import android.provider.MediaStore
+import java.io.IOException
 
 
-fun Uri.convertToFile(context: Context): File {
-    val cacheDir = Uri.fromFile(context.cacheDir)
-
-//                if (imageUri.toString().contains(cacheDir.toString())) {
-//                    //File is already in cache dir, no need to copy
-//                    File(imageUri.path)
-//                }
-//
-//    val parcelFileDescriptor =
-//        context.contentResolver.openFileDescriptor(this, "r", null)
-
-
-
-        return if (this.toString().contains(cacheDir.toString())) {
-            //File is already in cache dir, no need to copy
-            File(this.path)
-        } else {
-            //val inputStream = FileInputStream(parcelFileDescriptor.fileDescriptor)
-            val inputStream = context.contentResolver.openInputStream(this)
-            val filename = context.contentResolver.getFileName(this)
-            val file = File(context.cacheDir, filename)
-            inputStream?.copyTo(file)
-            inputStream?.close()
-            file
+fun Uri.getRealPathFromUri(context: Context): String? {
+    var cursor: Cursor? = null
+    return try {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        cursor = context.contentResolver.query(this, proj, null, null, null)
+        cursor?.let{
+            val columnIndex: Int = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            return@let cursor.getString(columnIndex)
         }
-
-}
-
-
-fun ContentResolver.getFileName(fileUri: Uri): String {
-    var name = ""
-    val returnCursor = this.query(fileUri, null, null, null, null)
-    if (returnCursor != null) {
-        val nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-        returnCursor.moveToFirst()
-        name = returnCursor.getString(nameIndex)
-        returnCursor.close()
-    }
-
-    return name
-}
-
-
-private fun InputStream.copyTo(file: File) {
-    use { input ->
-        file.outputStream().use { output ->
-            input.copyTo(output)
-        }
+    } finally {
+        cursor?.close()
     }
 }
 
-fun Context.getTmpFileUri(fileName: String): Uri {
-    val tmpFile =
-        File.createTempFile(fileName, ".png", this.cacheDir).apply {
-            createNewFile()
-            deleteOnExit()
+fun Context.savePhotoToExternalStorage(name: String, bmp: Bitmap?): Uri? {
+
+    val imageCollection: Uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+    } else {
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+    }
+
+    val contentValues = ContentValues().apply {
+
+        put(MediaStore.Images.Media.DISPLAY_NAME, "$name.jpg")
+        put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        if (bmp != null) {
+            put(MediaStore.Images.Media.WIDTH, bmp.width)
+            put(MediaStore.Images.Media.HEIGHT, bmp.height)
         }
 
-//file:///data/user/0/com.ome.Ome/cache/shaft1081006548749104418.png
-    val uri = Uri.fromFile(tmpFile)
+    }
+    return try {
+        val uri = this.contentResolver.insert(imageCollection, contentValues)?.also {
+            this.contentResolver.openOutputStream(it).use { outputStream ->
+                if (bmp != null) {
+                    if (!bmp.compress(Bitmap.CompressFormat.PNG, 95, outputStream)) {
+                        throw IOException("Failed to save Bitmap")
+                    }
+                }
+            }
 
+        } ?: throw IOException("Failed to create Media Store entry")
+        uri
+    } catch (e: IOException) {
+        e.printStackTrace()
+        null
+    }
 
-    //content://com.ome.Ome.provider/cache/shaft1081006548749104418.png  - FileProvider uri
-
-
-//file:///data/user/0/com.ome.Ome/cache  - cacheDir
-
-
-    return FileProvider.getUriForFile(
-        this.applicationContext,
-        "${BuildConfig.APPLICATION_ID}.provider",
-        tmpFile
-    )
 }
