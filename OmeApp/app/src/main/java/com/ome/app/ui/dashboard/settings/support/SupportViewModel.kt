@@ -16,4 +16,5 @@ class SupportViewModel @Inject constructor() : BaseViewModel() {
     )
 
     var selectedTopic = ""
+    var supportEmail = "contact@inirv.com"
 }

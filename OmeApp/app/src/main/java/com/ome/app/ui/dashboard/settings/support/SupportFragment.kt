@@ -1,5 +1,7 @@
 package com.ome.app.ui.dashboard.settings.support
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -22,14 +24,28 @@ class SupportFragment :
             }
         }
         binding.topicSelector.setItems(viewModel.topicsArray)
-        viewModel.selectedTopic = viewModel.topicsArray[binding.topicSelector.selectedIndex]
         binding.topicSelector.setOnItemSelectedListener { view, position, id, item ->
             viewModel.selectedTopic = viewModel.topicsArray[position]
         }
         binding.backIv.setOnClickListener {
             findNavController().popBackStack()
         }
+        binding.sendBtn.setOnClickListener {
+            if (binding.textEt.text.toString().isNotEmpty() && viewModel.selectedTopic.isNotEmpty()) {
+                sendMessage()
+            }
+        }
     }
+
+    private fun sendMessage() =
+        startActivity(Intent.createChooser(Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse(
+                "mailto:" + Uri.encode(viewModel.supportEmail) +
+                        "?subject=" + Uri.encode(viewModel.selectedTopic) +
+                        "&body=" + Uri.encode(binding.textEt.text.toString())
+            )
+        }, "Send mail..."))
+
 
     override fun observeLiveData() {
         super.observeLiveData()

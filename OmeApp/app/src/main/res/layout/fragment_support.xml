@@ -12,10 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:src="@drawable/ic_arrow_left"
-        android:tint="@color/light_blue_color" />
+        android:tint="@color/light_blue_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topicCl"
@@ -40,8 +40,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:ms_arrow_tint="@color/gradient_end_unpressed_color"
-            app:ms_text_color="@color/gradient_end_unpressed_color"
-            tools:text="Samsung" />
+            app:ms_hint="@string/select_issue"
+            app:ms_hint_color="@color/gradient_end_unpressed_color"
+            app:ms_text_color="@color/gradient_end_unpressed_color" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -69,6 +70,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5">
 
         <EditText
+            android:id="@+id/textEt"
             style="@style/ProfileEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -83,18 +85,18 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/sendBtn"
-            style="@style/OmeButton.Gradient"
-            android:layout_width="0dp"
-            android:layout_height="44dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/ome_gradient_button_selector"
-            android:text="@string/send"
-            android:textAllCaps="true"
-            app:layout_constraintEnd_toEndOf="@+id/topicCl"
-            app:layout_constraintStart_toStartOf="@+id/topicCl"
-            app:layout_constraintTop_toBottomOf="@+id/textCl" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sendBtn"
+        style="@style/OmeButton.Gradient"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/ome_gradient_button_selector"
+        android:text="@string/send"
+        android:textAllCaps="true"
+        app:layout_constraintEnd_toEndOf="@+id/topicCl"
+        app:layout_constraintStart_toStartOf="@+id/topicCl"
+        app:layout_constraintTop_toBottomOf="@+id/textCl" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
