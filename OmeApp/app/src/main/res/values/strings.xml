@@ -58,6 +58,14 @@
     <string name="send">Send</string>
     <string name="how_can_we_help">How can we help?</string>
     <string name="select_issue">Select Issue</string>
-
+    <string name="auto_shut_off_settings">Auto Shut-Off Settings</string>
+    <string name="current_auto_shut_off_time">Current Auto Shut-Off Time</string>
+    <string name="auto_shut_off_warning">Warning: Changes to the auto shut-off timer will apply to ALL Ome Knobs. You accept all responsibility for anything that may happen while your stove remains on when you change the auto shut-off timer.</string>
+    <string name="change_auto_shut_off_time">Change Auto Shut-Off Time</string>
+    <string name="auto_shut_off_time_change_confirmation">Are you sure you want to change the auto shut-off timer value?</string>
+    <string name="warning">Warning!</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="save">Save</string>
 
 </resources>

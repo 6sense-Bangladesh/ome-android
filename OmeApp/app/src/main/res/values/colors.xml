@@ -16,7 +16,7 @@
 
     <color name="gradient_start_unpressed_color">#3CC4DF</color>
     <color name="gradient_mid_unpressed_color">#0371B6</color>
-    <color name="gradient_end_unpressed_color">#383893</color>
+    <color name="gradient_end_unpressed_color">#2B2BC1</color>
 
 
     <color name="gradient_start_pressed_color">#346473</color>

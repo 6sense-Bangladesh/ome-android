@@ -17,7 +17,6 @@ interface UserRepository {
     suspend fun getUserData(): ResponseWrapper<UserResponse>
     suspend fun getUrlToUploadImage(fileName: String): ResponseWrapper<UrlToUploadImageResponse>
     suspend fun uploadImage(url: String, requestBody: RequestBody)
-    suspend fun createStove(params: CreateStoveRequest): ResponseWrapper<CreateStoveResponse>
     suspend fun createUser(params: CreateUserRequest): ResponseWrapper<UserResponse>
     suspend fun updateUser(params: CreateUserRequest): ResponseWrapper<UserResponse>
     suspend fun deleteUser(): DeleteUserResponse
@@ -47,12 +46,6 @@ class UserRepositoryImpl(
 
     override suspend fun uploadImage(url: String, requestBody: RequestBody) {
         userService.uploadImage(url = url, body = requestBody)
-    }
-
-    override suspend fun createStove(params: CreateStoveRequest): ResponseWrapper<CreateStoveResponse> {
-        return safeApiCall(coroutineContext) {
-            userService.createStove(params)
-        }
     }
 
     override suspend fun createUser(params: CreateUserRequest): ResponseWrapper<UserResponse> {

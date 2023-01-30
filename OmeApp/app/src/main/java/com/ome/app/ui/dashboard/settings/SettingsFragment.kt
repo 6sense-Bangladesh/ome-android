@@ -30,24 +30,29 @@ class SettingsFragment :
     private val adapter by lazy {
         RecyclerDelegationAdapter(requireContext()).apply {
             addDelegate(SettingsItemAdapter(requireContext()) {
-                if (it.option == "Leave Stove") {
-                    val str =
-                        SpannableStringBuilder("Please Confirm that you would like to LEAVE “Family #1 Stove”?")
-                    val first = str.indexOf("LEAVE")
-                    str.setSpan(
-                        ForegroundColorSpan(Color.RED),
-                        first,
-                        first + 5,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                    )
-                    showDialog(
-                        message = str,
-                        positiveButtonText = "Accept",
-                        negativeButtonText = "Reject",
-                        onPositiveButtonClick = {},
-                        onNegativeButtonClick = {}
-                    )
 
+                when(it.option){
+                    "Leave Stove"-> {
+                        val str =
+                            SpannableStringBuilder("Please Confirm that you would like to LEAVE “Family #1 Stove”?")
+                        val first = str.indexOf("LEAVE")
+                        str.setSpan(
+                            ForegroundColorSpan(Color.RED),
+                            first,
+                            first + 5,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                        showDialog(
+                            message = str,
+                            positiveButtonText = "Accept",
+                            negativeButtonText = "Reject",
+                            onPositiveButtonClick = {},
+                            onNegativeButtonClick = {}
+                        )
+                    }
+                    "Stove Auto-Off Settings"-> {
+                        findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToAutoShutOffSettingsFragment("test"))
+                    }
                 }
             })
             addDelegate(SettingsTitleItemAdapter(requireContext()))

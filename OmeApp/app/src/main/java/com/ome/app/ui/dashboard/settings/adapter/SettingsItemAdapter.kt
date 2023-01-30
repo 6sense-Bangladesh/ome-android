@@ -33,7 +33,6 @@ class SettingsItemAdapter(
     ) {
         val currentItem = item as SettingsItemModel
         (viewHolder as SettingViewHolder).bind(currentItem, position, itemCount)
-        viewHolder.itemView.setOnClickListener { itemListener.invoke(currentItem) }
     }
 
     override fun isForViewType(item: ItemModel, position: Int): Boolean =
@@ -47,6 +46,9 @@ class SettingsItemAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: SettingsItemModel, position: Int, itemsCount: Int) {
+            binding.parent.setOnClickListener {
+                itemListener.invoke(item)
+            }
             binding.optionTv.text = item.option
 
             if(item.isActive){

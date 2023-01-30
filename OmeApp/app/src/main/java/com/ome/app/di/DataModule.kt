@@ -5,7 +5,10 @@ import com.ome.Ome.BuildConfig
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.local.PreferencesProviderImpl
 import com.ome.app.data.remote.AmplifyManager
+import com.ome.app.data.remote.StoveService
 import com.ome.app.data.remote.UserService
+import com.ome.app.data.remote.stove.StoveRepository
+import com.ome.app.data.remote.stove.StoveRepositoryImpl
 import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.data.remote.user.UserRepositoryImpl
 import dagger.Module
@@ -47,9 +50,22 @@ object DataModule {
 
     }
 
+
+
     @Provides
     @Singleton
-    fun provideMainService(retrofit: Retrofit): UserService =
+    fun provideStoveService(retrofit: Retrofit): StoveService =
+        retrofit.create(StoveService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideStoveRepository(userService: StoveService): StoveRepository =
+        StoveRepositoryImpl(userService)
+
+
+    @Provides
+    @Singleton
+    fun provideUserService(retrofit: Retrofit): UserService =
         retrofit.create(UserService::class.java)
 
     @Provides

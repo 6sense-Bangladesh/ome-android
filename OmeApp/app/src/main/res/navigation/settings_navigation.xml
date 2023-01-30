@@ -17,9 +17,30 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_settingsFragment_to_autoShutOffSettingsFragment"
+            app:destination="@id/autoShutOffSettingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/supportFragment"
         android:name="com.ome.app.ui.dashboard.settings.support.SupportFragment"
         android:label="SupportFragment" />
+    <fragment
+        android:id="@+id/autoShutOffSettingsFragment"
+        android:name="com.ome.app.ui.dashboard.settings.auto_shutoff.AutoShutOffSettingsFragment"
+        android:label="AutoShutOffSettingsFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right">
+        <argument
+            android:name="params"
+            app:argType="string"/>
+
+
+    </fragment>
 </navigation>

@@ -17,7 +17,7 @@ class SettingsViewModel @Inject constructor() : BaseViewModel() {
     fun loadSettings() {
         val settings = mutableListOf<ItemModel>(
             SettingsItemModel(option = "Stove Information Settings", isActive = true),
-            SettingsItemModel(option = "Stove Auto-off Settings", isActive = true),
+            SettingsItemModel(option = "Stove Auto-Off Settings", isActive = true),
             SettingsItemModel(option = "Stove History", isActive = true),
             SettingsItemModel(option = "Leave Stove", isActive = true),
             SettingsTitleItemModel(title = "ABOUT DEVICES"),

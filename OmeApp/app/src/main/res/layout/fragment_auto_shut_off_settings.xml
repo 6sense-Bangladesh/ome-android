@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/backIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_arrow_left"
+        android:tint="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textView6"
+        style="@style/Title.18sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="@string/auto_shut_off_settings"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backIv" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/autoShutOffContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/stove_brand_selector_shape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/warningTv">
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/autoShutOffSelector"
+            style="@style/Label.14sp"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_margin="1dp"
+            android:fontFamily="@font/open_sans_regular"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:ms_arrow_tint="@color/gradient_end_unpressed_color"
+            app:ms_text_color="@color/gradient_end_unpressed_color"
+            tools:text="Samsung" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+        android:id="@+id/saveBtn"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:gravity="center"
+        style="@style/OmeButton.Gradient.WithLoadingState"
+        android:layout_marginTop="16dp"
+        android:text="@string/save"
+        app:layout_constraintEnd_toEndOf="@+id/autoShutOffContainer"
+        app:layout_constraintStart_toStartOf="@+id/autoShutOffContainer"
+        app:layout_constraintTop_toBottomOf="@+id/autoShutOffContainer" />
+
+
+    <TextView
+        android:id="@+id/warningTv"
+        style="@style/Label.17sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="@string/auto_shut_off_warning"
+        android:textColor="#FF0000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
