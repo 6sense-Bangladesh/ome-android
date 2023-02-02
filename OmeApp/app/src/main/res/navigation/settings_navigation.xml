@@ -24,6 +24,20 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_settingsFragment_to_stoveInfoFragment"
+            app:destination="@id/stoveInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_settingsFragment_to_deviceSettingsFragment"
+            app:destination="@id/deviceSettingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/supportFragment"
@@ -39,8 +53,55 @@
         app:popExitAnim="@anim/slide_out_right">
         <argument
             android:name="params"
-            app:argType="string"/>
+            app:argType="string" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/stoveInfoFragment"
+        android:name="com.ome.app.ui.dashboard.settings.stove_info.StoveInfoFragment"
+        android:label="StoveInfoFragment">
+        <argument
+            android:name="params"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_stoveInfoFragment_to_stoveSetupTypeFragment"
+            app:destination="@id/stoveSetupTypeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_stoveInfoFragment_to_stoveSetupBurnersFragment"
+            app:destination="@id/stoveSetupBurnersFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/stoveSetupTypeFragment"
+        android:name="com.ome.app.ui.stove.StoveSetupTypeFragment"
+        android:label="StoveSetupTypeFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.stove.StoveSetupTypeArgs" />
+    </fragment>
 
 
+    <fragment
+        android:id="@+id/stoveSetupBurnersFragment"
+        android:name="com.ome.app.ui.stove.StoveSetupBurnersFragment"
+        android:label="StoveSetupBurnersFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.stove.StoveSetupBurnersArgs" />
+    </fragment>
+    <fragment
+        android:id="@+id/deviceSettingsFragment"
+        android:name="com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragment"
+        android:label="DeviceSettingsFragment" >
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragmentParams" />
     </fragment>
 </navigation>

@@ -43,33 +43,40 @@ class StoveSetupBurnersFragment :
 
         binding.fourBurnersIv.setOnClickListener {
             handleButtonClick(it)
-            viewModel.stoveOrientation = 4
+            viewModel.stoveOrientation = StoveOrientation.FOUR_BURNERS
         }
         binding.fourBarBurnersIv.setOnClickListener {
             handleButtonClick(it)
-            viewModel.stoveOrientation = 51
+            viewModel.stoveOrientation = StoveOrientation.FOUR_BAR_BURNERS
         }
         binding.fiveBurnersIv.setOnClickListener {
             handleButtonClick(it)
-            viewModel.stoveOrientation = 5
+            viewModel.stoveOrientation = StoveOrientation.FIVE_BURNERS
         }
         binding.sixBurnersIv.setOnClickListener {
             handleButtonClick(it)
-            viewModel.stoveOrientation = 6
+            viewModel.stoveOrientation = StoveOrientation.SIX_BURNERS
         }
         binding.twoBurnersHorizontalIv.setOnClickListener {
             handleButtonClick(it)
-            viewModel.stoveOrientation = 2
+            viewModel.stoveOrientation = StoveOrientation.TWO_BURNERS_HORIZONTAL
         }
         binding.twoBurnersVerticalIv.setOnClickListener {
             handleButtonClick(it)
-            viewModel.stoveOrientation = 21
+            viewModel.stoveOrientation = StoveOrientation.TWO_BURNERS_VERTICAL
         }
 
+        if(args.params.isEditMode){
+            binding.continueBtn.text = getString(R.string.save)
+        }
 
         binding.continueBtn.setOnClickListener {
             binding.continueBtn.startAnimation()
-            viewModel.createStove()
+            if(args.params.isEditMode){
+                viewModel.updateStoveOrientation(args.params.stoveId)
+            } else {
+                viewModel.createStove()
+            }
         }
     }
 
@@ -100,13 +107,23 @@ class StoveSetupBurnersFragment :
         super.observeLiveData()
         subscribe(viewModel.createStoveLiveData) {
             binding.continueBtn.revertAnimation()
-            withDelay(1000){
+            withDelay(1000) {
                 findNavController().navigate(R.id.action_stoveSetupBurnersFragment_to_stoveSetupCompletedFragment)
             }
 
+        }
+
+        subscribe(viewModel.loadingLiveData) {
+            binding.continueBtn.revertAnimation()
+            findNavController().popBackStack()
         }
     }
 }
 
 @Parcelize
-data class StoveSetupBurnersArgs(val brand: String, val type: String) : Parcelable
+data class StoveSetupBurnersArgs(
+    val brand: String = "",
+    val stoveId: String = "",
+    val type: String = "",
+    val isEditMode: Boolean = false
+) : Parcelable

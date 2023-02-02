@@ -67,11 +67,6 @@ class DashboardFragment :
                 margin(bottom = true)
             }
         }
-
-        if (!viewModel.isStoveInfoExist()){
-            binding.bottomNavigation.setEnabledTabState(BottomItem.SETTINGS, false)
-            binding.bottomNavigation.setEnabledTabState(BottomItem.MEMBERS, false)
-        }
         initBottomNavigation()
     }
 
@@ -92,6 +87,15 @@ class DashboardFragment :
         }
         subscribe(viewModel.signOutLiveData) {
             findNavController().navigate(R.id.action_dashboardFragment_to_launchFragment)
+        }
+        subscribe(viewModel.stoveExistLiveData) {
+            if (it) {
+                binding.bottomNavigation.setEnabledTabState(BottomItem.SETTINGS, true)
+                binding.bottomNavigation.setEnabledTabState(BottomItem.MEMBERS, true)
+            } else {
+                binding.bottomNavigation.setEnabledTabState(BottomItem.SETTINGS, false)
+                binding.bottomNavigation.setEnabledTabState(BottomItem.MEMBERS, false)
+            }
         }
     }
 

@@ -27,13 +27,13 @@ class DashboardViewModel @Inject constructor(
     lateinit var isStartDestination: LiveData<Boolean>
     lateinit var currentBottomNavController: LiveData<NavController>
     val bottomBarVisible: LiveData<Boolean> = MutableLiveData(true)
+    val stoveExistLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     val signOutLiveData = SingleLiveEvent<Any>()
 
     init {
         launch {
             currentDestination.collect {
-
                 bottomBarVisible.mutable().value = when (it?.id) {
                     R.id.settingsFragment,
                     R.id.myStoveFragment,
@@ -44,7 +44,13 @@ class DashboardViewModel @Inject constructor(
                 }
             }
         }
-
+        launch(dispatcher = ioContext) {
+            userRepository.userFlow.collect { user ->
+                user?.let {
+                    stoveExistLiveData.postValue(it.stoveId != null)
+                }
+            }
+        }
     }
 
     fun connectBottomNavController(navControllerFlow: StateFlow<NavController>) {
@@ -73,7 +79,6 @@ class DashboardViewModel @Inject constructor(
 
         isStartDestination =
             combine(currentDestination, navControllerFlow) { navDestination, navController ->
-
                 navController.graph.startDestinationId == navDestination?.id
 
             }.asLiveData()

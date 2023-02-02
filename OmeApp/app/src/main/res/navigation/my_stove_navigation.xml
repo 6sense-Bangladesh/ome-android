@@ -39,8 +39,8 @@
         android:name="com.ome.app.ui.stove.StoveSetupTypeFragment"
         android:label="StoveSetupTypeFragment">
         <argument
-            android:name="brand"
-            app:argType="string" />
+            android:name="params"
+            app:argType="com.ome.app.ui.stove.StoveSetupTypeArgs" />
         <action
             android:id="@+id/action_stoveSetupTypeFragment_to_stoveSetupPhotoFragment"
             app:destination="@id/stoveSetupPhotoFragment"

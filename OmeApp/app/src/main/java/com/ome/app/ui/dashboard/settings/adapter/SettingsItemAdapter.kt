@@ -8,12 +8,13 @@ import com.ome.Ome.R
 import com.ome.Ome.databinding.SettingsItemBinding
 import com.ome.app.ui.base.recycler.AdapterDelegate
 import com.ome.app.ui.base.recycler.ItemModel
-import com.ome.app.ui.dashboard.profile.adapter.MessageItemModel
+import com.ome.app.ui.dashboard.settings.adapter.model.SettingsItemModel
+import com.ome.app.ui.dashboard.settings.adapter.model.SettingsKnobItemModel
 
 
 class SettingsItemAdapter(
     context: Context,
-    private val itemListener: (SettingsItemModel) -> Unit
+    private val itemListener: (ItemModel) -> Unit
 ) : AdapterDelegate(context) {
 
     override fun onCreateViewHolder(parent: ViewGroup): SettingViewHolder =
@@ -31,31 +32,36 @@ class SettingsItemAdapter(
         position: Int,
         itemCount: Int
     ) {
-        val currentItem = item as SettingsItemModel
-        (viewHolder as SettingViewHolder).bind(currentItem, position, itemCount)
+        (viewHolder as SettingViewHolder).bind(item, position, itemCount)
     }
 
     override fun isForViewType(item: ItemModel, position: Int): Boolean =
-        item is SettingsItemModel
+        item is SettingsItemModel || item is SettingsKnobItemModel
 
     override fun getViewType(): Int = R.layout.settings_item
 
     inner class SettingViewHolder(
         private val binding: SettingsItemBinding,
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: SettingsItemModel, position: Int, itemsCount: Int) {
+        fun bind(item: ItemModel, position: Int, itemsCount: Int) {
             binding.parent.setOnClickListener {
                 itemListener.invoke(item)
             }
-            binding.optionTv.text = item.option
+            when (item) {
+                is SettingsItemModel -> {
+                    binding.optionTv.text = item.option
+                    if (item.isActive) {
 
-            if(item.isActive){
+                    } else {
 
-            } else {
-
+                    }
+                }
+                is SettingsKnobItemModel -> {
+                    binding.optionTv.text = item.name
+                }
             }
+
         }
     }
 }

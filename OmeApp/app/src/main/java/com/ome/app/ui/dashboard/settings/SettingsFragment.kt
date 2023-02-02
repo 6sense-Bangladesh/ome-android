@@ -16,6 +16,9 @@ import com.ome.app.ui.dashboard.settings.adapter.SettingsItemAdapter
 import com.ome.app.ui.dashboard.settings.adapter.SettingsItemDecoration
 import com.ome.app.ui.dashboard.settings.adapter.SettingsTitleItemAdapter
 import com.ome.app.ui.dashboard.settings.adapter.StovesBottomSheet
+import com.ome.app.ui.dashboard.settings.adapter.model.SettingsItemModel
+import com.ome.app.ui.dashboard.settings.adapter.model.SettingsKnobItemModel
+import com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragmentParams
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -29,31 +32,65 @@ class SettingsFragment :
 
     private val adapter by lazy {
         RecyclerDelegationAdapter(requireContext()).apply {
-            addDelegate(SettingsItemAdapter(requireContext()) {
+            addDelegate(SettingsItemAdapter(requireContext()) { item ->
+                when (item) {
+                    is SettingsItemModel -> {
+                        val foundValue = Settings.values().firstOrNull { it.option == item.option }
+                        foundValue?.let { option ->
+                            when (option) {
+                                Settings.LEAVE_STOVE -> {
+                                    val str =
+                                        SpannableStringBuilder("Please Confirm that you would like to LEAVE “Family #1 Stove”?")
+                                    val first = str.indexOf("LEAVE")
+                                    str.setSpan(
+                                        ForegroundColorSpan(Color.RED),
+                                        first,
+                                        first + 5,
+                                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                                    )
+                                    showDialog(
+                                        message = str,
+                                        positiveButtonText = "Accept",
+                                        negativeButtonText = "Reject",
+                                        onPositiveButtonClick = {},
+                                        onNegativeButtonClick = {}
+                                    )
+                                }
+                                Settings.STOVE_AUTO_SHUT_OFF -> {
+                                    findNavController().navigate(
+                                        SettingsFragmentDirections.actionSettingsFragmentToAutoShutOffSettingsFragment(
+                                            "test"
+                                        )
+                                    )
+                                }
+                                Settings.STOVE_INFO_SETTINGS -> {
+                                    findNavController().navigate(
+                                        SettingsFragmentDirections.actionSettingsFragmentToStoveInfoFragment(
+                                            viewModel.userRepository.userFlow.value?.stoveId ?: ""
+                                        )
+                                    )
+                                }
+                                Settings.STOVE_HISTORY -> {
+                                }
+                                Settings.ADD_NEW_KNOB -> {
+                                }
 
-                when(it.option){
-                    "Leave Stove"-> {
-                        val str =
-                            SpannableStringBuilder("Please Confirm that you would like to LEAVE “Family #1 Stove”?")
-                        val first = str.indexOf("LEAVE")
-                        str.setSpan(
-                            ForegroundColorSpan(Color.RED),
-                            first,
-                            first + 5,
-                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                        )
-                        showDialog(
-                            message = str,
-                            positiveButtonText = "Accept",
-                            negativeButtonText = "Reject",
-                            onPositiveButtonClick = {},
-                            onNegativeButtonClick = {}
-                        )
+                            }
+                        }
                     }
-                    "Stove Auto-Off Settings"-> {
-                        findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToAutoShutOffSettingsFragment("test"))
+                    is SettingsKnobItemModel -> {
+                        findNavController().navigate(
+                            SettingsFragmentDirections.actionSettingsFragmentToDeviceSettingsFragment(
+                                DeviceSettingsFragmentParams(
+                                    name = item.name,
+                                    macAddr = item.macAddr
+                                )
+                            )
+                        )
                     }
                 }
+
+
             })
             addDelegate(SettingsTitleItemAdapter(requireContext()))
         }

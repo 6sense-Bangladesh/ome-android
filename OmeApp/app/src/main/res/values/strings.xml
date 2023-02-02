@@ -67,5 +67,16 @@
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="save">Save</string>
+    <string name="stove_information">Stove Information</string>
+    <string name="change_stove_orientation">Change Stove Orientation</string>
+    <string name="change_stove_type">Change Stove Type</string>
+    <string name="name">Name</string>
+    <string name="stove_image">Stove Image</string>
+    <string name="choose_from_phone">Choose from Phone</string>
+    <string name="device_settings">Device Settings</string>
+    <string name="change_knob_position">Change Knob Position</string>
+    <string name="change_wifi">Change Wifi</string>
+    <string name="change_knob_orientation">Change Knob Orientation</string>
+    <string name="knob_mac_addr_label">MAC ID:%1$s</string>
 
 </resources>
