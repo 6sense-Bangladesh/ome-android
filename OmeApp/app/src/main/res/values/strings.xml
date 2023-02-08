@@ -78,5 +78,15 @@
     <string name="change_wifi">Change Wifi</string>
     <string name="change_knob_orientation">Change Knob Orientation</string>
     <string name="knob_mac_addr_label">MAC ID:%1$s</string>
+    <string name="part_1_knob_installation">Part 1: Knob Installation</string>
+    <string name="turn_on_your_ome_knob_by_plugging_it_into_power">Turn on your Ome knob by plugging it into power.</string>
+    <string name="complete_part_1_of_knob_installation_by_following_these_install_videos">Complete Part 1 of knob installation by following these <a href="https://ome-kitchen.myshopify.com/pages/installation#accord1">install videos</a></string>
+    <string name="confirm_that_you_have_completed_part_1_the_adapter_metal_plate_and_metal_plate_cover_should_now_be_installed">Confirm that you have completed Part 1. The adapter, metal plate and metal plate cover should now be installed.</string>
+    <string name="your_stove">Your Stove</string>
+    <string name="which_burner_would_you_like_to_setup_your_smart_knob_on">Which burner would you like to setup your smart knob on?</string>
+    <string name="take_a_picture">Take a Picture</string>
+    <string name="knob_in_use">Another user owns this knob you\'ll need to select another or the user will need to remove the knob</string>
+    <string name="knob_doesnt_exist">The scanned knob QR code does not exist.  Please try scanning again.  If the issue persists, contact support \n855–663–5227 \nsupport@omekitchen.com</string>
+    <string name="scan_the_qr_code_on_the_bottom_of_your_knob">Scan the QR code on the bottom of your knob</string>
 
 </resources>

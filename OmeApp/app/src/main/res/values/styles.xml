@@ -68,6 +68,12 @@
     <style name="Label.17sp">
         <item name="android:textSize">17sp</item>
     </style>
+    <style name="Label.18sp">
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="Label.16sp">
+        <item name="android:textSize">16sp</item>
+    </style>
 
     <style name="Label.12sp">
         <item name="android:textSize">12sp</item>

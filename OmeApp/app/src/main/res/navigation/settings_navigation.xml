@@ -38,6 +38,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_settingsFragment_to_knobWakeUpFragment"
+            app:destination="@id/knobWakeUpFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/supportFragment"
@@ -99,9 +106,54 @@
     <fragment
         android:id="@+id/deviceSettingsFragment"
         android:name="com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragment"
-        android:label="DeviceSettingsFragment" >
+        android:label="DeviceSettingsFragment">
         <argument
             android:name="params"
             app:argType="com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragmentParams" />
+    </fragment>
+    <fragment
+        android:id="@+id/knobWakeUpFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.wake_up.KnobWakeUpFragment"
+        android:label="KnobWakeUpFragment">
+        <action
+            android:id="@+id/action_knobWakeUpFragment_to_metalPlateInstallationFragment"
+            app:destination="@id/metalPlateInstallationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/metalPlateInstallationFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.metal_plate.MetalPlateInstallationFragment"
+        android:label="MetalPlateInstallationFragment">
+        <action
+            android:id="@+id/action_metalPlateInstallationFragment_to_selectBurnerFragment"
+            app:destination="@id/selectBurnerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectBurnerFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragment"
+        android:label="SelectBurnerFragment">
+        <action
+            android:id="@+id/action_selectBurnerFragment_to_qrCodeScannerFragment"
+            app:destination="@id/qrCodeScannerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/qrCodeScannerFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.scanner.QrCodeScannerFragment"
+        android:label="QrCodeScannerFragment" >
+
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.scanner.QrCodeScannerParams"/>
     </fragment>
 </navigation>

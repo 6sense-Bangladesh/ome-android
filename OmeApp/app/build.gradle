@@ -41,7 +41,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
+            buildConfigField("String", "BASE_URL", "\"https://app.api.omekitchen.com/\"")
             //buildConfigField("String", "BASE_URL", "\"app-ws-dev.api.omekitchen.com\"")
         }
 
@@ -103,6 +103,10 @@ dependencies {
     //Rest API
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+
+    //QR code
+    implementation "com.google.zxing:core:3.4.0"
 
     //UI
     implementation 'com.github.fornewid:neumorphism:0.3.2'

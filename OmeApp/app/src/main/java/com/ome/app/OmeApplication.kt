@@ -19,8 +19,10 @@ class OmeApplication : Application() {
         try {
             Amplify.addPlugin(AWSApiPlugin())
             Amplify.addPlugin(AWSCognitoAuthPlugin())
-
-            val config: AmplifyConfiguration = AmplifyConfiguration.fromConfigFile(applicationContext, R.raw.amplifyconfigurationdev)
+            val config: AmplifyConfiguration = AmplifyConfiguration.fromConfigFile(
+                applicationContext,
+                R.raw.amplifyconfigurationprod
+            )
             Amplify.configure(config, applicationContext)
             Log.i("restManager", "Initialized Amplify")
         } catch (error: AmplifyException) {

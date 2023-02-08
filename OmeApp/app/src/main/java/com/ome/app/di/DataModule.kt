@@ -4,6 +4,7 @@ import android.content.Context
 import com.ome.Ome.BuildConfig
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.local.PreferencesProviderImpl
+import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.StoveService
 import com.ome.app.data.remote.UserService
@@ -38,6 +39,7 @@ object DataModule {
                 val original = chain.request()
                 val request = original.newBuilder()
                     .addHeader("x-inirv-auth", preferencesProvider.getAccessToken() ?: "")
+                    .addHeader("x-inirv-vsn", "6")
                     .addHeader("x-inirv-uid", preferencesProvider.getUserId() ?: "").build()
                 chain.proceed(request)
             }).build()
@@ -81,5 +83,10 @@ object DataModule {
     @Singleton
     fun provideAmplifyManager(): AmplifyManager =
         AmplifyManager()
+
+    @Provides
+    @Singleton
+    fun provideResourceProvider(@ApplicationContext context: Context): ResourceProvider =
+        ResourceProvider(context)
 
 }

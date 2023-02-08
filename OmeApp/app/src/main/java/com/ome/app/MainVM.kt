@@ -7,6 +7,7 @@ import com.ome.app.base.BaseViewModel
 import com.ome.app.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
+import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.model.base.ResponseWrapper
 import com.ome.app.utils.logi
@@ -23,7 +24,8 @@ import javax.inject.Inject
 class MainVM @Inject constructor(
     val amplifyManager: AmplifyManager,
     val preferencesProvider: PreferencesProvider,
-    val userRepository: UserRepository
+    val userRepository: UserRepository,
+    val stoveRepository: StoveRepository
 ) : BaseViewModel() {
 
     val startDestinationInitialized = SingleLiveEvent<Pair<Int, Bundle?>?>()
@@ -69,6 +71,10 @@ class MainVM @Inject constructor(
                                     }
                                 }
                                 is ResponseWrapper.Success -> {
+                                    if (result.value.knobMacAddrs.isNotEmpty()) {
+                                        stoveRepository.getAllKnobs()
+                                    }
+
                                     startDestinationInitialized.postValue(R.id.dashboardFragment to null)
                                 }
                             }
