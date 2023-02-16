@@ -66,17 +66,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun subscribeConnectionListener() {
         subscribe(viewModel.connectionStatusListener.connectionStatusFlow) { status ->
-            when (status) {
-                ConnectionStatusListener.ConnectionStatusState.Default,
-                ConnectionStatusListener.ConnectionStatusState.HasConnection,
-                ConnectionStatusListener.ConnectionStatusState.Dismissed -> {
-                }
+            if (viewModel.connectionStatusListener.shouldReactOnChanges) {
+                when (status) {
+                    ConnectionStatusListener.ConnectionStatusState.Default,
+                    ConnectionStatusListener.ConnectionStatusState.HasConnection,
+                    ConnectionStatusListener.ConnectionStatusState.Dismissed -> {
+                    }
 
-                ConnectionStatusListener.ConnectionStatusState.NoConnection -> {
-                    viewModel._isSplashScreenLoading.value = false
-                    viewModel.startDestinationJob?.cancel()
-                    val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
-                    navHostFragment.navController.navigate(R.id.actionInternetConnectionFragment)
+                    ConnectionStatusListener.ConnectionStatusState.NoConnection -> {
+                        viewModel._isSplashScreenLoading.value = false
+                        viewModel.startDestinationJob?.cancel()
+                        val navHostFragment =
+                            supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
+                        navHostFragment.navController.navigate(R.id.actionInternetConnectionFragment)
+                    }
                 }
             }
         }

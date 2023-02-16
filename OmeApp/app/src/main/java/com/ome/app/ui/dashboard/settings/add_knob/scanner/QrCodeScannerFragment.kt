@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentQrCodeScannerBinding
 import com.ome.app.base.BaseFragment
 import com.ome.app.ui.views.code_scanner.*
@@ -39,7 +40,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
             if (isGranted) {
                 initScanner()
             } else {
-//                showErrorToast("Permission not granted")
+                onError(getString(R.string.permission_not_granted))
             }
         }
 
@@ -117,12 +118,26 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
         subscribe(viewModel.isKnobAddedLiveData) {
             if (it) {
                 viewModel.loadingLiveData.postValue(false)
+                viewModel.macAddress?.let {
+                    findNavController().navigate(
+                        QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
+                            it
+                        )
+                    )
+                }
             } else {
                 viewModel.addNewKnob()
             }
         }
         subscribe(viewModel.knobCreatedLiveData) {
             viewModel.loadingLiveData.postValue(false)
+            viewModel.macAddress?.let {
+                findNavController().navigate(
+                    QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
+                        it
+                    )
+                )
+            }
         }
         subscribe(viewModel.loadingLiveData) {
             if (it) {

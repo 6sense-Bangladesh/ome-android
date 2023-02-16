@@ -10,6 +10,7 @@ import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.model.base.ResponseWrapper
+import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,8 @@ class MainVM @Inject constructor(
     val amplifyManager: AmplifyManager,
     val preferencesProvider: PreferencesProvider,
     val userRepository: UserRepository,
-    val stoveRepository: StoveRepository
+    val stoveRepository: StoveRepository,
+    val wifiHandler: WifiHandler
 ) : BaseViewModel() {
 
     val startDestinationInitialized = SingleLiveEvent<Pair<Int, Bundle?>?>()
@@ -33,6 +35,7 @@ class MainVM @Inject constructor(
     val _isSplashScreenLoading = MutableStateFlow(true)
     val isSplashScreenLoading = _isSplashScreenLoading.asStateFlow()
     var startDestinationJob: Job? = null
+
     fun initStartDestination() {
         startDestinationJob = launch(dispatcher = ioContext) {
             val authSession =

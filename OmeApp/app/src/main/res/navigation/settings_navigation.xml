@@ -150,10 +150,110 @@
     <fragment
         android:id="@+id/qrCodeScannerFragment"
         android:name="com.ome.app.ui.dashboard.settings.add_knob.scanner.QrCodeScannerFragment"
-        android:label="QrCodeScannerFragment" >
+        android:label="QrCodeScannerFragment">
 
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.add_knob.scanner.QrCodeScannerParams"/>
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.scanner.QrCodeScannerParams" />
+        <action
+            android:id="@+id/action_qrCodeScannerFragment_to_connectToWifiFragment"
+            app:destination="@id/connectToWifiFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/connectToWifiFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiFragment"
+        android:label="ConnectToWifiFragment">
+        <argument
+            android:name="macAddr"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_connectToWifiFragment_to_manualSetupFragment"
+            app:destination="@id/manualSetupFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_connectToWifiFragment_to_wifiListFragment"
+            app:destination="@id/wifiListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/manualSetupFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.wifi.ManualSetupFragment"
+        android:label="ManualSetupFragment">
+        <argument
+            android:name="macAddr"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_manualSetupFragment_to_wifiListFragment"
+            app:destination="@id/wifiListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/wifiListFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.wifi.WifiListFragment"
+        android:label="WifiListFragment">
+        <argument
+            android:name="macAddr"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_wifiListFragment_to_connectToWifiPasswordFragment"
+            app:destination="@id/connectToWifiPasswordFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/connectToWifiPasswordFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiPasswordFragment"
+        android:label="ConnectToWifiPasswordFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiPasswordParams" />
+        <action
+            android:id="@+id/action_connectToWifiPasswordFragment_to_knobInstallationManual1Fragment"
+            app:destination="@id/knobInstallationManual1Fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/settingsNavigation"/>
+    </fragment>
+    <fragment
+        android:id="@+id/knobInstallationManual1Fragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.installation.KnobInstallationManual1Fragment"
+        android:label="KnobInstallationManual1Fragment">
+        <argument
+            android:name="macAddr"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_knobInstallationManual1Fragment_to_knobInstallationManual2Fragment"
+            app:destination="@id/knobInstallationManual2Fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/knobInstallationManual2Fragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.installation.KnobInstallationManual2Fragment"
+        android:label="KnobInstallationManual2Fragment">
+        <argument
+            android:name="macAddr"
+            app:argType="string" />
     </fragment>
 </navigation>

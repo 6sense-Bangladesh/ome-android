@@ -18,7 +18,7 @@ class QrCodeScannerViewModel @Inject constructor(
 
 
     var stovePosition: Int? = null
-    private var macAddress: String? = null
+    var macAddress: String? = null
 
     val isKnobAddedLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val knobCreatedLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()

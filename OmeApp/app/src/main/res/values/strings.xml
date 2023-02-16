@@ -3,6 +3,7 @@
     <string name="create_account">Create account</string>
     <string name="sign_in">Sign in</string>
     <string name="continue_btn">Continue</string>
+    <string name="scan_again">Scan Again</string>
     <string name="add_a_stove">Add a Stove</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="enter_email">Enter Email</string>
@@ -88,5 +89,24 @@
     <string name="knob_in_use">Another user owns this knob you\'ll need to select another or the user will need to remove the knob</string>
     <string name="knob_doesnt_exist">The scanned knob QR code does not exist.  Please try scanning again.  If the issue persists, contact support \n855–663–5227 \nsupport@omekitchen.com</string>
     <string name="scan_the_qr_code_on_the_bottom_of_your_knob">Scan the QR code on the bottom of your knob</string>
+    <string name="let_s_connect_to_your_local_wi_fi_network">Let\'s connect to your local Wi-Fi network</string>
+    <string name="before_we_connect_label">Before we connect your device to your Wifi, let’s make sure your devices are on and ready.\n\n\n Are your device on?</string>
+    <string name="manual_btn">Manual</string>
+    <string name="yes_let_s_connect">Yes, let\'s connect</string>
+    <string name="permission_not_granted">Permission not granted</string>
+    <string name="unable_to_join_the_network">Unable to join the network\n"(%1$s)"</string>
+    <string name="connect_to_your_wi_fi">Connect to your Wi-Fi</string>
+    <string name="connect_your_phone_to_ome">Connect your phone to Ome</string>
+    <string name="manual_setup">Open Wi-Fi settings on your phone and select the network that says either:\n\n"Ome_Knob_1234"\n"Inirv_Knob_1234"\n\nIt may take a moment to appear. If asked for a password, type <b>password</b>. Once you are connected, come back to this screen.</string>
+    <string name="manual_connection_to_hotspot_error">The network you connected to is not the knob\'s network (%1$s) or (%2$s). Please make sure you connect to the correct hotspot before continuing.</string>
+    <string name="please_select_a_network_for_your_knob_to_connect_with">Please select a network for your knob to connect with</string>
+    <string name="ome_smart_knob_will_be_setup_on">Ome Smart Knob will be setup on</string>
+    <string name="connect">Connect</string>
+    <string name="incorrect_network_name_and_password">Incorrect network name and password combination. Please try again</string>
+    <string name="something_went_wrong_when_setting_the_knob">Something went wrong when setting the knob\'s wifi, please try again</string>
+    <string name="connection_success">Congratulations! Your knob is now connected to your wifi.</string>
+    <string name="part_2_knob_installation">Part 2: Knob Installation</string>
+    <string name="now_complete_part_2_label">Now complete Part 2 of installation by following  <a href="https://ome-kitchen.myshopify.com/pages/installation#accord2">these videos.</a></string>
+    <string name="confirm_that_you_have_completed_part_2">Confirm that you have completed Part 2. The knob should now be installed on your stove!</string>
 
 </resources>

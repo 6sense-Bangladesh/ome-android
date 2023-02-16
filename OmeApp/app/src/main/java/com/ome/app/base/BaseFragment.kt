@@ -32,6 +32,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
 
     protected val mainViewModel: MainVM by activityViewModels()
     protected var onDismissErrorDialog: () -> Unit = {}
+    protected var onDismissSuccessDialog: () -> Unit = {}
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -102,6 +103,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
         .setPositiveButton(
             "Ok"
         ) { dialog, p1 ->
+            onDismissSuccessDialog()
             onDismiss()
             dialog.cancel()
         }

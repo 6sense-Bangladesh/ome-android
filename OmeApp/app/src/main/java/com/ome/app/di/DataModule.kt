@@ -89,4 +89,5 @@ object DataModule {
     fun provideResourceProvider(@ApplicationContext context: Context): ResourceProvider =
         ResourceProvider(context)
 
+
 }
