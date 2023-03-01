@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentSelectBurnerBinding
 import com.ome.app.base.BaseFragment
@@ -18,6 +19,8 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
     FragmentSelectBurnerBinding::inflate
 ) {
     override val viewModel: SelectBurnerViewModel by viewModels()
+
+    private val args by navArgs<SelectBurnerFragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,7 +54,7 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
         binding.continueBtn.setOnClickListener {
             viewModel.selectedBurnerIndex?.let {
                 findNavController().navigate(SelectBurnerFragmentDirections.actionSelectBurnerFragmentToQrCodeScannerFragment(
-                    QrCodeScannerParams(selectedIndex = it)
+                    QrCodeScannerParams(isComeFromSettings = args.isComeFromSettings, selectedIndex = it)
                 ))
             }
         }

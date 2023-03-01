@@ -3,6 +3,7 @@ package com.ome.app.ui.dashboard.mystove
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.ome.Ome.databinding.FragmentMyStoveBinding
 import com.ome.app.base.BaseFragment
 import com.ome.app.ui.dashboard.profile.ProfileViewModel
@@ -17,6 +18,9 @@ class MyStoveFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.test.setOnClickListener {
+            findNavController().navigate(MyStoveFragmentDirections.actionMyStoveFragmentToKnobWakeUpFragment(false))
+        }
     }
 
     override fun observeLiveData() {

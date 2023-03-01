@@ -9,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentDeviceSettingsBinding
 import com.ome.app.base.BaseFragment
+import com.ome.app.ui.dashboard.settings.add_knob.installation.KnobInstallationManual1FragmentParams
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.android.parcel.Parcelize
@@ -36,9 +37,19 @@ class DeviceSettingsFragment :
         binding.knobTv.text = args.params.name
         binding.macAddressTv.text = getString(R.string.knob_mac_addr_label, args.params.macAddr)
         binding.backIv.setOnClickListener { findNavController().popBackStack() }
-        binding.changeKnobOrientationCl.setOnClickListener {  }
-        binding.changeWifiCl.setOnClickListener {  }
-        binding.changeKnobPositionCl.setOnClickListener {  }
+        binding.changeKnobOrientationCl.setOnClickListener {
+            findNavController().navigate(
+                DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToKnobInstallationManual1Fragment(
+                    KnobInstallationManual1FragmentParams(
+                        isComeFromSettings = true,
+                        macAddr = args.params.macAddr
+                    )
+
+                )
+            )
+        }
+        binding.changeWifiCl.setOnClickListener { }
+        binding.changeKnobPositionCl.setOnClickListener { }
     }
 
 

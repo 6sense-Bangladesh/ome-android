@@ -9,7 +9,9 @@ import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.user.UserRepository
+import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.model.base.ResponseWrapper
+import com.ome.app.model.network.response.KnobDto
 import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +29,8 @@ class MainVM @Inject constructor(
     val preferencesProvider: PreferencesProvider,
     val userRepository: UserRepository,
     val stoveRepository: StoveRepository,
-    val wifiHandler: WifiHandler
+    val wifiHandler: WifiHandler,
+    val webSocketManager: WebSocketManager
 ) : BaseViewModel() {
 
     val startDestinationInitialized = SingleLiveEvent<Pair<Int, Bundle?>?>()
@@ -74,9 +77,39 @@ class MainVM @Inject constructor(
                                     }
                                 }
                                 is ResponseWrapper.Success -> {
-                                    if (result.value.knobMacAddrs.isNotEmpty()) {
-                                        stoveRepository.getAllKnobs()
+                                    //  if (result.value.knobMacAddrs.isNotEmpty()) {
+                                    
+                                    val knobs = arrayListOf<KnobDto>()
+
+                                    try {
+                                        knobs.addAll(stoveRepository.getAllKnobs())
+                                    } catch (ex: Exception) {
+                                        knobs.clear()
                                     }
+                                    preferencesProvider.getUserId()?.let { userId ->
+                                        launch(dispatcher = ioContext) {
+                                            webSocketManager.initWebSocket(
+                                                knobs.map { knob -> knob.macAddr },
+                                                userId
+                                            )
+                                        }
+
+                                        launch(dispatcher = ioContext) {
+                                            webSocketManager.knobConnectStatusFlow.collect {
+                                                val text = ""
+                                            }
+                                        }
+
+//                                            launch(dispatcher = ioContext) {
+//
+////                                                webSocketManager.getKnobService()
+////                                                    ?.knobConnectionStatus()?.collect {
+////                                                    val asf = ""
+////                                                }
+//                                            }
+
+                                    }
+                                    // }
 
                                     startDestinationInitialized.postValue(R.id.dashboardFragment to null)
                                 }
@@ -91,6 +124,13 @@ class MainVM @Inject constructor(
             } ?: run {
                 startDestinationInitialized.postValue(R.id.launchFragment to null)
             }
+        }
+    }
+
+    fun connectToSocket() = launch(dispatcher = ioContext) {
+        val macAddrs = stoveRepository.getAllKnobs()
+        preferencesProvider.getUserId()?.let {
+            webSocketManager.initWebSocket(macAddrs.map { it.macAddr }, it)
         }
     }
 }

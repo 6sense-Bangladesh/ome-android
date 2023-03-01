@@ -42,7 +42,7 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "BASE_URL", "\"https://app.api.omekitchen.com/\"")
-            //buildConfigField("String", "BASE_URL", "\"app-ws-dev.api.omekitchen.com\"")
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws.api.omekitchen.com\"")
         }
 
         sandbox {
@@ -161,6 +161,12 @@ dependencies {
 
     implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.70'
 
+    implementation 'com.tinder.scarlet:scarlet:0.1.12'
+    implementation 'com.tinder.scarlet:stream-adapter-coroutines:0.1.12'
+    implementation 'com.tinder.scarlet:message-adapter-gson:0.1.12'
+    implementation 'com.tinder.scarlet:websocket-okhttp:0.1.12'
+
+    implementation 'com.neovisionaries:nv-websocket-client:2.14'
 
     implementation 'com.github.santalu:maskara:1.0.0'
 

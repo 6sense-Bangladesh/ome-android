@@ -1,8 +1,10 @@
 package com.ome.app.ui.dashboard.settings.add_knob.installation
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.method.LinkMovementMethod
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,6 +15,7 @@ import com.ome.app.base.BaseFragment
 import com.ome.app.base.EmptyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
+import kotlinx.android.parcel.Parcelize
 
 @AndroidEntryPoint
 class KnobInstallationManual1Fragment :
@@ -32,6 +35,7 @@ class KnobInstallationManual1Fragment :
                 margin(top = true)
             }
         }
+
         binding.continueBtn.applyInsetter {
             type(navigationBars = true, statusBars = true) {
                 margin(bottom = true)
@@ -48,13 +52,29 @@ class KnobInstallationManual1Fragment :
         binding.continueBtn.setOnClickListener {
             findNavController().navigate(
                 KnobInstallationManual1FragmentDirections.actionKnobInstallationManual1FragmentToKnobInstallationManual2Fragment(
-                    args.macAddr
+                    KnobInstallationManual2FragmentParams(
+                        macAddr = args.params.macAddr,
+                        isComeFromSettings = args.params.isComeFromSettings
+                    )
                 )
             )
 
         }
     }
+
+    override fun handleBackPressEvent() {
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {}
+        })
+    }
+
     override fun observeLiveData() {
         super.observeLiveData()
     }
 }
+
+@Parcelize
+data class KnobInstallationManual1FragmentParams(
+    val isComeFromSettings: Boolean = true,
+    val macAddr: String = ""
+) : Parcelable

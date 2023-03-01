@@ -73,7 +73,7 @@ class SettingsFragment :
                                 Settings.STOVE_HISTORY -> {
                                 }
                                 Settings.ADD_NEW_KNOB -> {
-                                    findNavController().navigate(R.id.action_settingsFragment_to_knobWakeUpFragment)
+                                    findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToKnobWakeUpFragment(isComeFromSettings = false))
                                 }
 
                             }
@@ -90,7 +90,6 @@ class SettingsFragment :
                         )
                     }
                 }
-
 
             })
             addDelegate(SettingsTitleItemAdapter(requireContext()))

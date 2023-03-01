@@ -3,6 +3,7 @@ package com.ome.app.ui.dashboard.settings.add_knob.wifi
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -15,6 +16,7 @@ import com.ome.app.base.BaseFragment
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
+import kotlinx.android.parcel.Parcelize
 
 @AndroidEntryPoint
 class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConnectToWifiBinding>(
@@ -23,7 +25,6 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
     override val viewModel: ConnectToWifiViewModel by viewModels()
 
     private val args by navArgs<ConnectToWifiFragmentArgs>()
-
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -55,13 +56,16 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
         binding.manualSetupTv.setOnClickListener {
             findNavController().navigate(
                 ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToManualSetupFragment(
-                    macAddr = viewModel.macAddr
+                    ManualSetupFragmentParams(
+                        macAddrs = viewModel.macAddr,
+                        isComeFromSettings = args.params.isComeFromSettings
+                    )
                 )
             )
         }
 
         viewModel.initListeners()
-        viewModel.macAddr = args.macAddr
+        viewModel.macAddr = args.params.macAddrs
         viewModel.setupWifi()
     }
 
@@ -92,9 +96,18 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
         subscribe(viewModel.wifiNetworksListLiveData) {
             findNavController().navigate(
                 ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToWifiListFragment(
-                    macAddr = viewModel.macAddr
+                    WifiListFragmentParams(
+                        macAddrs = viewModel.macAddr,
+                        isComeFromSettings = args.params.isComeFromSettings
+                    )
                 )
             )
         }
     }
 }
+
+@Parcelize
+data class ConnectToWifiParams(
+    val isComeFromSettings: Boolean = true,
+    val macAddrs: String = ""
+) : Parcelable

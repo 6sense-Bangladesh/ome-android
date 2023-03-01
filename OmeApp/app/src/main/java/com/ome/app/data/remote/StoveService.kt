@@ -1,11 +1,7 @@
 package com.ome.app.data.remote
 
-import com.ome.app.model.network.request.CreateKnobRequest
-import com.ome.app.model.network.request.CreateStoveRequest
-import com.ome.app.model.network.response.CreateKnobResponse
-import com.ome.app.model.network.response.CreateStoveResponse
-import com.ome.app.model.network.response.KnobDto
-import com.ome.app.model.network.response.KnobOwnershipResponse
+import com.ome.app.model.network.request.*
+import com.ome.app.model.network.response.*
 import retrofit2.http.*
 
 interface StoveService {
@@ -31,4 +27,22 @@ interface StoveService {
         @Body params: CreateKnobRequest,
         @Path("macAddress") macAddress: String
     ): CreateKnobResponse
+
+    @POST("/knob/newLevel/{macAddress}")
+    suspend fun changeKnobAngle(
+        @Body params: ChangeKnobAngle,
+        @Path("macAddress") macAddress: String
+    ): ChangeKnobAngleResponse
+
+    @POST("/knob/initCalibration/{macAddress}")
+    suspend fun initCalibration(
+        @Body params: InitCalibrationRequest,
+        @Path("macAddress") macAddress: String
+    ): KnobDto
+
+    @POST("/knob/calibration/{macAddress}")
+    suspend fun setCalibration(
+        @Body params: SetCalibrationRequest,
+        @Path("macAddress") macAddress: String
+    ): KnobDto
 }

@@ -16,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentQrCodeScannerBinding
 import com.ome.app.base.BaseFragment
+import com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiParams
 import com.ome.app.ui.views.code_scanner.*
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
@@ -121,7 +122,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
                 viewModel.macAddress?.let {
                     findNavController().navigate(
                         QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
-                            it
+                            ConnectToWifiParams(macAddrs = it, isComeFromSettings = args.params.isComeFromSettings)
                         )
                     )
                 }
@@ -134,7 +135,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
             viewModel.macAddress?.let {
                 findNavController().navigate(
                     QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
-                        it
+                        ConnectToWifiParams(macAddrs = it, isComeFromSettings = args.params.isComeFromSettings)
                     )
                 )
             }
@@ -151,5 +152,6 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
 
 @Parcelize
 data class QrCodeScannerParams(
+    val isComeFromSettings: Boolean = true,
     val selectedIndex: Int = 0
 ) : Parcelable

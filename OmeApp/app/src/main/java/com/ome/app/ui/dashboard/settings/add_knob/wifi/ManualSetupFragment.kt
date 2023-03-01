@@ -1,6 +1,7 @@
 package com.ome.app.ui.dashboard.settings.add_knob.wifi
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -11,6 +12,7 @@ import com.ome.app.base.BaseFragment
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
+import kotlinx.android.parcel.Parcelize
 
 @AndroidEntryPoint
 class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSetupBinding>(
@@ -53,7 +55,7 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
         }
         viewModel.initListeners()
 
-        viewModel.macAddr = args.macAddr
+        viewModel.macAddr = args.params.macAddrs
     }
 
     override fun observeLiveData() {
@@ -62,7 +64,10 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
             binding.connectBtn.revertAnimation()
             findNavController().navigate(
                 ManualSetupFragmentDirections.actionManualSetupFragmentToWifiListFragment(
-                    viewModel.macAddr
+                    WifiListFragmentParams(
+                        isComeFromSettings = args.params.isComeFromSettings,
+                        macAddrs = args.params.macAddrs
+                    )
                 )
             )
         }
@@ -77,3 +82,9 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
         }
     }
 }
+
+@Parcelize
+data class ManualSetupFragmentParams(
+    val isComeFromSettings: Boolean = true,
+    val macAddrs: String = ""
+) : Parcelable

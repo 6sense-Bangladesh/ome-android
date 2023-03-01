@@ -3,7 +3,10 @@ package com.ome.app.ui.dashboard.settings.add_knob.wifi
 import com.ome.Ome.R
 import com.ome.app.base.BaseViewModel
 import com.ome.app.base.SingleLiveEvent
+import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.local.ResourceProvider
+import com.ome.app.data.remote.stove.StoveRepository
+import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.utils.KnobSocketMessage
 import com.ome.app.utils.SocketManager
 import com.ome.app.utils.WifiHandler
@@ -15,7 +18,10 @@ import javax.inject.Inject
 class ConnectToWifiPasswordViewModel @Inject constructor(
     val wifiHandler: WifiHandler,
     val socketManager: SocketManager,
-    val resourceProvider: ResourceProvider
+    val webSocketManager: WebSocketManager,
+    val preferencesProvider: PreferencesProvider,
+    val resourceProvider: ResourceProvider,
+    val stoveRepository: StoveRepository
 ) : BaseViewModel() {
 
     var macAddr = ""
@@ -41,9 +47,13 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 KnobSocketMessage.SET_WIFI -> {
                     if (message == "ok") {
                         sendMessage(KnobSocketMessage.REBOOT)
-                        disconnectFromNetwork()
-                        successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
-                        loadingLiveData.postValue(false)
+                        withDelay(2000) {
+                            disconnectFromNetwork()
+                        }
+                        withDelay(3000) {
+                            successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
+                            loadingLiveData.postValue(false)
+                        }
                     } else {
                         defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
                     }
@@ -53,6 +63,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 }
             }
         }
+
 
         socketManager.onSocketConnect = {
         }

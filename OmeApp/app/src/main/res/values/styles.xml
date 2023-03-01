@@ -134,6 +134,11 @@
         <item name="cornerRadius">0dp</item>
         <item name="android:textColor">@drawable/ome_white_button_color_selector</item>
     </style>
+    <style name="OmeButton.TransparentPurpleBorders" >
+        <item name="android:fontFamily">@font/open_sans_regular</item>
+        <item name="android:background">@drawable/ome_purple_borders_button</item>
+        <item name="android:textColor">@drawable/ome_transparent_button_with_borders_selector</item>
+    </style>
 
 
     <style name="OmeButton.White.WithLoadingState" >

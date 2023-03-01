@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.Ome.databinding.FragmentConnectToWifiPasswordBinding
 import com.ome.app.base.BaseFragment
+import com.ome.app.ui.dashboard.settings.add_knob.installation.KnobInstallationManual1FragmentParams
 import com.ome.app.utils.KnobSocketMessage
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,7 +57,10 @@ class ConnectToWifiPasswordFragment :
         onDismissSuccessDialog = {
             findNavController().navigate(
                 ConnectToWifiPasswordFragmentDirections.actionConnectToWifiPasswordFragmentToKnobInstallationManual1Fragment(
-                    args.params.macAddr
+                    KnobInstallationManual1FragmentParams(
+                        macAddr = args.params.macAddr,
+                        isComeFromSettings = args.params.isComeFromSettings
+                    )
                 )
             )
         }
@@ -86,6 +90,7 @@ class ConnectToWifiPasswordFragment :
 
 @Parcelize
 data class ConnectToWifiPasswordParams(
+    val isComeFromSettings: Boolean = true,
     val ssid: String = "",
     val securityType: String = "",
     val macAddr: String = ""

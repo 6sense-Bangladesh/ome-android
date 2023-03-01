@@ -12,6 +12,7 @@ import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.stove.StoveRepositoryImpl
 import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.data.remote.user.UserRepositoryImpl
+import com.ome.app.data.remote.websocket.WebSocketManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,6 +54,9 @@ object DataModule {
     }
 
 
+    @Provides
+    @Singleton
+    fun provideWebSocketManager(): WebSocketManager = WebSocketManager()
 
     @Provides
     @Singleton
@@ -61,8 +65,11 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideStoveRepository(userService: StoveService): StoveRepository =
-        StoveRepositoryImpl(userService)
+    fun provideStoveRepository(
+        userService: StoveService,
+        webSocketManager: WebSocketManager
+    ): StoveRepository =
+        StoveRepositoryImpl(userService, webSocketManager)
 
 
     @Provides
@@ -88,6 +95,5 @@ object DataModule {
     @Singleton
     fun provideResourceProvider(@ApplicationContext context: Context): ResourceProvider =
         ResourceProvider(context)
-
 
 }

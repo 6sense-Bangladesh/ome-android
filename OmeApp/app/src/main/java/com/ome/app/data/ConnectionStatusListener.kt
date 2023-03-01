@@ -7,6 +7,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
 import com.ome.app.utils.loge
+import com.ome.app.utils.logi
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -62,6 +63,7 @@ class ConnectionStatusListenerImpl(
             }
 
             override fun onAvailable(network: Network) {
+                logi("Network available")
                 connectionStatusFlow.tryEmit(
                     ConnectionStatusListener.ConnectionStatusState.HasConnection
                 )

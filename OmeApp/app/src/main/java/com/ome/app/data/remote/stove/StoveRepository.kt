@@ -2,13 +2,10 @@ package com.ome.app.data.remote.stove
 
 import com.ome.app.data.remote.StoveService
 import com.ome.app.data.remote.base.BaseRepository
+import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.model.base.ResponseWrapper
-import com.ome.app.model.network.request.CreateKnobRequest
-import com.ome.app.model.network.request.CreateStoveRequest
-import com.ome.app.model.network.response.CreateKnobResponse
-import com.ome.app.model.network.response.CreateStoveResponse
-import com.ome.app.model.network.response.KnobDto
-import com.ome.app.model.network.response.KnobOwnershipResponse
+import com.ome.app.model.network.request.*
+import com.ome.app.model.network.response.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.coroutines.coroutineContext
 
@@ -17,12 +14,16 @@ interface StoveRepository {
     suspend fun updateStove(params: CreateStoveRequest, stoveId: String): CreateStoveResponse
     suspend fun getAllKnobs(): List<KnobDto>
     suspend fun getKnobOwnership(macAddress: String): KnobOwnershipResponse
+    suspend fun initCalibration(params: InitCalibrationRequest, macAddress: String): KnobDto
+    suspend fun setCalibration(params: SetCalibrationRequest, macAddress: String): KnobDto
+    suspend fun changeKnobAngle(params: ChangeKnobAngle, macAddress: String): ChangeKnobAngleResponse
     suspend fun createKnob(params: CreateKnobRequest, macAddress: String): CreateKnobResponse
     val knobsFlow: MutableStateFlow<List<KnobDto>?>
 }
 
 class StoveRepositoryImpl(
-    private val stoveService: StoveService
+    private val stoveService: StoveService,
+    private val webSocketManager: WebSocketManager
 ) : StoveRepository, BaseRepository() {
 
     override suspend fun createStove(params: CreateStoveRequest): ResponseWrapper<CreateStoveResponse> {
@@ -40,12 +41,34 @@ class StoveRepositoryImpl(
 
     override suspend fun getAllKnobs(): List<KnobDto> {
         val response = stoveService.getAllKnobsResponse()
+        webSocketManager
         knobsFlow.tryEmit(response)
         return response
     }
 
     override suspend fun getKnobOwnership(macAddress: String): KnobOwnershipResponse {
         return stoveService.getKnobOwnership(macAddress)
+    }
+
+    override suspend fun initCalibration(
+        params: InitCalibrationRequest,
+        macAddress: String
+    ): KnobDto {
+        return stoveService.initCalibration(params, macAddress)
+    }
+
+    override suspend fun setCalibration(
+        params: SetCalibrationRequest,
+        macAddress: String
+    ): KnobDto {
+        return stoveService.setCalibration(params, macAddress)
+    }
+
+    override suspend fun changeKnobAngle(
+        params: ChangeKnobAngle,
+        macAddress: String
+    ): ChangeKnobAngleResponse {
+        return stoveService.changeKnobAngle(params,macAddress)
     }
 
     override suspend fun createKnob(

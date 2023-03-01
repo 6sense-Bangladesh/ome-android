@@ -1,6 +1,7 @@
 package com.ome.app.ui.dashboard.settings.add_knob.wifi
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import com.ome.app.utils.KnobSocketMessage
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
+import kotlinx.android.parcel.Parcelize
 
 @AndroidEntryPoint
 class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding>(
@@ -27,7 +29,12 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
             addDelegate(NetworkItemAdapter(requireContext()) { item ->
                 findNavController().navigate(
                     WifiListFragmentDirections.actionWifiListFragmentToConnectToWifiPasswordFragment(
-                        ConnectToWifiPasswordParams(ssid = item.ssid, securityType = item.securityType,macAddr = viewModel.macAddr, )
+                        ConnectToWifiPasswordParams(
+                            ssid = item.ssid,
+                            securityType = item.securityType,
+                            macAddr = viewModel.macAddr,
+                            isComeFromSettings = args.params.isComeFromSettings
+                        )
                     )
                 )
             })
@@ -52,7 +59,7 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
             binding.scanAgainBtn.startAnimation()
             viewModel.sendMessage(KnobSocketMessage.GET_NETWORKS)
         }
-        viewModel.macAddr = args.macAddr
+        viewModel.macAddr = args.params.macAddrs
 
         binding.recyclerView.adapter = adapter
 
@@ -75,3 +82,9 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
 
     }
 }
+
+@Parcelize
+data class WifiListFragmentParams(
+    val isComeFromSettings: Boolean = true,
+    val macAddrs: String = ""
+) : Parcelable
