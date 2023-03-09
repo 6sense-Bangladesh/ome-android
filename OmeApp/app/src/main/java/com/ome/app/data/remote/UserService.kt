@@ -15,7 +15,7 @@ interface UserService {
     @POST("createUser")
     suspend fun createUser(@Body params: CreateUserRequest): UserResponse
 
-    @PATCH("updateUser")
+    @PATCH("user")
     suspend fun updateUser(@Body params: CreateUserRequest): UserResponse
 
     @GET("/user/uploadImageUrl")

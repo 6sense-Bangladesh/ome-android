@@ -31,7 +31,6 @@ abstract class BasePhotoFragment<VM : BasePhotoViewModel, VB : ViewBinding>(
         }
 
 
-
     private val takePicture =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { result ->
             if(result){
