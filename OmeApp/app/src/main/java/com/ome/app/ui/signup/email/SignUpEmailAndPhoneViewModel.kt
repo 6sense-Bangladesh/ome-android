@@ -2,8 +2,8 @@ package com.ome.app.ui.signup.email
 
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.ome.app.base.BaseViewModel
-import com.ome.app.base.SingleLiveEvent
+import com.ome.app.ui.base.BaseViewModel
+import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

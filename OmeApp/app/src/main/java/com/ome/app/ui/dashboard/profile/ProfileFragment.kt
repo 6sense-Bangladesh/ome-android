@@ -18,7 +18,7 @@ import com.amulyakhare.textdrawable.TextDrawable
 import com.ome.Ome.BuildConfig
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentProfileBinding
-import com.ome.app.base.BaseFragment
+import com.ome.app.ui.base.BaseFragment
 import com.ome.app.utils.makeVisible
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint

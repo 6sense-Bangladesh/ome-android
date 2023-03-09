@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentSettingsBinding
-import com.ome.app.base.BaseFragment
+import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.base.recycler.RecyclerDelegationAdapter
 import com.ome.app.ui.dashboard.settings.adapter.SettingsItemAdapter
 import com.ome.app.ui.dashboard.settings.adapter.SettingsItemDecoration

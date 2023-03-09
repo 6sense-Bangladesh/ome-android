@@ -1,7 +1,7 @@
 package com.ome.app.ui.signin.forgotpassword
 
-import com.ome.app.base.BaseViewModel
-import com.ome.app.base.SingleLiveEvent
+import com.ome.app.ui.base.BaseViewModel
+import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
 import com.ome.app.utils.Constants

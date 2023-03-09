@@ -1,4 +1,4 @@
-package com.ome.app.base
+package com.ome.app.ui.base
 
 import android.util.Log
 import androidx.annotation.MainThread

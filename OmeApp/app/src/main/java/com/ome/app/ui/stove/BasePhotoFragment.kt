@@ -11,7 +11,7 @@ import androidx.core.content.FileProvider
 import androidx.viewbinding.ViewBinding
 import com.ome.Ome.BuildConfig
 import com.ome.Ome.R
-import com.ome.app.base.BaseFragment
+import com.ome.app.ui.base.BaseFragment
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*

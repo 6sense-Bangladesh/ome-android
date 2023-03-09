@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentKnobInstallationManual1Binding
-import com.ome.app.base.BaseFragment
-import com.ome.app.base.EmptyViewModel
+import com.ome.app.ui.base.BaseFragment
+import com.ome.app.ui.base.EmptyViewModel
 import com.ome.app.utils.makeGone
 import com.ome.app.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint

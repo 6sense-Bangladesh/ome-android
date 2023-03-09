@@ -1,4 +1,4 @@
-package com.ome.app.base
+package com.ome.app.ui.base
 
 import com.ome.app.utils.SocketManager
 import dagger.hilt.android.lifecycle.HiltViewModel

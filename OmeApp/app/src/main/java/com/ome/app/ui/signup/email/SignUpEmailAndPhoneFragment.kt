@@ -7,7 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.Ome.databinding.FragmentSignUpEmailAndPasswordBinding
-import com.ome.app.base.BaseFragment
+import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.signup.password.AuthParams
 import com.ome.app.utils.subscribe
 import dev.chrisbanes.insetter.applyInsetter

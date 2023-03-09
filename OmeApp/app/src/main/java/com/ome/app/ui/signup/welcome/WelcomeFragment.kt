@@ -6,7 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentWelcomeBinding
-import com.ome.app.base.BaseFragment
+import com.ome.app.ui.base.BaseFragment
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter

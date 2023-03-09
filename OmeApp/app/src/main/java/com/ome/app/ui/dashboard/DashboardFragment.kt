@@ -9,8 +9,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentDashboardBinding
-import com.ome.app.base.BaseHostFragment
-import com.ome.app.base.navigation.BottomNavigationController
+import com.ome.app.ui.base.BaseHostFragment
+import com.ome.app.ui.base.navigation.BottomNavigationController
 import com.ome.app.ui.views.BottomItem
 import com.ome.app.utils.getCurrentFragment
 import com.ome.app.utils.subscribe

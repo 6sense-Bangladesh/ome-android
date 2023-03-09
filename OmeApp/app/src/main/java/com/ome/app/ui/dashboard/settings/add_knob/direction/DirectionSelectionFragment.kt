@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentDirectionSelectionBinding
-import com.ome.app.base.BaseFragment
+import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
 import com.ome.app.utils.makeGone
 import com.ome.app.utils.makeVisible

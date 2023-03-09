@@ -1,7 +1,7 @@
 package com.ome.app.ui.signup.name
 
-import com.ome.app.base.BaseViewModel
-import com.ome.app.base.SingleLiveEvent
+import com.ome.app.ui.base.BaseViewModel
+import com.ome.app.ui.base.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

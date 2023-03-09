@@ -1,4 +1,4 @@
-package com.ome.app.base.navigation
+package com.ome.app.ui.base.navigation
 
 import android.content.Intent
 import android.util.SparseArray

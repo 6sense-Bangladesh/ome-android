@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import com.ome.Ome.R
-import com.ome.app.base.BaseViewModel
-import com.ome.app.base.SingleLiveEvent
+import com.ome.app.ui.base.BaseViewModel
+import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.user.UserRepository

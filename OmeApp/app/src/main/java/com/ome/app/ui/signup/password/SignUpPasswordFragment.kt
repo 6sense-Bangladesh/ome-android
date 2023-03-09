@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentSignUpPasswordBinding
-import com.ome.app.base.BaseFragment
+import com.ome.app.ui.base.BaseFragment
 import com.ome.app.utils.applyMaskToEmail
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint

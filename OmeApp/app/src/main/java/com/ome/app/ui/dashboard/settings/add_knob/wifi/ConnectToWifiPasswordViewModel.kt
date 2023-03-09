@@ -1,8 +1,8 @@
 package com.ome.app.ui.dashboard.settings.add_knob.wifi
 
 import com.ome.Ome.R
-import com.ome.app.base.BaseViewModel
-import com.ome.app.base.SingleLiveEvent
+import com.ome.app.ui.base.BaseViewModel
+import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.remote.stove.StoveRepository
