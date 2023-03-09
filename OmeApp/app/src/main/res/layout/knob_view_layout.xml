@@ -67,7 +67,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/lowCl"
+        android:id="@+id/lowSingleCl"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
@@ -77,7 +77,32 @@
         app:layout_constraintTop_toTopOf="@+id/knobCircleCl">
 
         <TextView
-            android:id="@+id/lowTv"
+            android:id="@+id/lowSingleTv"
+            style="@style/Title.16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="14sp"
+            android:text="@string/low_position"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lowDualCl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
+        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
+        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"
+        app:layout_constraintTop_toTopOf="@+id/knobCircleCl">
+
+        <TextView
+            android:id="@+id/lowDualTv"
             style="@style/Title.16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -118,7 +143,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/highCl"
+        android:id="@+id/highSingleCl"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
@@ -128,7 +153,7 @@
         app:layout_constraintTop_toTopOf="@+id/knobCircleCl">
 
         <TextView
-            android:id="@+id/highTv"
+            android:id="@+id/highSingleTv"
             style="@style/Title.16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -141,5 +166,32 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/highDualCl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
+        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
+        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"
+        app:layout_constraintTop_toTopOf="@+id/knobCircleCl">
+
+        <TextView
+            android:id="@+id/highDualTv"
+            style="@style/Title.16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="14sp"
+            android:text="@string/high_position"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

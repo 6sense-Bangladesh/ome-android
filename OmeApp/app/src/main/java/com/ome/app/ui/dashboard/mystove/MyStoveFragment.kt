@@ -19,7 +19,7 @@ class MyStoveFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.test.setOnClickListener {
-            findNavController().navigate(MyStoveFragmentDirections.actionMyStoveFragmentToKnobWakeUpFragment(false))
+            //findNavController().navigate(MyStoveFragmentDirections.actionMyStoveFragmentToKnobWakeUpFragment(false))
         }
     }
 

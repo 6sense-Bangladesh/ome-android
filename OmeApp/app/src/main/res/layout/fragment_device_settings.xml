@@ -46,17 +46,13 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6"
         tools:text="Knob #1" />
 
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/avatarIv"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginTop="48dp"
-        android:src="@drawable/ic_yellow_circle"
-        android:tint="@color/gray_color"
+    <com.ome.app.ui.views.KnobView
+        android:id="@+id/knobView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/knobTv" />
+        app:layout_constraintTop_toBottomOf="@+id/knobTv"  />
 
 
     <androidx.cardview.widget.CardView
@@ -72,7 +68,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/avatarIv">
+        app:layout_constraintTop_toBottomOf="@+id/knobView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/changeKnobPositionCl"

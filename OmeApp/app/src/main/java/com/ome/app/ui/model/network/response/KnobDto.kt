@@ -1,5 +1,7 @@
 package com.ome.app.model.network.response
 
+import com.ome.app.ui.model.network.response.CalibrationDto
+
 data class KnobDto(
     val angle: Int,
     val battery: Int,

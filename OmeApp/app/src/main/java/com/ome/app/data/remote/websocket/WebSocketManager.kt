@@ -1,7 +1,5 @@
 package com.ome.app.data.remote.websocket
 
-import android.os.Handler
-import android.os.Looper
 import com.ome.Ome.BuildConfig
 import com.ome.app.model.network.websocket.*
 import com.ome.app.utils.FlowStreamAdapter
@@ -35,8 +33,6 @@ class WebSocketManager {
                 separator = ","
             ) { it }
         }&inirvUid=$userId"
-
-
 
         scarlet = Scarlet.Builder()
             .webSocketFactory(
@@ -142,8 +138,7 @@ class WebSocketManager {
                 }
 
             }
-        }catch (ex: Exception){
-            val text = ""
+        } catch (ex: Exception){
         }
 
     }

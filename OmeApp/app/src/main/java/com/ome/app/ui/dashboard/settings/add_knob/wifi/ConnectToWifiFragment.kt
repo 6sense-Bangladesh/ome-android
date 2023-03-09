@@ -52,13 +52,15 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
                 margin(bottom = true)
             }
         }
+        viewModel.isChangeWifiMode = args.params.isChangeWifiMode
         binding.connectBtn.setOnClickListener { checkPermission() }
         binding.manualSetupTv.setOnClickListener {
             findNavController().navigate(
                 ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToManualSetupFragment(
                     ManualSetupFragmentParams(
                         macAddrs = viewModel.macAddr,
-                        isComeFromSettings = args.params.isComeFromSettings
+                        isComeFromSettings = args.params.isComeFromSettings,
+                        isChangeWifiMode = args.params.isChangeWifiMode
                     )
                 )
             )
@@ -98,7 +100,8 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
                 ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToWifiListFragment(
                     WifiListFragmentParams(
                         macAddrs = viewModel.macAddr,
-                        isComeFromSettings = args.params.isComeFromSettings
+                        isComeFromSettings = args.params.isComeFromSettings,
+                        isChangeWifiMode = args.params.isChangeWifiMode
                     )
                 )
             )
@@ -109,5 +112,6 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
 @Parcelize
 data class ConnectToWifiParams(
     val isComeFromSettings: Boolean = true,
+    val isChangeWifiMode: Boolean = false,
     val macAddrs: String = ""
 ) : Parcelable

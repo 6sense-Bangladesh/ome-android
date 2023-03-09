@@ -2,6 +2,8 @@ package com.ome.app.data.remote
 
 import com.ome.app.model.network.request.*
 import com.ome.app.model.network.response.*
+import com.ome.app.ui.model.network.request.CreateKnobRequest
+import com.ome.app.ui.model.network.response.BaseResponse
 import retrofit2.http.*
 
 interface StoveService {
@@ -9,7 +11,7 @@ interface StoveService {
     suspend fun createStove(@Body params: CreateStoveRequest): CreateStoveResponse
 
     @GET("knobs")
-    suspend fun getAllKnobsResponse(): List<KnobDto>
+    suspend fun getAllKnobs(): List<KnobDto>
 
     @PATCH("stove/{stoveId}")
     suspend fun updateStoveInfo(
@@ -27,6 +29,17 @@ interface StoveService {
         @Body params: CreateKnobRequest,
         @Path("macAddress") macAddress: String
     ): CreateKnobResponse
+
+    @PATCH("/knob/{macAddress}")
+    suspend fun updateKnobInfo(
+        @Body params: CreateKnobRequest,
+        @Path("macAddress") macAddress: String
+    ): CreateKnobResponse
+
+    @POST("/knob/clearWifi/{macAddress}")
+    suspend fun clearWifi(
+        @Path("macAddress") macAddress: String
+    ): BaseResponse
 
     @POST("/knob/newLevel/{macAddress}")
     suspend fun changeKnobAngle(

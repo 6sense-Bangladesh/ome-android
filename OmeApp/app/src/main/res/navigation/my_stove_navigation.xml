@@ -168,6 +168,14 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_zoneSelectionFragment_to_deviceCalibrationFragment"
+            app:destination="@id/deviceCalibrationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
     <fragment
         android:id="@+id/directionSelectionFragment"
@@ -238,8 +246,8 @@
         android:name="com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragment"
         android:label="SelectBurnerFragment">
         <argument
-            android:name="isComeFromSettings"
-            app:argType="boolean" />
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams" />
         <action
             android:id="@+id/action_selectBurnerFragment_to_qrCodeScannerFragment"
             app:destination="@id/qrCodeScannerFragment"

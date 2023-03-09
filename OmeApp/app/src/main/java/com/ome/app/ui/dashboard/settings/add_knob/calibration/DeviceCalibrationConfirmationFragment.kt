@@ -55,6 +55,14 @@ class DeviceCalibrationConfirmationFragment :
                 }
             )
         }
+
+        binding.noBtn.setOnClickListener {
+            if (viewModel.currentCalibrationStateLiveData.value == null) {
+                findNavController().popBackStack()
+            } else {
+                viewModel.triggerCurrentStepAgain()
+            }
+        }
         binding.continueBtn.setOnClickListener {
             if (viewModel.currentCalibrationStateLiveData.value == null) {
                 showSuccessDialog(
@@ -62,6 +70,13 @@ class DeviceCalibrationConfirmationFragment :
                     message = getString(R.string.ome_knob_will_rotate),
                     onDismiss = {
                         viewModel.nextStep()
+                    })
+            } else if (viewModel.currentCalibrationStateLiveData.value == CalibrationState.OFF && viewModel.offTriggerCount == 1) {
+                showSuccessDialog(
+                    title = getString(R.string.warning),
+                    message = getString(R.string.ome_knob_manually_turn_to_the_low),
+                    onDismiss = {
+                        viewModel.currentCalibrationStateLiveData.value = CalibrationState.LOW_SINGLE
                     })
             } else {
                 viewModel.nextStep()
@@ -73,9 +88,11 @@ class DeviceCalibrationConfirmationFragment :
         viewModel.macAddress = args.params.macAddr
         viewModel.rotationDir = args.params.rotateDir
         viewModel.offAngle = args.params.offPosition
-        viewModel.highAngle = args.params.highPosition
+        viewModel.highSingleAngle = args.params.highSinglePosition
+        viewModel.highDualAngle = args.params.highDualPosition
         viewModel.mediumAngle = args.params.medPosition
-        viewModel.lowAngle = args.params.lowPosition
+        viewModel.lowSingleAngle = args.params.lowSinglePosition
+        viewModel.lowDualAngle = args.params.lowDualPosition
 
         binding.backIv.setOnClickListener {
             viewModel.previousStep()
@@ -96,12 +113,23 @@ class DeviceCalibrationConfirmationFragment :
     }
 
     private fun initLabels() {
-        binding.knobView.apply {
-            setOffPosition(args.params.offPosition)
-            setHighPosition(args.params.highPosition)
-            setMediumPosition(args.params.medPosition)
-            setLowPosition(args.params.lowPosition)
+        if (!args.params.isDualKnob) {
+            binding.knobView.apply {
+                setOffPosition(args.params.offPosition)
+                setHighSinglePosition(args.params.highSinglePosition)
+                setMediumPosition(args.params.medPosition)
+                setLowSinglePosition(args.params.lowSinglePosition)
+            }
+        } else {
+            binding.knobView.apply {
+                setOffPosition(args.params.offPosition)
+                setLowSinglePosition(args.params.lowSinglePosition)
+                setHighSinglePosition(args.params.highSinglePosition)
+                setLowDualPosition(args.params.lowDualPosition)
+                setHighDualPosition(args.params.highDualPosition)
+            }
         }
+
     }
 
     override fun observeLiveData() {
@@ -131,13 +159,36 @@ class DeviceCalibrationConfirmationFragment :
         }
         subscribe(viewModel.currentCalibrationStateLiveData) { currentStep ->
             currentStep?.let {
-                binding.labelTv.text =
-                    getString(R.string.calibration_confirmation_label, currentStep.name)
-
-
                 binding.subLabelTv.makeVisible()
-                binding.labelTv.text =
-                    getString(R.string.calibration_confirmation_label, currentStep.name)
+                binding.noBtn.text = getString(R.string.no_btn)
+                if (viewModel.isDualKnob) {
+                    when (currentStep) {
+                        CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE -> {
+                            binding.labelTv.text =
+                                getString(
+                                    R.string.calibration_confirmation_dual_label,
+                                    currentStep.positionName,
+                                    "Single"
+                                )
+                        }
+                        CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> {
+                            binding.labelTv.text =
+                                getString(
+                                    R.string.calibration_confirmation_dual_label,
+                                    currentStep.positionName,
+                                    "Dual"
+                                )
+                        }
+                        else -> {
+                            binding.labelTv.text =
+                                getString(R.string.calibration_confirmation_label, currentStep.positionName)
+                        }
+                    }
+                } else {
+                    binding.labelTv.text =
+                        getString(R.string.calibration_confirmation_label, currentStep.positionName)
+                }
+
             }
         }
 
@@ -148,9 +199,11 @@ class DeviceCalibrationConfirmationFragment :
 data class DeviceCalibrationConfirmationFragmentParams(
     val isComeFromSettings: Boolean = true,
     val offPosition: Float = 0f,
-    val lowPosition: Float = 0f,
+    val lowSinglePosition: Float = 0f,
+    val lowDualPosition: Float = 0f,
     val medPosition: Float = 0f,
-    val highPosition: Float = 0f,
+    val highSinglePosition: Float = 0f,
+    val highDualPosition: Float = 0f,
     val isDualKnob: Boolean = false,
     val rotateDir: Int = 0,
     val macAddr: String = ""

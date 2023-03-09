@@ -13,13 +13,7 @@ import com.ome.app.utils.logd
 
 abstract class BaseHostFragment<VM : BaseViewModel, VB : ViewBinding>(
     factory: (LayoutInflater) -> VB
-) : BaseFragment<VM,VB>(factory) {
-
-//    override val navigationCommandHandler: NavigationCommandHandler = NavigationCommandHandler(
-//        navControllerDefinition = { findNavController() },
-//        childNavControllerDefinition = { getCurrentFragment()!!.findNavController() }
-//    )
-
+) : BaseFragment<VM, VB>(factory) {
 
     private val destinationChangedListener =
         NavController.OnDestinationChangedListener { controller, destination, _ ->

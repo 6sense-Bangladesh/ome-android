@@ -5,7 +5,7 @@ import com.ome.app.base.BaseViewModel
 import com.ome.app.base.SingleLiveEvent
 import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.remote.stove.StoveRepository
-import com.ome.app.model.network.request.CreateKnobRequest
+import com.ome.app.ui.model.network.request.CreateKnobRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

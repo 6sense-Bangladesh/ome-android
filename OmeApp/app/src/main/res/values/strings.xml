@@ -66,6 +66,7 @@
     <string name="auto_shut_off_time_change_confirmation">Are you sure you want to change the auto shut-off timer value?</string>
     <string name="warning">Warning!</string>
     <string name="ome_knob_will_rotate">Ome Knob will now rotate itself through the settings. Hang tight! This may take a few seconds.</string>
+    <string name="ome_knob_manually_turn_to_the_low">Manually rotate the knob to the LOW position of the Single burner</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="save">Save</string>
@@ -112,10 +113,18 @@
     <string name="configure_knob">Configure Knob</string>
     <string name="direction_label">In what direction does your knob rotate when you turn it on?</string>
     <string name="device_calibration_label">Manually turn your knob to %1$s and press continue</string>
+    <string name="device_calibration_dual_label">Manually turn your knob to %1$s position for the %2$s zone burner and press continue</string>
+    <string name="device_calibration_off_label">Make sure your knob is in the OFF position and press continue</string>
     <string name="device_calibration_confirmation_label">Manually turn your knob to %1$s and press continue</string>
     <string name="calibration_confirmation_label">Is knob at %1$s?</string>
+    <string name="confirm_position">Confirm Position</string>
+    <string name="confirm_position_body">Are you sure you want to put the knob at burner %1$s ?</string>
+    <string name="change_burner_position_success_body">The change burner operation was a success</string>
+    <string name="calibration_confirmation_dual_label">Is knob at %1$s for the %2$s zone burner?</string>
+    <string name="issue_with_knob_label">There seems to be an issue with your knob. Please contact customer service so we can help! \n 855–663–5227 \n support@omekitchen.com</string>
     <string name="yes_btn">Yes</string>
-    <string name="no_btn">No, change position</string>
+    <string name="no_btn">No</string>
+    <string name="no_change_position_btn">No, change position</string>
     <string name="calibration_labels_error">Labels cannot be placed on top of one another</string>
     <string name="device_calibration_sub_label">**App may take a few seconds to update position**</string>
     <string name="zone_label">What type of burner are you setting up now?</string>

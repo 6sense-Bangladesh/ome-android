@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.Ome.databinding.FragmentMetalPlateBinding
 import com.ome.app.base.BaseFragment
+import com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
 
@@ -36,7 +37,10 @@ class MetalPlateInstallationFragment :
         binding.continueBtn.setOnClickListener {
             findNavController().navigate(
                 MetalPlateInstallationFragmentDirections.actionMetalPlateInstallationFragmentToSelectBurnerFragment(
-                    args.isComeFromSettings
+                    SelectBurnerFragmentParams(
+                        isComeFromSettings = args.isComeFromSettings,
+                        isChangeMode = false
+                    )
                 )
             )
         }

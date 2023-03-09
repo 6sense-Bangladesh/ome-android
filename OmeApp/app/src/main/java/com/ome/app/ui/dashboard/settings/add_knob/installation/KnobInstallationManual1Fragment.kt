@@ -13,6 +13,8 @@ import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentKnobInstallationManual1Binding
 import com.ome.app.base.BaseFragment
 import com.ome.app.base.EmptyViewModel
+import com.ome.app.utils.makeGone
+import com.ome.app.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.android.parcel.Parcelize
@@ -24,7 +26,6 @@ class KnobInstallationManual1Fragment :
     ) {
     override val viewModel: EmptyViewModel by viewModels()
 
-
     private val args by navArgs<KnobInstallationManual1FragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,6 +35,16 @@ class KnobInstallationManual1Fragment :
                 padding(horizontal = true)
                 margin(top = true)
             }
+        }
+
+        if (!args.params.isComeFromSettings) {
+            binding.backIv.makeGone()
+        } else {
+            binding.backIv.makeVisible()
+        }
+
+        binding.backIv.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         binding.continueBtn.applyInsetter {
@@ -63,8 +74,13 @@ class KnobInstallationManual1Fragment :
     }
 
     override fun handleBackPressEvent() {
+        binding.backIv.makeGone()
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {}
+            override fun handleOnBackPressed() {
+                if (args.params.isComeFromSettings) {
+                    findNavController().popBackStack()
+                }
+            }
         })
     }
 

@@ -4,7 +4,9 @@ import com.ome.app.base.BaseViewModel
 import com.ome.app.base.SingleLiveEvent
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.user.UserRepository
+import com.ome.app.ui.model.network.request.CreateKnobRequest
 import com.ome.app.ui.stove.StoveOrientation
+import com.ome.app.utils.withDelay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -16,7 +18,12 @@ class SelectBurnerViewModel @Inject constructor(
 
     var selectedBurnerIndex: Int? = null
 
+    var macAddress = ""
+
     val selectedIndexesLiveData: SingleLiveEvent<Pair<StoveOrientation, List<Int>>> =
+        SingleLiveEvent()
+
+    val knobPositionResponseLiveData: SingleLiveEvent<Boolean> =
         SingleLiveEvent()
 
     fun loadData() = launch(dispatcher = ioContext) {
@@ -30,5 +37,17 @@ class SelectBurnerViewModel @Inject constructor(
             }
 
         }
+    }
+
+    fun changeKnobPosition(stovePosition: Int) = launch(dispatcher = ioContext) {
+        stoveRepository.updateKnobInfo(
+            params = CreateKnobRequest(
+                stovePosition = stovePosition,
+                macID = macAddress
+            ),
+            macAddress = macAddress
+        )
+        stoveRepository.getAllKnobs()
+        knobPositionResponseLiveData.postValue(true)
     }
 }

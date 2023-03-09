@@ -1,6 +1,8 @@
 package com.ome.app.ui.dashboard.settings.add_knob.burner
 
 import android.os.Bundle
+import android.os.Parcelable
+import android.text.SpannableStringBuilder
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -13,6 +15,7 @@ import com.ome.app.ui.dashboard.settings.add_knob.scanner.QrCodeScannerParams
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
+import kotlinx.android.parcel.Parcelize
 
 @AndroidEntryPoint
 class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectBurnerBinding>(
@@ -37,6 +40,7 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
             }
         }
 
+        viewModel.macAddress = args.params.macAddress
         binding.backIv.setOnClickListener { findNavController().popBackStack() }
 
         binding.burnerSelectionView.onBurnerSelect = { index ->
@@ -48,14 +52,42 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
                 ?.let {
                     binding.continueBtn.drawableBackground = it
                 }
+            binding.continueBtn.isEnabled = true
+            ContextCompat.getDrawable(requireContext(), R.drawable.ome_gradient_button_unpressed_color)
+                ?.let {
+                    binding.continueBtn.drawableBackground = it
+                }
             binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_unpressed_color)
             viewModel.selectedBurnerIndex = index
         }
         binding.continueBtn.setOnClickListener {
             viewModel.selectedBurnerIndex?.let {
-                findNavController().navigate(SelectBurnerFragmentDirections.actionSelectBurnerFragmentToQrCodeScannerFragment(
-                    QrCodeScannerParams(isComeFromSettings = args.isComeFromSettings, selectedIndex = it)
-                ))
+                if (args.params.isChangeMode) {
+                    showDialog(
+                        title = getString(R.string.confirm_position),
+                        positiveButtonText = getString(R.string.yes_btn),
+                        negativeButtonText = getString(R.string.no_btn),
+                        message = SpannableStringBuilder(
+                            getString(
+                                R.string.confirm_position_body,
+                                it
+                            )
+                        ),
+                        onPositiveButtonClick = {
+                            binding.continueBtn.startAnimation()
+                            viewModel.changeKnobPosition(stovePosition = it)
+                        }
+                    )
+                } else {
+                    findNavController().navigate(
+                        SelectBurnerFragmentDirections.actionSelectBurnerFragmentToQrCodeScannerFragment(
+                            QrCodeScannerParams(
+                                isComeFromSettings = args.params.isComeFromSettings,
+                                selectedIndex = it
+                            )
+                        )
+                    )
+                }
             }
         }
 
@@ -67,6 +99,20 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
         subscribe(viewModel.selectedIndexesLiveData) {
             binding.burnerSelectionView.initStoveBurners(it.first, it.second)
         }
+        subscribe(viewModel.knobPositionResponseLiveData) {
+            binding.continueBtn.revertAnimation()
+            showSuccessDialog(message = getString(R.string.change_burner_position_success_body), onDismiss = {
+                findNavController().popBackStack()
+            })
+        }
 
     }
 }
+
+@Parcelize
+data class SelectBurnerFragmentParams(
+    val isComeFromSettings: Boolean = false,
+    val isChangeMode: Boolean = false,
+    val macAddress: String = "",
+) : Parcelable
+

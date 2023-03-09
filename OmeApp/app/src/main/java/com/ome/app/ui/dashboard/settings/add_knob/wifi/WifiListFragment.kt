@@ -33,7 +33,8 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
                             ssid = item.ssid,
                             securityType = item.securityType,
                             macAddr = viewModel.macAddr,
-                            isComeFromSettings = args.params.isComeFromSettings
+                            isComeFromSettings = args.params.isComeFromSettings,
+                            isChangeWifiMode = args.params.isChangeWifiMode
                         )
                     )
                 )
@@ -86,5 +87,6 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
 @Parcelize
 data class WifiListFragmentParams(
     val isComeFromSettings: Boolean = true,
+    val isChangeWifiMode: Boolean = false,
     val macAddrs: String = ""
 ) : Parcelable

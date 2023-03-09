@@ -20,8 +20,6 @@ class DeviceCalibrationViewModel @Inject constructor(
 
     var currentCalibrationStateLiveData = SingleLiveEvent<CalibrationState>()
 
-    var labelLiveData = SingleLiveEvent<Pair<CalibrationState, Float>>()
-
     val calibrationIsDoneLiveData = SingleLiveEvent<Boolean>()
 
     val previousScreenTriggered = SingleLiveEvent<Boolean>()
@@ -29,106 +27,233 @@ class DeviceCalibrationViewModel @Inject constructor(
     fun setLabel() {
         val angle = knobAngleLiveData.value
         angle?.let {
-            if (validateAngle(angle, currentCalibrationStateLiveData.value!!)) {
-                currentCalibrationStateLiveData.value?.let { step ->
-                    when (step) {
-                        CalibrationState.OFF -> {
-                            offAngle = angle
-                            launch(dispatcher = ioContext) {
-                                rotationDir?.let { dir ->
+            if (isDualKnob) {
+                if (validateDualKnobAngle(angle, currentCalibrationStateLiveData.value!!)) {
+                    currentCalibrationStateLiveData.value?.let { step ->
+                        when (step) {
+                            CalibrationState.OFF -> {
+                                offAngle = angle
+                                launch(dispatcher = ioContext) {
                                     stoveRepository.initCalibration(
                                         InitCalibrationRequest(
                                             offAngle = angle.toInt(),
-                                            rotationDir = dir
+                                            rotationDir = 2
                                         ), macAddress
                                     )
                                 }
+                                divideCircleBasedOnOffPosition()
                             }
+                            CalibrationState.LOW_SINGLE -> {
+                                lowSingleAngle = angle
+                            }
+                            CalibrationState.LOW_DUAL -> {
+                                lowDualAngle = angle
+                            }
+                            CalibrationState.HIGH_SINGLE -> {
+                                highSingleAngle = angle
+                            }
+                            CalibrationState.HIGH_DUAL -> {
+                                highDualAngle = angle
+                            }
+                            else -> {}
                         }
-                        CalibrationState.LOW -> {
-                            lowAngle = angle
-                            Log.i(
-                                DeviceCalibrationViewModel::class.simpleName,
-                                "setLabel: calibarion is done"
-                            )
-                            calibrationIsDoneLiveData.postValue(true)
-                        }
-                        CalibrationState.MEDIUM -> mediumAngle = angle
-                        CalibrationState.HIGH -> highAngle = angle
+                        currSetting++
+                        labelLiveData.postValue(step to angle)
+                        nextStep()
                     }
-                    labelLiveData.postValue(step to angle)
+
+                } else {
+                    defaultErrorLiveData.postValue(resourceProvider.getString(R.string.calibration_labels_error))
                 }
             } else {
-                defaultErrorLiveData.postValue(resourceProvider.getString(R.string.calibration_labels_error))
+                if (validateSingleKnobAngle(angle, currentCalibrationStateLiveData.value!!)) {
+                    currentCalibrationStateLiveData.value?.let { step ->
+                        when (step) {
+                            CalibrationState.OFF -> {
+                                offAngle = angle
+                                launch(dispatcher = ioContext) {
+                                    rotationDir?.let { dir ->
+                                        stoveRepository.initCalibration(
+                                            InitCalibrationRequest(
+                                                offAngle = angle.toInt(),
+                                                rotationDir = dir
+                                            ), macAddress
+                                        )
+                                    }
+                                }
+                            }
+                            CalibrationState.LOW_SINGLE -> {
+                                lowSingleAngle = angle
+                                Log.i(
+                                    DeviceCalibrationViewModel::class.simpleName,
+                                    "setLabel: calibarion is done"
+                                )
+                                calibrationIsDoneLiveData.postValue(true)
+                            }
+                            CalibrationState.MEDIUM -> mediumAngle = angle
+                            CalibrationState.HIGH_SINGLE -> highSingleAngle = angle
+                            CalibrationState.HIGH_DUAL -> highDualAngle = angle
+                            CalibrationState.LOW_DUAL -> lowDualAngle = angle
+                        }
+                        labelLiveData.postValue(step to angle)
+                        nextStep()
+                    }
+                } else {
+                    defaultErrorLiveData.postValue(resourceProvider.getString(R.string.calibration_labels_error))
+                }
+            }
+        }
+
+    }
+
+
+    private fun divideCircleBasedOnOffPosition() {
+        offAngle?.let { angle ->
+            firstDiv = angle.toInt()
+            secondDiv = angle.toInt() - 180
+
+            if (secondDiv < 0) {
+                secondDiv += 360
+            }
+            rightAllowedZoneStartAngle = angle + angleOffset
+            rightAllowedZoneEndAngle = angle + 180 - angleOffset
+
+            if (rightAllowedZoneStartAngle > 360) {
+                rightAllowedZoneStartAngle -= 360
+            }
+
+            if (rightAllowedZoneEndAngle > 360) {
+                rightAllowedZoneEndAngle -= 360
+            }
+
+            leftAllowedZoneStartAngle = angle - angleOffset
+            leftAllowedZoneEndAngle = angle - 180 + angleOffset
+
+            if (leftAllowedZoneStartAngle < 0) {
+                leftAllowedZoneStartAngle += 360
+            }
+
+            if (leftAllowedZoneEndAngle < 0) {
+                leftAllowedZoneEndAngle += 360
             }
         }
 
     }
 
     fun clearData() {
+        firstDiv = 0
+        secondDiv = 0
+        currSetting = 0
+        leftAllowedZoneStartAngle = 0f
+        leftAllowedZoneEndAngle = 0f
+        rightAllowedZoneStartAngle = 0f
+        rightAllowedZoneEndAngle = 0f
         offAngle = null
-        lowAngle = null
+        lowSingleAngle = null
+        lowDualAngle = null
         mediumAngle = null
-        highAngle = null
+        highSingleAngle = null
+        highDualAngle = null
         calibrationIsDoneLiveData.value = false
     }
-
-    private fun validateAngle(angle: Float, calibrationState: CalibrationState): Boolean {
+    private fun validateSingleKnobAngle(
+        angle: Float,
+        calibrationState: CalibrationState
+    ): Boolean {
         when (calibrationState) {
             CalibrationState.OFF -> {}
-            CalibrationState.HIGH -> {}
+            CalibrationState.HIGH_SINGLE -> {}
             CalibrationState.MEDIUM -> {}
-            CalibrationState.LOW -> {
-                if (highAngle != null && mediumAngle != null) {
-                    if(highAngle!!>mediumAngle!!){
-                        if (angle in mediumAngle!!..highAngle!!){
+            CalibrationState.LOW_SINGLE -> {
+                if (highSingleAngle != null && mediumAngle != null) {
+                    if (highSingleAngle!! > mediumAngle!!) {
+                        if (angle in mediumAngle!!..highSingleAngle!!) {
                             return false
                         }
                     } else {
-                        if (angle in highAngle!!..mediumAngle!!){
+                        if (angle in highSingleAngle!!..mediumAngle!!) {
                             return false
                         }
                     }
                 }
             }
+            else -> {}
         }
         offAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        lowAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
+        lowSingleAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
         mediumAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        highAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
+        highSingleAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
         return true
     }
 
-    fun nextStep() {
-        val currentIndex = calibrationStatesSequence.indexOf(currentCalibrationStateLiveData.value)
-        if (currentIndex == calibrationStatesSequence.size - 1) {
-            calibrationIsDoneLiveData.postValue(true)
+    private fun validateDualKnobAngle(
+        angle: Float,
+        calibrationState: CalibrationState
+    ): Boolean {
+        when (calibrationState) {
+            CalibrationState.OFF -> {}
+            CalibrationState.HIGH_SINGLE -> {}
+            CalibrationState.LOW_SINGLE -> {}
+            CalibrationState.MEDIUM -> {}
+
+            else -> {}
+        }
+        offAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
+        lowSingleAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
+        mediumAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
+        highSingleAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
+        return true
+    }
+
+    private fun nextStep() {
+        if (!isDualKnob) {
+            val currentIndex =
+                calibrationStatesSequenceSingleZone.indexOf(currentCalibrationStateLiveData.value)
+            if (currentIndex == calibrationStatesSequenceSingleZone.size - 1) {
+                calibrationIsDoneLiveData.postValue(true)
+            } else {
+                currentCalibrationStateLiveData.postValue(calibrationStatesSequenceSingleZone[currentIndex + 1])
+            }
         } else {
-            currentCalibrationStateLiveData.postValue(calibrationStatesSequence[currentIndex + 1])
+            val currentIndex =
+                calibrationStatesSequenceDualZone.indexOf(currentCalibrationStateLiveData.value)
+            if (currentIndex == calibrationStatesSequenceDualZone.size - 1) {
+                calibrationIsDoneLiveData.postValue(true)
+            } else {
+                currentCalibrationStateLiveData.postValue(calibrationStatesSequenceDualZone[currentIndex + 1])
+            }
         }
     }
 
     fun previousStep() {
-        val currentIndex = calibrationStatesSequence.indexOf(currentCalibrationStateLiveData.value)
+        val currentIndex = if (!isDualKnob) {
+            calibrationStatesSequenceSingleZone.indexOf(currentCalibrationStateLiveData.value)
+        } else {
+            calibrationStatesSequenceDualZone.indexOf(currentCalibrationStateLiveData.value)
+        }
         if (currentIndex == 0) {
             previousScreenTriggered.postValue(true)
         } else {
-            val step = calibrationStatesSequence[currentIndex - 1]
+            val step = if (!isDualKnob) {
+                calibrationStatesSequenceSingleZone[currentIndex - 1]
+            } else {
+                calibrationStatesSequenceDualZone[currentIndex - 1]
+            }
+
             when (step) {
                 CalibrationState.OFF -> offAngle = null
-                CalibrationState.LOW -> lowAngle = null
+                CalibrationState.LOW_SINGLE -> lowSingleAngle = null
                 CalibrationState.MEDIUM -> mediumAngle = null
-                CalibrationState.HIGH -> highAngle = null
+                CalibrationState.HIGH_SINGLE -> highSingleAngle = null
+                CalibrationState.HIGH_DUAL -> highDualAngle = null
+                CalibrationState.LOW_DUAL -> lowDualAngle = null
             }
             currentCalibrationStateLiveData.postValue(step)
+            currSetting--
         }
     }
 }
 
-enum class CalibrationState {
-    OFF, HIGH, MEDIUM, LOW
-}
-
-enum class CalibrationStep {
-    CALIBRATION, CONFIRMATION, ROTATE_ITSELF
+enum class CalibrationState(val positionName: String) {
+    OFF("OFF"), HIGH_SINGLE("HIGH"), MEDIUM("MEDIUM"), LOW_SINGLE("LOW"), HIGH_DUAL("HIGH"), LOW_DUAL("LOW")
 }

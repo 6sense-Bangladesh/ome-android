@@ -42,7 +42,6 @@ class DeviceCalibrationFragment :
                 margin(bottom = true)
             }
         }
-
         viewModel.clearData()
         binding.skipTv.setOnClickListener {
             showDialog(
@@ -90,27 +89,24 @@ class DeviceCalibrationFragment :
             findNavController().popBackStack()
         }
         subscribe(viewModel.calibrationIsDoneLiveData) {
-            if (it) {
-                findNavController().navigate(
-                    DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToDeviceCalibrationConfirmationFragment(
-                        DeviceCalibrationConfirmationFragmentParams(
-                            isComeFromSettings = args.params.isComeFromSettings,
-                            offPosition = viewModel.offAngle ?: 0f,
-                            lowPosition = viewModel.lowAngle ?: 0f,
-                            medPosition = viewModel.mediumAngle ?: 0f,
-                            highPosition = viewModel.highAngle ?: 0f,
-                            macAddr = viewModel.macAddress,
-                            isDualKnob = args.params.isDualKnob,
-                            rotateDir = viewModel.rotationDir ?: -1
+                if (it) {
+                    findNavController().navigate(
+                        DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToDeviceCalibrationConfirmationFragment(
+                            DeviceCalibrationConfirmationFragmentParams(
+                                isComeFromSettings = args.params.isComeFromSettings,
+                                offPosition = viewModel.offAngle ?: 0f,
+                                lowSinglePosition = viewModel.lowSingleAngle ?: 0f,
+                                lowDualPosition = viewModel.lowDualAngle ?: 0f,
+                                medPosition = viewModel.mediumAngle ?: 0f,
+                                highSinglePosition = viewModel.highSingleAngle ?: 0f,
+                                highDualPosition = viewModel.highDualAngle ?: 0f,
+                                macAddr = viewModel.macAddress,
+                                isDualKnob = args.params.isDualKnob,
+                                rotateDir = viewModel.rotationDir ?: -1
+                            )
                         )
                     )
-                )
             }
-
-
-//            binding.labelTv.text =
-//                getString(R.string.calibration_confirmation_label)
-//            binding.continueBtn.text = getString(R.string.yes_btn)
         }
         subscribe(viewModel.knobAngleLiveData) {
             binding.knobView.setKnobPosition(it)
@@ -119,13 +115,13 @@ class DeviceCalibrationFragment :
         subscribe(viewModel.labelLiveData) {
             when (it.first) {
                 CalibrationState.OFF -> binding.knobView.setOffPosition(it.second)
-                CalibrationState.LOW -> binding.knobView.setLowPosition(it.second)
+                CalibrationState.LOW_SINGLE -> binding.knobView.setLowSinglePosition(it.second)
                 CalibrationState.MEDIUM -> binding.knobView.setMediumPosition(it.second)
-                CalibrationState.HIGH -> binding.knobView.setHighPosition(it.second)
+                CalibrationState.HIGH_SINGLE -> binding.knobView.setHighSinglePosition(it.second)
+                CalibrationState.HIGH_DUAL -> binding.knobView.setHighDualPosition(it.second)
+                CalibrationState.LOW_DUAL -> binding.knobView.setLowDualPosition(it.second)
             }
-            viewModel.nextStep()
         }
-
         subscribe(viewModel.zoneLiveData) {
             binding.knobView.setStovePosition(it)
         }
@@ -134,12 +130,39 @@ class DeviceCalibrationFragment :
             if (currentStep == CalibrationState.OFF) {
                 binding.subLabelTv.makeGone()
                 binding.skipTv.makeGone()
+                binding.labelTv.text =
+                    getString(R.string.device_calibration_off_label)
             } else {
                 binding.subLabelTv.makeVisible()
                 binding.skipTv.makeVisible()
+                if (viewModel.isDualKnob) {
+                    when (currentStep) {
+                        CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE -> {
+                            binding.labelTv.text =
+                                getString(
+                                    R.string.device_calibration_dual_label,
+                                    currentStep.positionName,
+                                    "Single"
+                                )
+                        }
+                        CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> {
+                            binding.labelTv.text =
+                                getString(
+                                    R.string.device_calibration_dual_label,
+                                    currentStep.positionName,
+                                    "Dual"
+                                )
+                        }
+                        else -> {}
+                    }
+                } else {
+                    binding.labelTv.text =
+                        getString(R.string.device_calibration_label, currentStep.positionName)
+                }
+
             }
-            binding.labelTv.text =
-                getString(R.string.device_calibration_label, currentStep.name)
+
+
         }
 
     }

@@ -6,6 +6,8 @@ import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.model.base.ResponseWrapper
 import com.ome.app.model.network.request.*
 import com.ome.app.model.network.response.*
+import com.ome.app.ui.model.network.request.CreateKnobRequest
+import com.ome.app.ui.model.network.response.BaseResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.coroutines.coroutineContext
 
@@ -18,6 +20,8 @@ interface StoveRepository {
     suspend fun setCalibration(params: SetCalibrationRequest, macAddress: String): KnobDto
     suspend fun changeKnobAngle(params: ChangeKnobAngle, macAddress: String): ChangeKnobAngleResponse
     suspend fun createKnob(params: CreateKnobRequest, macAddress: String): CreateKnobResponse
+    suspend fun updateKnobInfo(params: CreateKnobRequest, macAddress: String): CreateKnobResponse
+    suspend fun clearWifi(macAddress: String): BaseResponse
     val knobsFlow: MutableStateFlow<List<KnobDto>?>
 }
 
@@ -40,8 +44,7 @@ class StoveRepositoryImpl(
     }
 
     override suspend fun getAllKnobs(): List<KnobDto> {
-        val response = stoveService.getAllKnobsResponse()
-        webSocketManager
+        val response = stoveService.getAllKnobs()
         knobsFlow.tryEmit(response)
         return response
     }
@@ -76,6 +79,17 @@ class StoveRepositoryImpl(
         macAddress: String
     ): CreateKnobResponse {
         return stoveService.createKnob(params, macAddress)
+    }
+
+    override suspend fun updateKnobInfo(
+        params: CreateKnobRequest,
+        macAddress: String
+    ): CreateKnobResponse {
+        return stoveService.updateKnobInfo(params, macAddress)
+    }
+
+    override suspend fun clearWifi(macAddress: String): BaseResponse {
+        return stoveService.clearWifi(macAddress)
     }
 
     override val knobsFlow: MutableStateFlow<List<KnobDto>?> = MutableStateFlow(listOf())

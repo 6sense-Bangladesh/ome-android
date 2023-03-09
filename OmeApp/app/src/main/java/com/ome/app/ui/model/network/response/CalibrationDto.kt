@@ -1,4 +1,4 @@
-package com.ome.app.model.network.response
+package com.ome.app.ui.model.network.response
 
 data class CalibrationDto(
     val offAngle: Int,

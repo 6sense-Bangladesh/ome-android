@@ -72,6 +72,7 @@ class SignUpConfirmationViewModel @Inject constructor(
                 is ResponseWrapper.Success -> {
                     signUpConfirmationResultLiveData.postValue(true)
                 }
+                else -> {}
             }
         } ?: run {
             signUpConfirmationResultLiveData.postValue(false)

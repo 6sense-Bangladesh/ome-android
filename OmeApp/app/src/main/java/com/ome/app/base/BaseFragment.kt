@@ -59,8 +59,6 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                 showSuccessDialog(message = it)
             }
         }
-
-
     }
 
 

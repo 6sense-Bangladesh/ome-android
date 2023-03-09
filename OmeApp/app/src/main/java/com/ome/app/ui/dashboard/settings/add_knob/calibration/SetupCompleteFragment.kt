@@ -2,6 +2,7 @@ package com.ome.app.ui.dashboard.settings.add_knob.calibration
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -56,5 +57,14 @@ class SetupCompleteFragment :
             }
         }
 
+    }
+
+    override fun handleBackPressEvent() {
+        requireActivity().onBackPressedDispatcher.addCallback(object :
+            OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+            }
+        })
     }
 }

@@ -7,6 +7,7 @@ import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.core.AmplifyConfiguration
 import com.amplifyframework.kotlin.core.Amplify
+import com.ome.Ome.BuildConfig
 import com.ome.Ome.R
 import dagger.hilt.android.HiltAndroidApp
 
@@ -21,7 +22,12 @@ class OmeApplication : Application() {
             Amplify.addPlugin(AWSCognitoAuthPlugin())
             val config: AmplifyConfiguration = AmplifyConfiguration.fromConfigFile(
                 applicationContext,
-                R.raw.amplifyconfigurationprod
+                if (BuildConfig.DEBUG) {
+                    R.raw.amplifyconfigurationdev
+                } else {
+                    R.raw.amplifyconfigurationprod
+                }
+
             )
             Amplify.configure(config, applicationContext)
             Log.i("restManager", "Initialized Amplify")

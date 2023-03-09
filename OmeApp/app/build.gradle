@@ -41,25 +41,25 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://app.api.omekitchen.com/\"")
-            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws.api.omekitchen.com\"")
+            buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws-dev.api.omekitchen.com\"")
         }
 
         sandbox {
             buildConfigField("String", "BASE_URL", "\"https://app-sandbox.api.omekitchen.com/\"")
-            buildConfigField("String", "BASE_URL", "\"wss://app-ws-sandbox.api.omekitchen.com\"")
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws-sandbox.api.omekitchen.com\"")
         }
 
         demo {
             buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
-            buildConfigField("String", "BASE_URL", "\"wss://app-ws-dev.api.omekitchen.com\"")
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws-dev.api.omekitchen.com\"")
         }
 
         release {
             minifyEnabled false
             debuggable false
-            buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
-           // buildConfigField("String", "BASE_URL", "\"wss://app-ws.api.omekitchen.com\"")
+            buildConfigField("String", "BASE_URL", "\"https://app.api.omekitchen.com/\"")
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws.api.omekitchen.com\"")
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }

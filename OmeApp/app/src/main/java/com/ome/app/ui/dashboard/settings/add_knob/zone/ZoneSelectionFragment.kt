@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentZoneSelectionBinding
 import com.ome.app.base.BaseFragment
+import com.ome.app.ui.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
 import com.ome.app.ui.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
 import com.ome.app.utils.makeGone
 import com.ome.app.utils.makeVisible
@@ -43,16 +44,30 @@ class ZoneSelectionFragment :
         binding.backIv.setOnClickListener { findNavController().popBackStack() }
 
         binding.continueBtn.setOnClickListener {
-            findNavController().navigate(
-                ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(
-                    DirectionSelectionFragmentParams(
-                        args.params.isComeFromSettings,
-                        viewModel.zoneNumber,
-                        viewModel.isDualKnob,
-                        args.params.macAddr
+            if (viewModel.zoneNumber == 2) {
+                findNavController().navigate(
+                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
+                        DeviceCalibrationFragmentParams(
+                            isComeFromSettings = args.params.isComeFromSettings,
+                            zoneNumber = viewModel.zoneNumber,
+                            isDualKnob = viewModel.isDualKnob,
+                            macAddr =  args.params.macAddr
+                        )
                     )
                 )
-            )
+            } else {
+                findNavController().navigate(
+                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(
+                        DirectionSelectionFragmentParams(
+                            args.params.isComeFromSettings,
+                            viewModel.zoneNumber,
+                            viewModel.isDualKnob,
+                            args.params.macAddr
+                        )
+                    )
+                )
+            }
+
         }
         binding.singleZoneRl.setOnClickListener {
             binding.dualZoneCoverIv.makeVisible()
@@ -68,7 +83,6 @@ class ZoneSelectionFragment :
             viewModel.isDualKnob = true
             enableContinueButton()
         }
-
     }
 
     private fun enableContinueButton() {
