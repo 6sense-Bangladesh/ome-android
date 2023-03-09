@@ -1,6 +1,6 @@
 package com.ome.app.ui.base
 
-import com.ome.app.utils.SocketManager
+import com.ome.app.data.local.SocketManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

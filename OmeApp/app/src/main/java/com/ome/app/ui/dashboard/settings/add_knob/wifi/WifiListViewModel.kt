@@ -3,8 +3,8 @@ package com.ome.app.ui.dashboard.settings.add_knob.wifi
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.ui.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
-import com.ome.app.utils.KnobSocketMessage
-import com.ome.app.utils.SocketManager
+import com.ome.app.data.local.KnobSocketMessage
+import com.ome.app.data.local.SocketManager
 import com.ome.app.utils.WifiHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

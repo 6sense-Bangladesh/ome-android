@@ -10,7 +10,7 @@ import com.ome.Ome.databinding.FragmentWifiListBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.base.recycler.RecyclerDelegationAdapter
 import com.ome.app.ui.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemAdapter
-import com.ome.app.utils.KnobSocketMessage
+import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter

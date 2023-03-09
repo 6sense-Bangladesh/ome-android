@@ -15,7 +15,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 class WebSocketManager {
     private var scarlet: Scarlet? = null
 
-
     val knobAngleFlow: MutableStateFlow<KnobAngle?> = MutableStateFlow(null)
     val knobBatteryFlow: MutableStateFlow<KnobBattery?> = MutableStateFlow(null)
     val knobConnectStatusFlow: MutableStateFlow<KnobConnectStatus?> = MutableStateFlow(null)

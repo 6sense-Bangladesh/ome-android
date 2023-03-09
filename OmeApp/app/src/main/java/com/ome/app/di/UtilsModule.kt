@@ -4,7 +4,6 @@ import android.content.Context
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.ConnectionStatusListenerImpl
 import com.ome.app.data.local.ResourceProvider
-import com.ome.app.utils.SocketManager
 import com.ome.app.utils.WifiHandler
 import dagger.Module
 import dagger.Provides
@@ -29,13 +28,5 @@ object UtilsModule {
         resourceProvider: ResourceProvider
     ): WifiHandler =
         WifiHandler(context, resourceProvider)
-
-    @Provides
-    @Singleton
-    fun provideSocketManager(
-        @ApplicationContext context: Context
-    ): SocketManager =
-        SocketManager(context)
-
 
 }

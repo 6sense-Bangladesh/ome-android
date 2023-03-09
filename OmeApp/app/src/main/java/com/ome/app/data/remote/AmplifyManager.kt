@@ -26,13 +26,7 @@ class AmplifyResultValue {
 
 class AmplifyManager {
 
-    // TODO: Remove when done with amplify manager tests
-    var accessToken: String = ""
-
-    // TODO: EOR
-//    var auth: AuthCategory = Amplify.Auth
     var kotAuth: KotlinAuthFacade = Amplify.Auth
-//    private var restManager: RESTManager = RESTManager
 
     val signOutFlow: MutableSharedFlow<Boolean> =
         MutableSharedFlow(

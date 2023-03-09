@@ -21,7 +21,6 @@ interface UserRepository {
     suspend fun updateUser(params: CreateUserRequest): ResponseWrapper<UserResponse>
     suspend fun deleteUser(): DeleteUserResponse
     val userFlow: MutableStateFlow<UserResponse?>
-
 }
 
 class UserRepositoryImpl(

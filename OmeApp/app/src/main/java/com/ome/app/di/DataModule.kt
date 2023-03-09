@@ -13,6 +13,7 @@ import com.ome.app.data.remote.stove.StoveRepositoryImpl
 import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.data.remote.user.UserRepositoryImpl
 import com.ome.app.data.remote.websocket.WebSocketManager
+import com.ome.app.data.local.SocketManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,6 +58,13 @@ object DataModule {
     @Provides
     @Singleton
     fun provideWebSocketManager(): WebSocketManager = WebSocketManager()
+
+    @Provides
+    @Singleton
+    fun provideSocketManager(
+        @ApplicationContext context: Context
+    ): SocketManager =
+        SocketManager(context)
 
     @Provides
     @Singleton
