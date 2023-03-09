@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/knobCircleCl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="48dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_knob_circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/stovePositionTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Label.20sp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
+        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"
+        app:layout_constraintTop_toTopOf="@+id/knobCircleCl"
+        tools:text="1" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/offCl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
+        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
+        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"
+        app:layout_constraintTop_toTopOf="@+id/knobCircleCl">
+
+        <TextView
+            android:id="@+id/offTv"
+            style="@style/Title.18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="14sp"
+            android:text="@string/off_position"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lowSingleCl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
+        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
+        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"
+        app:layout_constraintTop_toTopOf="@+id/knobCircleCl">
+
+        <TextView
+            android:id="@+id/lowSingleTv"
+            style="@style/Title.16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="14sp"
+            android:text="@string/low_position"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lowDualCl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
+        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
+        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"
+        app:layout_constraintTop_toTopOf="@+id/knobCircleCl">
+
+        <TextView
+            android:id="@+id/lowDualTv"
+            style="@style/Title.16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="14sp"
+            android:text="@string/low_position"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mediumCl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
+        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
+        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"
+        app:layout_constraintTop_toTopOf="@+id/knobCircleCl">
+
+        <TextView
+            android:id="@+id/mediumTv"
+            style="@style/Title.16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="14sp"
+            android:text="@string/medium_position"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/highSingleCl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
+        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
+        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"
+        app:layout_constraintTop_toTopOf="@+id/knobCircleCl">
+
+        <TextView
+            android:id="@+id/highSingleTv"
+            style="@style/Title.16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="14sp"
+            android:text="@string/high_position"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/highDualCl"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
+        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
+        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"
+        app:layout_constraintTop_toTopOf="@+id/knobCircleCl">
+
+        <TextView
+            android:id="@+id/highDualTv"
+            style="@style/Title.16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="14sp"
+            android:text="@string/high_position"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

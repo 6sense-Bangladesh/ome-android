@@ -7,6 +7,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
 import com.ome.app.utils.loge
+import com.ome.app.utils.logi
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,6 @@ interface ConnectionStatusListener {
 
     var failureNavigationFlow: MutableSharedFlow<Throwable>
 
-
     fun registerListener()
     fun unregisterListener()
     fun setDismissedStatus()
@@ -25,17 +25,20 @@ interface ConnectionStatusListener {
     enum class ConnectionStatusState {
         Default, HasConnection, NoConnection, Dismissed
     }
+
+    var shouldReactOnChanges: Boolean
 }
 
 class ConnectionStatusListenerImpl(
     private val context: Context
 ) : ConnectionStatusListener {
 
+    override var shouldReactOnChanges: Boolean = true
+
     override var failureNavigationFlow: MutableSharedFlow<Throwable> = MutableSharedFlow(
         replay = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
-
 
     override val connectionStatusFlow =
         MutableStateFlow(ConnectionStatusListener.ConnectionStatusState.Default)
@@ -60,6 +63,7 @@ class ConnectionStatusListenerImpl(
             }
 
             override fun onAvailable(network: Network) {
+                logi("Network available")
                 connectionStatusFlow.tryEmit(
                     ConnectionStatusListener.ConnectionStatusState.HasConnection
                 )
@@ -91,6 +95,7 @@ class ConnectionStatusListenerImpl(
             ConnectionStatusListener.ConnectionStatusState.Dismissed
         )
     }
+
 
     private fun isNetworkAvailable(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

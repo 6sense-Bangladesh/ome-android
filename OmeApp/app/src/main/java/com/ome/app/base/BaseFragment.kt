@@ -6,7 +6,6 @@ import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.core.view.WindowInsetsControllerCompat
@@ -15,17 +14,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.ome.app.MainVM
-import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.ui.dashboard.members.MembersFragment
 import com.ome.app.ui.dashboard.mystove.MyStoveFragment
 import com.ome.app.ui.dashboard.profile.ProfileFragment
 import com.ome.app.ui.dashboard.settings.SettingsFragment
 import com.ome.app.ui.launch.LaunchFragment
 import com.ome.app.ui.signup.welcome.WelcomeFragment
-import com.ome.app.ui.stove.StoveSetupBrandFragment
-import com.ome.app.ui.stove.StoveSetupTypeFragment
 import com.ome.app.utils.subscribe
-import es.dmoral.toasty.Toasty
 
 
 abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
@@ -36,6 +31,8 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
     protected val binding by viewBindingAlt(factory)
 
     protected val mainViewModel: MainVM by activityViewModels()
+    protected var onDismissErrorDialog: () -> Unit = {}
+    protected var onDismissSuccessDialog: () -> Unit = {}
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,8 +59,6 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                 showSuccessDialog(message = it)
             }
         }
-
-
     }
 
 
@@ -106,6 +101,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
         .setPositiveButton(
             "Ok"
         ) { dialog, p1 ->
+            onDismissSuccessDialog()
             onDismiss()
             dialog.cancel()
         }
@@ -136,6 +132,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
         .setPositiveButton(
             "Ok"
         ) { dialog, p1 ->
+            onDismissErrorDialog()
             dialog.cancel()
         }
         .show()

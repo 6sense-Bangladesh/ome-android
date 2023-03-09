@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/backIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_arrow_left"
+        android:tint="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/titleTv"
+        style="@style/Title.16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:gravity="center"
+        android:text="@string/configure_knob"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/backIv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/backIv" />
+
+
+    <TextView
+        android:id="@+id/labelTv"
+        style="@style/Label.16sp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="64dp"
+        android:layout_marginTop="48dp"
+        android:gravity="center"
+        android:text="@string/direction_label"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTv" />
+
+
+    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+        android:id="@+id/continueBtn"
+        android:background="@drawable/ome_gradient_button_pressed_color"
+        style="@style/OmeButton.Gradient.WithLoadingState"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginBottom="64dp"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="@string/continue_btn"
+        android:textAllCaps="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <RelativeLayout
+        android:id="@+id/counterClockWiseRl"
+        android:layout_width="148dp"
+        android:layout_height="148dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/clockWiseRl"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelTv">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_counter_clock" />
+
+        <ImageView
+            android:id="@+id/counterClockWiseCoverIv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_zone_cover_layer" />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/counterClockwiseTv"
+        style="@style/Label.16sp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="12dp"
+        android:text="@string/counter_clockwise"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/counterClockWiseRl"
+        app:layout_constraintStart_toStartOf="@+id/counterClockWiseRl"
+        app:layout_constraintTop_toBottomOf="@+id/counterClockWiseRl" />
+
+
+    <RelativeLayout
+        android:id="@+id/clockWiseRl"
+        android:layout_width="148dp"
+        android:layout_height="148dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/counterClockWiseRl"
+        app:layout_constraintTop_toBottomOf="@+id/labelTv">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_clockwise" />
+
+        <ImageView
+            android:id="@+id/clockWiseCoverIv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_zone_cover_layer" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/clockwiseTv"
+        style="@style/Label.16sp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="@string/clockwise"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/clockWiseRl"
+        app:layout_constraintStart_toEndOf="@+id/counterClockWiseRl"
+        app:layout_constraintTop_toBottomOf="@+id/counterClockWiseRl" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

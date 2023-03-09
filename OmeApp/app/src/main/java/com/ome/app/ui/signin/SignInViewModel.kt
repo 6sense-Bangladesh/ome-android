@@ -102,10 +102,8 @@ class SignInViewModel @Inject constructor(
                     loadingLiveData.postValue(false)
                     destinationAfterSignInLiveData.postValue(R.id.action_signInFragment_to_dashboardFragment to null)
                 }
+                else -> {}
             }
-
-
-
         }
     }
 }

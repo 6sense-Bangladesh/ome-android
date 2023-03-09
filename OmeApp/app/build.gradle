@@ -42,24 +42,24 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
-            //buildConfigField("String", "BASE_URL", "\"app-ws-dev.api.omekitchen.com\"")
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws-dev.api.omekitchen.com\"")
         }
 
         sandbox {
             buildConfigField("String", "BASE_URL", "\"https://app-sandbox.api.omekitchen.com/\"")
-            buildConfigField("String", "BASE_URL", "\"wss://app-ws-sandbox.api.omekitchen.com\"")
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws-sandbox.api.omekitchen.com\"")
         }
 
         demo {
             buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
-            buildConfigField("String", "BASE_URL", "\"wss://app-ws-dev.api.omekitchen.com\"")
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws-dev.api.omekitchen.com\"")
         }
 
         release {
             minifyEnabled false
             debuggable false
-            buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
-           // buildConfigField("String", "BASE_URL", "\"wss://app-ws.api.omekitchen.com\"")
+            buildConfigField("String", "BASE_URL", "\"https://app.api.omekitchen.com/\"")
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws.api.omekitchen.com\"")
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
@@ -75,6 +75,11 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    packagingOptions {
+        pickFirst "META-INF/INDEX.LIST"
+        pickFirst "META-INF/io.netty.versions.properties"
+    }
 }
 
 
@@ -88,6 +93,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    implementation "io.projectreactor.netty:reactor-netty-core:1.1.3"
 
     //DI
     implementation "com.google.dagger:hilt-android:2.44"
@@ -103,6 +110,10 @@ dependencies {
     //Rest API
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+
+    //QR code
+    implementation "com.google.zxing:core:3.4.0"
 
     //UI
     implementation 'com.github.fornewid:neumorphism:0.3.2'
@@ -141,7 +152,21 @@ dependencies {
     //Splash screen API
     implementation 'androidx.core:core-splashscreen:1.0.0'
 
+    //wifi
+    implementation("io.github.thanosfisherman.wifiutils:wifiutils:1.6.6")
+
     implementation "dev.chrisbanes.insetter:insetter:0.6.1"
+
+    implementation("com.google.guava:guava:31.1-android")
+
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.70'
+
+    implementation 'com.tinder.scarlet:scarlet:0.1.12'
+    implementation 'com.tinder.scarlet:stream-adapter-coroutines:0.1.12'
+    implementation 'com.tinder.scarlet:message-adapter-gson:0.1.12'
+    implementation 'com.tinder.scarlet:websocket-okhttp:0.1.12'
+
+    implementation 'com.neovisionaries:nv-websocket-client:2.14'
 
     implementation 'com.github.santalu:maskara:1.0.0'
 

@@ -6,8 +6,378 @@
     app:startDestination="@id/settingsFragment">
 
 
+    <action
+        android:id="@+id/action_settingsFragment_to_knobWakeUpFragmentGlobal"
+        app:destination="@id/knobWakeUpFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.ome.app.ui.dashboard.settings.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="SettingsFragment">
+        <action
+            android:id="@+id/action_settingsFragment_to_supportFragment"
+            app:destination="@id/supportFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_settingsFragment_to_autoShutOffSettingsFragment"
+            app:destination="@id/autoShutOffSettingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_settingsFragment_to_stoveInfoFragment"
+            app:destination="@id/stoveInfoFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_settingsFragment_to_deviceSettingsFragment"
+            app:destination="@id/deviceSettingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_settingsFragment_to_knobWakeUpFragment"
+            app:destination="@id/knobWakeUpFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="com.ome.app.ui.dashboard.settings.support.SupportFragment"
+        android:label="SupportFragment" />
+    <fragment
+        android:id="@+id/autoShutOffSettingsFragment"
+        android:name="com.ome.app.ui.dashboard.settings.auto_shutoff.AutoShutOffSettingsFragment"
+        android:label="AutoShutOffSettingsFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right">
+        <argument
+            android:name="params"
+            app:argType="string" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/stoveInfoFragment"
+        android:name="com.ome.app.ui.dashboard.settings.stove_info.StoveInfoFragment"
+        android:label="StoveInfoFragment">
+        <argument
+            android:name="params"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_stoveInfoFragment_to_stoveSetupTypeFragment"
+            app:destination="@id/stoveSetupTypeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_stoveInfoFragment_to_stoveSetupBurnersFragment"
+            app:destination="@id/stoveSetupBurnersFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/stoveSetupTypeFragment"
+        android:name="com.ome.app.ui.stove.StoveSetupTypeFragment"
+        android:label="StoveSetupTypeFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.stove.StoveSetupTypeArgs" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/stoveSetupBurnersFragment"
+        android:name="com.ome.app.ui.stove.StoveSetupBurnersFragment"
+        android:label="StoveSetupBurnersFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.stove.StoveSetupBurnersArgs" />
+    </fragment>
+    <fragment
+        android:id="@+id/deviceSettingsFragment"
+        android:name="com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragment"
+        android:label="DeviceSettingsFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragmentParams" />
+        <action
+            android:id="@+id/action_deviceSettingsFragment_to_knobInstallationManual1Fragment"
+            app:destination="@id/knobInstallationManual1Fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_deviceSettingsFragment_to_selectBurnerFragment"
+            app:destination="@id/selectBurnerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_deviceSettingsFragment_to_connectToWifiFragment"
+            app:destination="@id/connectToWifiFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/knobWakeUpFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.wake_up.KnobWakeUpFragment"
+        android:label="KnobWakeUpFragment">
+        <argument
+            android:name="isComeFromSettings"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_knobWakeUpFragment_to_metalPlateInstallationFragment"
+            app:destination="@id/metalPlateInstallationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/metalPlateInstallationFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.metal_plate.MetalPlateInstallationFragment"
+        android:label="MetalPlateInstallationFragment">
+        <argument
+            android:name="isComeFromSettings"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_metalPlateInstallationFragment_to_selectBurnerFragment"
+            app:destination="@id/selectBurnerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/selectBurnerFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragment"
+        android:label="SelectBurnerFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams" />
+        <action
+            android:id="@+id/action_selectBurnerFragment_to_qrCodeScannerFragment"
+            app:destination="@id/qrCodeScannerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/qrCodeScannerFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.scanner.QrCodeScannerFragment"
+        android:label="QrCodeScannerFragment">
+
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.scanner.QrCodeScannerParams" />
+        <action
+            android:id="@+id/action_qrCodeScannerFragment_to_connectToWifiFragment"
+            app:destination="@id/connectToWifiFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/connectToWifiFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiFragment"
+        android:label="ConnectToWifiFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiParams" />
+        <action
+            android:id="@+id/action_connectToWifiFragment_to_manualSetupFragment"
+            app:destination="@id/manualSetupFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_connectToWifiFragment_to_wifiListFragment"
+            app:destination="@id/wifiListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/manualSetupFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.wifi.ManualSetupFragment"
+        android:label="ManualSetupFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.wifi.ManualSetupFragmentParams" />
+        <action
+            android:id="@+id/action_manualSetupFragment_to_wifiListFragment"
+            app:destination="@id/wifiListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/wifiListFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.wifi.WifiListFragment"
+        android:label="WifiListFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.wifi.WifiListFragmentParams" />
+        <action
+            android:id="@+id/action_wifiListFragment_to_connectToWifiPasswordFragment"
+            app:destination="@id/connectToWifiPasswordFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/connectToWifiPasswordFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiPasswordFragment"
+        android:label="ConnectToWifiPasswordFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiPasswordParams" />
+        <action
+            android:id="@+id/action_connectToWifiPasswordFragment_to_knobInstallationManual1Fragment"
+            app:destination="@id/knobInstallationManual1Fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/knobInstallationManual1Fragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.installation.KnobInstallationManual1Fragment"
+        android:label="KnobInstallationManual1Fragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.installation.KnobInstallationManual1FragmentParams" />
+        <action
+            android:id="@+id/action_knobInstallationManual1Fragment_to_knobInstallationManual2Fragment"
+            app:destination="@id/knobInstallationManual2Fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/knobInstallationManual2Fragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.installation.KnobInstallationManual2Fragment"
+        android:label="KnobInstallationManual2Fragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.installation.KnobInstallationManual2FragmentParams" />
+        <action
+            android:id="@+id/action_knobInstallationManual2Fragment_to_zoneSelectionFragment"
+            app:destination="@id/zoneSelectionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/zoneSelectionFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.zone.ZoneSelectionFragment"
+        android:label="ZoneSelectionFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.zone.ZoneSelectionFragmentParams" />
+        <action
+            android:id="@+id/action_zoneSelectionFragment_to_directionSelectionFragment"
+            app:destination="@id/directionSelectionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_zoneSelectionFragment_to_deviceCalibrationFragment"
+            app:destination="@id/deviceCalibrationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/directionSelectionFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.direction.DirectionSelectionFragment"
+        android:label="DirectionSelectionFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams" />
+        <action
+            android:id="@+id/action_directionSelectionFragment_to_deviceCalibrationFragment"
+            app:destination="@id/deviceCalibrationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/deviceCalibrationFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.calibration.DeviceCalibrationFragment"
+        android:label="DeviceCalibrationFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams" />
+        <action
+            android:id="@+id/action_deviceCalibrationFragment_to_deviceCalibrationConfirmationFragment"
+            app:destination="@id/deviceCalibrationConfirmationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_deviceCalibrationFragment_to_setupCompleteFragment"
+            app:destination="@id/setupCompleteFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/deviceCalibrationConfirmationFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.calibration.DeviceCalibrationConfirmationFragment"
+        android:label="DeviceCalibrationConfirmationFragment">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.add_knob.calibration.DeviceCalibrationConfirmationFragmentParams" />
+        <action
+            android:id="@+id/action_deviceCalibrationConfirmationFragment_to_setupCompleteFragment"
+            app:destination="@id/setupCompleteFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/setupCompleteFragment"
+        android:name="com.ome.app.ui.dashboard.settings.add_knob.calibration.SetupCompleteFragment"
+        android:label="SetupCompleteFragment">
+        <argument
+            android:name="isComeFromSettings"
+            app:argType="boolean" />
+    </fragment>
 </navigation>

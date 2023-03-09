@@ -16,7 +16,7 @@
 
     <color name="gradient_start_unpressed_color">#3CC4DF</color>
     <color name="gradient_mid_unpressed_color">#0371B6</color>
-    <color name="gradient_end_unpressed_color">#383893</color>
+    <color name="gradient_end_unpressed_color">#2B2BC1</color>
 
 
     <color name="gradient_start_pressed_color">#346473</color>
@@ -37,6 +37,11 @@
 
     <color name="button_color_white_background">#635E83</color>
 
+    <color name="stove_type_background_button_color">#165EAA</color>
+
+    <color name="light_blue_color">#019DDA</color>
+
     <color name="read_message_color">#666666</color>
+    <color name="divider_color">#F0F0F5</color>
 
 </resources>

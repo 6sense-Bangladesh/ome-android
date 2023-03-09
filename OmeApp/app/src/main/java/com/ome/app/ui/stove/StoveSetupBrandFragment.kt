@@ -36,7 +36,7 @@ class StoveSetupBrandFragment :
         binding.continueBtn.setOnClickListener {
             findNavController().navigate(
                 StoveSetupBrandFragmentDirections.actionStoveSetupBrandFragmentToStoveSetupTypeFragment(
-                    viewModel.selectedBrand
+                    StoveSetupTypeArgs(brand = viewModel.selectedBrand)
                 )
             )
         }

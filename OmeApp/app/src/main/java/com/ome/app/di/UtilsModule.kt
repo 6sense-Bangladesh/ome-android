@@ -3,6 +3,9 @@ package com.ome.app.di
 import android.content.Context
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.ConnectionStatusListenerImpl
+import com.ome.app.data.local.ResourceProvider
+import com.ome.app.utils.SocketManager
+import com.ome.app.utils.WifiHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,5 +21,21 @@ object UtilsModule {
     @Provides
     fun provideConnectionStatusListener(@ApplicationContext context: Context): ConnectionStatusListener =
         ConnectionStatusListenerImpl(context)
+
+    @Provides
+    @Singleton
+    fun provideWifiManager(
+        @ApplicationContext context: Context,
+        resourceProvider: ResourceProvider
+    ): WifiHandler =
+        WifiHandler(context, resourceProvider)
+
+    @Provides
+    @Singleton
+    fun provideSocketManager(
+        @ApplicationContext context: Context
+    ): SocketManager =
+        SocketManager(context)
+
 
 }

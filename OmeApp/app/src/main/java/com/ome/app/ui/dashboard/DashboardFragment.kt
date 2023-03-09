@@ -53,7 +53,6 @@ class DashboardFragment :
                     R.navigation.profile_navigation,
                     R.id.profileNavigation
                 )
-
             ),
             fragmentManager = childFragmentManager,
             containerId = R.id.dashboardContainer
@@ -68,11 +67,6 @@ class DashboardFragment :
                 margin(bottom = true)
             }
         }
-
-        //           if (viewModel.isStoveInfoExist()) R.id.myStoveFragment else R.id.welcomeFragment
-        binding.bottomNavigation.setEnabledTabState(BottomItem.SETTINGS, false)
-        binding.bottomNavigation.setEnabledTabState(BottomItem.MEMBERS, false)
-        binding.bottomNavigation.setEnabledTabState(BottomItem.PROFILE, true)
         initBottomNavigation()
     }
 
@@ -93,6 +87,15 @@ class DashboardFragment :
         }
         subscribe(viewModel.signOutLiveData) {
             findNavController().navigate(R.id.action_dashboardFragment_to_launchFragment)
+        }
+        subscribe(viewModel.stoveExistLiveData) {
+            if (it) {
+                binding.bottomNavigation.setEnabledTabState(BottomItem.SETTINGS, true)
+                binding.bottomNavigation.setEnabledTabState(BottomItem.MEMBERS, true)
+            } else {
+                binding.bottomNavigation.setEnabledTabState(BottomItem.SETTINGS, false)
+                binding.bottomNavigation.setEnabledTabState(BottomItem.MEMBERS, false)
+            }
         }
     }
 

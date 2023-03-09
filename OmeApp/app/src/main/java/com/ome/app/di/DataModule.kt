@@ -4,10 +4,15 @@ import android.content.Context
 import com.ome.Ome.BuildConfig
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.local.PreferencesProviderImpl
+import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.remote.AmplifyManager
+import com.ome.app.data.remote.StoveService
 import com.ome.app.data.remote.UserService
+import com.ome.app.data.remote.stove.StoveRepository
+import com.ome.app.data.remote.stove.StoveRepositoryImpl
 import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.data.remote.user.UserRepositoryImpl
+import com.ome.app.data.remote.websocket.WebSocketManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,6 +40,7 @@ object DataModule {
                 val original = chain.request()
                 val request = original.newBuilder()
                     .addHeader("x-inirv-auth", preferencesProvider.getAccessToken() ?: "")
+                    .addHeader("x-inirv-vsn", "6")
                     .addHeader("x-inirv-uid", preferencesProvider.getUserId() ?: "").build()
                 chain.proceed(request)
             }).build()
@@ -47,9 +53,28 @@ object DataModule {
 
     }
 
+
     @Provides
     @Singleton
-    fun provideMainService(retrofit: Retrofit): UserService =
+    fun provideWebSocketManager(): WebSocketManager = WebSocketManager()
+
+    @Provides
+    @Singleton
+    fun provideStoveService(retrofit: Retrofit): StoveService =
+        retrofit.create(StoveService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideStoveRepository(
+        userService: StoveService,
+        webSocketManager: WebSocketManager
+    ): StoveRepository =
+        StoveRepositoryImpl(userService, webSocketManager)
+
+
+    @Provides
+    @Singleton
+    fun provideUserService(retrofit: Retrofit): UserService =
         retrofit.create(UserService::class.java)
 
     @Provides
@@ -65,5 +90,10 @@ object DataModule {
     @Singleton
     fun provideAmplifyManager(): AmplifyManager =
         AmplifyManager()
+
+    @Provides
+    @Singleton
+    fun provideResourceProvider(@ApplicationContext context: Context): ResourceProvider =
+        ResourceProvider(context)
 
 }

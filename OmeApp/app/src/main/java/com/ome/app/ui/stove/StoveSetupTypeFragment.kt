@@ -2,6 +2,7 @@ package com.ome.app.ui.stove
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -11,8 +12,10 @@ import androidx.navigation.fragment.navArgs
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentStoveSetupTypeBinding
 import com.ome.app.base.BaseFragment
+import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
+import kotlinx.android.parcel.Parcelize
 
 
 @AndroidEntryPoint
@@ -36,17 +39,34 @@ class StoveSetupTypeFragment :
                 margin(top = true)
             }
         }
+        if (args.params.isEditMode) {
+            binding.continueBtn.text = getString(R.string.save)
+        }
         binding.continueBtn.setOnClickListener {
-            findNavController().navigate(
-                StoveSetupTypeFragmentDirections.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment(
-                    StoveSetupPhotoArgs(args.brand, viewModel.stoveType)
+            if (args.params.isEditMode) {
+                binding.continueBtn.startAnimation()
+                viewModel.saveStoveType(args.params.stoveId)
+            } else {
+                findNavController().navigate(
+                    StoveSetupTypeFragmentDirections.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment(
+                        StoveSetupPhotoArgs(args.params.brand, viewModel.stoveType)
+                    )
                 )
-            )
+            }
+
         }
         binding.gasIv.setOnClickListener {
             if (viewModel.stoveType.isEmpty() || viewModel.stoveType == "electric") {
                 binding.continueBtn.isEnabled = true
-                binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_selector)
+                if(args.params.isEditMode){
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ome_gradient_button_unpressed_color)
+                        ?.let {
+                            binding.continueBtn.drawableBackground = it
+                        }
+                    binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_unpressed_color)
+                } else {
+                    binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_selector)
+                }
                 viewModel.stoveType = "gas"
                 changeButtonState(binding.electricIv, false)
                 changeButtonState(binding.gasIv, true)
@@ -56,7 +76,15 @@ class StoveSetupTypeFragment :
         binding.electricIv.setOnClickListener {
             if (viewModel.stoveType.isEmpty() || viewModel.stoveType == "gas") {
                 binding.continueBtn.isEnabled = true
-                binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_selector)
+                if(args.params.isEditMode){
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ome_gradient_button_unpressed_color)
+                        ?.let {
+                            binding.continueBtn.drawableBackground = it
+                        }
+                    binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_unpressed_color)
+                } else {
+                    binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_selector)
+                }
                 viewModel.stoveType = "electric"
                 changeButtonState(binding.gasIv, false)
                 changeButtonState(binding.electricIv, true)
@@ -102,5 +130,16 @@ class StoveSetupTypeFragment :
 
     override fun observeLiveData() {
         super.observeLiveData()
+        subscribe(viewModel.loadingLiveData){
+            binding.continueBtn.revertAnimation()
+            findNavController().popBackStack()
+        }
     }
 }
+
+@Parcelize
+data class StoveSetupTypeArgs(
+    val brand: String = "",
+    val stoveId: String = "",
+    val isEditMode: Boolean = false
+) : Parcelable

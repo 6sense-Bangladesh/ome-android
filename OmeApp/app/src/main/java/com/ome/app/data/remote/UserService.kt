@@ -1,10 +1,8 @@
 package com.ome.app.data.remote
 
-import com.ome.app.model.network.response.UrlToUploadImageResponse
-import com.ome.app.model.network.request.CreateStoveRequest
 import com.ome.app.model.network.request.CreateUserRequest
-import com.ome.app.model.network.response.CreateStoveResponse
 import com.ome.app.model.network.response.DeleteUserResponse
+import com.ome.app.model.network.response.UrlToUploadImageResponse
 import com.ome.app.model.network.response.UserResponse
 import okhttp3.RequestBody
 import retrofit2.http.*
@@ -17,7 +15,7 @@ interface UserService {
     @POST("createUser")
     suspend fun createUser(@Body params: CreateUserRequest): UserResponse
 
-    @PATCH("updateUser")
+    @PATCH("user")
     suspend fun updateUser(@Body params: CreateUserRequest): UserResponse
 
     @GET("/user/uploadImageUrl")
@@ -25,10 +23,6 @@ interface UserService {
 
     @PUT
     suspend fun uploadImage(@Url url: String, @Body body: RequestBody)
-
-    @POST("stove")
-    suspend fun createStove(@Body params: CreateStoveRequest): CreateStoveResponse
-
 
     @DELETE("user")
     suspend fun deleteUser(): DeleteUserResponse
