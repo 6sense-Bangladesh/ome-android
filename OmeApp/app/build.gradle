@@ -33,7 +33,7 @@ android {
         applicationId "com.ome.Ome"
         minSdk 21
         targetSdk 32
-        versionCode 3
+        versionCode 5
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
