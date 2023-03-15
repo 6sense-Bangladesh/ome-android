@@ -49,6 +49,6 @@ fun Any.logwtf(msg: String?) {
 
 val <T : Any> T.TAG: String
     get() = if (this::class.java.simpleName.length > 16)
-        "BND_".plus(this::class.java.simpleName.substring(0, 15))
+        "OME_".plus(this::class.java.simpleName.substring(0, 15))
     else
-        "BND_".plus(this::class.java.simpleName)
+        "OME_".plus(this::class.java.simpleName)

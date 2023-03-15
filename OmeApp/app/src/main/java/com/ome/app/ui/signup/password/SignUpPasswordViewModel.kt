@@ -4,6 +4,7 @@ import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
+import com.ome.app.utils.FieldsValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -42,79 +43,13 @@ class SignUpPasswordViewModel @Inject constructor(private val amplifyManager: Am
     }
 
     fun validatePassword(password: String, confirmPassword: String) {
-        if (password.trim().isEmpty()) {
-            defaultErrorLiveData.setNewValue("Please make sure to enter a password")
-            return
-        } else if (confirmPassword.trim().isEmpty()) {
-            defaultErrorLiveData.setNewValue("Please make sure to enter a confirmation password")
-            return
-        } else if (password.length <= 8) {
-            defaultErrorLiveData.setNewValue("Please make sure that your password length is 9 characters or more")
-            return
-        } else if (confirmPassword.length <= 8) {
-            defaultErrorLiveData.setNewValue("Please make sure that your confirmation password length is 9 characters or more")
-            return
-        } else if (password.length > 25) {
-            defaultErrorLiveData.setNewValue("Please make sure that your password length is less than 26 characters")
-            return
-        } else if (confirmPassword.length > 25) {
-            defaultErrorLiveData.setNewValue("Please make sure that your confirmation password length is less than 26 characters")
-            return
-        } else if (password != confirmPassword) {
-            defaultErrorLiveData.setNewValue("Please make sure that your passwords match")
-            return
+        val result = FieldsValidator.validatePassword(password, confirmPassword)
+        if(result.first){
+            currentPassword = password
+            validationSuccessLiveData.setNewValue(true)
         } else {
-
-            // Check for at least three out of the four cases: upper case, lower case, number, special
-            var hasUpper = false
-            var hasLower = false
-            var hasNumber = false
-            var hasSpecial = false
-
-            for (char in password) {
-
-                if (char.isUpperCase()) {
-                    hasUpper = true
-                } else if (char.isLowerCase()) {
-                    hasLower = true
-                } else if (char.isDigit()) {
-                    hasNumber = true
-                }
-            }
-
-            if (containsSpecialCharacter(password)) {
-                hasSpecial = true
-            }
-
-            var qualificationsCounter = 0
-
-            if (hasUpper) {
-                qualificationsCounter += 1
-            }
-            if (hasLower) {
-                qualificationsCounter += 1
-            }
-            if (hasNumber) {
-                qualificationsCounter += 1
-            }
-            if (hasSpecial) {
-                qualificationsCounter += 1
-            }
-
-            if (qualificationsCounter < 3) {
-                defaultErrorLiveData.setNewValue("Please make sure to include at least three of the following types: upper case, lower case, number and/or special character")
-                return
-            }
+            defaultErrorLiveData.setNewValue(result.second)
         }
-
-        currentPassword = password
-        validationSuccessLiveData.setNewValue(true)
     }
 
-    private fun containsSpecialCharacter(sequence: String): Boolean {
-
-        val pattern = Regex("^\\$\\*\\.\\[\\]\\{\\}\\(\\)\\?\"!@#%&/\\,<>':;|_~=+-`")
-
-        return pattern.containsMatchIn(sequence)
-    }
 }

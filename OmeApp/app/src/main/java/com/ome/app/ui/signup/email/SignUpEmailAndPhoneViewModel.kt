@@ -1,13 +1,10 @@
 package com.ome.app.ui.signup.email
 
-import com.google.i18n.phonenumbers.NumberParseException
-import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
-import com.ome.app.utils.Constants
+import com.ome.app.utils.FieldsValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-
 
 @HiltViewModel
 class SignUpEmailAndPhoneViewModel @Inject constructor() :
@@ -19,42 +16,27 @@ class SignUpEmailAndPhoneViewModel @Inject constructor() :
 
     val emailAndPassValidationLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
-    fun validateEmailAndPassword(email: String, phone: String = "") {
-        // Check that the email isnt empty
-        if (email.trim().isEmpty()) {
-            defaultErrorLiveData.postValue("Please make sure to enter an email")
-            return
-        }
-        if (!isValidEmailString(email)) {
-            defaultErrorLiveData.postValue("Please make sure you're using a valid email")
-            return
-        }
-
-        if (phone.isNotEmpty()) {
-            val phoneUtil = PhoneNumberUtil.getInstance()
-            try {
-                if (!phoneUtil.isValidNumber(phoneUtil.parse(phone, "US"))
-                ) {
-                    defaultErrorLiveData.postValue("Only U.S. phone numbers are supported at this time.")
-                    return
-                }
-            } catch (e: NumberParseException) {
-                defaultErrorLiveData.postValue("NumberParseException was thrown: $e")
-                return
-            }
-        }
-
-        this.phoneNumber = if (phone.trim().isNotEmpty()) {
-            "+1$phone"
+    fun validateFields(email: String, phone: String = "") {
+        val resultEmail = FieldsValidator.validateEmail(email)
+        if (resultEmail.first) {
+            this.email = email.trim()
         } else {
-            ""
+            defaultErrorLiveData.postValue(resultEmail.second)
+            return
         }
-        this.email = email.trim()
+
+        val resultPhone = FieldsValidator.validatePhone(phone)
+        if (resultPhone.first) {
+            this.phoneNumber = if (phone.trim().isNotEmpty()) {
+                "+1$phone"
+            } else {
+                ""
+            }
+        } else {
+            defaultErrorLiveData.postValue(resultPhone.second)
+            return
+        }
 
         emailAndPassValidationLiveData.postValue(true)
-    }
-
-    private fun isValidEmailString(email: String): Boolean {
-        return Constants.EMAIL_ADDRESS_PATTERN.matcher(email).matches()
     }
 }

@@ -8,6 +8,7 @@ import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.model.network.request.ChangeKnobAngle
 import com.ome.app.model.network.request.SetCalibrationRequest
 import com.ome.app.model.network.request.Zone
+import com.ome.app.utils.KnobAngleManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -250,7 +251,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                         zones = arrayListOf(
                             Zone(
                                 highAngle = highSingleAngle!!.toInt(),
-                                mediumAngle = generateMediumAngle(
+                                mediumAngle = KnobAngleManager.generateMediumAngle(
                                     highSingleAngle!!.toInt(),
                                     lowSingleAngle!!.toInt()
                                 ),
@@ -260,7 +261,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                             ),
                             Zone(
                                 highAngle = highDualAngle!!.toInt(),
-                                mediumAngle = generateMediumAngle(
+                                mediumAngle = KnobAngleManager.generateMediumAngle(
                                     highDualAngle!!.toInt(),
                                     lowDualAngle!!.toInt()
                                 ),

@@ -7,6 +7,7 @@ import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.model.network.request.InitCalibrationRequest
+import com.ome.app.utils.KnobAngleManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -28,7 +29,15 @@ class DeviceCalibrationViewModel @Inject constructor(
         val angle = knobAngleLiveData.value
         angle?.let {
             if (isDualKnob) {
-                if (validateDualKnobAngle(angle, currentCalibrationStateLiveData.value!!)) {
+                if (KnobAngleManager.validateDualKnobAngle(
+                        angle = angle,
+                        highSingleAngle = highSingleAngle,
+                        mediumAngle = mediumAngle,
+                        offAngle = offAngle,
+                        lowSingleAngle = lowSingleAngle,
+                        angleOffset = angleOffset
+                    )
+                ) {
                     currentCalibrationStateLiveData.value?.let { step ->
                         when (step) {
                             CalibrationState.OFF -> {
@@ -66,7 +75,16 @@ class DeviceCalibrationViewModel @Inject constructor(
                     defaultErrorLiveData.postValue(resourceProvider.getString(R.string.calibration_labels_error))
                 }
             } else {
-                if (validateSingleKnobAngle(angle, currentCalibrationStateLiveData.value!!)) {
+                if (KnobAngleManager.validateSingleKnobAngle(
+                        angle = angle,
+                        calibrationState = currentCalibrationStateLiveData.value!!,
+                        highSingleAngle = highSingleAngle,
+                        mediumAngle = mediumAngle,
+                        offAngle = offAngle,
+                        lowSingleAngle = lowSingleAngle,
+                        angleOffset = angleOffset
+                    )
+                ) {
                     currentCalibrationStateLiveData.value?.let { step ->
                         when (step) {
                             CalibrationState.OFF -> {
@@ -111,43 +129,16 @@ class DeviceCalibrationViewModel @Inject constructor(
         offAngle?.let { angle ->
             firstDiv = angle.toInt()
             secondDiv = angle.toInt() - 180
-
             if (secondDiv < 0) {
                 secondDiv += 360
             }
-            rightAllowedZoneStartAngle = angle + angleOffset
-            rightAllowedZoneEndAngle = angle + 180 - angleOffset
-
-            if (rightAllowedZoneStartAngle > 360) {
-                rightAllowedZoneStartAngle -= 360
-            }
-
-            if (rightAllowedZoneEndAngle > 360) {
-                rightAllowedZoneEndAngle -= 360
-            }
-
-            leftAllowedZoneStartAngle = angle - angleOffset
-            leftAllowedZoneEndAngle = angle - 180 + angleOffset
-
-            if (leftAllowedZoneStartAngle < 0) {
-                leftAllowedZoneStartAngle += 360
-            }
-
-            if (leftAllowedZoneEndAngle < 0) {
-                leftAllowedZoneEndAngle += 360
-            }
         }
-
     }
 
     fun clearData() {
         firstDiv = 0
         secondDiv = 0
         currSetting = 0
-        leftAllowedZoneStartAngle = 0f
-        leftAllowedZoneEndAngle = 0f
-        rightAllowedZoneStartAngle = 0f
-        rightAllowedZoneEndAngle = 0f
         offAngle = null
         lowSingleAngle = null
         lowDualAngle = null
@@ -156,54 +147,7 @@ class DeviceCalibrationViewModel @Inject constructor(
         highDualAngle = null
         calibrationIsDoneLiveData.value = false
     }
-    private fun validateSingleKnobAngle(
-        angle: Float,
-        calibrationState: CalibrationState
-    ): Boolean {
-        when (calibrationState) {
-            CalibrationState.OFF -> {}
-            CalibrationState.HIGH_SINGLE -> {}
-            CalibrationState.MEDIUM -> {}
-            CalibrationState.LOW_SINGLE -> {
-                if (highSingleAngle != null && mediumAngle != null) {
-                    if (highSingleAngle!! > mediumAngle!!) {
-                        if (angle in mediumAngle!!..highSingleAngle!!) {
-                            return false
-                        }
-                    } else {
-                        if (angle in highSingleAngle!!..mediumAngle!!) {
-                            return false
-                        }
-                    }
-                }
-            }
-            else -> {}
-        }
-        offAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        lowSingleAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        mediumAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        highSingleAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        return true
-    }
 
-    private fun validateDualKnobAngle(
-        angle: Float,
-        calibrationState: CalibrationState
-    ): Boolean {
-        when (calibrationState) {
-            CalibrationState.OFF -> {}
-            CalibrationState.HIGH_SINGLE -> {}
-            CalibrationState.LOW_SINGLE -> {}
-            CalibrationState.MEDIUM -> {}
-
-            else -> {}
-        }
-        offAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        lowSingleAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        mediumAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        highSingleAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        return true
-    }
 
     private fun nextStep() {
         if (!isDualKnob) {
@@ -255,5 +199,7 @@ class DeviceCalibrationViewModel @Inject constructor(
 }
 
 enum class CalibrationState(val positionName: String) {
-    OFF("OFF"), HIGH_SINGLE("HIGH"), MEDIUM("MEDIUM"), LOW_SINGLE("LOW"), HIGH_DUAL("HIGH"), LOW_DUAL("LOW")
+    OFF("OFF"), HIGH_SINGLE("HIGH"), MEDIUM("MEDIUM"), LOW_SINGLE("LOW"), HIGH_DUAL("HIGH"), LOW_DUAL(
+        "LOW"
+    )
 }

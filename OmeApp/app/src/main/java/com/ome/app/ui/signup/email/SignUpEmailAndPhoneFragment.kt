@@ -33,7 +33,7 @@ class SignUpEmailAndPhoneFragment :
             findNavController().popBackStack()
         }
         binding.continueBtn.setOnClickListener {
-            viewModel.validateEmailAndPassword(
+            viewModel.validateFields(
                 binding.email.getText().trim(),
                 binding.phoneInput.getText().trim()
             )
