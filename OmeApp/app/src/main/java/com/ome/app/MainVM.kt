@@ -48,7 +48,6 @@ class MainVM @Inject constructor(
         startDestinationJob = launch(dispatcher = ioContext) {
             val authSession =
                 withContext(Dispatchers.Default + defaultErrorHandler) { amplifyManager.fetchAuthSession() }
-
             authSession.session?.let {
                 if (it.isSignedIn) {
                     if (it is AWSCognitoAuthSession) {
