@@ -4,9 +4,7 @@ import com.ome.app.data.remote.UserService
 import com.ome.app.data.remote.base.BaseRepository
 import com.ome.app.model.base.ResponseWrapper
 import com.ome.app.model.network.response.UrlToUploadImageResponse
-import com.ome.app.model.network.request.CreateStoveRequest
-import com.ome.app.model.network.request.CreateUserRequest
-import com.ome.app.model.network.response.CreateStoveResponse
+import com.ome.app.ui.model.network.request.CreateUserRequest
 import com.ome.app.model.network.response.DeleteUserResponse
 import com.ome.app.model.network.response.UserResponse
 import kotlinx.coroutines.flow.MutableStateFlow

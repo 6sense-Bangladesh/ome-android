@@ -1,6 +1,6 @@
 package com.ome.app.data.remote
 
-import com.ome.app.model.network.request.CreateUserRequest
+import com.ome.app.ui.model.network.request.CreateUserRequest
 import com.ome.app.model.network.response.DeleteUserResponse
 import com.ome.app.model.network.response.UrlToUploadImageResponse
 import com.ome.app.model.network.response.UserResponse
@@ -12,7 +12,7 @@ interface UserService {
     @GET("user")
     suspend fun getUserInfo(): UserResponse
 
-    @POST("createUser")
+    @POST("user")
     suspend fun createUser(@Body params: CreateUserRequest): UserResponse
 
     @PATCH("user")

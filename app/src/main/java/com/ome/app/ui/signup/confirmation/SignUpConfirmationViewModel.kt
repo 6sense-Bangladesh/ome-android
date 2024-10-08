@@ -7,7 +7,7 @@ import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
 import com.ome.app.data.remote.user.UserRepository
-import com.ome.app.model.network.request.CreateUserRequest
+import com.ome.app.ui.model.network.request.CreateUserRequest
 import com.ome.app.model.local.User
 import com.ome.app.model.base.ResponseWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
