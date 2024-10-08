@@ -26,7 +26,9 @@ class AmplifyResultValue {
 
 class AmplifyManager {
 
-    var kotAuth: KotlinAuthFacade = Amplify.Auth
+    companion object{
+        var kotAuth: KotlinAuthFacade = Amplify.Auth
+    }
 
     val signOutFlow: MutableSharedFlow<Boolean> =
         MutableSharedFlow(
