@@ -1,6 +1,7 @@
 package com.ome.app.ui.signup.confirmation
 
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
+import com.ome.Ome.BuildConfig
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider
@@ -55,7 +56,7 @@ class SignUpConfirmationViewModel @Inject constructor(
                     lastName = lastName,
                     phone = phone,
                     uiAppType = "Android",
-                    uiAppVersion = "1.7 (10)",
+                    uiAppVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
                     userId = it
                 )
             )) {

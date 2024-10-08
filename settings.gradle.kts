@@ -5,14 +5,17 @@ pluginManagement {
         mavenCentral()
     }
 }
+
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://repo.spring.io/milestone' }
-        maven { url "https://jitpack.io" }
+        maven { url = uri("https://repo.spring.io/milestone") }
+        maven { url = uri("https://jitpack.io") }
     }
 }
-rootProject.name = "Ome App"
-include ':app'
+
+rootProject.name = "Ome Android"
+include(":app")
