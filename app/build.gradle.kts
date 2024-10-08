@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -115,11 +113,11 @@ dependencies {
     implementation("io.projectreactor.netty:reactor-netty-core:1.1.3")
 
     //DI
-    implementation("com.google.dagger:hilt-android:2.44")
+    implementation("com.google.dagger:hilt-android:2.52")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
-    kapt("com.google.dagger:hilt-compiler:2.44")
+    kapt("com.google.dagger:hilt-compiler:2.52")
 
     //Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
@@ -162,7 +160,7 @@ dependencies {
 
     //image loading
     implementation("com.github.bumptech.glide:glide:4.13.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.13.0")
+    kapt("com.github.bumptech.glide:compiler:4.13.0")
 
     implementation("me.zhanghai.android.fastscroll:library:1.1.8")
 

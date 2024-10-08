@@ -13,6 +13,7 @@ class SimpleDividerItemDecoration(context: Context, @DrawableRes dividerRes: Int
 
     private val mDivider: Drawable = ContextCompat.getDrawable(context, dividerRes)!!
 
+    @Deprecated("Deprecated in Java")
     override fun onDrawOver(c: Canvas, parent: RecyclerView) {
         val left = 0.dp
         val right = parent.width - 16.dp
