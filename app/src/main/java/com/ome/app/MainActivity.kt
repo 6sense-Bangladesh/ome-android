@@ -7,6 +7,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.whenStarted
+import androidx.lifecycle.withStarted
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.ome.Ome.R
@@ -89,7 +90,7 @@ class MainActivity : AppCompatActivity() {
         lifecycle.coroutineScope.launch {
             val fragment = supportFragmentManager.findFragmentById(R.id.navHost)
 
-            fragment?.lifecycle?.whenStarted {
+            fragment?.lifecycle?.withStarted {
                 fragment.findNavController().addOnDestinationChangedListener { _, destination, _ ->
                     viewModel.currentDestination.value = destination
                 }

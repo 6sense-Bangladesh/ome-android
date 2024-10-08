@@ -12,13 +12,18 @@ android {
     compileSdk 33
 
     signingConfigs {
-
-            release {
-                storeFile file("ome.jks")
-                storePassword "ome-eH6MiV"
-                keyAlias "ome"
-                keyPassword "ome-eH6MiV"
-            }
+        debug {
+            storeFile file("ome.jks")
+            storePassword "ome-eH6MiV"
+            keyAlias "ome"
+            keyPassword "ome-eH6MiV"
+        }
+        release {
+            storeFile file("ome.jks")
+            storePassword "ome-eH6MiV"
+            keyAlias "ome"
+            keyPassword "ome-eH6MiV"
+        }
 
 //            sandbox {
 //                initWith signingConfigs.debug
