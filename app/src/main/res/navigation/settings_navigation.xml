@@ -79,7 +79,7 @@
             app:argType="string" />
         <action
             android:id="@+id/action_stoveInfoFragment_to_stoveSetupTypeFragment"
-            app:destination="@id/stoveSetupTypeFragment"
+            app:destination="@id/stoveSetupTypeFragmentSetting"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -93,9 +93,9 @@
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
-        android:id="@+id/stoveSetupTypeFragment"
+        android:id="@+id/stoveSetupTypeFragmentSetting"
         android:name="com.ome.app.ui.stove.StoveSetupTypeFragment"
-        android:label="StoveSetupTypeFragment">
+        android:label="StoveSetupTypeFragmentSetting">
         <argument
             android:name="params"
             app:argType="com.ome.app.ui.stove.StoveSetupTypeArgs" />

@@ -303,7 +303,7 @@
             android:name="params"
             app:argType="com.ome.app.ui.stove.StoveSetupTypeArgs" />
         <action
-            android:id="@+id/action_stoveSetupTypeFragment_to_stoveSetupPhotoFragment"
+            android:id="@+id/actionStoveSetupTypeFragmentToStoveSetupPhotoFragment"
             app:destination="@id/stoveSetupPhotoFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"

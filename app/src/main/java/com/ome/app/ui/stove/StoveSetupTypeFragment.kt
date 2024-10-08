@@ -6,6 +6,7 @@ import android.os.Parcelable
 import android.view.View
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -47,11 +48,15 @@ class StoveSetupTypeFragment :
                 binding.continueBtn.startAnimation()
                 viewModel.saveStoveType(args.params.stoveId)
             } else {
-                findNavController().navigate(
-                    StoveSetupTypeFragmentDirections.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment(
-                        StoveSetupPhotoArgs(args.params.brand, viewModel.stoveType)
-                    )
-                )
+//                findNavController().navigate(
+//                    StoveSetupTypeFragmentDirections.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment(
+//                        StoveSetupPhotoArgs(args.params.brand, viewModel.stoveType)
+//                    )
+//                )
+                findNavController().navigate(R.id.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment, bundleOf(
+                    "params" to StoveSetupPhotoArgs(args.params.brand, viewModel.stoveType)
+                ))
+
             }
 
         }
