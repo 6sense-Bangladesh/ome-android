@@ -16,7 +16,7 @@ import com.ome.app.utils.makeGone
 import com.ome.app.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class ZoneSelectionFragment :

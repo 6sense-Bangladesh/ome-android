@@ -16,7 +16,7 @@ import com.ome.app.ui.base.BaseFragment
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConnectToWifiBinding>(

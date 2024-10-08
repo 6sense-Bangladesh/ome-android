@@ -11,7 +11,7 @@ import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.signup.password.AuthParams
 import com.ome.app.utils.subscribe
 import dev.chrisbanes.insetter.applyInsetter
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 class SignUpEmailAndPhoneFragment :
     BaseFragment<SignUpEmailAndPhoneViewModel, FragmentSignUpEmailAndPasswordBinding>(

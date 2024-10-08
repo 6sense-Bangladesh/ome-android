@@ -2,14 +2,14 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
     id 'com.google.dagger.hilt.android'
-    id 'kotlin-android-extensions'
     id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
     namespace 'com.ome.Ome'
-    compileSdk 32
+    compileSdk 33
 
     signingConfigs {
 
@@ -32,9 +32,9 @@ android {
     defaultConfig {
         applicationId "com.ome.Ome"
         minSdk 21
-        targetSdk 32
-        versionCode 5
-        versionName "1.0"
+        targetSdk 33
+        versionCode 6
+        versionName "1.06"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -174,4 +174,8 @@ dependencies {
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    debugImplementation "com.github.chuckerteam.chucker:library:4.0.0"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:4.0.0"
+
 }

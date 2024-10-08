@@ -15,7 +15,7 @@ import com.ome.app.ui.dashboard.settings.add_knob.scanner.QrCodeScannerParams
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectBurnerBinding>(

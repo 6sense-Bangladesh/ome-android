@@ -1,6 +1,7 @@
 package com.ome.app.di
 
 import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.ome.Ome.BuildConfig
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.local.PreferencesProviderImpl
@@ -33,18 +34,22 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(preferencesProvider: PreferencesProvider): Retrofit {
+    fun provideRetrofit(preferencesProvider: PreferencesProvider, @ApplicationContext context: Context): Retrofit {
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         val client: OkHttpClient =
-            OkHttpClient.Builder().addInterceptor(interceptor).addInterceptor(Interceptor { chain ->
-                val original = chain.request()
-                val request = original.newBuilder()
-                    .addHeader("x-inirv-auth", preferencesProvider.getAccessToken() ?: "")
-                    .addHeader("x-inirv-vsn", "6")
-                    .addHeader("x-inirv-uid", preferencesProvider.getUserId() ?: "").build()
-                chain.proceed(request)
-            }).build()
+            OkHttpClient.Builder()
+                .addInterceptor(Interceptor { chain ->
+                    val original = chain.request()
+                    val request = original.newBuilder()
+                        .addHeader("x-inirv-auth", preferencesProvider.getAccessToken() ?: "")
+                        .addHeader("x-inirv-vsn", "6")
+                        .addHeader("x-inirv-uid", preferencesProvider.getUserId() ?: "").build()
+                    chain.proceed(request)
+                })
+                .addInterceptor(interceptor)
+                .addInterceptor(ChuckerInterceptor(context))
+                .build()
 
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())

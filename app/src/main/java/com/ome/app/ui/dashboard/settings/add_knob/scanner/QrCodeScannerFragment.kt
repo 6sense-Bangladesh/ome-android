@@ -21,7 +21,7 @@ import com.ome.app.ui.views.code_scanner.*
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 
 @AndroidEntryPoint

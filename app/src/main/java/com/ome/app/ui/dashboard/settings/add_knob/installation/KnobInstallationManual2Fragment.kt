@@ -15,7 +15,7 @@ import com.ome.app.ui.base.EmptyViewModel
 import com.ome.app.ui.dashboard.settings.add_knob.zone.ZoneSelectionFragmentParams
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class KnobInstallationManual2Fragment :
