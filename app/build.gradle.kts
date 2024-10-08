@@ -89,12 +89,16 @@ android {
     }
 
     buildFeatures {
+        buildConfig = true
         viewBinding = true
     }
-
-    packagingOptions {
-        pickFirst("META-INF/INDEX.LIST")
-        pickFirst("META-INF/io.netty.versions.properties")
+    packaging {
+        resources {
+            pickFirsts += setOf(
+                "META-INF/INDEX.LIST",
+                "META-INF/io.netty.versions.properties"
+            )
+        }
     }
 }
 

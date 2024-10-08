@@ -5,8 +5,10 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.amplifyframework.kotlin.core.Amplify
 import com.ome.Ome.R
 import com.ome.Ome.databinding.FragmentSignUpConfirmationBinding
+import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.utils.applyMaskToEmail
 import com.ome.app.utils.subscribe
@@ -56,6 +58,7 @@ class SignUpConfirmationFragment :
         subscribe(viewModel.signUpConfirmationResultLiveData) {
             binding.continueBtn.revertAnimation()
             if (it) {
+                AmplifyManager.kotAuth = Amplify.Auth
                 findNavController().navigate(
                     SignUpConfirmationFragmentDirections.actionSignUpConfirmationFragmentToDashboardFragment()
                 )
