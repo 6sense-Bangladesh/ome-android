@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "975020560823",
+    "project_id": "omekitchen-6bc2f",
+    "storage_bucket": "omekitchen-6bc2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:975020560823:android:978bfc27aa9e8b04d29832",
+        "android_client_info": {
+          "package_name": "com.ome.Ome"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJxD_HQepNs_vYWzsMrsO1JAjK1CpMuks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
