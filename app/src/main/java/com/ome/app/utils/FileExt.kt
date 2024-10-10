@@ -48,7 +48,7 @@ fun Context.savePhotoToExternalStorage(name: String, bmp: Bitmap?): Uri? {
     }
     return try {
         val uri = this.contentResolver.insert(imageCollection, contentValues)?.also {
-            this.contentResolver.openOutputStream(it).use { outputStream ->
+            this.contentResolver.openOutputStream(it)?.use { outputStream ->
                 if (bmp != null) {
                     if (!bmp.compress(Bitmap.CompressFormat.PNG, 100, outputStream)) {
                         throw IOException("Failed to save Bitmap")

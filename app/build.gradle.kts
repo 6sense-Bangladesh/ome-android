@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.ome.Ome"
-    compileSdk = 33
+    compileSdk = 35
 
     signingConfigs {
         getByName("debug") {
@@ -37,7 +37,7 @@ android {
     defaultConfig {
         applicationId = "com.ome.Ome"
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 35
         versionCode = 6
         versionName = "1.06"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
