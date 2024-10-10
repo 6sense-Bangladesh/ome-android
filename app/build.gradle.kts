@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ome.Ome"
+    namespace = "com.ome.app"
     compileSdk = 35
 
     signingConfigs {
@@ -37,7 +37,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.ome.Ome"
+        applicationId = "com.ome.app"
         minSdk = 21
         targetSdk = 35
         versionCode = 6
