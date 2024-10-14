@@ -9,7 +9,7 @@ import android.util.AttributeSet
 import android.util.SparseArray
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.ome.Ome.databinding.OmePhoneInputBinding
+import com.ome.app.databinding.OmePhoneInputBinding
 import com.ome.app.utils.inflate
 
 class OmePhoneInput @JvmOverloads constructor(

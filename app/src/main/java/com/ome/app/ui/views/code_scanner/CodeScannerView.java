@@ -44,7 +44,7 @@ import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StyleRes;
 
-import com.ome.Ome.R;
+import com.ome.app.R;
 
 
 /**

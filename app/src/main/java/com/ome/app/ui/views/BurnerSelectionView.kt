@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.ome.Ome.R
-import com.ome.Ome.databinding.BurnerSelectionViewBinding
+import com.ome.app.R
+import com.ome.app.databinding.BurnerSelectionViewBinding
 import com.ome.app.ui.stove.StoveOrientation
 import com.ome.app.utils.inflate
 

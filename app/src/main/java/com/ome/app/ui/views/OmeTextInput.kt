@@ -10,8 +10,8 @@ import android.util.SparseArray
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import com.ome.Ome.R
-import com.ome.Ome.databinding.OmeTextInputBinding
+import com.ome.app.R
+import com.ome.app.databinding.OmeTextInputBinding
 import com.ome.app.utils.inflate
 import com.ome.app.utils.makeGone
 import com.ome.app.utils.makeVisible

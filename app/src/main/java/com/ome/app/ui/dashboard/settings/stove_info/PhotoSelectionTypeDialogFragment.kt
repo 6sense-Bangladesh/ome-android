@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.ome.Ome.R
+import com.ome.app.R
 
 
 class PhotoSelectionTypeDialogFragment : BottomSheetDialogFragment() {

@@ -4,8 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ome.Ome.R
-import com.ome.Ome.databinding.SettingsItemBinding
+import com.ome.app.R
+import com.ome.app.databinding.SettingsItemBinding
 import com.ome.app.ui.base.recycler.AdapterDelegate
 import com.ome.app.ui.base.recycler.ItemModel
 import com.ome.app.ui.dashboard.settings.adapter.model.SettingsItemModel

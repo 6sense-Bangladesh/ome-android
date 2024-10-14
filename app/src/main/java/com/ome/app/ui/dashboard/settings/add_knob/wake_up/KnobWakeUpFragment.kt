@@ -7,8 +7,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.ome.Ome.R
-import com.ome.Ome.databinding.FragmentKnobWakeUpBinding
+import com.ome.app.R
+import com.ome.app.databinding.FragmentKnobWakeUpBinding
 import com.ome.app.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter

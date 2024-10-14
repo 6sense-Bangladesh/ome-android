@@ -10,7 +10,7 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.ome.Ome.databinding.KnobViewLayoutBinding
+import com.ome.app.databinding.KnobViewLayoutBinding
 import com.ome.app.ui.dashboard.settings.add_knob.calibration.CalibrationState
 import com.ome.app.utils.inflate
 import com.ome.app.utils.logi

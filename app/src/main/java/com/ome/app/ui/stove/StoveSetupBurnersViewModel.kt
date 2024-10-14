@@ -1,6 +1,6 @@
 package com.ome.app.ui.stove
 
-import com.ome.Ome.R
+import com.ome.app.R
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.remote.stove.StoveRepository

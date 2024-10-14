@@ -6,7 +6,7 @@ import android.net.wifi.WifiManager
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.ome.Ome.R
+import com.ome.app.R
 import com.ome.app.data.local.ResourceProvider
 import com.thanosfisherman.wifiutils.WifiUtils
 import com.thanosfisherman.wifiutils.wifiConnect.ConnectionErrorCode

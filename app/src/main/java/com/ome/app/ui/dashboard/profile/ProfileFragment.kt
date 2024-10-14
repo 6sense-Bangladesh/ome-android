@@ -15,9 +15,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.amulyakhare.textdrawable.TextDrawable
-import com.ome.Ome.BuildConfig
-import com.ome.Ome.R
-import com.ome.Ome.databinding.FragmentProfileBinding
+import com.ome.app.BuildConfig
+import com.ome.app.R
+import com.ome.app.databinding.FragmentProfileBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.utils.makeVisible
 import com.ome.app.utils.subscribe

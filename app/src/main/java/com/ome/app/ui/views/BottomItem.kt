@@ -1,7 +1,7 @@
 package com.ome.app.ui.views
 
 import android.graphics.Color
-import com.ome.Ome.R
+import com.ome.app.R
 
 enum class BottomItem(
     val rootId: Int,

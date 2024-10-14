@@ -10,7 +10,7 @@ import androidx.lifecycle.whenStarted
 import androidx.lifecycle.withStarted
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.ome.Ome.R
+import com.ome.app.R
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint

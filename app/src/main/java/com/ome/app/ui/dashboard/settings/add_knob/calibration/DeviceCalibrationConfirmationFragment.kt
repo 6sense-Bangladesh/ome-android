@@ -8,8 +8,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.ome.Ome.R
-import com.ome.Ome.databinding.FragmentDeviceCalibrationConfirmationBinding
+import com.ome.app.R
+import com.ome.app.databinding.FragmentDeviceCalibrationConfirmationBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.utils.makeGone
 import com.ome.app.utils.makeVisible

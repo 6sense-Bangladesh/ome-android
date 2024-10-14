@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.ome.Ome.R
+import com.ome.app.R
 import com.ome.app.ui.views.BottomItem
 import com.ome.app.ui.views.BottomNavbar
 import com.ome.app.utils.logd

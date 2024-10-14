@@ -3,7 +3,7 @@ package com.ome.app.ui.dashboard.settings.adapter
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.ome.Ome.R
+import com.ome.app.R
 import com.ome.app.utils.dp
 
 class SettingsItemDecoration :

@@ -6,7 +6,7 @@ import android.text.method.LinkMovementMethod
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.ome.Ome.databinding.FragmentChangePasswordBinding
+import com.ome.app.databinding.FragmentChangePasswordBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint

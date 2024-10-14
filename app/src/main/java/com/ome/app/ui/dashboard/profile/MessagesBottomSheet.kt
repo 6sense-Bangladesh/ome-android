@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.ome.Ome.R
+import com.ome.app.R
 import com.ome.app.ui.base.recycler.RecyclerDelegationAdapter
 import com.ome.app.ui.dashboard.profile.adapter.MessageAdapter
 import com.ome.app.ui.dashboard.profile.adapter.MessageItemModel

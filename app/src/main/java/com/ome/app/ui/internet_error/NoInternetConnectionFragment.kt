@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.ome.Ome.databinding.FragmentNoInternetConnectionBinding
+import com.ome.app.databinding.FragmentNoInternetConnectionBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.utils.subscribe

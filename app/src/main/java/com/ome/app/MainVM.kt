@@ -2,7 +2,7 @@ package com.ome.app
 
 import android.os.Bundle
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
-import com.ome.Ome.R
+import com.ome.app.R
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider

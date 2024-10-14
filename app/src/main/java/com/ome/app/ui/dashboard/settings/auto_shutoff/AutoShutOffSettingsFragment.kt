@@ -6,8 +6,8 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.ome.Ome.R
-import com.ome.Ome.databinding.FragmentAutoShutOffSettingsBinding
+import com.ome.app.R
+import com.ome.app.databinding.FragmentAutoShutOffSettingsBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint

@@ -6,7 +6,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.ome.Ome.databinding.FragmentStoveInfoBinding
+import com.ome.app.databinding.FragmentStoveInfoBinding
 import com.ome.app.ui.stove.BasePhotoFragment
 import com.ome.app.ui.stove.StoveSetupBurnersArgs
 import com.ome.app.ui.stove.StoveSetupTypeArgs

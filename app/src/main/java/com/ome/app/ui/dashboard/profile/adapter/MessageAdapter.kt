@@ -5,8 +5,8 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ome.Ome.R
-import com.ome.Ome.databinding.MessageItemBinding
+import com.ome.app.R
+import com.ome.app.databinding.MessageItemBinding
 import com.ome.app.ui.base.recycler.AdapterDelegate
 import com.ome.app.ui.base.recycler.ItemModel
 import com.ome.app.utils.makeGone
