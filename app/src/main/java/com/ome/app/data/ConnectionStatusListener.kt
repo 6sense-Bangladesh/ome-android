@@ -44,10 +44,12 @@ class ConnectionStatusListenerImpl(
         MutableStateFlow(ConnectionStatusListener.ConnectionStatusState.Default)
 
     private val connectivityManager by lazy {
-        context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+        context.applicationContext.getSystemService(ConnectivityManager::class.java)
     }
     private val networkRequest = NetworkRequest.Builder()
         .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
+        .addTransportType(NetworkCapabilities.TRANSPORT_BLUETOOTH)
         .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
         .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
         .build()
@@ -97,6 +99,7 @@ class ConnectionStatusListenerImpl(
     }
 
 
+    @Suppress("DEPRECATION")
     private fun isNetworkAvailable(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val nw = connectivityManager?.activeNetwork ?: return false

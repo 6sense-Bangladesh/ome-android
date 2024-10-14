@@ -18,7 +18,7 @@ fun <T> Fragment.subscribe(liveData: (LiveData<T>)?, onNext: (t: T) -> Unit) {
     })
 }
 
-inline fun <T> LiveData<T>.mutable(): MutableLiveData<T> =
+fun <T> LiveData<T>.mutable(): MutableLiveData<T> =
     (this as? MutableLiveData) ?: throw IllegalArgumentException("LiveData is not mutable")
 
 fun <T> AppCompatActivity.subscribe(liveData: (LiveData<T>)?, onNext: (t: T) -> Unit) {

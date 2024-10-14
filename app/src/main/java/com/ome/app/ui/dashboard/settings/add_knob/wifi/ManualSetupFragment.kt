@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
@@ -12,6 +13,7 @@ import com.ome.app.ui.base.BaseFragment
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
@@ -40,17 +42,19 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
             }
         }
         binding.connectBtn.setOnClickListener {
-            if (viewModel.isConnectedToKnobHotspot()) {
-                binding.connectBtn.startAnimation()
-                viewModel.connectToSocket()
-            } else {
-                onError(
-                    getString(
-                        R.string.manual_connection_to_hotspot_error,
-                        viewModel.wifiHandler.omeKnobSSID,
-                        viewModel.wifiHandler.inirvKnobSSID
+            lifecycleScope.launch {
+                if (viewModel.isConnectedToKnobHotspot()) {
+                    binding.connectBtn.startAnimation()
+                    viewModel.connectToSocket()
+                } else {
+                    onError(
+                        getString(
+                            R.string.manual_connection_to_hotspot_error,
+                            viewModel.wifiHandler.omeKnobSSID,
+                            viewModel.wifiHandler.inirvKnobSSID
+                        )
                     )
-                )
+                }
             }
         }
         viewModel.initListeners()

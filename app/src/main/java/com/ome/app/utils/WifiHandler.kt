@@ -1,7 +1,12 @@
 package com.ome.app.utils
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.net.wifi.ScanResult
+import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.Handler
 import android.os.Looper
@@ -34,57 +39,76 @@ class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) 
 
     val networkList: MutableStateFlow<List<ScanResult>?> = MutableStateFlow(null)
 
-    suspend fun connectToWifi(): Pair<Boolean, String?> = suspendCoroutine { continuation ->
+    suspend fun connectToWifi(): Pair<Boolean, String?>{
         val currentWifiSSID = getCurrentWifiSsid()
-        if (currentWifiSSID == inirvKnobSSID || currentWifiSSID == omeKnobSSID) {
-            continuation.resume(true to null)
-        } else {
-            handler.postDelayed({
-                continuation.resume(
-                    false to resourceProvider.getString(
-                        R.string.unable_to_join_the_network,
-                        currentSSID
-                    )
-                )
-            }, 15000)
-            WifiUtils.withContext(context)
-                .connectWith(
-                    currentSSID,
-                    password,
-                )
-                .onConnectionResult(object : ConnectionSuccessListener {
-                    override fun success() {
-                        handler.removeCallbacksAndMessages(null)
-                        continuation.resume(true to null)
-                    }
-
-                    override fun failed(errorCode: ConnectionErrorCode) {
-                        handler.removeCallbacksAndMessages(null)
-                        continuation.resume(
-                            false to resourceProvider.getString(
-                                R.string.unable_to_join_the_network,
-                                currentSSID
-                            )
+        return suspendCoroutine { continuation ->
+            if (currentWifiSSID == inirvKnobSSID || currentWifiSSID == omeKnobSSID) {
+                continuation.resume(true to null)
+            } else {
+                handler.postDelayed({
+                    continuation.resume(
+                        false to resourceProvider.getString(
+                            R.string.unable_to_join_the_network,
+                            currentSSID
                         )
-                        switchToOtherNetwork()
-                    }
-                })
-                .start()
-            // }
+                    )
+                }, 15000)
+                WifiUtils.withContext(context)
+                    .connectWith(
+                        currentSSID,
+                        password,
+                    )
+                    .onConnectionResult(object : ConnectionSuccessListener {
+                        override fun success() {
+                            handler.removeCallbacksAndMessages(null)
+                            continuation.resume(true to null)
+                        }
 
+                        override fun failed(errorCode: ConnectionErrorCode) {
+                            handler.removeCallbacksAndMessages(null)
+                            continuation.resume(
+                                false to resourceProvider.getString(
+                                    R.string.unable_to_join_the_network,
+                                    currentSSID
+                                )
+                            )
+                            switchToOtherNetwork()
+                        }
+                    })
+                    .start()
+                // }
+
+            }
         }
     }
 
-    private fun getCurrentWifiSsid(): String {
+    private suspend fun getCurrentWifiSsid() = suspendCoroutine{ continuation->
+        val connectivityManager = context.applicationContext.getSystemService(ConnectivityManager::class.java)
+        val request =
+            NetworkRequest.Builder()
+                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                .build()
+        val networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+                val wifiInfo = networkCapabilities.transportInfo as? WifiInfo
+                // Use wifiInfo as needed
+                continuation.resume(wifiInfo?.ssid?.replace("\"", ""))
+            }
+        }
+        connectivityManager.requestNetwork(request, networkCallback) // For request
+        connectivityManager.registerNetworkCallback(request, networkCallback) // For listen
+    }
+
+    private fun getCurrentWifiSsidOld(): String {
         val wifiManager = context.applicationContext.getSystemService(
             Context.WIFI_SERVICE
         ) as WifiManager
-        wifiManager.connectionInfo
+        @Suppress("DEPRECATION")
         return wifiManager.connectionInfo.ssid.replace("\"", "")
     }
 
 
-    fun isConnectedToKnobHotspot(): Boolean {
+    suspend fun isConnectedToKnobHotspot(): Boolean {
         val currentWifiSSID = getCurrentWifiSsid()
         return currentWifiSSID == inirvKnobSSID || currentWifiSSID == omeKnobSSID
     }

@@ -15,7 +15,7 @@ class ManualSetupViewModel @Inject constructor(
     val socketManager: SocketManager
 ) : BaseViewModel() {
 
-    fun isConnectedToKnobHotspot(): Boolean = wifiHandler.isConnectedToKnobHotspot()
+    suspend fun isConnectedToKnobHotspot(): Boolean = wifiHandler.isConnectedToKnobHotspot()
 
     val wifiNetworksListLiveData: SingleLiveEvent<List<NetworkItemModel>> = SingleLiveEvent()
 
