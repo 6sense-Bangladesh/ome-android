@@ -1,12 +1,13 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+//    id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
-    id("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -80,6 +81,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
@@ -102,56 +104,56 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
+//kapt {
+//    correctErrorTypes = true
+//}
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.7.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
-    implementation("io.projectreactor.netty:reactor-netty-core:1.1.3")
+    implementation("io.projectreactor.netty:reactor-netty-core:1.1.22")
 
     //DI
     implementation("com.google.dagger:hilt-android:2.52")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
-    kapt("com.google.dagger:hilt-compiler:2.52")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
+    ksp("com.google.dagger:hilt-compiler:2.52")
 
     //Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.2")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.2")
 
     //Rest API
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
 
     //QR code
-    implementation("com.google.zxing:core:3.4.0")
+    implementation("com.google.zxing:core:3.5.3")
 
     //UI
     implementation("com.github.fornewid:neumorphism:0.3.2")
-    implementation("com.google.android.material:material:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("com.github.GrenderG:Toasty:1.5.2")
 
     // Amplify frameworks
-    implementation("com.amplifyframework:core:1.1.2")
-    implementation("com.amplifyframework:aws-datastore:1.35.3")
-    implementation("com.amplifyframework:aws-api:1.35.3")
-    implementation("com.amplifyframework:aws-auth-cognito:1.35.3")
+    implementation("com.amplifyframework:core:1.38.8") //1.1.2
+    implementation("com.amplifyframework:aws-api:1.38.8")
+    implementation("com.amplifyframework:aws-auth-cognito:1.38.8")
+//    implementation("com.amplifyframework:aws-datastore:1.35.3")
+    // Amplify coroutines
+    implementation("com.amplifyframework:core-kotlin:0.22.8")
 
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     //Phone validator
-    implementation("com.googlecode.libphonenumber:libphonenumber:8.13.3")
+    implementation("com.googlecode.libphonenumber:libphonenumber:8.13.47")
 
-    // Amplify coroutines
-    implementation("com.amplifyframework:core-kotlin:0.19.3")
-
-    implementation("com.squareup.moshi:moshi:1.14.0")
+//    implementation("com.squareup.moshi:moshi:1.15.1")
 
     implementation("com.apachat:loadingbutton-android:1.0.11")
 
@@ -161,22 +163,22 @@ dependencies {
     implementation("com.jaredrummler:material-spinner:1.3.1")
 
     //image loading
-    implementation("com.github.bumptech.glide:glide:4.13.0")
-    kapt("com.github.bumptech.glide:compiler:4.13.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    ksp("com.github.bumptech.glide:ksp:4.16.0")
 
-    implementation("me.zhanghai.android.fastscroll:library:1.1.8")
+    implementation("me.zhanghai.android.fastscroll:library:1.3.0")
 
     //Splash screen API
-    implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 
     //wifi
     implementation("io.github.thanosfisherman.wifiutils:wifiutils:1.6.6")
 
     implementation("dev.chrisbanes.insetter:insetter:0.6.1")
 
-    implementation("com.google.guava:guava:31.1-android")
+    implementation("com.google.guava:guava:33.3.1-android")
 
-    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
 
     implementation("com.tinder.scarlet:scarlet:0.1.12")
     implementation("com.tinder.scarlet:stream-adapter-coroutines:0.1.12")
@@ -189,8 +191,8 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
     debugImplementation("com.github.chuckerteam.chucker:library:4.0.0")
     releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
