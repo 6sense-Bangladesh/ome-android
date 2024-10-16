@@ -22,7 +22,8 @@
     <string name="confirmation_label">Confirmation code sent via email to: email(%1$s) Make sure to check your spam folder</string>
     <string name="confirmation_label_dialog">Confirmation code sent via email to: email(%1$s)</string>
     <string name="resend_code">Resend Code</string>
-    <string name="welcome_to_ome">Hello!,\nWelcome to Ome App\nTo use our app to manage.</string>
+    <string name="hello">Hello!</string>
+    <string name="welcome_to_ome">Welcome to Ome App\nTo use our app to manage.</string>
     <string name="now_let_s_get_information_about_your_stove">Now let\'s get information about your stove.</string>
     <string name="enter_email_to_reset_password">Enter email to reset password</string>
     <string name="password_reset">Your password was successfully reset.</string>
@@ -44,15 +45,15 @@
     <string name="stove_setup_brand_label">What brand is your stove?</string>
     <string name="gas">Gas</string>
     <string name="electric">Electric</string>
-    <string name="take_a_shalf_photo_desc1">Let\'s take a photo of your knob shaft</string>
-    <string name="take_a_shalf_photo_desc2">Before taking a picture, make sure to take off one knob as shown above</string>
-    <string name="take_photo">Take Photo</string>
+    <string name="take_a_shalf_photo_desc1">Let\'s take a photo of your knob\nshaft</string>
+    <string name="take_a_shalf_photo_desc2">Before taking a picture, make sure to take off one knob as shown above.</string>
+    <string name="take_photo">Take a Photo</string>
     <string name="permission_denied">Permission not granted.</string>
     <string name="how_are_the_burners_on_your_stove_organized">How are the burners on your stove organized?</string>
     <string name="finish">Finish</string>
     <string name="stove_configuration_complete">Stove configuration complete</string>
     <string name="next_nlet_s_setup_your_smart_knob">Next,\nlet\'s setup your smart knob!</string>
-    <string name="skip_knob_setup">Skip knob setup</string>
+    <string name="skip_knob_setup">Skip Knob Setup</string>
     <string name="no_internet_connection">No Internet Connection</string>
     <string name="settings">Settings</string>
     <string name="show_more">Show More</string>
@@ -144,5 +145,12 @@
     <string name="setup_completed">Setup Completed</string>
     <string name="attention">Attention!</string>
     <string name="attention_skip_device_calibration_label">Are you sure you want to skip this process and use default values based on the off position?</string>
+    <string name="select_brand">Select Brand</string>
+    <string name="gas_stove">Gas Stovetop</string>
+    <string name="electric_stove">Electric Stovetop</string>
+    <string name="gas_range">Gas Range</string>
+    <string name="electric_range">Electric Range</string>
+    <string name="now_let_s_setup_your_smart_knob">Now, let\'s setup your smart\nknob!</string>
+    <string name="select_your_appliance">Select your appliance</string>
 
 </resources>

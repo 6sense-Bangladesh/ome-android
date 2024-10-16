@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    tools:context=".ui.launch.LaunchFragment">
+    tools:context=".ui.signin.SignInFragment">
 
     <include
         android:id="@+id/include"

@@ -5,11 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import com.ome.app.R
-import com.ome.app.ui.base.BaseViewModel
-import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.user.UserRepository
+import com.ome.app.ui.base.BaseViewModel
+import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.utils.mutable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
@@ -67,7 +67,7 @@ class DashboardViewModel @Inject constructor(
 
         launch {
             navControllerFlow.collect {
-                if (it.graph.id == R.id.myStoveNavigation) {
+                if (it.graph.id == R.id.myStoveSetupNavGraph) {
 //                    val inflater = it.navInflater
 //
 //                    val graph = inflater.inflate(R.navigation.my_stove_navigation)

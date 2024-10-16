@@ -11,8 +11,8 @@ plugins {
 }
 
 android {
-    namespace = "com.ome.app"
-    compileSdk = 35
+    namespace = ProjectConfig.packageName
+    compileSdk = ProjectConfig.compileSdk
 
     signingConfigs {
         getByName("debug") {
@@ -38,28 +38,48 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.ome.app"
-        minSdk = 21
-        targetSdk = 35
-        versionCode = 7
-        versionName = "1.07"
+        applicationId = ProjectConfig.packageName
+        minSdk = ProjectConfig.minSdk
+        targetSdk = ProjectConfig.targetSdk
+        versionCode = ProjectConfig.versionCode
+        versionName = ProjectConfig.versionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//        applicationVariants.all { variant ->
+//            versionName = when (val name = variant.buildType.name) {
+//                "release" -> "${ProjectConfig.versionName}-prod"
+//                "debug" -> "${ProjectConfig.versionName}-dev"
+//                else -> "${ProjectConfig.versionName}-$name"
+//            }
+//            true
+//        }
     }
 
     buildTypes {
         debug {
             buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
-            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws-dev.api.omekitchen.com\"")
+            buildConfigField(
+                "String",
+                "BASE_WEB_SOCKET_URL",
+                "\"wss://app-ws-dev.api.omekitchen.com\""
+            )
         }
 
         create("sandbox") {
             buildConfigField("String", "BASE_URL", "\"https://app-sandbox.api.omekitchen.com/\"")
-            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws-sandbox.api.omekitchen.com\"")
+            buildConfigField(
+                "String",
+                "BASE_WEB_SOCKET_URL",
+                "\"wss://app-ws-sandbox.api.omekitchen.com\""
+            )
         }
 
         create("demo") {
             buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
-            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws-dev.api.omekitchen.com\"")
+            buildConfigField(
+                "String",
+                "BASE_WEB_SOCKET_URL",
+                "\"wss://app-ws-dev.api.omekitchen.com\""
+            )
         }
 
 
@@ -68,26 +88,33 @@ android {
             isDebuggable = false
             buildConfigField("String", "BASE_URL", "\"https://app.api.omekitchen.com/\"")
             buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws.api.omekitchen.com\"")
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
 //            signingConfig = signingConfigs.getByName("release")
 //            signingConfig signingConfigs.release
         }
     }
-    applicationVariants.all{
-        outputs.forEach{
-            val output=it as com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            output.outputFileName="${rootProject.name.replace(' ','_')}_v"
-            output.outputFileName+="$versionName-$name.apk"
+    applicationVariants.all {
+        outputs.forEach {
+            val output = it as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            output.outputFileName = "${rootProject.name.replace(' ', '_')}_v"
+            output.outputFileName += "$versionName.apk"
         }
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = ProjectConfig.javaVersion
+        targetCompatibility = ProjectConfig.javaVersion
     }
 
     kotlin {
-        jvmToolchain(21)
+        jvmToolchain(ProjectConfig.javaVersion.toString().toInt())
+    }
+
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xcontext-receivers")
     }
 
     buildFeatures {
@@ -199,4 +226,11 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.firebase:firebase-crashlytics")
+
+
+    implementation("com.intuit.sdp:sdp-android:1.1.1")
+    implementation("com.intuit.ssp:ssp-android:1.1.1")
+
+    implementation("com.github.chesire:lifecyklelog:3.1.1")
+
 }

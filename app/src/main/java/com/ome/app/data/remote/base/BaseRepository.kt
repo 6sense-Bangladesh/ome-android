@@ -1,7 +1,7 @@
 package com.ome.app.data.remote.base
 
 import com.google.gson.Gson
-import com.ome.app.model.base.ResponseWrapper
+import com.ome.app.ui.model.base.ResponseWrapper
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException

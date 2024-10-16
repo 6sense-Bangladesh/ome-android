@@ -2,14 +2,16 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/onboarding_nav_graph"
+    android:id="@+id/onboardingNavGraph"
     app:startDestination="@id/launchFragment">
+
+    <include app:graph="@navigation/my_stove_nav_graph"/>
 
     <fragment
         android:id="@+id/launchFragment"
         android:name="com.ome.app.ui.launch.LaunchFragment"
         android:label="ome_background_gradient"
-        tools:layout="@layout/fragment_welcome">
+        tools:layout="@layout/fragment_launch">
         <action
             android:id="@+id/action_welcomeFragment_to_signInFragment"
             app:destination="@id/signInFragment"
@@ -45,7 +47,7 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="true"
             app:launchSingleTop="true"
-            app:popUpTo="@+id/onboarding_nav_graph" />
+            app:popUpTo="@+id/onboardingNavGraph" />
     </fragment>
     <fragment
         android:id="@+id/signUpNameFragment"
@@ -111,7 +113,7 @@
             app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/onboarding_nav_graph"
+            app:popUpTo="@+id/onboardingNavGraph"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -132,7 +134,10 @@
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.ome.app.ui.dashboard.DashboardFragment"
-        android:label="DashboardFragment">
+        android:label="DashboardFragment"
+        tools:layout="@layout/fragment_dashboard">
+        <deepLink app:uri="ome://navigation/dashboard" />
+
         <action
             android:id="@+id/action_dashboardFragment_to_launchFragment"
             app:destination="@id/launchFragment"
@@ -141,7 +146,7 @@
             app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@+id/onboarding_nav_graph"
+            app:popUpTo="@+id/onboardingNavGraph"
             app:popUpToInclusive="true" />
     </fragment>
 

@@ -3,7 +3,7 @@ package com.ome.app.data.remote
 import com.ome.app.ui.model.network.request.CreateUserRequest
 import com.ome.app.model.network.response.DeleteUserResponse
 import com.ome.app.model.network.response.UrlToUploadImageResponse
-import com.ome.app.model.network.response.UserResponse
+import com.ome.app.ui.model.network.response.UserResponse
 import okhttp3.RequestBody
 import retrofit2.http.*
 

@@ -79,7 +79,7 @@ class BottomNavigationController(
 
                         bottomGraph.startDestinationId?.let {
                             val inflater = selectedController.value.navInflater
-                            val graph = inflater.inflate(R.navigation.my_stove_navigation)
+                            val graph = inflater.inflate(R.navigation.my_stove_nav_graph)
                             graph.setStartDestination(it)
                             selectedController.value.setGraph(graph, null)
                         }

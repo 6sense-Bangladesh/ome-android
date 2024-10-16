@@ -39,8 +39,8 @@ class DashboardFragment :
                 ),
                 BottomNavigationController.BottomGraph(
                     BottomItem.MY_STOVE,
-                    R.navigation.my_stove_navigation,
-                    R.id.myStoveNavigation,
+                    R.navigation.my_stove_nav_graph,
+                    R.id.myStoveSetupNavGraph,
                     if (viewModel.isStoveInfoExist()) R.id.myStoveFragment else R.id.welcomeFragment
                 ),
                 BottomNavigationController.BottomGraph(

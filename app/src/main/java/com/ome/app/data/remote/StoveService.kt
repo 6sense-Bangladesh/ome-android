@@ -3,6 +3,7 @@ package com.ome.app.data.remote
 import com.ome.app.model.network.request.*
 import com.ome.app.model.network.response.*
 import com.ome.app.ui.model.network.request.CreateKnobRequest
+import com.ome.app.ui.model.network.request.CreateStoveRequest
 import com.ome.app.ui.model.network.response.BaseResponse
 import retrofit2.http.*
 

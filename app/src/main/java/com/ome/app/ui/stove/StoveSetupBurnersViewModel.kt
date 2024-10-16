@@ -1,12 +1,12 @@
 package com.ome.app.ui.stove
 
 import com.ome.app.R
-import com.ome.app.ui.base.BaseViewModel
-import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.user.UserRepository
-import com.ome.app.model.base.ResponseWrapper
-import com.ome.app.model.network.request.CreateStoveRequest
+import com.ome.app.ui.base.BaseViewModel
+import com.ome.app.ui.base.SingleLiveEvent
+import com.ome.app.ui.model.base.ResponseWrapper
+import com.ome.app.ui.model.network.request.CreateStoveRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -19,6 +19,7 @@ class StoveSetupBurnersViewModel @Inject constructor(
     var brand = ""
     var type = ""
     var stoveAutoOffMins = 15
+    var uploadTo = 15
 
     val createStoveLiveData = SingleLiveEvent<Boolean>()
 
@@ -38,7 +39,8 @@ class StoveSetupBurnersViewModel @Inject constructor(
                         stoveAutoOffMins = stoveAutoOffMins,
                         stoveGasOrElectric = type,
                         stoveMakeModel = brand,
-                        stoveOrientation = number
+                        stoveOrientation = number,
+                        stoveKnobMounting = "vertical"
                     )
                 )
                 if (response is ResponseWrapper.Success) {

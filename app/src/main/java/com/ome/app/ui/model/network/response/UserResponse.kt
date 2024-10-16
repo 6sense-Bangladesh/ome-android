@@ -1,5 +1,9 @@
-package com.ome.app.model.network.response
+package com.ome.app.ui.model.network.response
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class UserResponse(
     val deviceTokens: List<String> = listOf(),
     val email: String?,
@@ -18,4 +22,4 @@ data class UserResponse(
     val uiAppType: String?,
     val uiAppVersion: String?,
     val userId: String?
-)
+): Parcelable

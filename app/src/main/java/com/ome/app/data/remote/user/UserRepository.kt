@@ -2,11 +2,11 @@ package com.ome.app.data.remote.user
 
 import com.ome.app.data.remote.UserService
 import com.ome.app.data.remote.base.BaseRepository
-import com.ome.app.model.base.ResponseWrapper
+import com.ome.app.ui.model.base.ResponseWrapper
 import com.ome.app.model.network.response.UrlToUploadImageResponse
 import com.ome.app.ui.model.network.request.CreateUserRequest
 import com.ome.app.model.network.response.DeleteUserResponse
-import com.ome.app.model.network.response.UserResponse
+import com.ome.app.ui.model.network.response.UserResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import okhttp3.RequestBody
 import kotlin.coroutines.coroutineContext

@@ -7,8 +7,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.amplifyframework.kotlin.core.Amplify
 import com.ome.app.R
-import com.ome.app.databinding.FragmentSignUpConfirmationBinding
 import com.ome.app.data.remote.AmplifyManager
+import com.ome.app.databinding.FragmentSignUpConfirmationBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.utils.applyMaskToEmail
 import com.ome.app.utils.subscribe
@@ -60,7 +60,8 @@ class SignUpConfirmationFragment :
             if (it) {
                 AmplifyManager.kotAuth = Amplify.Auth
                 findNavController().navigate(
-                    SignUpConfirmationFragmentDirections.actionSignUpConfirmationFragmentToDashboardFragment()
+//                    SignUpConfirmationFragmentDirections.actionSignUpConfirmationFragmentToDashboardFragment()
+                    R.id.myStoveSetupNavGraph
                 )
             }
 

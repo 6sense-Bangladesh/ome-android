@@ -8,11 +8,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentStoveSetupPhotoBinding
+import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.parcelize.Parcelize
-import java.util.*
 
 
 @AndroidEntryPoint
@@ -34,14 +34,14 @@ class StoveSetupPhotoFragment :
             binding.shaftIv.setImageURI(it)
         }
 
-        binding.label1.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-
-        binding.takeAphoto.setOnClickListener {
+//        binding.label1.applyInsetter {
+//            type(navigationBars = true, statusBars = true) {
+//                padding(horizontal = true)
+//                margin(top = true)
+//            }
+//        }
+        binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
+        binding.takeAphoto.setBounceClickListener{
             launchCameraWithPermission()
         }
     }

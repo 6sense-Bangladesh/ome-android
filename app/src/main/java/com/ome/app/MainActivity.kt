@@ -5,12 +5,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.coroutineScope
-import androidx.lifecycle.whenStarted
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.withStarted
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.ome.app.R
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,9 +22,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                viewModel.isSplashScreenLoading.value
-            }
+            setKeepOnScreenCondition { viewModel.isSplashScreenLoading }
         }
         viewModel.registerConnectionListener()
         setContentView(R.layout.activity_main)
@@ -38,9 +34,7 @@ class MainActivity : AppCompatActivity() {
     private fun initFragment() {
         viewModel.initStartDestination()
         subscribe(viewModel.startDestinationInitialized) { destinationWithBundle ->
-            destinationWithBundle?.let {
-                initNavigationGraph(destinationWithBundle.first, destinationWithBundle.second)
-            }
+            initNavigationGraph(destinationWithBundle.first, destinationWithBundle.second)
         }
     }
 
@@ -62,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
         navHostFragment.navController.setGraph(graph, startDestinationBundle)
         onNavGraphInited()
-        viewModel._isSplashScreenLoading.value = false
+        viewModel.isSplashScreenLoading = false
     }
 
     private fun subscribeConnectionListener() {
@@ -75,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     ConnectionStatusListener.ConnectionStatusState.NoConnection -> {
-                        viewModel._isSplashScreenLoading.value = false
+                        viewModel.isSplashScreenLoading = false
                         viewModel.startDestinationJob?.cancel()
                         val navHostFragment =
                             supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
@@ -87,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onNavGraphInited() {
-        lifecycle.coroutineScope.launch {
+        lifecycleScope.launch {
             val fragment = supportFragmentManager.findFragmentById(R.id.navHost)
 
             fragment?.lifecycle?.withStarted {

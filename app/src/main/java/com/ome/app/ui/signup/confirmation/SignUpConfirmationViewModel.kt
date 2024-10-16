@@ -10,7 +10,7 @@ import com.ome.app.data.remote.AmplifyResultValue
 import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.ui.model.network.request.CreateUserRequest
 import com.ome.app.model.local.User
-import com.ome.app.model.base.ResponseWrapper
+import com.ome.app.ui.model.base.ResponseWrapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

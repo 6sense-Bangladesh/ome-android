@@ -10,6 +10,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/ome_gradient_background"
-        android:alpha="0.65"/>
+        android:background="@color/black"
+        android:alpha="0.60"/>
+
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@drawable/ome_gradient_background"-->
+<!--        android:alpha="0.65"/>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

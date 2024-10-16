@@ -10,10 +10,12 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupBurnersBinding
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
+import com.ome.app.utils.toast
 import com.ome.app.utils.withDelay
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.parcelize.Parcelize
 
 
@@ -34,34 +36,34 @@ class StoveSetupBurnersFragment :
         viewModel.brand = args.params.brand
         viewModel.type = args.params.type
 
-        binding.titleTv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
+//        binding.titleTv.applyInsetter {
+//            type(navigationBars = true, statusBars = true) {
+//                padding(horizontal = true)
+//                margin(top = true)
+//            }
+//        }
 
-        binding.fourBurnersIv.setOnClickListener {
+        binding.fourBurnersIv.setBounceClickListener {
             handleButtonClick(it)
             viewModel.stoveOrientation = StoveOrientation.FOUR_BURNERS
         }
-        binding.fourBarBurnersIv.setOnClickListener {
+        binding.fourBarBurnersIv.setBounceClickListener {
             handleButtonClick(it)
             viewModel.stoveOrientation = StoveOrientation.FOUR_BAR_BURNERS
         }
-        binding.fiveBurnersIv.setOnClickListener {
+        binding.fiveBurnersIv.setBounceClickListener {
             handleButtonClick(it)
             viewModel.stoveOrientation = StoveOrientation.FIVE_BURNERS
         }
-        binding.sixBurnersIv.setOnClickListener {
+        binding.sixBurnersIv.setBounceClickListener {
             handleButtonClick(it)
             viewModel.stoveOrientation = StoveOrientation.SIX_BURNERS
         }
-        binding.twoBurnersHorizontalIv.setOnClickListener {
+        binding.twoBurnersHorizontalIv.setBounceClickListener {
             handleButtonClick(it)
             viewModel.stoveOrientation = StoveOrientation.TWO_BURNERS_HORIZONTAL
         }
-        binding.twoBurnersVerticalIv.setOnClickListener {
+        binding.twoBurnersVerticalIv.setBounceClickListener {
             handleButtonClick(it)
             viewModel.stoveOrientation = StoveOrientation.TWO_BURNERS_VERTICAL
         }
@@ -69,13 +71,18 @@ class StoveSetupBurnersFragment :
         if(args.params.isEditMode){
             binding.continueBtn.text = getString(R.string.save)
         }
-
-        binding.continueBtn.setOnClickListener {
-            binding.continueBtn.startAnimation()
+        binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
+        binding.continueBtn.setBounceClickListener  {
             if(args.params.isEditMode){
+                binding.continueBtn.startAnimation()
                 viewModel.updateStoveOrientation(args.params.stoveId)
             } else {
-                viewModel.createStove()
+                if(viewModel.stoveOrientation != null) {
+                    viewModel.createStove()
+                    binding.continueBtn.startAnimation()
+                }
+                else
+                    toast("Please select burner type")
             }
         }
     }
@@ -89,7 +96,7 @@ class StoveSetupBurnersFragment :
             ?.let {
                 binding.continueBtn.drawableBackground = it
             }
-        binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_unpressed_color)
+//        binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_unpressed_color)
     }
 
 

@@ -5,79 +5,96 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:fitsSystemWindows="false">
+    android:fitsSystemWindows="true"
+    tools:context=".ui.stove.StoveSetupTypeFragment">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="86dp"
-        android:src="@drawable/ic_setup_stove"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/gasIv"
-        android:layout_width="135dp"
-        android:layout_height="125dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/stove_type_button_shape"
-        android:padding="25dp"
-        android:src="@drawable/ic_gray_gas"
-        app:layout_constraintEnd_toStartOf="@+id/electricIv"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="Select Stove Type" />
 
     <TextView
-        style="@style/Label.17sp"
-        android:layout_width="wrap_content"
+        android:id="@+id/titleTv"
+        style="@style/Title.Small"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/electric"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="@string/select_your_appliance"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/electricIv"
-        app:layout_constraintStart_toStartOf="@+id/electricIv"
-        app:layout_constraintTop_toBottomOf="@+id/electricIv" />
-
-    <TextView
-        style="@style/Label.17sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/gas"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/gasIv"
-        app:layout_constraintStart_toStartOf="@+id/gasIv"
-        app:layout_constraintTop_toBottomOf="@+id/gasIv" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/electricIv"
-        android:layout_width="135dp"
-        android:layout_height="125dp"
-        android:background="@drawable/stove_type_button_shape"
-        android:padding="25dp"
-        android:src="@drawable/ic_gray_electric"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/gasIv"
-        app:layout_constraintTop_toTopOf="@+id/gasIv" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"/>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/stoveShipGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        app:chipStrokeColor="@color/gray_color"
+        app:layout_constraintTop_toBottomOf="@+id/titleTv"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/gasStove"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_50sdp"
+            android:text="@string/gas_stove"
+            app:checkedIconEnabled="false"
+            app:chipBackgroundColor="@color/chip_color_state_list"
+            app:chipIcon="@drawable/ic_gray_gas"
+            app:chipIconEnabled="true" />
+
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/electricStove"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_50sdp"
+            android:text="@string/electric_stove"
+            app:checkedIconEnabled="false"
+            app:chipBackgroundColor="@color/chip_color_state_list"
+            app:chipIcon="@drawable/ic_gray_electric"
+            app:chipIconEnabled="true" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/gasRange"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_50sdp"
+            android:text="@string/gas_range"
+            app:checkedIconEnabled="false"
+            app:chipBackgroundColor="@color/chip_color_state_list"
+            app:chipIcon="@drawable/ic_gray_gas"
+            app:chipIconEnabled="true" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/electricRange"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_50sdp"
+            android:text="@string/electric_range"
+            app:checkedIconEnabled="false"
+            app:chipBackgroundColor="@color/chip_color_state_list"
+            app:chipIcon="@drawable/ic_gray_electric"
+            app:chipIconEnabled="true" />
+
+
+    </com.google.android.material.chip.ChipGroup>
+
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/continueBtn"
-        style="@style/OmeButton.Gradient.WithLoadingState"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="64dp"
-        android:gravity="center"
-        android:background="@drawable/ome_gradient_button_pressed_color"
-        android:enabled="false"
+        style="@style/OmeButton.Blue"
         android:text="@string/continue_btn"
-        app:layout_constraintEnd_toEndOf="@+id/electricIv"
-        app:layout_constraintStart_toStartOf="@+id/gasIv"
-        app:layout_constraintTop_toBottomOf="@+id/electricIv" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

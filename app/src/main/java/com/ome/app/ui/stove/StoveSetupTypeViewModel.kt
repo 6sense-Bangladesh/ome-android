@@ -3,7 +3,7 @@ package com.ome.app.ui.stove
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.user.UserRepository
-import com.ome.app.model.network.request.CreateStoveRequest
+import com.ome.app.ui.model.network.request.CreateStoveRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

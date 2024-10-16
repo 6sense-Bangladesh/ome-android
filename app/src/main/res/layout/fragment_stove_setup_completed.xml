@@ -1,40 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.stove.StoveSetupCompletedFragment">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Setup Completed" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView2"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="86dp"
-        android:src="@drawable/ic_setup_stove"
+        android:layout_width="@dimen/_36sdp"
+        android:layout_height="@dimen/_36sdp"
+        android:background="@color/green"
+        android:layout_marginBottom="@dimen/_100sdp"
+        android:src="@drawable/ic_done"
+        app:layout_constraintBottom_toTopOf="@+id/skipKnobSetupBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="86dp"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/ome_gradient_background_checkmark"
-        android:padding="6dp"
-        android:src="@drawable/ic_check_white_24dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Round18" />
 
     <TextView
         android:id="@+id/textView3"
-        style="@style/Title.18sp"
+        style="@style/Title.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:text="@string/stove_configuration_complete"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,12 +42,12 @@
 
     <TextView
         android:id="@+id/textView4"
-        style="@style/Title.18sp"
+        style="@style/Label.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center"
-        android:text="@string/next_nlet_s_setup_your_smart_knob"
+        android:text="@string/now_let_s_setup_your_smart_knob"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,32 +55,27 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/finishBtn"
-        style="@style/OmeButton.Gradient.WithLoadingState"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="48dp"
-        android:layout_marginTop="42dp"
-        android:text="@string/finish"
-        android:textAllCaps="true"
+        android:id="@+id/skipKnobSetupBtn"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:text="@string/skip_knob_setup"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintBottom_toTopOf="@+id/finishBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
+        app:strokeColor="?colorPrimary" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/skipKnobSetupBtn"
-        style="@style/OmeButton.Gradient.WithLoadingState"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="48dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/ome_gradient_button_selector"
-        android:text="@string/skip_knob_setup"
-        android:textAllCaps="true"
+        android:id="@+id/finishBtn"
+        style="@style/OmeButton.Blue"
+        android:layout_height="@dimen/_35sdp"
+        android:text="@string/continue_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/finishBtn" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

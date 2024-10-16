@@ -4,12 +4,12 @@ import android.os.Bundle
 import com.amplifyframework.auth.AuthException
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.ome.app.R
-import com.ome.app.ui.base.BaseViewModel
-import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.user.UserRepository
-import com.ome.app.model.base.ResponseWrapper
+import com.ome.app.ui.base.BaseViewModel
+import com.ome.app.ui.base.SingleLiveEvent
+import com.ome.app.ui.model.base.ResponseWrapper
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -100,9 +100,15 @@ class SignInViewModel @Inject constructor(
                 }
                 is ResponseWrapper.Success -> {
                     loadingLiveData.postValue(false)
-                    destinationAfterSignInLiveData.postValue(R.id.action_signInFragment_to_dashboardFragment to null)
+                    if (result.value.stoveMakeModel.isNullOrEmpty() ||
+                        result.value.stoveGasOrElectric.isNullOrEmpty()
+                    ){
+                        destinationAfterSignInLiveData.postValue(R.id.myStoveSetupNavGraph to null)
+                        return@launch
+                    }
+                    else
+                        destinationAfterSignInLiveData.postValue(R.id.action_signInFragment_to_dashboardFragment to null)
                 }
-                else -> {}
             }
         }
     }

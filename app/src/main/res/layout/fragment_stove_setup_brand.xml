@@ -1,74 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
-    android:fitsSystemWindows="false">
+    android:fitsSystemWindows="true"
+    tools:context=".ui.stove.StoveSetupBrandFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="Select Stove Brand" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="86dp"
+        android:layout_marginTop="@dimen/_50sdp"
         android:src="@drawable/ic_setup_stove"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <TextView
         android:id="@+id/textView3"
-        style="@style/Title.20sp"
+        style="@style/Title.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_30sdp"
         android:text="@string/stove_setup_brand_label"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/stoveSelectorContainer"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/stove_brand_selector_shape"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:endIconDrawable="@drawable/ic_arrow_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3">
 
-        <com.jaredrummler.materialspinner.MaterialSpinner
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/stoveSelector"
+            style="@style/Label.Medium"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_margin="1dp"
-            style="@style/Label.14sp"
-            tools:text="Samsung"
-            android:fontFamily="@font/open_sans_regular"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:ms_arrow_tint="@color/gradient_end_unpressed_color"
-            app:ms_text_color="@color/gradient_end_unpressed_color" />
+            android:layout_height="wrap_content"
+            android:hint="@string/select_brand"
+            android:inputType="none"
+            android:labelFor="@+id/textView3" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:id="@+id/stoveSelectorContainer"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:visibility="gone"-->
+    <!--        android:layout_marginHorizontal="32dp"-->
+    <!--        android:layout_marginTop="24dp"-->
+    <!--        android:background="@drawable/stove_brand_selector_shape"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/textView3">-->
+
+    <!--        <com.jaredrummler.materialspinner.MaterialSpinner-->
+    <!--            android:id="@+id/stoveSelector"-->
+    <!--            style="@style/Label.14sp"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="44dp"-->
+    <!--            android:layout_margin="1dp"-->
+    <!--            -->
+    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent"-->
+    <!--            app:ms_arrow_tint="@color/gradient_end_unpressed_color"-->
+    <!--            app:ms_text_color="@color/gradient_end_unpressed_color"-->
+    <!--            tools:text="Samsung" />-->
+
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/continueBtn"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        style="@style/OmeButton.Gradient"
-        android:layout_marginTop="16dp"
+        style="@style/OmeButton.Blue"
         android:text="@string/continue_btn"
-        app:layout_constraintEnd_toEndOf="@+id/stoveSelectorContainer"
-        app:layout_constraintStart_toStartOf="@+id/stoveSelectorContainer"
-        app:layout_constraintTop_toBottomOf="@+id/stoveSelectorContainer" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

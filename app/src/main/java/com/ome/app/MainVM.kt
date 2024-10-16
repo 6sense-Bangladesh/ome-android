@@ -1,25 +1,24 @@
 package com.ome.app
 
 import android.os.Bundle
+import androidx.lifecycle.SavedStateHandle
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
-import com.ome.app.R
-import com.ome.app.ui.base.BaseViewModel
-import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.data.remote.websocket.WebSocketManager
-import com.ome.app.model.base.ResponseWrapper
 import com.ome.app.model.network.response.KnobDto
+import com.ome.app.ui.base.BaseViewModel
+import com.ome.app.ui.base.SingleLiveEvent
+import com.ome.app.ui.model.base.ResponseWrapper
+import com.ome.app.ui.model.network.response.UserResponse
 import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -31,17 +30,19 @@ class MainVM @Inject constructor(
     val userRepository: UserRepository,
     val stoveRepository: StoveRepository,
     val wifiHandler: WifiHandler,
-    val webSocketManager: WebSocketManager
+    val webSocketManager: WebSocketManager,
+    private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
+    var userInfo: UserResponse?
+        get() = savedStateHandle["userInfo"]
+        set(value) { savedStateHandle["userInfo"] = value }
 
-
-    override var defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
+    override var defaultErrorHandler = CoroutineExceptionHandler { _, _ ->
         startDestinationInitialized.postValue(R.id.launchFragment to null)
     }
-    val startDestinationInitialized = SingleLiveEvent<Pair<Int, Bundle?>?>()
+    val startDestinationInitialized = SingleLiveEvent<Pair<Int, Bundle?>>()
 
-    val _isSplashScreenLoading = MutableStateFlow(true)
-    val isSplashScreenLoading = _isSplashScreenLoading.asStateFlow()
+    var isSplashScreenLoading = true
     var startDestinationJob: Job? = null
 
     fun initStartDestination() {
@@ -87,8 +88,13 @@ class MainVM @Inject constructor(
                                         }
                                     }
                                     is ResponseWrapper.Success -> {
-                                        //  if (result.value.knobMacAddrs.isNotEmpty()) {
-
+                                        userInfo = result.value
+                                        if (result.value.stoveMakeModel.isNullOrEmpty() ||
+                                            result.value.stoveGasOrElectric.isNullOrEmpty()
+                                        ){
+                                            startDestinationInitialized.postValue(R.id.myStoveSetupNavGraph to null)
+                                            return@launch
+                                        }
                                         val knobs = arrayListOf<KnobDto>()
 
                                         try {
@@ -114,7 +120,6 @@ class MainVM @Inject constructor(
 
                                         startDestinationInitialized.postValue(R.id.dashboardFragment to null)
                                     }
-                                    else -> {}
                                 }
                             } else {
                                 startDestinationInitialized.postValue(R.id.launchFragment to null)

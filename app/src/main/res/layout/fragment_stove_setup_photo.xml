@@ -5,55 +5,59 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:fitsSystemWindows="false">
+    android:fitsSystemWindows="true"
+    tools:context=".ui.stove.StoveSetupPhotoFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="Knob Shaft Photo" />
 
     <TextView
         android:id="@+id/label1"
-        style="@style/Label.17sp"
+        style="@style/Title.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="48dp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="48dp"
-        android:gravity="center"
         android:text="@string/take_a_shalf_photo_desc1"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/shaftIv"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="18dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_stove_shaft"
-        app:layout_constraintTop_toBottomOf="@+id/label1" />
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <TextView
         android:id="@+id/label2"
-        style="@style/Label.17sp"
+        style="@style/Label.Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="48dp"
-        android:layout_marginTop="18dp"
-        android:gravity="center"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:text="@string/take_a_shalf_photo_desc2"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@+id/shaftIv" />
+        app:layout_constraintTop_toBottomOf="@+id/label1" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/shaftIv"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_stove_shaft"
+        app:layout_constraintTop_toBottomOf="@+id/label2"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.RectRound" />
+
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/takeAphoto"
-        style="@style/OmeButton.Gradient.WithLoadingState"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="48dp"
-        android:layout_marginTop="64dp"
+        style="@style/OmeButton.Blue"
         android:text="@string/take_photo"
-        android:textAllCaps="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label2" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

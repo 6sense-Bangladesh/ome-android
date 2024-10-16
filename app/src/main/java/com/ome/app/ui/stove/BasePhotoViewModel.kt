@@ -4,7 +4,7 @@ import android.net.Uri
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.remote.user.UserRepository
-import com.ome.app.model.base.ResponseWrapper
+import com.ome.app.ui.model.base.ResponseWrapper
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
