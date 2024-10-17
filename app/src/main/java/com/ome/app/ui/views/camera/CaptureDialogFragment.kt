@@ -232,9 +232,11 @@ class CaptureDialogFragment(
 
     private fun onProcessingEnd(){
         binding.loadingLayout.gone()
-        viewModel.photoList.value.firstOrNull()?.let(photoFile) ?: toast("Please capture an image")
-        viewModel.clearList()
-        dismiss()
+        viewModel.photoList.value.firstOrNull()?.let{
+            photoFile(it)
+            viewModel.clearList()
+            dismiss()
+        } ?: toast("Please capture an image")
     }
 
     override fun onDestroyView() {
