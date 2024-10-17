@@ -1,13 +1,13 @@
 package com.ome.app.ui.dashboard.profile
 
-import com.ome.app.ui.base.BaseViewModel
-import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.user.UserRepository
-import com.ome.app.ui.model.network.request.CreateUserRequest
 import com.ome.app.model.ui.UserProfileItemModel
 import com.ome.app.model.ui.toItemModel
+import com.ome.app.ui.base.BaseViewModel
+import com.ome.app.ui.base.SingleLiveEvent
+import com.ome.app.ui.model.network.request.CreateUserRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -21,12 +21,13 @@ class ProfileViewModel @Inject constructor(
 
     val userLiveData: SingleLiveEvent<UserProfileItemModel> = SingleLiveEvent()
 
-    fun signOut() {
+    fun signOut(onEnd: () -> Unit) {
         launch(dispatcher = ioContext) {
             amplifyManager.signUserOut()
             preferencesProvider.clearData()
             userRepository.userFlow.emit(null)
             amplifyManager.signOutFlow.emit(true)
+            onEnd()
         }
     }
 
@@ -65,10 +66,11 @@ class ProfileViewModel @Inject constructor(
     }
 
 
-    fun deleteUser() = launch(dispatcher = ioContext) {
+    fun deleteUser(onEnd: () -> Unit) = launch(dispatcher = ioContext) {
         userRepository.deleteUser()
         amplifyManager.deleteUser()
         preferencesProvider.clearData()
         amplifyManager.signOutFlow.emit(true)
+        onEnd()
     }
 }

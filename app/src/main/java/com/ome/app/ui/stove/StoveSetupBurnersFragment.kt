@@ -73,6 +73,7 @@ class StoveSetupBurnersFragment :
             binding.continueBtn.text = getString(R.string.save)
         }else{
             mainViewModel.stoveData.stoveOrientation.enum?.let {
+                viewModel.stoveOrientation = it
                 activity?.findViewById<AppCompatImageView>(it.layoutRes)?.let { burnerIv ->
                     handleButtonClick(burnerIv)
                 }

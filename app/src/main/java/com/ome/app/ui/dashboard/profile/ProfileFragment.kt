@@ -55,7 +55,10 @@ class ProfileFragment :
                 message = SpannableStringBuilder(getString(R.string.confirm_logout)),
                 onPositiveButtonClick = {
                     binding.signOut.startAnimation()
-                    viewModel.signOut()
+                    viewModel.signOut{
+//                        navController?.navigate(R.id.launchFragment)
+                        activity?.finish()
+                    }
                 })
         }
 
@@ -66,7 +69,10 @@ class ProfileFragment :
                     message = SpannableStringBuilder(getString(R.string.confirm_delete_account)),
                     onPositiveButtonClick = {
                         binding.deleteAccount.startAnimation()
-                        viewModel.deleteUser()
+                        viewModel.deleteUser{
+//                            navController?.navigate(R.id.launchFragment)
+                            activity?.finish()
+                        }
                     })
             }
         }

@@ -235,7 +235,7 @@
 
         <com.apachat.loadingbutton.core.customViews.CircularProgressButton
             android:id="@+id/signOut"
-            style="@style/OmeButton.LightBlue"
+            style="@style/OmeButton.Blue"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginTop="48dp"
@@ -249,11 +249,12 @@
 
         <com.apachat.loadingbutton.core.customViews.CircularProgressButton
             android:id="@+id/deleteAccount"
-            style="@style/OmeButton.LightBlue"
+            style="@style/OmeButton.Blue"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginTop="24dp"
             android:visibility="gone"
+            tools:visibility="visible"
             android:text="@string/delete_account"
             android:textAllCaps="true"
             app:layout_constraintBottom_toBottomOf="parent"
