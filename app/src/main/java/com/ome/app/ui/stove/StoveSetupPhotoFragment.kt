@@ -4,13 +4,18 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupPhotoBinding
+import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.gone
+import com.ome.app.utils.loadDrawable
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
+import com.ome.app.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -21,7 +26,7 @@ class StoveSetupPhotoFragment :
         FragmentStoveSetupPhotoBinding::inflate
     ) {
 
-    override val viewModel: StoveSetupPhotoViewModel by viewModels()
+    override val viewModel: StoveSetupPhotoViewModel by activityViewModels()
 
     private val args by navArgs<StoveSetupPhotoFragmentArgs>()
 
@@ -30,9 +35,9 @@ class StoveSetupPhotoFragment :
         super.onViewCreated(view, savedInstanceState)
         setStatusBarTheme(true)
 
-        viewModel.currentContentUri?.let {
-            binding.shaftIv.setImageURI(it)
-        }
+//        viewModel.currentContentUri?.let {
+//            binding.shaftIv.setImageURI(it)
+//        }
 
 //        binding.label1.applyInsetter {
 //            type(navigationBars = true, statusBars = true) {
@@ -41,20 +46,26 @@ class StoveSetupPhotoFragment :
 //            }
 //        }
         binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
-        binding.takeAphoto.setBounceClickListener{
+        binding.takePhoto.setBounceClickListener{
+            if(binding.takePhoto.text == getString(R.string.take_photo))
+                launchCameraWithPermission()
+            else if(binding.takePhoto.text == getString(R.string.use_photo))
+                viewModel.uploadImage()
+        }
+        binding.retakePhoto.setBounceClickListener {
             launchCameraWithPermission()
         }
     }
 
     override fun handleTakeAPhotoResult(uri: Uri) {
-        binding.shaftIv.setImageURI(uri)
-        viewModel.uploadImage()
+//        binding.shaftIv.setImageURI(uri)
+//        viewModel.uploadImage()
     }
 
     override fun observeLiveData() {
         super.observeLiveData()
         subscribe(viewModel.imageUploadedLiveData) {
-            binding.takeAphoto.revertAnimation()
+            binding.takePhoto.revertAnimation()
             findNavController().navigate(
                 StoveSetupPhotoFragmentDirections.actionStoveSetupPhotoFragmentToStoveSetupBurnersFragment(
                     StoveSetupBurnersArgs(brand = args.params.brand, type = args.params.type)
@@ -63,9 +74,21 @@ class StoveSetupPhotoFragment :
         }
         subscribe(viewModel.loadingLiveData) {
             if(it){
-                binding.takeAphoto.startAnimation()
+                binding.takePhoto.startAnimation()
             } else {
-                binding.takeAphoto.revertAnimation()
+                binding.takePhoto.revertAnimation()
+            }
+        }
+        viewModel.photoList.collectWithLifecycle {
+            it.firstOrNull()?.let{ photoFile->
+                viewModel.currentFile = photoFile
+                binding.shaftIv.loadDrawable(photoFile)
+                binding.retakePhoto.visible()
+                binding.takePhoto.text = getString(R.string.use_photo)
+//                viewModel.uploadImage(photoFile)
+            } ?: run {
+                binding.retakePhoto.gone()
+                binding.takePhoto.text = getString(R.string.take_photo)
             }
         }
     }

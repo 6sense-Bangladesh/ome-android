@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/takeAphoto"
+        android:id="@+id/takePhoto"
         style="@style/Label.14sp"
         android:layout_width="0dp"
         android:layout_height="42dp"
@@ -38,9 +38,9 @@
         android:layout_height="1dp"
         android:alpha="0.5"
         android:background="@color/gray_color"
-        app:layout_constraintEnd_toEndOf="@+id/takeAphoto"
-        app:layout_constraintStart_toStartOf="@+id/takeAphoto"
-        app:layout_constraintTop_toBottomOf="@+id/takeAphoto" />
+        app:layout_constraintEnd_toEndOf="@+id/takePhoto"
+        app:layout_constraintStart_toStartOf="@+id/takePhoto"
+        app:layout_constraintTop_toBottomOf="@+id/takePhoto" />
 
 
     <TextView

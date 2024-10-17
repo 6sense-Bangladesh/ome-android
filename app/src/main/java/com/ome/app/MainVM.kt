@@ -12,6 +12,7 @@ import com.ome.app.model.network.response.KnobDto
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.ui.model.base.ResponseWrapper
+import com.ome.app.ui.model.network.request.CreateStoveRequest
 import com.ome.app.ui.model.network.response.UserResponse
 import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.logi
@@ -43,9 +44,14 @@ class MainVM @Inject constructor(
     val startDestinationInitialized = SingleLiveEvent<Pair<Int, Bundle?>>()
 
     var isSplashScreenLoading = true
+    var initDone = false
     var startDestinationJob: Job? = null
 
+    var stoveData = CreateStoveRequest()
+
     fun initStartDestination() {
+        if (initDone) return
+        startDestinationJob?.cancel()
         startDestinationJob = launch(dispatcher = ioContext) {
             val authSession =
                 withContext(Dispatchers.Default + defaultErrorHandler) { amplifyManager.fetchAuthSession() }
@@ -88,6 +94,7 @@ class MainVM @Inject constructor(
                                         }
                                     }
                                     is ResponseWrapper.Success -> {
+                                        initDone = true
                                         userInfo = result.value
                                         if (result.value.stoveMakeModel.isNullOrEmpty() ||
                                             result.value.stoveGasOrElectric.isNullOrEmpty()

@@ -40,10 +40,17 @@ class StoveSetupCompletedFragment :
         }
         binding.skipKnobSetupBtn.setBounceClickListener {
             findNavController().navigate(
-                NavDeepLinkRequest.Builder.fromUri(
+                request = NavDeepLinkRequest.Builder.fromUri(
                     Uri.parse("ome://navigation/dashboard")
                 ).build(),
-                NavOptions.Builder().setPopUpTo(R.id.dashboardFragment, true).build(), null
+                navOptions = NavOptions.Builder()
+                    .setPopUpTo(R.id.dashboardFragment, false)
+                    .setEnterAnim(R.anim.slide_in_right)
+                    .setExitAnim(R.anim.slide_out_left)
+                    .setPopEnterAnim(R.anim.slide_in_left)
+                    .setPopExitAnim(R.anim.slide_out_right)
+                    .build(),
+                navigatorExtras = null
             )
 //            findNavController().navigate(R.id.action_stoveSetupCompletedFragment_to_dashboardFragment)
         }

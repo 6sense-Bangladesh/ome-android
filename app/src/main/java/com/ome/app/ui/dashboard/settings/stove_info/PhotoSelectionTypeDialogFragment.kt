@@ -29,7 +29,7 @@ class PhotoSelectionTypeDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<ImageView>(R.id.closeIv).setOnClickListener { dismiss() }
-        view.findViewById<TextView>(R.id.takeAphoto).setOnClickListener {
+        view.findViewById<TextView>(R.id.takePhoto).setOnClickListener {
             onTakeAPhotoClick()
             dismiss()
         }

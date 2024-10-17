@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:text="@string/take_a_shalf_photo_desc1"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,19 +42,28 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/shaftIv"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="@dimen/_200sdp"
         android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_25sdp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_stove_shaft"
         app:layout_constraintTop_toBottomOf="@+id/label2"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.RectRound" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/retakePhoto"
+        style="@style/OmeButton.Blue.Outline"
+        android:text="@string/retake"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/takePhoto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
-        android:id="@+id/takeAphoto"
+        android:id="@+id/takePhoto"
         style="@style/OmeButton.Blue"
-        android:text="@string/take_photo"
+        android:text="@string/use_photo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

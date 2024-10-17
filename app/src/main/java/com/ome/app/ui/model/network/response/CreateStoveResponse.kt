@@ -1,4 +1,4 @@
-package com.ome.app.model.network.response
+package com.ome.app.ui.model.network.response
 
 data class CreateStoveResponse(
     val knobMacAddrs: List<String>,
@@ -7,5 +7,5 @@ data class CreateStoveResponse(
     val stoveId: String,
     val stoveMakeModel: String,
     val stoveOrientation: Int,
-    val stoveSetupComplete: Any
+    val stoveSetupComplete: Boolean?
 )

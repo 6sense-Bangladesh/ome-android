@@ -152,5 +152,12 @@
     <string name="electric_range">Electric Range</string>
     <string name="now_let_s_setup_your_smart_knob">Now, let\'s setup your smart\nknob!</string>
     <string name="select_your_appliance">Select your appliance</string>
+    <string name="button">button</string>
+    <string name="close">close</string>
+    <string name="logo">logo</string>
+    <string name="previous">previous</string>
+    <string name="next">next</string>
+    <string name="use_photo">Use Photo</string>
+    <string name="retake">Retake</string>
 
 </resources>

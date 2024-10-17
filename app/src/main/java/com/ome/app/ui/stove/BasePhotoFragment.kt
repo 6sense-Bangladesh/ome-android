@@ -12,9 +12,11 @@ import androidx.viewbinding.ViewBinding
 import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.ui.views.camera.CaptureDialogFragment
 import java.io.File
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 
 abstract class BasePhotoFragment<VM : BasePhotoViewModel, VB : ViewBinding>(
@@ -58,10 +60,11 @@ abstract class BasePhotoFragment<VM : BasePhotoViewModel, VB : ViewBinding>(
                 }
             }
             if (isAllPermissionsGranted) {
-                viewModel.loadingLiveData.postValue(true)
-                openCamera()
+//                viewModel.loadingLiveData.postValue(true)
+//                openCamera()
+                CaptureDialogFragment().show(childFragmentManager, "capture")
             } else {
-                viewModel.loadingLiveData.postValue(false)
+//                viewModel.loadingLiveData.postValue(false)
                 onError(getString(R.string.permission_denied))
             }
         }
@@ -87,35 +90,21 @@ abstract class BasePhotoFragment<VM : BasePhotoViewModel, VB : ViewBinding>(
 
 
     fun launchCameraWithPermission() {
-        if (ContextCompat.checkSelfPermission(
-                requireActivity(),
-                Manifest.permission.CAMERA
-            ) == PackageManager.PERMISSION_DENIED || ContextCompat.checkSelfPermission(
-                requireActivity(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_DENIED || ContextCompat.checkSelfPermission(
-                requireActivity(),
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_DENIED
-        ) {
-            val permissionArray =
-                arrayOf(
-                    Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                )
-            viewModel.loadingLiveData.postValue(true)
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+            val permissionArray = arrayOf(Manifest.permission.CAMERA)
+//            viewModel.loadingLiveData.postValue(true)
             activityResultLauncher.launch(permissionArray)
         } else {
-            viewModel.loadingLiveData.postValue(true)
-            openCamera()
+//            viewModel.loadingLiveData.postValue(true)
+//            openCamera()
+            CaptureDialogFragment().show(childFragmentManager, "capture")
         }
     }
 
 
     fun openPhoneGallery() = chooseFromPhone.launch("image/*")
 
-    open fun handleTakeAPhotoResult(bitmap: Uri) {}
+    open fun handleTakeAPhotoResult(uri: Uri) {}
 
     open fun handleChooseFromPhoneResult(uri: Uri) {}
 

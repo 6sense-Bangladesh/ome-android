@@ -61,6 +61,25 @@ class StoveSetupTypeFragment :
                     }
                 }
             }
+        }else{
+            when(mainViewModel.stoveData.stoveGasOrElectric){
+                "gas" -> {
+                    binding.gasStove.isChecked = true
+                    viewModel.stoveType = "gas"
+                }
+                "electric" -> {
+                    binding.electricStove.isChecked = true
+                    viewModel.stoveType = "electric"
+                }
+                "gasRange" -> {
+                    binding.gasRange.isChecked = true
+                    viewModel.stoveType = "gas"
+                }
+                "electricRange" -> {
+                    binding.electricRange.isChecked = true
+                    viewModel.stoveType = "electric"
+                }
+            }
         }
         binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
         binding.continueBtn.setBounceClickListener {
@@ -73,10 +92,10 @@ class StoveSetupTypeFragment :
 //                        StoveSetupPhotoArgs(args.params.brand, viewModel.stoveType)
 //                    )
 //                )
-                if(viewModel.stoveType.isNotEmpty()) {
+                if(!mainViewModel.stoveData.stoveGasOrElectric.isNullOrEmpty()) {
                     findNavController().navigate(
                         R.id.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment, bundleOf(
-                            "params" to StoveSetupPhotoArgs(args.params.brand, viewModel.stoveType)
+                            "params" to StoveSetupPhotoArgs(args.params.brand, mainViewModel.stoveData.stoveGasOrElectric.orEmpty())
                         )
                     )
                 }
@@ -88,10 +107,10 @@ class StoveSetupTypeFragment :
         }
         binding.stoveShipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
             when(val id = checkedIds.first()){
-                R.id.gasStove -> viewModel.stoveType = "gas"
-                R.id.electricStove -> viewModel.stoveType = "electric"
-                R.id.gasRange -> viewModel.stoveType = "gas"
-                R.id.electricRange -> viewModel.stoveType = "electric"
+                R.id.gasStove -> mainViewModel.stoveData.stoveGasOrElectric = "gas"
+                R.id.electricStove -> mainViewModel.stoveData.stoveGasOrElectric = "electric"
+                R.id.gasRange -> mainViewModel.stoveData.stoveGasOrElectric = "gas"
+                R.id.electricRange -> mainViewModel.stoveData.stoveGasOrElectric = "electric"
             }
         }
 //        binding.gasIv.setOnClickListener {

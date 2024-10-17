@@ -23,9 +23,12 @@ class StoveSetupBrandFragment :
 
     override fun onResume() {
         super.onResume()
-        viewModel.selectedBrand = viewModel.brandArray.find{
-            it == binding.stoveSelector.text.toString()
-        }.orEmpty()
+//        viewModel.selectedBrand = viewModel.brandArray.find{
+//            it == binding.stoveSelector.text.toString()
+//        }.orEmpty()
+        mainViewModel.stoveData.stoveMakeModel?.let {
+            binding.stoveSelector.setText(it)
+        }
         binding.stoveSelector.setSimpleItems(viewModel.brandArray.toTypedArray())
     }
 
@@ -37,7 +40,9 @@ class StoveSetupBrandFragment :
 
         binding.stoveSelector.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
-                viewModel.selectedBrand = viewModel.brandArray.getOrNull(position).orEmpty()
+                val selectedBrand = viewModel.brandArray.getOrNull(position).orEmpty()
+                mainViewModel.stoveData.stoveMakeModel = selectedBrand
+                viewModel.selectedBrand = selectedBrand
             }
 //        binding.imageView2.applyInsetter {
 //            type(navigationBars = true, statusBars = true) {
@@ -47,10 +52,10 @@ class StoveSetupBrandFragment :
 //        }
         binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
         binding.continueBtn.setBounceClickListener {
-            if(viewModel.selectedBrand.isNotEmpty()) {
+            if(!mainViewModel.stoveData.stoveMakeModel.isNullOrEmpty()) {
                 findNavController().navigate(
                     StoveSetupBrandFragmentDirections.actionStoveSetupBrandFragmentToStoveSetupTypeFragment(
-                        StoveSetupTypeArgs(brand = viewModel.selectedBrand)
+                        StoveSetupTypeArgs(brand = mainViewModel.stoveData.stoveMakeModel.orEmpty())
                     )
                 )
             }

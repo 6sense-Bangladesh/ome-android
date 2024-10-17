@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/_48sdp"
+    android:layout_height="@dimen/_48sdp"
+    android:layout_marginHorizontal="@dimen/_5sdp"
+    app:cardCornerRadius="@dimen/_10sdp"
+    app:strokeWidth="1dp"
+    tools:context=".ui.views.camera.PhotoAdapter">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/btnRemove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/_3sdp"
+        android:elevation="0dp"
+        android:foreground="?selectableItemBackground"
+        app:cardBackgroundColor="@color/core_red"
+        app:cardCornerRadius="@dimen/_8sdp">
+
+        <ImageView
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:contentDescription="@string/button"
+            android:src="@drawable/ic_close_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/photoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:contentDescription="@string/button"
+        android:scaleType="centerCrop"
+        tools:src="@tools:sample/avatars" />
+</com.google.android.material.card.MaterialCardView>

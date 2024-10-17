@@ -56,17 +56,11 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/skipKnobSetupBtn"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_marginHorizontal="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
+        style="@style/OmeButton.Blue.Outline"
         android:text="@string/skip_knob_setup"
-        android:textSize="@dimen/_10sdp"
         app:layout_constraintBottom_toTopOf="@+id/finishBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="?colorPrimary" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/finishBtn"

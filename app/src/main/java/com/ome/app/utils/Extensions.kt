@@ -461,10 +461,6 @@ fun View.show() {
         this.visibility = View.VISIBLE
 }
 
-fun View.isVisible(): Boolean {
-    return this.visibility == View.VISIBLE
-}
-
 
 fun View.delayVisible(delay: Long = 200) {
     MainScope().launch {

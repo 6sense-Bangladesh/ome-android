@@ -1,6 +1,5 @@
 package com.ome.app.ui.base
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ome.app.MainVM
 import com.ome.app.ui.dashboard.members.MembersFragment
 import com.ome.app.ui.dashboard.mystove.MyStoveFragment
@@ -75,6 +75,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                     is LaunchFragment -> {
                         requireActivity().finishAndRemoveTask()
                     }
+
                     else -> {
                         findNavController().popBackStack()
                     }
@@ -95,17 +96,19 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
         title: String = "Success",
         message: String,
         onDismiss: () -> Unit = {}
-    ): AlertDialog = AlertDialog.Builder(context)
-        .setTitle(title)
-        .setMessage(message)
-        .setPositiveButton(
-            "Ok"
-        ) { dialog, p1 ->
-            onDismissSuccessDialog()
-            onDismiss()
-            dialog.cancel()
-        }
-        .show()
+    ) = context?.let {
+        MaterialAlertDialogBuilder(it)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(
+                "Ok"
+            ) { dialog, p1 ->
+                onDismissSuccessDialog()
+                onDismiss()
+                dialog.cancel()
+            }
+            .show()
+    }
 
     protected open fun showDialog(
         title: String = "",
@@ -114,27 +117,31 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
         message: SpannableStringBuilder,
         onPositiveButtonClick: () -> Unit = {},
         onNegativeButtonClick: () -> Unit = {}
-    ): AlertDialog = AlertDialog.Builder(context)
-        .setTitle(title)
-        .setMessage(message)
-        .setPositiveButton(
-            positiveButtonText
-        ) { dialog, p1 ->
-            onPositiveButtonClick()
-        }.setNegativeButton(negativeButtonText) { dialog, p1 ->
-            onNegativeButtonClick
-        }
-        .show()
+    ) = context?.let {
+        MaterialAlertDialogBuilder(it)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(
+                positiveButtonText
+            ) { dialog, p1 ->
+                onPositiveButtonClick()
+            }.setNegativeButton(negativeButtonText) { dialog, p1 ->
+                onNegativeButtonClick()
+            }
+            .show()
+    }
 
-    protected open fun onError(errorMessage: String) = AlertDialog.Builder(context)
-        .setTitle("Error")
-        .setMessage(errorMessage)
-        .setPositiveButton(
-            "Ok"
-        ) { dialog, p1 ->
-            onDismissErrorDialog()
-            dialog.cancel()
-        }
-        .show()
+    protected open fun onError(errorMessage: String) = context?.let {
+        MaterialAlertDialogBuilder(it)
+            .setTitle("Error")
+            .setMessage(errorMessage)
+            .setPositiveButton(
+                "Ok"
+            ) { dialog, p1 ->
+                onDismissErrorDialog()
+                dialog.cancel()
+            }
+            .show()
+    }
 
 }
