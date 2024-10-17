@@ -316,6 +316,7 @@ class OmeNavBar @JvmOverloads constructor(
         if (state is Bundle) {
             val activeTab = state.getInt(SELECTED_TAB_STATE, R.id.ivMyStove)
             setActiveTab(BottomItem.findByViewID(activeTab))
+            @Suppress("DEPRECATION")
             super.onRestoreInstanceState(state.getParcelable(SUPER_STATE))
         }
     }

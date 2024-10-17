@@ -136,6 +136,7 @@ android {
 //}
 
 dependencies {
+    //noinspection GradleDependency
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
@@ -168,12 +169,16 @@ dependencies {
     implementation("com.github.GrenderG:Toasty:1.5.2")
 
     // Amplify frameworks
-    implementation("com.amplifyframework:core:1.38.8") //1.1.2
-    implementation("com.amplifyframework:aws-api:1.38.8")
-    implementation("com.amplifyframework:aws-auth-cognito:1.38.8")
+    //noinspection GradleDependency
+    implementation("com.amplifyframework:core:1.38.8") //Don't upgrade this version
+    //noinspection GradleDependency
+    implementation("com.amplifyframework:aws-api:1.38.8") //Don't upgrade this version
+    //noinspection GradleDependency
+    implementation("com.amplifyframework:aws-auth-cognito:1.38.8") //Don't upgrade this version
 //    implementation("com.amplifyframework:aws-datastore:1.35.3")
     // Amplify coroutines
-    implementation("com.amplifyframework:core-kotlin:0.22.8")
+    //noinspection GradleDependency
+    implementation("com.amplifyframework:core-kotlin:0.22.8") //Don't upgrade this version
 
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 

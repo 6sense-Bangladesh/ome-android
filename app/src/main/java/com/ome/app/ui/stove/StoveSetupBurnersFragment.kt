@@ -46,27 +46,27 @@ class StoveSetupBurnersFragment :
 
         binding.fourBurnersIv.setBounceClickListener {
             handleButtonClick(it)
-            mainViewModel.stoveData.stoveOrientation = StoveOrientation.FOUR_BURNERS.number
+            viewModel.stoveOrientation = StoveOrientation.FOUR_BURNERS
         }
         binding.fourBarBurnersIv.setBounceClickListener {
             handleButtonClick(it)
-            mainViewModel.stoveData.stoveOrientation = StoveOrientation.FOUR_BAR_BURNERS.number
+            viewModel.stoveOrientation = StoveOrientation.FOUR_BAR_BURNERS
         }
         binding.fiveBurnersIv.setBounceClickListener {
             handleButtonClick(it)
-            mainViewModel.stoveData.stoveOrientation = StoveOrientation.FIVE_BURNERS.number
+            viewModel.stoveOrientation = StoveOrientation.FIVE_BURNERS
         }
         binding.sixBurnersIv.setBounceClickListener {
             handleButtonClick(it)
-            mainViewModel.stoveData.stoveOrientation = StoveOrientation.SIX_BURNERS.number
+            viewModel.stoveOrientation = StoveOrientation.SIX_BURNERS
         }
         binding.twoBurnersHorizontalIv.setBounceClickListener {
             handleButtonClick(it)
-            mainViewModel.stoveData.stoveOrientation = StoveOrientation.TWO_BURNERS_HORIZONTAL.number
+            viewModel.stoveOrientation = StoveOrientation.TWO_BURNERS_HORIZONTAL
         }
         binding.twoBurnersVerticalIv.setBounceClickListener {
             handleButtonClick(it)
-            mainViewModel.stoveData.stoveOrientation = StoveOrientation.TWO_BURNERS_VERTICAL.number
+            viewModel.stoveOrientation = StoveOrientation.TWO_BURNERS_VERTICAL
         }
 
         if(args.params.isEditMode){
@@ -84,8 +84,8 @@ class StoveSetupBurnersFragment :
                 binding.continueBtn.startAnimation()
                 viewModel.updateStoveOrientation(args.params.stoveId)
             } else {
-                if(mainViewModel.stoveData.stoveOrientation != null) {
-                    viewModel.stoveOrientation = mainViewModel.stoveData.stoveOrientation.enum
+                if(viewModel.stoveOrientation != null) {
+                    mainViewModel.stoveData.stoveOrientation = viewModel.stoveOrientation?.number
                     viewModel.createStove()
                     binding.continueBtn.startAnimation()
                 }

@@ -51,7 +51,7 @@
     <string name="permission_denied">Permission not granted.</string>
     <string name="how_are_the_burners_on_your_stove_organized">How are the burners on your stove organized?</string>
     <string name="finish">Finish</string>
-    <string name="stove_configuration_complete">Stove configuration complete</string>
+    <string name="stove_configuration_complete">Stove Configuration Complete</string>
     <string name="next_nlet_s_setup_your_smart_knob">Next,\nlet\'s setup your smart knob!</string>
     <string name="skip_knob_setup">Skip Knob Setup</string>
     <string name="no_internet_connection">No Internet Connection</string>
@@ -120,6 +120,8 @@
     <string name="calibration_confirmation_label">Is knob at %1$s?</string>
     <string name="confirm_position">Confirm Position</string>
     <string name="confirm_position_body">Are you sure you want to put the knob at burner %1$s ?</string>
+    <string name="confirm_logout">Are you sure you want to logout?</string>
+    <string name="confirm_delete_account">Are you sure you want to delete your account?</string>
     <string name="change_burner_position_success_body">The change burner operation was a success</string>
     <string name="calibration_confirmation_dual_label">Is knob at %1$s for the %2$s zone burner?</string>
     <string name="issue_with_knob_label">There seems to be an issue with your knob. Please contact customer service so we can help! \n 855–663–5227 \n support@omekitchen.com</string>
@@ -150,7 +152,7 @@
     <string name="electric_stove">Electric Stovetop</string>
     <string name="gas_range">Gas Range</string>
     <string name="electric_range">Electric Range</string>
-    <string name="now_let_s_setup_your_smart_knob">Now, let\'s setup your smart\nknob!</string>
+    <string name="now_let_s_setup_your_smart_knob">Now, let\'s setup your smart knob!</string>
     <string name="select_your_appliance">Select your appliance</string>
     <string name="button">button</string>
     <string name="close">close</string>

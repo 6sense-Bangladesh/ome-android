@@ -106,7 +106,7 @@ class StoveSetupTypeFragment :
 
         }
         binding.stoveShipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
-            when(val id = checkedIds.first()){
+            when(checkedIds.first()){
                 R.id.gasStove -> mainViewModel.stoveData.stoveGasOrElectric = "gas"
                 R.id.electricStove -> mainViewModel.stoveData.stoveGasOrElectric = "electric"
                 R.id.gasRange -> mainViewModel.stoveData.stoveGasOrElectric = "gas"

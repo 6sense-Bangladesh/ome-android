@@ -1,10 +1,10 @@
 package com.ome.app
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.withStarted
 import androidx.navigation.fragment.NavHostFragment
@@ -24,9 +24,10 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen().apply {
             setKeepOnScreenCondition { viewModel.isSplashScreenLoading }
         }
+        enableEdgeToEdge()
         viewModel.registerConnectionListener()
         setContentView(R.layout.activity_main)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
         initFragment()
         subscribeConnectionListener()
     }

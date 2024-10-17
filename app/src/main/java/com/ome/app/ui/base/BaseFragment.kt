@@ -5,7 +5,7 @@ import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.annotation.CallSuper
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
@@ -63,9 +63,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
 
 
     open fun handleBackPressEvent() {
-        requireActivity().onBackPressedDispatcher.addCallback(object :
-            OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner) {
                 when (this@BaseFragment) {
                     is ProfileFragment,
                     is MyStoveFragment,
@@ -73,7 +71,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                     is MembersFragment,
                     is SettingsFragment,
                     is LaunchFragment -> {
-                        requireActivity().finishAndRemoveTask()
+                        activity?.finishAndRemoveTask()
                     }
 
                     else -> {
@@ -81,7 +79,6 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                     }
                 }
             }
-        })
     }
 
 
@@ -121,9 +118,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
         MaterialAlertDialogBuilder(it)
             .setTitle(title)
             .setMessage(message)
-            .setPositiveButton(
-                positiveButtonText
-            ) { dialog, p1 ->
+            .setPositiveButton(positiveButtonText) { dialog, p1 ->
                 onPositiveButtonClick()
             }.setNegativeButton(negativeButtonText) { dialog, p1 ->
                 onNegativeButtonClick()

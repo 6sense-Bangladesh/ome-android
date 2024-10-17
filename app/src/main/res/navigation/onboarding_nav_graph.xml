@@ -148,6 +148,13 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/onboardingNavGraph"
             app:popUpToInclusive="true" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_dashboardFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
     </fragment>
 
     <action
@@ -161,6 +168,11 @@
         android:id="@+id/noInternetConnectionFragment"
         android:name="com.ome.app.ui.internet_error.NoInternetConnectionFragment"
         android:label="NoInternetConnectionFragment" />
+
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.ome.app.ui.dashboard.profile.changepassword.ChangePasswordFragment"
+        android:label="ChangePasswordFragment" />
 
 
 </navigation>

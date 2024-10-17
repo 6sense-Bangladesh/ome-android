@@ -15,6 +15,7 @@ import com.ome.app.ui.model.base.ResponseWrapper
 import com.ome.app.ui.model.network.request.CreateStoveRequest
 import com.ome.app.ui.model.network.response.UserResponse
 import com.ome.app.utils.WifiHandler
+import com.ome.app.utils.isNotEmpty
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -111,10 +112,10 @@ class MainVM @Inject constructor(
                                         }
                                         preferencesProvider.getUserId()?.let { userId ->
                                             launch(dispatcher = ioContext) {
-                                                webSocketManager.initWebSocket(
-                                                    knobs.map { knob -> knob.macAddr },
-                                                    userId
-                                                )
+                                                knobs.map { knob -> knob.macAddr }.isNotEmpty {macs->
+                                                    webSocketManager.initWebSocket(macs, userId)
+                                                }
+
                                             }
 
                                             launch(dispatcher = ioContext) {
@@ -146,8 +147,10 @@ class MainVM @Inject constructor(
 
     fun connectToSocket() = launch(dispatcher = ioContext) {
         val macAddrs = stoveRepository.getAllKnobs()
-        preferencesProvider.getUserId()?.let {
-            webSocketManager.initWebSocket(macAddrs.map { it.macAddr }, it)
+        preferencesProvider.getUserId()?.let {userId->
+            macAddrs.map { it.macAddr }.isNotEmpty {
+                webSocketManager.initWebSocket(it, userId)
+            }
         }
     }
 }

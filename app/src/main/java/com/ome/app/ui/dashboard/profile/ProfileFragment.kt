@@ -13,16 +13,17 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.amulyakhare.textdrawable.TextDrawable
 import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.FragmentProfileBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.utils.makeVisible
+import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 
 
 @AndroidEntryPoint
@@ -30,25 +31,47 @@ class ProfileFragment :
     BaseFragment<ProfileViewModel, FragmentProfileBinding>(FragmentProfileBinding::inflate) {
 
     override val viewModel: ProfileViewModel by viewModels()
+    private var navController: NavController? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.navHost) as? NavHostFragment
+        navController = navHostFragment?.navController
         viewModel.initUserDataSubscription()
 
-        binding.titleTv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
+//        binding.titleTv.applyInsetter {
+//            type(navigationBars = true, statusBars = true) {
+//                padding(horizontal = true)
+//                margin(top = true)
+//            }
+//        }
+//        binding.scroll.applyInsetter {
+//            type(navigationBars = true, statusBars = true) {
+//                padding(bottom = true)
+//            }
+//        }
+        binding.signOut.setBounceClickListener {
+            showDialog(
+                message = SpannableStringBuilder(getString(R.string.confirm_logout)),
+                onPositiveButtonClick = {
+                    binding.signOut.startAnimation()
+                    viewModel.signOut()
+                })
         }
-        binding.scroll.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(bottom = true)
-            }
-        }
-        binding.signOut.setOnClickListener { viewModel.signOut() }
 
-        binding.changePasswordTv.setOnClickListener { findNavController().navigate(R.id.action_profileFragment_to_changePasswordFragment) }
+        if (BuildConfig.DEBUG) {
+            binding.deleteAccount.makeVisible()
+            binding.deleteAccount.setBounceClickListener {
+                showDialog(
+                    message = SpannableStringBuilder(getString(R.string.confirm_delete_account)),
+                    onPositiveButtonClick = {
+                        binding.deleteAccount.startAnimation()
+                        viewModel.deleteUser()
+                    })
+            }
+        }
+
+        binding.changePasswordTv.setBounceClickListener { navController?.navigate(R.id.action_dashboardFragment_to_changePasswordFragment) }
 
         binding.firstNameEt.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -82,15 +105,6 @@ class ProfileFragment :
                     viewModel.updateLastName(binding.lastNameEt.text.toString().trim())
                 }
             }
-
-
-
-        if (BuildConfig.DEBUG) {
-            binding.deleteAccount.makeVisible()
-            binding.deleteAccount.setOnClickListener {
-                viewModel.deleteUser()
-            }
-        }
 
         binding.avatarIv.setImageDrawable(
             TextDrawable.builder().beginConfig()
@@ -165,5 +179,7 @@ class ProfileFragment :
 
         }
     }
+
+    override fun handleBackPressEvent() {}
 
 }

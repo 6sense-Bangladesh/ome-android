@@ -7,7 +7,8 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.ome.app.R
 import com.ome.app.databinding.FragmentSettingsBinding
 import com.ome.app.ui.base.BaseFragment
@@ -21,7 +22,6 @@ import com.ome.app.ui.dashboard.settings.adapter.model.SettingsKnobItemModel
 import com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragmentParams
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 
 
 @AndroidEntryPoint
@@ -29,13 +29,14 @@ class SettingsFragment :
     BaseFragment<SettingsViewModel, FragmentSettingsBinding>(FragmentSettingsBinding::inflate) {
 
     override val viewModel: SettingsViewModel by viewModels()
+    private var navController: NavController? = null
 
     private val adapter by lazy {
         RecyclerDelegationAdapter(requireContext()).apply {
             addDelegate(SettingsItemAdapter(requireContext()) { item ->
                 when (item) {
                     is SettingsItemModel -> {
-                        val foundValue = Settings.values().firstOrNull { it.option == item.option }
+                        val foundValue = Settings.entries.firstOrNull { it.option == item.option }
                         foundValue?.let { option ->
                             when (option) {
                                 Settings.LEAVE_STOVE -> {
@@ -57,14 +58,14 @@ class SettingsFragment :
                                     )
                                 }
                                 Settings.STOVE_AUTO_SHUT_OFF -> {
-                                    findNavController().navigate(
+                                    navController?.navigate(
                                         SettingsFragmentDirections.actionSettingsFragmentToAutoShutOffSettingsFragment(
                                             "test"
                                         )
                                     )
                                 }
                                 Settings.STOVE_INFO_SETTINGS -> {
-                                    findNavController().navigate(
+                                    navController?.navigate(
                                         SettingsFragmentDirections.actionSettingsFragmentToStoveInfoFragment(
                                             viewModel.userRepository.userFlow.value?.stoveId ?: ""
                                         )
@@ -73,14 +74,14 @@ class SettingsFragment :
                                 Settings.STOVE_HISTORY -> {
                                 }
                                 Settings.ADD_NEW_KNOB -> {
-                                    findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToKnobWakeUpFragment(isComeFromSettings = false))
+                                    navController?.navigate(SettingsFragmentDirections.actionSettingsFragmentToKnobWakeUpFragment(isComeFromSettings = false))
                                 }
 
                             }
                         }
                     }
                     is SettingsKnobItemModel -> {
-                        findNavController().navigate(
+                        navController?.navigate(
                             SettingsFragmentDirections.actionSettingsFragmentToDeviceSettingsFragment(
                                 DeviceSettingsFragmentParams(
                                     name = item.name,
@@ -98,20 +99,21 @@ class SettingsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.titleTv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-        binding.rootCl.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(bottom = true)
-            }
-        }
+        val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.navHost) as? NavHostFragment
+        navController = navHostFragment?.navController
+//        binding.titleTv.applyInsetter {
+//            type(navigationBars = true, statusBars = true) {
+//                padding(horizontal = true)
+//                margin(top = true)
+//            }
+//        }
+//        binding.rootCl.applyInsetter {
+//            type(navigationBars = true, statusBars = true) {
+//                padding(bottom = true)
+//            }
+//        }
         binding.supportIv.setOnClickListener {
-            findNavController().navigate(R.id.action_settingsFragment_to_supportFragment)
+            navController?.navigate(R.id.action_settingsFragment_to_supportFragment)
         }
 
         binding.stoveSubtitleCl.setOnClickListener { showStoves() }
@@ -145,5 +147,7 @@ class SettingsFragment :
             adapter.setItems(it)
         }
     }
+
+    override fun handleBackPressEvent() {}
 
 }
