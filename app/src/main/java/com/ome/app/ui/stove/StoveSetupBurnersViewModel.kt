@@ -74,5 +74,6 @@ val Int?.enum
         5 -> StoveOrientation.FIVE_BURNERS
         6 -> StoveOrientation.SIX_BURNERS
         2 -> StoveOrientation.TWO_BURNERS_HORIZONTAL
+        21 -> StoveOrientation.TWO_BURNERS_VERTICAL
         else -> null
     }
