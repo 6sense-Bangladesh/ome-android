@@ -6,14 +6,14 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupTypeBinding
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.ui.base.navigation.DeepNavGraph.getData
+import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
-import com.ome.app.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -26,7 +26,14 @@ class StoveSetupTypeFragment :
 
     override val viewModel: StoveSetupTypeViewModel by viewModels()
 
-    private val args by navArgs<StoveSetupTypeFragmentArgs>()
+//    private val args by navArgs<StoveSetupTypeFragmentArgs>()
+private val args by lazy { Screens.StoveType.getData(arguments) }
+
+    override fun onResume() {
+        super.onResume()
+        if(isFromDeepLink)
+            binding.continueBtn.text =  getString(R.string.update)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,9 +46,9 @@ class StoveSetupTypeFragment :
 //                margin(top = true)
 //            }
 //        }
-        if (args.params.isEditMode) {
+        if (isFromDeepLink) {
             binding.continueBtn.text = getString(R.string.save)
-            mainViewModel.userInfo?.let {
+            mainViewModel.userInfo.value?.let {
                 when(it.stoveGasOrElectric){
                     "gas" -> {
                         binding.gasStove.isChecked = true
@@ -83,26 +90,26 @@ class StoveSetupTypeFragment :
         }
         binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
         binding.continueBtn.setBounceClickListener {
-            if (args.params.isEditMode) {
+            if(mainViewModel.stoveData.stoveGasOrElectric.isNullOrEmpty())
+                onError("Please select stove type")
+            else if (isFromDeepLink) {
                 binding.continueBtn.startAnimation()
-                viewModel.saveStoveType(args.params.stoveId)
-            } else {
+                mainViewModel.userInfo.value?.stoveId?.let { stoveId ->
+                    viewModel.saveStoveType(stoveId, onEnd = mainViewModel::getUserInfo)
+                } ?: onError("Stove not found")
+            }
+            else{
+                findNavController().navigate(
+                    R.id.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment, bundleOf(
+                        "params" to StoveSetupPhotoArgs(args?.brand.orEmpty(), mainViewModel.stoveData.stoveGasOrElectric.orEmpty())
+                    )
+                )
+            }
 //                findNavController().navigate(
 //                    StoveSetupTypeFragmentDirections.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment(
 //                        StoveSetupPhotoArgs(args.params.brand, viewModel.stoveType)
 //                    )
 //                )
-                if(!mainViewModel.stoveData.stoveGasOrElectric.isNullOrEmpty()) {
-                    findNavController().navigate(
-                        R.id.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment, bundleOf(
-                            "params" to StoveSetupPhotoArgs(args.params.brand, mainViewModel.stoveData.stoveGasOrElectric.orEmpty())
-                        )
-                    )
-                }
-                else
-                    toast("Please select stove type")
-
-            }
 
         }
         binding.stoveShipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
@@ -198,6 +205,5 @@ class StoveSetupTypeFragment :
 @Parcelize
 data class StoveSetupTypeArgs(
     val brand: String = "",
-    val stoveId: String = "",
     val isEditMode: Boolean = false
 ) : Parcelable

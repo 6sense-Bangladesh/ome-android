@@ -2,11 +2,11 @@ package com.ome.app.ui.dashboard.settings.add_knob.calibration
 
 import android.util.Log
 import com.ome.app.R
-import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.model.network.request.InitCalibrationRequest
+import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -111,6 +111,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                             CalibrationState.MEDIUM -> mediumAngle = angle
                             CalibrationState.HIGH_SINGLE -> highSingleAngle = angle
                             CalibrationState.HIGH_DUAL -> highDualAngle = angle
+//                            CalibrationState.MEDIUM_DUAL -> mediumDualAngle = angle
                             CalibrationState.LOW_DUAL -> lowDualAngle = angle
                         }
                         labelLiveData.postValue(step to angle)
@@ -190,6 +191,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                 CalibrationState.MEDIUM -> mediumAngle = null
                 CalibrationState.HIGH_SINGLE -> highSingleAngle = null
                 CalibrationState.HIGH_DUAL -> highDualAngle = null
+//                CalibrationState.MEDIUM_DUAL -> mediumDualAngle = null
                 CalibrationState.LOW_DUAL -> lowDualAngle = null
             }
             currentCalibrationStateLiveData.postValue(step)
@@ -199,7 +201,11 @@ class DeviceCalibrationViewModel @Inject constructor(
 }
 
 enum class CalibrationState(val positionName: String) {
-    OFF("OFF"), HIGH_SINGLE("HIGH"), MEDIUM("MEDIUM"), LOW_SINGLE("LOW"), HIGH_DUAL("HIGH"), LOW_DUAL(
-        "LOW"
-    )
+    OFF("OFF"),
+    HIGH_SINGLE("HIGH"),
+    MEDIUM("MEDIUM"),
+    LOW_SINGLE("LOW"),
+    HIGH_DUAL("HIGH"),
+//    MEDIUM_DUAL("MEDIUM"),
+    LOW_DUAL("LOW")
 }

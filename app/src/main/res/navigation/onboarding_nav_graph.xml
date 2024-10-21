@@ -6,6 +6,7 @@
     app:startDestination="@id/launchFragment">
 
     <include app:graph="@navigation/my_stove_nav_graph"/>
+    <include app:graph="@navigation/add_knob_nav_graph"/>
 
     <fragment
         android:id="@+id/launchFragment"
@@ -136,7 +137,9 @@
         android:name="com.ome.app.ui.dashboard.DashboardFragment"
         android:label="DashboardFragment"
         tools:layout="@layout/fragment_dashboard">
-        <deepLink app:uri="ome://navigation/dashboard" />
+
+        <argument android:name="nav_arg" app:argType="string" />
+        <deepLink app:uri="ome://navigation/dashboard/{nav_arg}" />
 
         <action
             android:id="@+id/action_dashboardFragment_to_launchFragment"
@@ -155,6 +158,34 @@
             app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_dashboardFragment_to_changePasswordFragment"
             app:destination="@id/changePasswordFragment" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_dashboardFragment_to_addKnobNavGraph"
+            app:destination="@id/addKnobNavGraph" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_dashboardFragment_to_autoShutOffSettingsFragment"
+            app:destination="@id/autoShutOffSettingsFragment" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_dashboardFragment_to_deviceSettingsFragment"
+            app:destination="@id/deviceSettingsFragment" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_dashboardFragment_to_supportFragment"
+            app:destination="@id/supportFragment" />
     </fragment>
 
     <action
@@ -172,7 +203,30 @@
     <fragment
         android:id="@+id/changePasswordFragment"
         android:name="com.ome.app.ui.dashboard.profile.changepassword.ChangePasswordFragment"
-        android:label="ChangePasswordFragment" />
+        android:label="ChangePasswordFragment"
+        tools:layout="@layout/fragment_change_password"  />
+
+    <fragment
+        android:id="@+id/autoShutOffSettingsFragment"
+        android:name="com.ome.app.ui.dashboard.settings.auto_shutoff.AutoShutOffSettingsFragment"
+        android:label="AutoShutOffSettingsFragment"
+        tools:layout="@layout/fragment_auto_shut_off_settings"  />
+
+    <fragment
+        android:id="@+id/deviceSettingsFragment"
+        android:name="com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragment"
+        android:label="AutoShutOffSettingsFragment"
+        tools:layout="@layout/fragment_device_settings" >
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragmentParams" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/supportFragment"
+        android:name="com.ome.app.ui.dashboard.settings.support.SupportFragment"
+        android:label="SupportFragment"
+        tools:layout="@layout/fragment_support"/>
 
 
 </navigation>

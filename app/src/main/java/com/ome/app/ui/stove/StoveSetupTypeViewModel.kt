@@ -1,8 +1,8 @@
 package com.ome.app.ui.stove
 
-import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.user.UserRepository
+import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.model.network.request.CreateStoveRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -15,9 +15,10 @@ class StoveSetupTypeViewModel @Inject constructor(
 
     var stoveType = ""
 
-    fun saveStoveType(stoveId: String) = launch(dispatcher = ioContext) {
+    fun saveStoveType(stoveId: String, onEnd :() ->Unit) = launch(dispatcher = ioContext) {
         stoveRepository.updateStove(CreateStoveRequest(stoveGasOrElectric = stoveType), stoveId)
-        userRepository.getUserData()
+        onEnd()
+//        userRepository.getUserData()
         loadingLiveData.postValue(true)
     }
 

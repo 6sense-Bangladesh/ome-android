@@ -14,8 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StoveSetupBurnersViewModel @Inject constructor(
-    val stoveRepository: StoveRepository,
-    val userRepository: UserRepository
+    private val stoveRepository: StoveRepository,
+    private val userRepository: UserRepository
 ) : BaseViewModel() {
     var stoveOrientation: StoveOrientation? = null
     var brand = ""
@@ -25,15 +25,16 @@ class StoveSetupBurnersViewModel @Inject constructor(
 
     val createStoveLiveData = SingleLiveEvent<Boolean>()
 
-    fun updateStoveOrientation(stoveId: String) = launch(dispatcher = ioContext) {
+    fun updateStoveOrientation(stoveId: String, onEnd :() ->Unit) = launch(dispatcher = ioContext) {
         stoveOrientation?.let {
             stoveRepository.updateStove(CreateStoveRequest(stoveOrientation = it.number), stoveId = stoveId)
-            userRepository.getUserData()
+            onEnd()
+//            userRepository.getUserData()
             loadingLiveData.postValue(false)
-        }
+        } ?: error("Please select burner type")
     }
 
-    fun createStove() {
+    fun createStove(onEnd :() ->Unit) {
         launch(dispatcher = ioContext) {
             stoveOrientation?.number?.let { number ->
                 val response = stoveRepository.createStove(
@@ -47,12 +48,13 @@ class StoveSetupBurnersViewModel @Inject constructor(
                     )
                 )
                 if (response is ResponseWrapper.Success) {
-                    userRepository.getUserData()
+                    onEnd()
+//                    userRepository.getUserData()
                     createStoveLiveData.postValue(true)
                 } else {
                     loadingLiveData.postValue(false)
                 }
-            } ?: error("Invalid Orientation")
+            } ?: error("Please select burner type")
         }
         //createStoveLiveData.postValue(true)
     }
@@ -68,12 +70,4 @@ enum class StoveOrientation(val number: Int,@DrawableRes val imgRes: Int, @IdRes
 }
 
 val Int?.enum
-    get() = when (this) {
-        4 -> StoveOrientation.FOUR_BURNERS
-        51 -> StoveOrientation.FOUR_BAR_BURNERS
-        5 -> StoveOrientation.FIVE_BURNERS
-        6 -> StoveOrientation.SIX_BURNERS
-        2 -> StoveOrientation.TWO_BURNERS_HORIZONTAL
-        21 -> StoveOrientation.TWO_BURNERS_VERTICAL
-        else -> null
-    }
+    get() = StoveOrientation.entries.find { it.number == this }

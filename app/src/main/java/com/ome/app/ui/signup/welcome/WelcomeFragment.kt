@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.FragmentWelcomeBinding
 import com.ome.app.ui.base.BaseFragment
@@ -33,6 +34,11 @@ class WelcomeFragment :
             }
         }
         setStatusBarTheme(true)
+        if(BuildConfig.DEBUG){
+            binding.textView.setBounceClickListener {
+                findNavController().navigate(R.id.stoveSetupCompletedFragment)
+            }
+        }
         binding.continueBtn.setBounceClickListener {
 
             findNavController().navigate(R.id.action_welcomeFragment_to_stoveSetupBrandFragment)

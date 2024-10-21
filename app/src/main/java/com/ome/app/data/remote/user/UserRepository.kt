@@ -2,10 +2,10 @@ package com.ome.app.data.remote.user
 
 import com.ome.app.data.remote.UserService
 import com.ome.app.data.remote.base.BaseRepository
+import com.ome.app.ui.model.network.response.UrlToUploadImageResponse
 import com.ome.app.ui.model.base.ResponseWrapper
-import com.ome.app.model.network.response.UrlToUploadImageResponse
 import com.ome.app.ui.model.network.request.CreateUserRequest
-import com.ome.app.model.network.response.DeleteUserResponse
+import com.ome.app.ui.model.network.response.BaseResponse
 import com.ome.app.ui.model.network.response.UserResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import okhttp3.RequestBody
@@ -17,7 +17,7 @@ interface UserRepository {
     suspend fun uploadImage(url: String, requestBody: RequestBody)
     suspend fun createUser(params: CreateUserRequest): ResponseWrapper<UserResponse>
     suspend fun updateUser(params: CreateUserRequest): ResponseWrapper<UserResponse>
-    suspend fun deleteUser(): DeleteUserResponse
+    suspend fun deleteUser(): BaseResponse
     val userFlow: MutableStateFlow<UserResponse?>
 }
 
@@ -61,6 +61,6 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun deleteUser(): DeleteUserResponse = userService.deleteUser()
+    override suspend fun deleteUser(): BaseResponse = userService.deleteUser()
 
 }

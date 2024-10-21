@@ -456,6 +456,20 @@ fun View.visible() {
         this.visibility = View.VISIBLE
 }
 
+fun visible(vararg views: View) {
+    views.forEach {
+        if(it.visibility != View.VISIBLE)
+            it.visibility = View.VISIBLE
+    }
+}
+
+fun gone(vararg views: View) {
+    views.forEach {
+        if(it.visibility != View.GONE)
+            it.visibility = View.GONE
+    }
+}
+
 fun View.show() {
     if(this.visibility != View.VISIBLE)
         this.visibility = View.VISIBLE

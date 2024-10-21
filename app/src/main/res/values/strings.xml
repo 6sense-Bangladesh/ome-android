@@ -46,7 +46,7 @@
     <string name="gas">Gas</string>
     <string name="electric">Electric</string>
     <string name="take_a_shalf_photo_desc1">Let\'s take a photo of your knob\nshaft</string>
-    <string name="take_a_shalf_photo_desc2">Before taking a picture, make sure to take off one knob as shown above.</string>
+    <string name="take_a_shalf_photo_desc2">Before taking a picture, make sure to take off one knob as shown below.</string>
     <string name="take_photo">Take a Photo</string>
     <string name="permission_denied">Permission not granted.</string>
     <string name="how_are_the_burners_on_your_stove_organized">How are the burners on your stove organized?</string>
@@ -161,5 +161,6 @@
     <string name="next">next</string>
     <string name="use_photo">Use Photo</string>
     <string name="retake">Retake</string>
+    <string name="update">Update</string>
 
 </resources>

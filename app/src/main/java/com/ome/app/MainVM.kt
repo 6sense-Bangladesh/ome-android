@@ -8,11 +8,11 @@ import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.data.remote.websocket.WebSocketManager
-import com.ome.app.model.network.response.KnobDto
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.ui.model.base.ResponseWrapper
 import com.ome.app.ui.model.network.request.CreateStoveRequest
+import com.ome.app.ui.model.network.response.KnobDto
 import com.ome.app.ui.model.network.response.UserResponse
 import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.isNotEmpty
@@ -27,17 +27,51 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainVM @Inject constructor(
-    val amplifyManager: AmplifyManager,
-    val preferencesProvider: PreferencesProvider,
-    val userRepository: UserRepository,
-    val stoveRepository: StoveRepository,
-    val wifiHandler: WifiHandler,
-    val webSocketManager: WebSocketManager,
+    private val amplifyManager: AmplifyManager,
+    private val preferencesProvider: PreferencesProvider,
+    private val userRepository: UserRepository,
+    private val stoveRepository: StoveRepository,
+    private val wifiHandler: WifiHandler,
+    private val webSocketManager: WebSocketManager,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
-    var userInfo: UserResponse?
-        get() = savedStateHandle["userInfo"]
-        set(value) { savedStateHandle["userInfo"] = value }
+    var userInfo= savedStateHandle.getStateFlow<UserResponse?>("userInfo", null)
+    var knobs= savedStateHandle.getStateFlow("knobs", listOf<KnobDto>(
+//        KnobDto(
+//            angle = 126,
+//            battery = 90,
+//            batteryVolts = 4.5,
+//            calibrated = false,
+//            calibration = KnobDto.CalibrationDto(
+//                offAngle = 0,
+//                rotationDir = 1,
+//                zones = listOf(KnobDto.CalibrationDto.ZoneDto(
+//                    highAngle = 300,
+//                    lowAngle = 100,
+//                    mediumAngle = 200,
+//                    zoneName = "Single",
+//                    zoneNumber = 1
+//                ))
+//            ),
+//            connectStatus = "error",
+//            firmwareVersion = "ceteros",
+//            gasOrElectric = "graeci",
+//            ipAddress = "explicari",
+//            lastScheduleCommand = "intellegebat",
+//            macAddr = "at",
+//            mountingSurface = "dolor",
+//            rssi = 1597,
+//            safetyLock = false,
+//            scheduleFinishTime = 9022,
+//            schedulePauseRemainingTime = 3846,
+//            scheduleStartTime = 4237,
+//            stoveId = "pri",
+//            stovePosition = 1,
+//            temperature = 6.7,
+//            updated = "explicari",
+//            userId = "enim"
+//        )
+    ))
 
     override var defaultErrorHandler = CoroutineExceptionHandler { _, _ ->
         startDestinationInitialized.postValue(R.id.launchFragment to null)
@@ -49,6 +83,14 @@ class MainVM @Inject constructor(
     var startDestinationJob: Job? = null
 
     var stoveData = CreateStoveRequest()
+
+    fun getUserInfo(){
+        launch{
+            val result = withContext(ioContext){ userRepository.getUserData() }
+            if(result is ResponseWrapper.Success)
+                savedStateHandle["userInfo"] = result.value
+        }
+    }
 
     fun initStartDestination() {
         if (initDone) return
@@ -96,17 +138,24 @@ class MainVM @Inject constructor(
                                     }
                                     is ResponseWrapper.Success -> {
                                         initDone = true
-                                        userInfo = result.value
+                                        withContext(mainContext){
+                                            savedStateHandle["userInfo"] = result.value
+                                        }
                                         if (result.value.stoveMakeModel.isNullOrEmpty() ||
                                             result.value.stoveGasOrElectric.isNullOrEmpty()
                                         ){
                                             startDestinationInitialized.postValue(R.id.myStoveSetupNavGraph to null)
                                             return@launch
                                         }
-                                        val knobs = arrayListOf<KnobDto>()
+                                        val knobs = mutableListOf<KnobDto>()
 
                                         try {
                                             knobs.addAll(stoveRepository.getAllKnobs())
+                                            withContext(mainContext){
+                                                knobs.isNotEmpty {
+                                                    savedStateHandle["knobs"] = knobs.toList()
+                                                }
+                                            }
                                         } catch (ex: Exception) {
                                             knobs.clear()
                                         }
@@ -146,9 +195,12 @@ class MainVM @Inject constructor(
     }
 
     fun connectToSocket() = launch(dispatcher = ioContext) {
-        val macAddrs = stoveRepository.getAllKnobs()
+        val knobs = stoveRepository.getAllKnobs()
+        withContext(mainContext){
+            savedStateHandle["knobs"] = knobs.toList()
+        }
         preferencesProvider.getUserId()?.let {userId->
-            macAddrs.map { it.macAddr }.isNotEmpty {
+            knobs.map { it.macAddr }.isNotEmpty {
                 webSocketManager.initWebSocket(it, userId)
             }
         }

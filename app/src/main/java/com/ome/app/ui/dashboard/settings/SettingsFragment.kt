@@ -1,10 +1,6 @@
 package com.ome.app.ui.dashboard.settings
 
-import android.graphics.Color
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -12,7 +8,10 @@ import androidx.navigation.fragment.NavHostFragment
 import com.ome.app.R
 import com.ome.app.databinding.FragmentSettingsBinding
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.ui.base.navigation.DeepNavGraph.navigate
+import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.ui.base.recycler.RecyclerDelegationAdapter
+import com.ome.app.ui.dashboard.DashboardFragmentDirections
 import com.ome.app.ui.dashboard.settings.adapter.SettingsItemAdapter
 import com.ome.app.ui.dashboard.settings.adapter.SettingsItemDecoration
 import com.ome.app.ui.dashboard.settings.adapter.SettingsTitleItemAdapter
@@ -39,50 +38,52 @@ class SettingsFragment :
                         val foundValue = Settings.entries.firstOrNull { it.option == item.option }
                         foundValue?.let { option ->
                             when (option) {
-                                Settings.LEAVE_STOVE -> {
-                                    val str =
-                                        SpannableStringBuilder("Please Confirm that you would like to LEAVE “Family #1 Stove”?")
-                                    val first = str.indexOf("LEAVE")
-                                    str.setSpan(
-                                        ForegroundColorSpan(Color.RED),
-                                        first,
-                                        first + 5,
-                                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                                    )
-                                    showDialog(
-                                        message = str,
-                                        positiveButtonText = "Accept",
-                                        negativeButtonText = "Reject",
-                                        onPositiveButtonClick = {},
-                                        onNegativeButtonClick = {}
-                                    )
-                                }
-                                Settings.STOVE_AUTO_SHUT_OFF -> {
-                                    navController?.navigate(
-                                        SettingsFragmentDirections.actionSettingsFragmentToAutoShutOffSettingsFragment(
-                                            "test"
-                                        )
-                                    )
-                                }
-                                Settings.STOVE_INFO_SETTINGS -> {
-                                    navController?.navigate(
-                                        SettingsFragmentDirections.actionSettingsFragmentToStoveInfoFragment(
-                                            viewModel.userRepository.userFlow.value?.stoveId ?: ""
-                                        )
-                                    )
-                                }
-                                Settings.STOVE_HISTORY -> {
-                                }
+//                                Settings.LEAVE_STOVE -> {
+//                                    val str =
+//                                        SpannableStringBuilder("Please Confirm that you would like to LEAVE “Family #1 Stove”?")
+//                                    val first = str.indexOf("LEAVE")
+//                                    str.setSpan(
+//                                        ForegroundColorSpan(Color.RED),
+//                                        first,
+//                                        first + 5,
+//                                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+//                                    )
+//                                    showDialog(
+//                                        message = str,
+//                                        positiveButtonText = "Accept",
+//                                        negativeButtonText = "Reject",
+//                                        onPositiveButtonClick = {},
+//                                        onNegativeButtonClick = {}
+//                                    )
+//                                }
+//                                Settings.STOVE_INFO_SETTINGS -> {
+//                                    navController.navigate(Screens.StoveInfo)
+//                                    navController?.navigate(
+//                                        SettingsFragmentDirections.actionSettingsFragmentToStoveInfoFragment(
+//                                            viewModel.userRepository.userFlow.value?.stoveId ?: ""
+//                                        )
+//                                    )
+//                                }
+//                                Settings.STOVE_HISTORY -> {
+//
+//                                }
                                 Settings.ADD_NEW_KNOB -> {
-                                    navController?.navigate(SettingsFragmentDirections.actionSettingsFragmentToKnobWakeUpFragment(isComeFromSettings = false))
+                                    navController?.navigate(R.id.action_dashboardFragment_to_addKnobNavGraph)
+//                                    navController.navigate(NavGraph.AddKnob)
+                                    //navController?.navigate(R.id.addKnobNavGraph)
+                                    //navController?.navigate(SettingsFragmentDirections.actionSettingsFragmentToKnobWakeUpFragment(isComeFromSettings = false))
                                 }
-
+                                Settings.STOVE_BRAND -> Screens.StoveBrand.navigate(navController)
+                                Settings.STOVE_TYPE -> Screens.StoveType.navigate(navController)
+                                Settings.STOVE_LAYOUT -> Screens.StoveLayout.navigate(navController)
+                                Settings.STOVE_AUTO_SHUT_OFF ->
+                                    navController?.navigate(R.id.action_dashboardFragment_to_autoShutOffSettingsFragment)
                             }
                         }
                     }
                     is SettingsKnobItemModel -> {
                         navController?.navigate(
-                            SettingsFragmentDirections.actionSettingsFragmentToDeviceSettingsFragment(
+                            DashboardFragmentDirections.actionDashboardFragmentToDeviceSettingsFragment(
                                 DeviceSettingsFragmentParams(
                                     name = item.name,
                                     macAddr = item.macAddr
@@ -113,7 +114,7 @@ class SettingsFragment :
 //            }
 //        }
         binding.supportIv.setOnClickListener {
-            navController?.navigate(R.id.action_settingsFragment_to_supportFragment)
+            navController?.navigate(R.id.action_dashboardFragment_to_supportFragment)
         }
 
         binding.stoveSubtitleCl.setOnClickListener { showStoves() }

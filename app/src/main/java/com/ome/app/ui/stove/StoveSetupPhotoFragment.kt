@@ -4,11 +4,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupPhotoBinding
+import com.ome.app.ui.base.navigation.DeepNavGraph
+import com.ome.app.ui.base.navigation.DeepNavGraph.encode
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.gone
 import com.ome.app.utils.loadDrawable
@@ -67,9 +70,11 @@ class StoveSetupPhotoFragment :
         subscribe(viewModel.imageUploadedLiveData) {
             binding.takePhoto.revertAnimation()
             findNavController().navigate(
-                StoveSetupPhotoFragmentDirections.actionStoveSetupPhotoFragmentToStoveSetupBurnersFragment(
-                    StoveSetupBurnersArgs(brand = args.params.brand, type = args.params.type)
-                )
+                R.id.action_stoveSetupPhotoFragment_to_stoveSetupBurnersFragment,
+                bundleOf(DeepNavGraph.NAV_ARG to StoveSetupBurnersArgs(brand = args.params.brand, type = args.params.type).encode())
+//                StoveSetupPhotoFragmentDirections.actionStoveSetupPhotoFragmentToStoveSetupBurnersFragment(
+//                    StoveSetupBurnersArgs(brand = args.params.brand, type = args.params.type), ""
+//                )
             )
         }
         subscribe(viewModel.loadingLiveData) {

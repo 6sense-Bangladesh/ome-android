@@ -16,7 +16,6 @@ class AutoShutOffViewModel @Inject constructor(
 
     val autoShutOffLiveData: SingleLiveEvent<String> = SingleLiveEvent()
     val autoShutOffResponseLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
-    var stoveId = ""
     var selectedTime = 0
     var timeList = listOf(
         "15 Minutes",

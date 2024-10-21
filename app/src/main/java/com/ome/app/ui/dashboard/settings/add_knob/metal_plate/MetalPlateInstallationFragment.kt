@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentMetalPlateBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
@@ -19,7 +18,7 @@ class MetalPlateInstallationFragment :
     ) {
     override val viewModel: MetalPlateInstallationViewModel by viewModels()
 
-    private val args by navArgs<MetalPlateInstallationFragmentArgs>()
+//    private val args by navArgs<MetalPlateInstallationFragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,7 +37,7 @@ class MetalPlateInstallationFragment :
             findNavController().navigate(
                 MetalPlateInstallationFragmentDirections.actionMetalPlateInstallationFragmentToSelectBurnerFragment(
                     SelectBurnerFragmentParams(
-                        isComeFromSettings = args.isComeFromSettings,
+                        isComeFromSettings = false,
                         isChangeMode = false
                     )
                 )

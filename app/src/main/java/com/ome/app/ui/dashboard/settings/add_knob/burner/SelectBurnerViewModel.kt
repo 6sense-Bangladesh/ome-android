@@ -1,11 +1,12 @@
 package com.ome.app.ui.dashboard.settings.add_knob.burner
 
-import com.ome.app.ui.base.BaseViewModel
-import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.user.UserRepository
+import com.ome.app.ui.base.BaseViewModel
+import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.ui.model.network.request.CreateKnobRequest
 import com.ome.app.ui.stove.StoveOrientation
+import com.ome.app.ui.stove.enum
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -28,8 +29,7 @@ class SelectBurnerViewModel @Inject constructor(
     fun loadData() = launch(dispatcher = ioContext) {
         stoveRepository.knobsFlow.collect { knobs ->
             if (knobs != null && userRepository.userFlow.value?.stoveOrientation != null) {
-                val foundValue = StoveOrientation.values()
-                    .firstOrNull { it.number == userRepository.userFlow.value?.stoveOrientation }
+                val foundValue = userRepository.userFlow.value?.stoveOrientation.enum
                 foundValue?.let { stoveOrientation ->
                     selectedIndexesLiveData.postValue(stoveOrientation to knobs.map { it.stovePosition })
                 }

@@ -246,5 +246,7 @@ dependencies {
 
 
     implementation("io.coil-kt:coil:2.7.0")
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
+
 
 }

@@ -1,8 +1,5 @@
 package com.ome.app.ui.dashboard
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.navigation.NavController
 import com.ome.app.R
 import com.ome.app.data.local.PreferencesProvider
@@ -10,10 +7,8 @@ import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
-import com.ome.app.utils.mutable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 
@@ -24,26 +19,26 @@ class DashboardViewModel @Inject constructor(
     val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    lateinit var isStartDestination: LiveData<Boolean>
-    lateinit var currentBottomNavController: LiveData<NavController>
-    val bottomBarVisible: LiveData<Boolean> = MutableLiveData(true)
+//    lateinit var isStartDestination: LiveData<Boolean>
+//    lateinit var currentBottomNavController: LiveData<NavController>
+//    val bottomBarVisible: LiveData<Boolean> = MutableLiveData(true)
     val stoveExistLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     val signOutLiveData = SingleLiveEvent<Any>()
 
     init {
-        launch {
-            currentDestination.collect {
-                bottomBarVisible.mutable().value = when (it?.id) {
-                    R.id.settingsFragment,
-                    R.id.myStoveFragment,
-                    R.id.membersFragment,
-                    R.id.profileFragment,
-                    R.id.welcomeFragment -> true
-                    else -> false
-                }
-            }
-        }
+//        launch {
+//            currentDestination.collect {
+//                bottomBarVisible.mutable().value = when (it?.id) {
+//                    R.id.settingsFragment,
+//                    R.id.myStoveFragment,
+//                    R.id.membersFragment,
+//                    R.id.profileFragment,
+//                    R.id.welcomeFragment -> true
+//                    else -> false
+//                }
+//            }
+//        }
         launch(dispatcher = ioContext) {
             userRepository.userFlow.collect { user ->
                 user?.let {
@@ -54,7 +49,7 @@ class DashboardViewModel @Inject constructor(
     }
 
     fun connectBottomNavController(navControllerFlow: StateFlow<NavController>) {
-        currentBottomNavController = navControllerFlow.asLiveData()
+//        currentBottomNavController = navControllerFlow.asLiveData()
 
         launch(dispatcher = ioContext) {
             amplifyManager.signOutFlow.collect {
@@ -77,11 +72,11 @@ class DashboardViewModel @Inject constructor(
             }
         }
 
-        isStartDestination =
-            combine(currentDestination, navControllerFlow) { navDestination, navController ->
-                navController.graph.startDestinationId == navDestination?.id
-
-            }.asLiveData()
+//        isStartDestination =
+//            combine(currentDestination, navControllerFlow) { navDestination, navController ->
+//                navController.graph.startDestinationId == navDestination?.id
+//
+//            }.asLiveData()
     }
 
     fun isStoveInfoExist(): Boolean = userRepository.userFlow.value?.stoveId != null

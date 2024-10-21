@@ -5,11 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentStoveInfoBinding
 import com.ome.app.ui.stove.BasePhotoFragment
-import com.ome.app.ui.stove.StoveSetupBurnersArgs
-import com.ome.app.ui.stove.StoveSetupTypeArgs
 import com.ome.app.utils.getPath
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +21,7 @@ class StoveInfoFragment :
     ) {
     override val viewModel: StoveInfoViewModel by viewModels()
 
-    private val args by navArgs<StoveInfoFragmentArgs>()
+//    private val args by navArgs<StoveInfoFragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,18 +34,18 @@ class StoveInfoFragment :
         binding.backIv.setOnClickListener { findNavController().popBackStack() }
 
         binding.stoveOrientationCl.setOnClickListener {
-            findNavController().navigate(
-                StoveInfoFragmentDirections.actionStoveInfoFragmentToStoveSetupBurnersFragment(
-                    StoveSetupBurnersArgs(isEditMode = true, stoveId = args.params)
-                )
-            )
+//            findNavController().navigate(
+//                StoveInfoFragmentDirections.actionStoveInfoFragmentToStoveSetupBurnersFragment(
+//                    StoveSetupBurnersArgs(isEditMode = true, stoveId = args.params)
+//                )
+//            )
         }
         binding.stoveTypeCl.setOnClickListener {
-            findNavController().navigate(
-                StoveInfoFragmentDirections.actionStoveInfoFragmentToStoveSetupTypeFragment(
-                    StoveSetupTypeArgs(isEditMode = true, stoveId = args.params)
-                )
-            )
+//            findNavController().navigate(
+//                StoveInfoFragmentDirections.actionStoveInfoFragmentToStoveSetupTypeFragment(
+//                    StoveSetupTypeArgs(isEditMode = true, stoveId = args.params)
+//                )
+//            )
         }
 
         binding.stoveImageIv.setOnClickListener {
@@ -56,7 +53,7 @@ class StoveInfoFragment :
         }
 
         viewModel.loadData()
-        viewModel.stoveId = args.params
+//        viewModel.stoveId = args.params
     }
 
 

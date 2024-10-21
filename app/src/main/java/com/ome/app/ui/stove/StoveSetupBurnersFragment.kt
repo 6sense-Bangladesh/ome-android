@@ -7,15 +7,15 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupBurnersBinding
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.ui.base.navigation.DeepNavGraph.getData
+import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
-import com.ome.app.utils.toast
-import com.ome.app.utils.withDelay
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -28,15 +28,24 @@ class StoveSetupBurnersFragment :
 
     override val viewModel: StoveSetupBurnersViewModel by viewModels()
 
-    private val args by navArgs<StoveSetupBurnersFragmentArgs>()
+//    private val args by navArgs<StoveSetupBurnersFragmentArgs>()
+    private val args by lazy { Screens.StoveLayout.getData(arguments) }
+
+    override fun onResume() {
+        super.onResume()
+        if(isFromDeepLink)
+            binding.continueBtn.text =  getString(R.string.update)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setStatusBarTheme(true)
 
-        viewModel.brand = args.params.brand
-        viewModel.type = args.params.type
+        args?.let {
+            viewModel.brand = it.brand
+            viewModel.type = it.type
 
+        }
 //        binding.titleTv.applyInsetter {
 //            type(navigationBars = true, statusBars = true) {
 //                padding(horizontal = true)
@@ -69,8 +78,8 @@ class StoveSetupBurnersFragment :
             viewModel.stoveOrientation = StoveOrientation.TWO_BURNERS_VERTICAL
         }
 
-        if(args.params.isEditMode){
-            binding.continueBtn.text = getString(R.string.save)
+        if(isFromDeepLink){
+            binding.continueBtn.text = getString(R.string.update)
         }else{
             mainViewModel.stoveData.stoveOrientation.enum?.let {
                 viewModel.stoveOrientation = it
@@ -80,18 +89,20 @@ class StoveSetupBurnersFragment :
             }
         }
         binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
+        if(BuildConfig.DEBUG){
+            binding.titleTv.setBounceClickListener {
+                findNavController().navigate(R.id.action_stoveSetupBurnersFragment_to_stoveSetupCompletedFragment)
+            }
+        }
         binding.continueBtn.setBounceClickListener  {
-            if(args.params.isEditMode){
+            if(isFromDeepLink){
                 binding.continueBtn.startAnimation()
-                viewModel.updateStoveOrientation(args.params.stoveId)
+                mainViewModel.stoveData.stoveOrientation = viewModel.stoveOrientation?.number
+                viewModel.updateStoveOrientation(mainViewModel.userInfo.value?.stoveId.orEmpty(), onEnd = mainViewModel::getUserInfo)
             } else {
-                if(viewModel.stoveOrientation != null) {
-                    mainViewModel.stoveData.stoveOrientation = viewModel.stoveOrientation?.number
-                    viewModel.createStove()
-                    binding.continueBtn.startAnimation()
-                }
-                else
-                    toast("Please select burner type")
+                mainViewModel.stoveData.stoveOrientation = viewModel.stoveOrientation?.number
+                viewModel.createStove(onEnd = mainViewModel::getUserInfo)
+                binding.continueBtn.startAnimation()
             }
         }
     }
@@ -123,10 +134,7 @@ class StoveSetupBurnersFragment :
         super.observeLiveData()
         subscribe(viewModel.createStoveLiveData) {
             binding.continueBtn.revertAnimation()
-            withDelay(1000) {
-                findNavController().navigate(R.id.action_stoveSetupBurnersFragment_to_stoveSetupCompletedFragment)
-            }
-
+            findNavController().navigate(R.id.action_stoveSetupBurnersFragment_to_stoveSetupCompletedFragment)
         }
 
         subscribe(viewModel.loadingLiveData) {
@@ -139,7 +147,6 @@ class StoveSetupBurnersFragment :
 @Parcelize
 data class StoveSetupBurnersArgs(
     val brand: String = "",
-    val stoveId: String = "",
     val type: String = "",
     val isEditMode: Boolean = false
 ) : Parcelable

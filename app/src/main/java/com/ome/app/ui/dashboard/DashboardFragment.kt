@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDashboardBinding
@@ -139,12 +138,12 @@ class DashboardFragment :
 
     override fun observeLiveData() {
         super.observeLiveData()
-        subscribe(viewModel.bottomBarVisible) {
+//        subscribe(viewModel.bottomBarVisible) {
 //            binding.bottomNavigation.isVisible = it
-        }
-        subscribe(viewModel.signOutLiveData) {
-            findNavController().navigate(R.id.action_dashboardFragment_to_launchFragment)
-        }
+//        }
+//        subscribe(viewModel.signOutLiveData) {
+//            findNavController().navigate(R.id.action_dashboardFragment_to_launchFragment)
+//        }
         subscribe(viewModel.stoveExistLiveData) {
 //            if (it) {
 //                binding.bottomNavigation.setEnabledTabState(BottomItem.SETTINGS, true)

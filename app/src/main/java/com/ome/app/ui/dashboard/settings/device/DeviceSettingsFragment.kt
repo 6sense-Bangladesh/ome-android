@@ -9,9 +9,8 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceSettingsBinding
 import com.ome.app.ui.base.BaseFragment
-import com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
-import com.ome.app.ui.dashboard.settings.add_knob.installation.KnobInstallationManual1FragmentParams
-import com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiParams
+import com.ome.app.ui.base.navigation.DeepNavGraph.navigate
+import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -47,36 +46,37 @@ class DeviceSettingsFragment :
         binding.macAddressTv.text = getString(R.string.knob_mac_addr_label, args.params.macAddr)
         binding.backIv.setOnClickListener { findNavController().popBackStack() }
         binding.changeKnobOrientationCl.setOnClickListener {
-            findNavController().navigate(
-                DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToKnobInstallationManual1Fragment(
-                    KnobInstallationManual1FragmentParams(
-                        isComeFromSettings = true,
-                        macAddr = args.params.macAddr
-                    )
-
-                )
-            )
+//            findNavController().navigate(
+//                DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToKnobInstallationManual1Fragment(
+//                    KnobInstallationManual1FragmentParams(
+//                        isComeFromSettings = true,
+//                        macAddr = args.params.macAddr
+//                    )
+//
+//                )
+//            )
         }
         binding.changeWifiCl.setOnClickListener {
-            findNavController().navigate(
-                DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToConnectToWifiFragment(
-                    ConnectToWifiParams(
-                        isComeFromSettings = false,
-                        isChangeWifiMode = true,
-                        macAddrs = args.params.macAddr
-                    )
-                )
-            )
+//            findNavController().navigate(
+//                DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToConnectToWifiFragment(
+//                    ConnectToWifiParams(
+//                        isComeFromSettings = false,
+//                        isChangeWifiMode = true,
+//                        macAddrs = args.params.macAddr
+//                    )
+//                )
+//            )
         }
         binding.changeKnobPositionCl.setOnClickListener {
-            findNavController().navigate(
-                DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToSelectBurnerFragment(
-                    SelectBurnerFragmentParams(
-                        isChangeMode = true,
-                        macAddress = viewModel.macAddress
-                    )
-                )
-            )
+            Screens.StoveLayout.navigate()
+//            findNavController().navigate(
+//                DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToSelectBurnerFragment(
+//                    SelectBurnerFragmentParams(
+//                        isChangeMode = true,
+//                        macAddress = viewModel.macAddress
+//                    )
+//                )
+//            )
         }
     }
 

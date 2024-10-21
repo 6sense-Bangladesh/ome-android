@@ -91,7 +91,7 @@
     <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
-    <com.google.android.material.button.MaterialButton
+    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/continueBtn"
         style="@style/OmeButton.Blue"
         android:text="@string/continue_btn"

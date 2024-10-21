@@ -5,7 +5,6 @@ import android.text.SpannableStringBuilder
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentAutoShutOffSettingsBinding
 import com.ome.app.ui.base.BaseFragment
@@ -20,7 +19,7 @@ class AutoShutOffSettingsFragment :
     ) {
     override val viewModel: AutoShutOffViewModel by viewModels()
 
-    private val args by navArgs<AutoShutOffSettingsFragmentArgs>()
+//    private val args by navArgs<AutoShutOffSettingsFragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +49,6 @@ class AutoShutOffSettingsFragment :
             )
 
         }
-        viewModel.stoveId = args.params
         viewModel.loadData()
     }
 

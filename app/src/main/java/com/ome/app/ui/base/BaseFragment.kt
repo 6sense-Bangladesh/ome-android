@@ -10,6 +10,7 @@ import androidx.annotation.CallSuper
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -33,6 +34,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
     protected val mainViewModel: MainVM by activityViewModels()
     protected var onDismissErrorDialog: () -> Unit = {}
     protected var onDismissSuccessDialog: () -> Unit = {}
+    protected val isFromDeepLink by lazy { arguments?.containsKey(NavController.KEY_DEEP_LINK_INTENT) ?: false }
 
     override fun onCreateView(
         inflater: LayoutInflater,

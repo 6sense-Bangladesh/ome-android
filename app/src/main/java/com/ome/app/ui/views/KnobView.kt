@@ -5,17 +5,20 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.SparseArray
-import android.util.TypedValue
 import android.view.View
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
+import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.ome.app.R
 import com.ome.app.databinding.KnobViewLayoutBinding
 import com.ome.app.ui.dashboard.settings.add_knob.calibration.CalibrationState
 import com.ome.app.utils.inflate
+import com.ome.app.utils.loadDrawable
 import com.ome.app.utils.logi
 import com.ome.app.utils.makeGone
 import com.ome.app.utils.makeVisible
+import com.ome.app.utils.toStringLocale
 
 class KnobView @JvmOverloads constructor(
     context: Context,
@@ -27,6 +30,7 @@ class KnobView @JvmOverloads constructor(
     private val ANIMATION_DURATION: Long = 500
 
     private val binding = inflate<KnobViewLayoutBinding>()
+    private val knobSrc = binding.knobSrc
 
     var prevAngle = 0.0f
     private var mCurrAngle = 0.0f
@@ -35,10 +39,11 @@ class KnobView @JvmOverloads constructor(
 
     }
 
-    fun setKnobPosition(angle: Float) {
-        if(angle!=mCurrAngle){
-            logi("angle KnobView $angle")
-            animateCircle(mCurrAngle, angle, ANIMATION_DURATION)
+    fun setKnobPosition(angle: Float, rotateClockwise: Boolean = true) {
+        val rotationSafeAngle = if (rotateClockwise) angle else angle - 360
+        if(rotationSafeAngle!=mCurrAngle){
+            logi("angle KnobView $rotationSafeAngle")
+            animateCircle(mCurrAngle, rotationSafeAngle, ANIMATION_DURATION)
         }
     }
 
@@ -64,7 +69,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun setStovePosition(position: Int) {
-        binding.stovePositionTv.text = position.toString()
+        binding.stovePositionTv.text = position.toStringLocale()
     }
 
     fun setOffPosition(angle: Float) {
@@ -107,6 +112,21 @@ class KnobView @JvmOverloads constructor(
         binding.lowDualCl.rotation = angle
         binding.lowDualTv.rotation = -angle
         animateCircle(mCurrAngle, angle, ANIMATION_DURATION)
+    }
+
+    fun changeKnobState(knobState: KnobState) {
+        post {
+            knobSrc.loadDrawable(knobState.icon)
+            knobSrc.tag = knobState.icon
+        }
+    }
+
+    val knobState : KnobState
+    get() = KnobState.entries.find { it.icon == knobSrc.tag } ?: KnobState.NORMAL
+
+    enum class KnobState(@DrawableRes val icon: Int){
+        ADD(R.drawable.ic_knob_circle_add),
+        NORMAL(R.drawable.ic_knob_circle)
     }
 
     private fun animateCircle(fromDeg: Float, toDeg: Float, durationMilis: Long) {

@@ -9,14 +9,15 @@ import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.ui.model.network.request.CreateUserRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    val amplifyManager: AmplifyManager,
-    val userRepository: UserRepository,
-    val preferencesProvider: PreferencesProvider
+    private val amplifyManager: AmplifyManager,
+    private val userRepository: UserRepository,
+    private val preferencesProvider: PreferencesProvider
 ) : BaseViewModel() {
 
     val userLiveData: SingleLiveEvent<UserProfileItemModel> = SingleLiveEvent()
@@ -27,7 +28,9 @@ class ProfileViewModel @Inject constructor(
             preferencesProvider.clearData()
             userRepository.userFlow.emit(null)
             amplifyManager.signOutFlow.emit(true)
-            onEnd()
+            withContext(mainContext) {
+                onEnd()
+            }
         }
     }
 
@@ -71,6 +74,8 @@ class ProfileViewModel @Inject constructor(
         amplifyManager.deleteUser()
         preferencesProvider.clearData()
         amplifyManager.signOutFlow.emit(true)
-        onEnd()
+        withContext(mainContext) {
+            onEnd()
+        }
     }
 }

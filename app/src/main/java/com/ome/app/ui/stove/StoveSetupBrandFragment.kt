@@ -3,22 +3,21 @@ package com.ome.app.ui.stove
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupBrandBinding
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.ui.base.navigation.DeepNavGraph
+import com.ome.app.ui.base.navigation.DeepNavGraph.encode
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class StoveSetupBrandFragment :
-    BaseFragment<StoveSetupBrandViewModel, FragmentStoveSetupBrandBinding>(
-        FragmentStoveSetupBrandBinding::inflate
-    ) {
-
+class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentStoveSetupBrandBinding>(FragmentStoveSetupBrandBinding::inflate) {
     override val viewModel: StoveSetupBrandViewModel by viewModels()
 
     override fun onResume() {
@@ -28,8 +27,11 @@ class StoveSetupBrandFragment :
 //        }.orEmpty()
         mainViewModel.stoveData.stoveMakeModel?.let {
             binding.stoveSelector.setText(it)
+            viewModel.selectedBrand = it
         }
         binding.stoveSelector.setSimpleItems(viewModel.brandArray.toTypedArray())
+        if(isFromDeepLink)
+            binding.continueBtn.text =  getString(R.string.update)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +43,6 @@ class StoveSetupBrandFragment :
         binding.stoveSelector.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 val selectedBrand = viewModel.brandArray.getOrNull(position).orEmpty()
-                mainViewModel.stoveData.stoveMakeModel = selectedBrand
                 viewModel.selectedBrand = selectedBrand
             }
 //        binding.imageView2.applyInsetter {
@@ -52,15 +53,22 @@ class StoveSetupBrandFragment :
 //        }
         binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
         binding.continueBtn.setBounceClickListener {
-            if(!mainViewModel.stoveData.stoveMakeModel.isNullOrEmpty()) {
+            mainViewModel.stoveData.stoveMakeModel = viewModel.selectedBrand
+            if(mainViewModel.stoveData.stoveMakeModel.isNullOrEmpty())
+                onError("Please select a brand")
+            else if(isFromDeepLink){
+                binding.continueBtn.startAnimation()
+                viewModel.updateSelectedBrand(mainViewModel.userInfo.value?.stoveId, ::onBackPressed)
+            }
+            else{
                 findNavController().navigate(
-                    StoveSetupBrandFragmentDirections.actionStoveSetupBrandFragmentToStoveSetupTypeFragment(
-                        StoveSetupTypeArgs(brand = mainViewModel.stoveData.stoveMakeModel.orEmpty())
-                    )
+                    R.id.action_stoveSetupBrandFragment_to_stoveSetupTypeFragment,
+                    bundleOf(DeepNavGraph.NAV_ARG to StoveSetupTypeArgs(brand = viewModel.selectedBrand).encode())
+//                    StoveSetupBrandFragmentDirections.actionStoveSetupBrandFragmentToStoveSetupTypeFragment(
+//                        StoveSetupTypeArgs(brand = mainViewModel.stoveData.stoveMakeModel.orEmpty())
+//                    )
                 )
             }
-            else
-                toast("Please select a brand")
         }
     }
 

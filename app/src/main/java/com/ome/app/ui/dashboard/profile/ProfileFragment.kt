@@ -56,8 +56,9 @@ class ProfileFragment :
                 onPositiveButtonClick = {
                     binding.signOut.startAnimation()
                     viewModel.signOut{
+                        navController?.navigate(R.id.action_dashboardFragment_to_launchFragment)
 //                        navController?.navigate(R.id.launchFragment)
-                        activity?.finish()
+//                        activity?.finish()
                     }
                 })
         }
@@ -70,14 +71,17 @@ class ProfileFragment :
                     onPositiveButtonClick = {
                         binding.deleteAccount.startAnimation()
                         viewModel.deleteUser{
+                            navController?.navigate(R.id.action_dashboardFragment_to_launchFragment)
 //                            navController?.navigate(R.id.launchFragment)
-                            activity?.finish()
+//                            activity?.finish()
                         }
                     })
             }
         }
 
-        binding.changePasswordTv.setBounceClickListener { navController?.navigate(R.id.action_dashboardFragment_to_changePasswordFragment) }
+        binding.changePasswordTv.setBounceClickListener {
+            navController?.navigate(R.id.action_dashboardFragment_to_changePasswordFragment)
+        }
 
         binding.firstNameEt.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {

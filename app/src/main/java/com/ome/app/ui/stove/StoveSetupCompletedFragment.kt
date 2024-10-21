@@ -1,15 +1,14 @@
 package com.ome.app.ui.stove
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavDeepLinkRequest
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupCompletedBinding
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.ui.base.navigation.DeepNavGraph.navigate
+import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,22 +35,10 @@ class StoveSetupCompletedFragment :
 //        }
         binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
         binding.finishBtn.setBounceClickListener {
-            findNavController().navigate(R.id.action_stoveSetupCompletedFragment_to_knobWakeUpFragment)
+            findNavController().navigate(R.id.action_stoveSetupCompletedFragment_to_addKnobNavGraph)
         }
         binding.skipKnobSetupBtn.setBounceClickListener {
-            findNavController().navigate(
-                request = NavDeepLinkRequest.Builder.fromUri(
-                    Uri.parse("ome://navigation/dashboard")
-                ).build(),
-                navOptions = NavOptions.Builder()
-                    .setPopUpTo(R.id.dashboardFragment, false)
-                    .setEnterAnim(R.anim.slide_in_right)
-                    .setExitAnim(R.anim.slide_out_left)
-                    .setPopEnterAnim(R.anim.slide_in_left)
-                    .setPopExitAnim(R.anim.slide_out_right)
-                    .build(),
-                navigatorExtras = null
-            )
+            Screens.Dashboard.navigate(popUpToInclusive = true)
 //            findNavController().navigate(R.id.action_stoveSetupCompletedFragment_to_dashboardFragment)
         }
     }

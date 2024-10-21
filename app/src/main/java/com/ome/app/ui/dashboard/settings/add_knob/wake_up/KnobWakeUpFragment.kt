@@ -6,7 +6,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentKnobWakeUpBinding
 import com.ome.app.ui.base.BaseFragment
@@ -21,7 +20,7 @@ class KnobWakeUpFragment :
     override val viewModel: KnobWakeUpViewModel by viewModels()
 
 
-    private val args by navArgs<KnobWakeUpFragmentArgs>()
+//    private val args by navArgs<KnobWakeUpFragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,9 +46,7 @@ class KnobWakeUpFragment :
 
         binding.continueBtn.setOnClickListener {
             findNavController().navigate(
-                KnobWakeUpFragmentDirections.actionKnobWakeUpFragmentToMetalPlateInstallationFragment(
-                    args.isComeFromSettings
-                )
+                KnobWakeUpFragmentDirections.actionKnobWakeUpFragmentToMetalPlateInstallationFragment()
             )
         }
     }

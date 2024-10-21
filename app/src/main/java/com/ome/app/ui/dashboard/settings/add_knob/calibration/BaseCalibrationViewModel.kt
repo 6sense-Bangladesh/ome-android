@@ -26,7 +26,9 @@ abstract class BaseCalibrationViewModel constructor(
     var lowSingleAngle: Float? = null
     var mediumAngle: Float? = null
     var highSingleAngle: Float? = null
+
     var lowDualAngle: Float? = null
+    var mediumDualAngle: Float? = null
     var highDualAngle: Float? = null
 
 
