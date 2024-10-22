@@ -11,9 +11,8 @@ import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.ui.model.base.ResponseWrapper
-import com.ome.app.ui.model.network.request.CreateStoveRequest
+import com.ome.app.ui.model.network.request.StoveRequest
 import com.ome.app.ui.model.network.response.KnobDto
-import com.ome.app.ui.model.network.response.UserResponse
 import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.isNotEmpty
 import com.ome.app.utils.logi
@@ -35,43 +34,45 @@ class MainVM @Inject constructor(
     private val webSocketManager: WebSocketManager,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
-    var userInfo= savedStateHandle.getStateFlow<UserResponse?>("userInfo", null)
-    var knobs= savedStateHandle.getStateFlow("knobs", listOf<KnobDto>(
-//        KnobDto(
-//            angle = 126,
-//            battery = 90,
-//            batteryVolts = 4.5,
-//            calibrated = false,
-//            calibration = KnobDto.CalibrationDto(
-//                offAngle = 0,
-//                rotationDir = 1,
-//                zones = listOf(KnobDto.CalibrationDto.ZoneDto(
-//                    highAngle = 300,
-//                    lowAngle = 100,
-//                    mediumAngle = 200,
-//                    zoneName = "Single",
-//                    zoneNumber = 1
-//                ))
-//            ),
-//            connectStatus = "error",
-//            firmwareVersion = "ceteros",
-//            gasOrElectric = "graeci",
-//            ipAddress = "explicari",
-//            lastScheduleCommand = "intellegebat",
-//            macAddr = "at",
-//            mountingSurface = "dolor",
-//            rssi = 1597,
-//            safetyLock = false,
-//            scheduleFinishTime = 9022,
-//            schedulePauseRemainingTime = 3846,
-//            scheduleStartTime = 4237,
-//            stoveId = "pri",
-//            stovePosition = 1,
-//            temperature = 6.7,
-//            updated = "explicari",
-//            userId = "enim"
-//        )
-    ))
+    var userInfo= savedStateHandle.getStateFlow("userInfo", preferencesProvider.getUserData())
+    var knobs= savedStateHandle.getStateFlow("knobs", buildList {
+        if(BuildConfig.DEBUG){
+            add(KnobDto(
+                angle = 126,
+                battery = 90,
+                batteryVolts = 4.5,
+                calibrated = false,
+                calibration = KnobDto.CalibrationDto(
+                    offAngle = 0,
+                    rotationDir = 1,
+                    zones = listOf(KnobDto.CalibrationDto.ZoneDto(
+                        highAngle = 300,
+                        lowAngle = 100,
+                        mediumAngle = 200,
+                        zoneName = "Single",
+                        zoneNumber = 1
+                    ))
+                ),
+                connectStatus = "error",
+                firmwareVersion = "ceteros",
+                gasOrElectric = "graeci",
+                ipAddress = "explicari",
+                lastScheduleCommand = "intellegebat",
+                macAddr = "fake_mac",
+                mountingSurface = "dolor",
+                rssi = 1597,
+                safetyLock = false,
+                scheduleFinishTime = 9022,
+                schedulePauseRemainingTime = 3846,
+                scheduleStartTime = 4237,
+                stoveId = "pri",
+                stovePosition = 1,
+                temperature = 6.7,
+                updated = "explicari",
+                userId = "enim"
+            ))
+        }
+    })
 
     override var defaultErrorHandler = CoroutineExceptionHandler { _, _ ->
         startDestinationInitialized.postValue(R.id.launchFragment to null)
@@ -82,7 +83,7 @@ class MainVM @Inject constructor(
     var initDone = false
     var startDestinationJob: Job? = null
 
-    var stoveData = CreateStoveRequest()
+    var stoveData = StoveRequest()
 
     fun getUserInfo(){
         launch{
@@ -120,20 +121,13 @@ class MainVM @Inject constructor(
                                 preferencesProvider.saveAccessToken(accessToken)
 
                                 when (val result = userRepository.getUserData()) {
-                                    is ResponseWrapper.NetworkError -> {
-                                        val text = ""
-                                    }
-                                    is ResponseWrapper.GenericError -> {
-                                        result.response?.message?.let { message ->
-                                            if (message.contains("Not found")) {
-                                                amplifyManager.deleteUser()
-                                                preferencesProvider.clearData()
-                                                startDestinationInitialized.postValue(R.id.launchFragment to null)
-                                            } else {
-                                                startDestinationInitialized.postValue(R.id.dashboardFragment to null)
-                                            }
-                                        } ?: run {
+                                    is ResponseWrapper.Error -> {
+                                        if (result.message.contains("Not found")) {
+                                            amplifyManager.deleteUser()
+                                            preferencesProvider.clearData()
                                             startDestinationInitialized.postValue(R.id.launchFragment to null)
+                                        } else {
+                                            startDestinationInitialized.postValue(R.id.dashboardFragment to null)
                                         }
                                     }
                                     is ResponseWrapper.Success -> {

@@ -99,7 +99,7 @@
             android:id="@+id/continueTurnOff"
             style="@style/OmeButton.Blue"
             android:layout_width="wrap_content"
-            android:text="Turn Off"
+            android:text="@string/turn_off"
             app:backgroundTint="@color/core_red"
             app:icon="@drawable/ic_power"
             app:layout_constraintBottom_toBottomOf="parent"

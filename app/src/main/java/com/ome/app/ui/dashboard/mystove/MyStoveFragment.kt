@@ -96,7 +96,7 @@ class MyStoveFragment :
             }
             mainViewModel.knobs.collectWithLifecycle {knobs->
                 knobs.forEach { knob->
-                    when(mainViewModel.userInfo.value?.stoveOrientation.enum){
+                    when(mainViewModel.userInfo.value.stoveOrientation.enum){
                         StoveOrientation.FIVE_BURNERS -> {
                             when(knob.stovePosition){
                                 1 -> knob1.setupKnob(knob)

@@ -2,7 +2,7 @@ package com.ome.app.ui.stove
 
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.ui.base.BaseViewModel
-import com.ome.app.ui.model.network.request.CreateStoveRequest
+import com.ome.app.ui.model.network.request.StoveRequest
 import com.ome.app.utils.isNotEmpty
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -34,10 +34,9 @@ class StoveSetupBrandViewModel @Inject constructor(
 
     var selectedBrand = ""
 
-    fun updateSelectedBrand(stoveId: String?, onEnd :() ->Unit) = launch(dispatcher = ioContext) {
-        if (stoveId.isNullOrEmpty()) error("Stove info not found")
+    fun updateSelectedBrand(stoveId: String, onEnd :() ->Unit) = launch(dispatcher = ioContext) {
         selectedBrand.isNotEmpty {
-            stoveRepository.updateStove(CreateStoveRequest(stoveMakeModel = selectedBrand), stoveId = stoveId)
+            stoveRepository.updateStove(StoveRequest(stoveMakeModel = selectedBrand), stoveId = stoveId)
             onEnd()
 //            userRepository.getUserData()
             loadingLiveData.postValue(false)

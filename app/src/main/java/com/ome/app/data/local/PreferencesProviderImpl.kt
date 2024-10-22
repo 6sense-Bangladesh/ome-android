@@ -2,7 +2,7 @@ package com.ome.app.data.local
 
 import android.content.Context
 import com.google.gson.Gson
-import com.ome.app.model.local.User
+import com.ome.app.ui.model.network.response.UserResponse
 
 
 class PreferencesProviderImpl(context: Context) : PreferencesProvider {
@@ -16,15 +16,15 @@ class PreferencesProviderImpl(context: Context) : PreferencesProvider {
     private val sharedPreferences =
         context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
 
-    override fun saveUserData(user: User?) = if (user == null) {
+    override fun saveUserData(user: UserResponse?) = if (user == null) {
         sharedPreferences.edit().remove(USER_DATA_KEY).apply()
     } else {
         sharedPreferences.edit().putString(USER_DATA_KEY, Gson().toJson(user)).apply()
     }
 
-    override fun getUserData(): User? {
-        val json = sharedPreferences.getString(USER_DATA_KEY, "")
-        return if (json == null) null else Gson().fromJson(json, User::class.java)
+    override fun getUserData(): UserResponse {
+        val json = sharedPreferences.getString(USER_DATA_KEY, "{}") ?: "{}"
+        return Gson().fromJson(json, UserResponse::class.java)
     }
 
     override fun saveAccessToken(accessToken: String?) = if (accessToken == null) {

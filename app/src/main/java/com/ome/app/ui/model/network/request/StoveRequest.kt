@@ -1,6 +1,6 @@
 package com.ome.app.ui.model.network.request
 
-data class CreateStoveRequest(
+data class StoveRequest(
     var stoveAutoOffMins: Int? = null,
     var stoveGasOrElectric: String? = null,
     var stoveMakeModel: String? = null,

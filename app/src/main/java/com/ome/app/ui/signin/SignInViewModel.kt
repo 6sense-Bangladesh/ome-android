@@ -85,17 +85,12 @@ class SignInViewModel @Inject constructor(
                 }
             }
             when (val result = userRepository.getUserData()) {
-                is ResponseWrapper.NetworkError -> {
+                is ResponseWrapper.Error -> {
                     loadingLiveData.postValue(false)
-                }
-                is ResponseWrapper.GenericError -> {
-                    result.response?.message?.let { message ->
-                        loadingLiveData.postValue(false)
-                        if (message.contains("Not found")) {
+                    if (result.message.contains("Not found")) {
 
-                        } else {
-                            loadingLiveData.postValue(false)
-                        }
+                    } else {
+                        loadingLiveData.postValue(false)
                     }
                 }
                 is ResponseWrapper.Success -> {

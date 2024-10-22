@@ -2,15 +2,15 @@ package com.ome.app.ui.signup.confirmation
 
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.ome.app.BuildConfig
-import com.ome.app.ui.base.BaseViewModel
-import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
 import com.ome.app.data.remote.user.UserRepository
-import com.ome.app.ui.model.network.request.CreateUserRequest
-import com.ome.app.model.local.User
+import com.ome.app.ui.base.BaseViewModel
+import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.ui.model.base.ResponseWrapper
+import com.ome.app.ui.model.network.request.CreateUserRequest
+import com.ome.app.ui.model.network.response.UserResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -40,7 +40,6 @@ class SignUpConfirmationViewModel @Inject constructor(
     fun confirmSignUp() = launch(dispatcher = ioContext) {
         amplifyManager.confirmSignUp(email, code)
         signIn(email, currentPassword)
-        saveUserData()
         fetchUserData()
         createUser()
     }
@@ -60,17 +59,13 @@ class SignUpConfirmationViewModel @Inject constructor(
                     userId = it
                 )
             )) {
-                is ResponseWrapper.NetworkError -> {
+                is ResponseWrapper.Error -> {
+                    defaultErrorLiveData.postValue(result.message)
+                    signUpConfirmationResultLiveData.postValue(false)
                     loadingLiveData.postValue(false)
                 }
-                is ResponseWrapper.GenericError -> {
-                    result.response?.message?.let { message ->
-                        defaultErrorLiveData.postValue(message)
-                        signUpConfirmationResultLiveData.postValue(false)
-                        loadingLiveData.postValue(false)
-                    }
-                }
                 is ResponseWrapper.Success -> {
+                    saveUserData(result.value)
                     signUpConfirmationResultLiveData.postValue(true)
                 }
                 else -> {}
@@ -91,14 +86,7 @@ class SignUpConfirmationViewModel @Inject constructor(
         codeValidationLiveData.postValue(true)
     }
 
-    private fun saveUserData() = preferencesProvider.saveUserData(
-        User(
-            firstName = firstName,
-            lastName = lastName,
-            phoneNumber = phone,
-            email = email
-        )
-    )
+    private suspend fun saveUserData(userData: UserResponse) = preferencesProvider.saveUserData(userData)
 
     suspend fun signIn(username: String, password: String): AmplifyResultValue =
         amplifyManager.signUserIn(username.trim(), password)

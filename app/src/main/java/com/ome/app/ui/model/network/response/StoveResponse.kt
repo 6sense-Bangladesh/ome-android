@@ -1,6 +1,6 @@
 package com.ome.app.ui.model.network.response
 
-data class CreateStoveResponse(
+data class StoveResponse(
     val knobMacAddrs: List<String>,
     val numKnobs: Int,
     val stoveAutoOffMins: Int,

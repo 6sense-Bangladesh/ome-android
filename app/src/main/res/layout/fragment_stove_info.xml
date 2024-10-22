@@ -99,6 +99,7 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginTop="16dp"
+                android:contentDescription="@string/logo"
                 android:src="@drawable/ic_four_bar_burner_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -149,6 +150,7 @@
                 android:layout_marginTop="12dp"
                 android:src="@drawable/ic_gray_gas"
                 android:tint="#165EAA"
+                android:contentDescription="@string/logo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

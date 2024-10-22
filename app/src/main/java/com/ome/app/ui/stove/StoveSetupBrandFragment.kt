@@ -58,7 +58,7 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
                 onError("Please select a brand")
             else if(isFromDeepLink){
                 binding.continueBtn.startAnimation()
-                viewModel.updateSelectedBrand(mainViewModel.userInfo.value?.stoveId, ::onBackPressed)
+                viewModel.updateSelectedBrand(mainViewModel.userInfo.value.stoveId, ::onBackPressed)
             }
             else{
                 findNavController().navigate(

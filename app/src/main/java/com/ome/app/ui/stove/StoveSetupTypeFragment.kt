@@ -48,7 +48,7 @@ private val args by lazy { Screens.StoveType.getData(arguments) }
 //        }
         if (isFromDeepLink) {
             binding.continueBtn.text = getString(R.string.save)
-            mainViewModel.userInfo.value?.let {
+            mainViewModel.userInfo.value.let {
                 when(it.stoveGasOrElectric){
                     "gas" -> {
                         binding.gasStove.isChecked = true
@@ -94,9 +94,7 @@ private val args by lazy { Screens.StoveType.getData(arguments) }
                 onError("Please select stove type")
             else if (isFromDeepLink) {
                 binding.continueBtn.startAnimation()
-                mainViewModel.userInfo.value?.stoveId?.let { stoveId ->
-                    viewModel.saveStoveType(stoveId, onEnd = mainViewModel::getUserInfo)
-                } ?: onError("Stove not found")
+                viewModel.saveStoveType(mainViewModel.userInfo.value.stoveId, onEnd = mainViewModel::getUserInfo)
             }
             else{
                 findNavController().navigate(

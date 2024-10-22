@@ -8,19 +8,19 @@ import com.ome.app.model.network.request.InitCalibrationRequest
 import com.ome.app.model.network.request.SetCalibrationRequest
 import com.ome.app.ui.model.base.ResponseWrapper
 import com.ome.app.ui.model.network.request.CreateKnobRequest
-import com.ome.app.ui.model.network.request.CreateStoveRequest
+import com.ome.app.ui.model.network.request.StoveRequest
 import com.ome.app.ui.model.network.response.BaseResponse
 import com.ome.app.ui.model.network.response.ChangeKnobAngleResponse
 import com.ome.app.ui.model.network.response.CreateKnobResponse
-import com.ome.app.ui.model.network.response.CreateStoveResponse
 import com.ome.app.ui.model.network.response.KnobDto
 import com.ome.app.ui.model.network.response.KnobOwnershipResponse
+import com.ome.app.ui.model.network.response.StoveResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.coroutines.coroutineContext
 
 interface StoveRepository {
-    suspend fun createStove(params: CreateStoveRequest): ResponseWrapper<CreateStoveResponse>
-    suspend fun updateStove(params: CreateStoveRequest, stoveId: String): CreateStoveResponse
+    suspend fun createStove(params: StoveRequest): ResponseWrapper<StoveResponse>
+    suspend fun updateStove(params: StoveRequest, stoveId: String): ResponseWrapper<StoveResponse>
     suspend fun getAllKnobs(): List<KnobDto>
     suspend fun getKnobOwnership(macAddress: String): KnobOwnershipResponse
     suspend fun initCalibration(params: InitCalibrationRequest, macAddress: String): KnobDto
@@ -37,17 +37,19 @@ class StoveRepositoryImpl(
     private val webSocketManager: WebSocketManager
 ) : StoveRepository, BaseRepository() {
 
-    override suspend fun createStove(params: CreateStoveRequest): ResponseWrapper<CreateStoveResponse> {
+    override suspend fun createStove(params: StoveRequest): ResponseWrapper<StoveResponse> {
         return safeApiCall(coroutineContext) {
             stoveService.createStove(params)
         }
     }
 
     override suspend fun updateStove(
-        params: CreateStoveRequest,
+        params: StoveRequest,
         stoveId: String
-    ): CreateStoveResponse {
-        return stoveService.updateStoveInfo(params, stoveId)
+    ): ResponseWrapper<StoveResponse> {
+        return safeApiCall(coroutineContext) {
+            stoveService.updateStoveInfo(params, stoveId)
+        }
     }
 
     override suspend fun getAllKnobs(): List<KnobDto> {

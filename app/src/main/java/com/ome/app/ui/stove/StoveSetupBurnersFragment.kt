@@ -98,10 +98,10 @@ class StoveSetupBurnersFragment :
             if(isFromDeepLink){
                 binding.continueBtn.startAnimation()
                 mainViewModel.stoveData.stoveOrientation = viewModel.stoveOrientation?.number
-                viewModel.updateStoveOrientation(mainViewModel.userInfo.value?.stoveId.orEmpty(), onEnd = mainViewModel::getUserInfo)
+                viewModel.updateStoveOrientation(mainViewModel.userInfo.value.stoveId, onEnd = mainViewModel::getUserInfo)
             } else {
                 mainViewModel.stoveData.stoveOrientation = viewModel.stoveOrientation?.number
-                viewModel.createStove(onEnd = mainViewModel::getUserInfo)
+                viewModel.updateUserStove(stoveId= mainViewModel.userInfo.value.stoveId)
                 binding.continueBtn.startAnimation()
             }
         }
@@ -133,6 +133,7 @@ class StoveSetupBurnersFragment :
     override fun observeLiveData() {
         super.observeLiveData()
         subscribe(viewModel.createStoveLiveData) {
+            mainViewModel.getUserInfo()
             binding.continueBtn.revertAnimation()
             findNavController().navigate(R.id.action_stoveSetupBurnersFragment_to_stoveSetupCompletedFragment)
         }
