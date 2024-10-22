@@ -51,7 +51,7 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
 //                margin(top = true)
 //            }
 //        }
-        binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.continueBtn.setBounceClickListener {
             mainViewModel.stoveData.stoveMakeModel = viewModel.selectedBrand
             if(mainViewModel.stoveData.stoveMakeModel.isNullOrEmpty())

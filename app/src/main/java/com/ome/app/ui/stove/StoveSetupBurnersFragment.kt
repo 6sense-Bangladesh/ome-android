@@ -88,7 +88,7 @@ class StoveSetupBurnersFragment :
                 }
             }
         }
-        binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         if(BuildConfig.DEBUG){
             binding.titleTv.setBounceClickListener {
                 findNavController().navigate(R.id.action_stoveSetupBurnersFragment_to_stoveSetupCompletedFragment)
@@ -140,7 +140,8 @@ class StoveSetupBurnersFragment :
 
         subscribe(viewModel.loadingLiveData) {
             binding.continueBtn.revertAnimation()
-            findNavController().popBackStack()
+            if(isFromDeepLink)
+                findNavController().popBackStack()
         }
     }
 }

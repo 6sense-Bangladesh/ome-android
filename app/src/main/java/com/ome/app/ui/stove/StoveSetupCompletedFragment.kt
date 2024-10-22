@@ -33,7 +33,7 @@ class StoveSetupCompletedFragment :
 //                margin(top = true)
 //            }
 //        }
-        binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.finishBtn.setBounceClickListener {
             findNavController().navigate(R.id.action_stoveSetupCompletedFragment_to_addKnobNavGraph)
         }

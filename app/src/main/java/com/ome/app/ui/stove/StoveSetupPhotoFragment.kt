@@ -48,7 +48,7 @@ class StoveSetupPhotoFragment :
 //                margin(top = true)
 //            }
 //        }
-        binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.takePhoto.setBounceClickListener{
             if(binding.takePhoto.text == getString(R.string.take_photo))
                 launchCameraWithPermission()

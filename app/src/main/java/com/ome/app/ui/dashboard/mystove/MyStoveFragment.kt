@@ -81,11 +81,11 @@ class MyStoveFragment :
                         visible(knob1, knob2, knob3, knob4, knob5, knob6)
                         gone(knob1centerView, knob2centerView)
                     }
-                    StoveOrientation.TWO_BURNERS_HORIZONTAL -> {
+                    StoveOrientation.TWO_BURNERS_VERTICAL -> {
                         visible(knob1centerView, knob2centerView)
                         gone(knob1, knob2, knob3, knob4, knob5, knob6)
                     }
-                    StoveOrientation.TWO_BURNERS_VERTICAL -> {
+                    StoveOrientation.TWO_BURNERS_HORIZONTAL -> {
                         visible(knob1, knob2)
                         gone(knob3, knob4, knob5, knob6, knob1centerView, knob2centerView)
                     }

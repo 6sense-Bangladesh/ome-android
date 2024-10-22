@@ -110,7 +110,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
     }
 
     protected open fun showDialog(
-        title: String = "",
+        title: String = "Confirmation",
         positiveButtonText: String = "Ok",
         negativeButtonText: String = "Cancel",
         message: SpannableStringBuilder,

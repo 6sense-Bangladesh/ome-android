@@ -14,7 +14,6 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -25,10 +24,10 @@ import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.gone
 import com.ome.app.utils.loge
 import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.show
 import com.ome.app.utils.toBitmap
 import com.ome.app.utils.toast
 import com.ome.app.utils.tryGet
+import com.ome.app.utils.visible
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -86,12 +85,12 @@ class CaptureDialogFragment(
                 }
                 takePhoto()
             }
-            btnSave.setBounceClickListener {
-                if(viewModel.isProcessing)
-                    loadingLayout.show()
-                else
-                    onProcessingEnd()
-            }
+//            btnSave.setBounceClickListener {
+//                if(viewModel.isProcessing)
+//                    loadingLayout.show()
+//                else
+//                    onProcessingEnd()
+//            }
             btnBack.setBounceClickListener {
                 viewModel.clearList()
                 dismiss()
@@ -178,6 +177,7 @@ class CaptureDialogFragment(
     private fun takePhoto() {
 //        viewModel.processingCount++
         viewModel.isProcessing = true
+        binding.loadingLayout.visible()
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
 
@@ -222,8 +222,9 @@ class CaptureDialogFragment(
                         }
                         viewModel.addPhoto(photoFile)
                         viewModel.isProcessing = false
-                        if(binding.loadingLayout.isVisible)
-                            onProcessingEnd()
+                        onProcessingEnd()
+//                        if(binding.loadingLayout.isVisible)
+//                            onProcessingEnd()
                     }
 
                 }

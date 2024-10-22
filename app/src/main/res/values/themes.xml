@@ -23,6 +23,8 @@
 
 
         <item name="textAppearanceTitleLarge">@style/Title.Medium</item>
+        <item name="android:textColorHighlight">@color/colorPrimaryTrans</item>
+        <item name="android:autofilledHighlight" tools:targetApi="26">@drawable/autofill_shape</item>
 
     </style>
 

@@ -1,6 +1,7 @@
 package com.ome.app.ui.dashboard
 
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.view.View
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
@@ -12,8 +13,8 @@ import com.ome.app.ui.dashboard.mystove.MyStoveFragment
 import com.ome.app.ui.dashboard.profile.ProfileFragment
 import com.ome.app.ui.dashboard.settings.SettingsFragment
 import com.ome.app.ui.views.ViewPagerAdapter
+import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressedIgnoreCallback
-import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -84,6 +85,12 @@ class DashboardFragment :
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(binding.dashboardViewPager.currentItem == 2)
+            binding.topAppBar.menu?.setGroupVisible(R.id.group_profile, true)
+    }
+
 
     private fun initBottomNavigation() {
         binding.dashboardViewPager.adapter = ViewPagerAdapter(navFragments,this)
@@ -92,20 +99,44 @@ class DashboardFragment :
 //        binding.root.post {
 //            binding.dashboardViewPager.setCurrentItem(1, false)
 //        }
+        binding.topAppBar.setOnMenuItemClickListener{
+            when(it.itemId){
+                R.id.menuLogout -> {
+                    showDialog(
+                        message = SpannableStringBuilder(getString(R.string.confirm_logout)),
+                        onPositiveButtonClick = {
+                            mainViewModel.signOut(onEnd = {
+                                navigateSafe(R.id.action_dashboardFragment_to_launchFragment) ?: activity?.finish()
+                            })
+                        })
+                    true
+                }
+                R.id.menuFeedback ->{
+                    mainViewModel.signOut(onEnd = {
+                        navigateSafe(R.id.action_dashboardFragment_to_supportFragment)
+                    })
+                    true
+                }
+                else -> false
+            }
+        }
         binding.dashboardViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 when(position){
                     0 -> {
-                        binding.appBarLayout.title = getString(R.string.menu_settings)
+                        binding.topAppBar.title = getString(R.string.menu_settings)
+                        binding.topAppBar.menu?.setGroupVisible(R.id.group_profile, false)
                         binding.bottomNavigation.selectedItemId = R.id.menuSettings
                     }
                     1 -> {
-                        binding.appBarLayout.title = getString(R.string.app_name)
+                        binding.topAppBar.title = getString(R.string.app_name)
+                        binding.topAppBar.menu?.setGroupVisible(R.id.group_profile, false)
                         binding.bottomNavigation.selectedItemId = R.id.menuMyStove
                     }
                     2 -> {
-                        binding.appBarLayout.title = getString(R.string.menu_profile)
+                        binding.topAppBar.title = getString(R.string.menu_profile)
+                        binding.topAppBar.menu?.setGroupVisible(R.id.group_profile, true)
                         binding.bottomNavigation.selectedItemId = R.id.menuProfile
                     }
                 }
@@ -144,7 +175,7 @@ class DashboardFragment :
 //        subscribe(viewModel.signOutLiveData) {
 //            findNavController().navigate(R.id.action_dashboardFragment_to_launchFragment)
 //        }
-        subscribe(viewModel.stoveExistLiveData) {
+//        subscribe(viewModel.stoveExistLiveData) {
 //            if (it) {
 //                binding.bottomNavigation.setEnabledTabState(BottomItem.SETTINGS, true)
 //                binding.bottomNavigation.setEnabledTabState(BottomItem.MEMBERS, true)
@@ -152,6 +183,6 @@ class DashboardFragment :
 //                binding.bottomNavigation.setEnabledTabState(BottomItem.SETTINGS, false)
 //                binding.bottomNavigation.setEnabledTabState(BottomItem.MEMBERS, false)
 //            }
-        }
+//        }
     }
 }

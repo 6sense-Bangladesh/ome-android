@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#14ae5c</color>
+    <color name="red">#F84F48</color>
     <color name="ic_launcher_background">#FFFFFFFF</color>
 
     <color name="navigation_bar_color">#40000000</color>
@@ -19,6 +20,9 @@
     <color name="colorPrimary">#0099d7</color>
     <color name="colorBackground">#effaff</color>
     <color name="colorPrimaryTrans">#404098EB</color>
+
+    <color name="colorSelection">#550099d7</color>
+
     <color name="gradient_start_unpressed_color">#3CC4DF</color>
     <color name="gradient_mid_unpressed_color">#0371B6</color>
     <color name="gradient_end_unpressed_color">#2B2BC1</color>
@@ -50,7 +54,5 @@
     <color name="divider_color">#F0F0F5</color>
 
 
-    <color name="core_red">#F84F48</color>
-    <color name="redLightLess">#FF817A</color>
 
 </resources>

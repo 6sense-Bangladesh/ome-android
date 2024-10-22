@@ -17,7 +17,7 @@
         android:layout_margin="@dimen/_3sdp"
         android:elevation="0dp"
         android:foreground="?selectableItemBackground"
-        app:cardBackgroundColor="@color/core_red"
+        app:cardBackgroundColor="@color/red"
         app:cardCornerRadius="@dimen/_8sdp">
 
         <ImageView

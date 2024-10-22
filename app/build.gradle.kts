@@ -15,26 +15,21 @@ android {
     compileSdk = ProjectConfig.compileSdk
 
     signingConfigs {
-        getByName("debug") {
-            storeFile = file("ome.jks")
-            storePassword = "ome-eH6MiV"
-            keyAlias = "ome"
-            keyPassword = "ome-eH6MiV"
-        }
         create("release") {
             storeFile = file("ome.jks")
             storePassword = "ome-eH6MiV"
             keyAlias = "ome"
             keyPassword = "ome-eH6MiV"
         }
-
-//      sandbox {
-//          initWith signingConfigs.debug
-//      }
-//      demo {
-//          initWith signingConfigs.debug
-//      }
-
+        getByName("debug") {
+            initWith(signingConfigs.getByName("release"))
+        }
+        create("demo") {
+            initWith(signingConfigs.getByName("release"))
+        }
+        create("sandbox") {
+            initWith(signingConfigs.getByName("release"))
+        }
     }
 
     defaultConfig {
@@ -44,56 +39,31 @@ android {
         versionCode = ProjectConfig.versionCode
         versionName = ProjectConfig.versionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-//        applicationVariants.all { variant ->
-//            versionName = when (val name = variant.buildType.name) {
-//                "release" -> "${ProjectConfig.versionName}-prod"
-//                "debug" -> "${ProjectConfig.versionName}-dev"
-//                else -> "${ProjectConfig.versionName}-$name"
-//            }
-//            true
-//        }
     }
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
-            buildConfigField(
-                "String",
-                "BASE_WEB_SOCKET_URL",
-                "\"wss://app-ws-dev.api.omekitchen.com\""
-            )
-        }
-
-        create("sandbox") {
-            buildConfigField("String", "BASE_URL", "\"https://app-sandbox.api.omekitchen.com/\"")
-            buildConfigField(
-                "String",
-                "BASE_WEB_SOCKET_URL",
-                "\"wss://app-ws-sandbox.api.omekitchen.com\""
-            )
+            buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL_DEV)
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL_DEV)
         }
 
         create("demo") {
-            buildConfigField("String", "BASE_URL", "\"https://app-dev.api.omekitchen.com/\"")
-            buildConfigField(
-                "String",
-                "BASE_WEB_SOCKET_URL",
-                "\"wss://app-ws-dev.api.omekitchen.com\""
-            )
+            buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL_DEV)
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL_DEV)
         }
 
+        create("sandbox") {
+            buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL_SANDBOX)
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL_SANDBOX)
+        }
 
         release {
             isMinifyEnabled = false
             isDebuggable = false
-            buildConfigField("String", "BASE_URL", "\"https://app.api.omekitchen.com/\"")
-            buildConfigField("String", "BASE_WEB_SOCKET_URL", "\"wss://app-ws.api.omekitchen.com\"")
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-//            signingConfig = signingConfigs.getByName("release")
-//            signingConfig signingConfigs.release
+            buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL_LIVE)
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL_LIVE)
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     applicationVariants.all {

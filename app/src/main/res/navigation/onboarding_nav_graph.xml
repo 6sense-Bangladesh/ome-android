@@ -202,7 +202,7 @@
 
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.ome.app.ui.dashboard.profile.changepassword.ChangePasswordFragment"
+        android:name="com.ome.app.ui.dashboard.profile.change_password.ChangePasswordFragment"
         android:label="ChangePasswordFragment"
         tools:layout="@layout/fragment_change_password"  />
 

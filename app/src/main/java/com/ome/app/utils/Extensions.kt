@@ -70,6 +70,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ome.app.BuildConfig
+import com.ome.app.ui.model.base.ResponseWrapper
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -400,15 +401,18 @@ inline fun <T, R> Flow<List<T>>.mapList(crossinline transform: suspend T.() -> R
  * @param resId The resource ID of the destination to navigate to.
  * @param args Arguments to pass to the destination.
  */
-fun Fragment.navigateSafe(@IdRes resId: Int, args: Bundle? = null, navOption: NavOptions? = null) {
-    try {
+fun Fragment.navigateSafe(@IdRes resId: Int, args: Bundle? = null, navOption: NavOptions? = null): Unit? {
+    return try {
         if (lifecycle.currentState == Lifecycle.State.RESUMED)
             findNavController().navigate(resId, args, navOption)
+        else null
     } catch (e: IllegalArgumentException) {
         toast(e.message)
         e.printStackTrace()
+        null
     } catch (e: Exception) {
         e.printStackTrace()
+        null
     }
 }
 
@@ -889,6 +893,30 @@ fun String?.isBanglaText() = this == null || matches("[\\u0980-\\u09FF\\s,।_/-
 
 fun String?.isValidEmail() =
     this == null || isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+
+fun String.isValidPassword(): Boolean {
+    val hasUpper = this.any { it.isUpperCase() }
+    val hasLower = this.any { it.isLowerCase() }
+    val hasNumber = this.any { it.isDigit() }
+    val isGraterThan8 = this.length >= 8
+//    val hasSpecial = this.any { "!@#\$%^&*()-_=+[]{};:'\",.<>?/\\|`~".contains(it) }
+    return hasUpper && hasLower && hasNumber && isGraterThan8
+}
+
+fun String.isValidPasswordResult(): ResponseWrapper<Boolean> {
+    val hasUpper = this.any { it.isUpperCase() }
+    val hasLower = this.any { it.isLowerCase() }
+    val hasNumber = this.any { it.isDigit() }
+    val isGraterThan8 = this.length > 8
+//    val hasSpecial = this.any { "!@#\$%^&*()-_=+[]{};:'\",.<>?/\\|`~".contains(it) }
+    return when{
+        !hasUpper -> ResponseWrapper.Error("Doesn't contains uppercase letter")
+        !hasLower -> ResponseWrapper.Error("Doesn't contains lowercase letter")
+        !hasNumber -> ResponseWrapper.Error("Doesn't contains number")
+        !isGraterThan8 -> ResponseWrapper.Error("Length is smaller than 9")
+        else -> ResponseWrapper.Success(true)
+    }
+}
 
 fun String?.isJson(): Boolean {
     if (this == null) return false

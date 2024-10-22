@@ -88,7 +88,7 @@ private val args by lazy { Screens.StoveType.getData(arguments) }
                 }
             }
         }
-        binding.appBarLayout.setNavigationOnClickListener(::onBackPressed)
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.continueBtn.setBounceClickListener {
             if(mainViewModel.stoveData.stoveGasOrElectric.isNullOrEmpty())
                 onError("Please select stove type")

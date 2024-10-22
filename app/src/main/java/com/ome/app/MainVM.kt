@@ -199,4 +199,16 @@ class MainVM @Inject constructor(
             }
         }
     }
+
+    fun signOut(onEnd: () -> Unit) {
+        launch(dispatcher = ioContext) {
+            amplifyManager.signUserOut()
+            preferencesProvider.clearData()
+            userRepository.userFlow.emit(null)
+            amplifyManager.signOutFlow.emit(true)
+            withContext(mainContext) {
+                onEnd()
+            }
+        }
+    }
 }

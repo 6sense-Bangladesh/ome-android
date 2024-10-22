@@ -39,13 +39,13 @@ class DashboardViewModel @Inject constructor(
 //                }
 //            }
 //        }
-        launch(dispatcher = ioContext) {
-            userRepository.userFlow.collect { user ->
-                user?.let {
-                    stoveExistLiveData.postValue(it.stoveId != null)
-                }
-            }
-        }
+//        launch(dispatcher = ioContext) {
+//            userRepository.userFlow.collect { user ->
+//                user?.let {
+//                    stoveExistLiveData.postValue(it.stoveId != null)
+//                }
+//            }
+//        }
     }
 
     fun connectBottomNavController(navControllerFlow: StateFlow<NavController>) {
