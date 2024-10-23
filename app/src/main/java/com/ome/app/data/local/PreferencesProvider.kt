@@ -1,6 +1,6 @@
 package com.ome.app.data.local
 
-import com.ome.app.ui.model.network.response.UserResponse
+import com.ome.app.domain.model.network.response.UserResponse
 
 
 interface PreferencesProvider {

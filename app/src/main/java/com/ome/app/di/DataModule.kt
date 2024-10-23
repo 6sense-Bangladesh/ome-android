@@ -10,9 +10,9 @@ import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.StoveService
 import com.ome.app.data.remote.UserService
 import com.ome.app.data.remote.stove.StoveRepository
-import com.ome.app.data.remote.stove.StoveRepositoryImpl
+import com.ome.app.data.remote.repo.StoveRepositoryImpl
 import com.ome.app.data.remote.user.UserRepository
-import com.ome.app.data.remote.user.UserRepositoryImpl
+import com.ome.app.data.remote.repo.UserRepositoryImpl
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.data.local.SocketManager
 import dagger.Module

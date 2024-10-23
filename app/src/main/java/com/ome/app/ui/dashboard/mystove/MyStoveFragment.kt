@@ -7,11 +7,11 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ome.app.R
 import com.ome.app.databinding.FragmentMyStoveBinding
+import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.dashboard.DashboardFragmentDirections
 import com.ome.app.ui.dashboard.profile.ProfileViewModel
 import com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragmentParams
-import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.ui.stove.StoveOrientation
 import com.ome.app.ui.stove.enum
 import com.ome.app.ui.views.KnobView
@@ -128,7 +128,7 @@ class MyStoveFragment :
         }
     }
 
-    private fun KnobView.setupKnob(knob: _root_ide_package_.com.ome.app.domain.model.network.response.KnobDto) {
+    private fun KnobView.setupKnob(knob: KnobDto) {
         setBounceClickListener{
             navController?.navigate(
                 DashboardFragmentDirections.actionDashboardFragmentToDeviceSettingsFragment(

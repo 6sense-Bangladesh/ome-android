@@ -2,7 +2,7 @@ package com.ome.app.data.local
 
 import android.content.Context
 import com.google.gson.Gson
-import com.ome.app.ui.model.network.response.UserResponse
+import com.ome.app.domain.model.network.response.UserResponse
 
 
 class PreferencesProviderImpl(context: Context) : PreferencesProvider {

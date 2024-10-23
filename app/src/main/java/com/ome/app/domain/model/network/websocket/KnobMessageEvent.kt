@@ -1,4 +1,4 @@
-package com.ome.app.model.network.websocket
+package com.ome.app.domain.model.network.websocket
 
 import com.google.gson.annotations.SerializedName
 

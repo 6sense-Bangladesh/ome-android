@@ -5,10 +5,9 @@ import androidx.annotation.IdRes
 import com.ome.app.R
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.user.UserRepository
+import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
-import com.ome.app.domain.model.base.ResponseWrapper
-import com.ome.app.domain.model.network.request.StoveRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -31,7 +30,7 @@ class StoveSetupBurnersViewModel @Inject constructor(
                 com.ome.app.domain.model.network.request.StoveRequest(
                     stoveOrientation = it.number
                 ), stoveId = stoveId)
-            if(result is com.ome.app.domain.model.base.ResponseWrapper.Error)
+            if(result is ResponseWrapper.Error)
                 error(result.message)
             onEnd()
 //            userRepository.getUserData()
@@ -78,9 +77,9 @@ class StoveSetupBurnersViewModel @Inject constructor(
                     stoveId = stoveId
                 )
                 when (response) {
-                    is com.ome.app.domain.model.base.ResponseWrapper.Success ->
+                    is ResponseWrapper.Success ->
                         createStoveLiveData.postValue(true)
-                    is com.ome.app.domain.model.base.ResponseWrapper.Error -> {
+                    is ResponseWrapper.Error -> {
                         loadingLiveData.postValue(false)
                         error(response.message)
                     }

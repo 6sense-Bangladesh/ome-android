@@ -9,7 +9,7 @@ data class KnobDto(
     val battery: Int,
     val batteryVolts: Double,
     val calibrated: Boolean,
-    val calibration: com.ome.app.domain.model.network.response.KnobDto.CalibrationDto,
+    val calibration: CalibrationDto,
     val connectStatus: String,
     val firmwareVersion: String,
     val gasOrElectric: String,
@@ -32,7 +32,7 @@ data class KnobDto(
     data class CalibrationDto(
         val offAngle: Int,
         val rotationDir: Int,
-        val zones: List<com.ome.app.domain.model.network.response.KnobDto.CalibrationDto.ZoneDto>
+        val zones: List<CalibrationDto.ZoneDto>
     ): Parcelable{
         @Parcelize
         data class ZoneDto(
@@ -43,7 +43,7 @@ data class KnobDto(
             val zoneNumber: Int
         ): Parcelable
         fun toCalibration() =
-            _root_ide_package_.com.ome.app.domain.model.network.response.Calibration(
+            Calibration(
                 offAngle = offAngle,
                 rotation = rotationDir.rotation,
                 rotationClockWise = when (rotationDir) {
@@ -59,10 +59,10 @@ data class KnobDto(
 @Parcelize
 data class Calibration(
     val offAngle: Int,
-    val rotation: com.ome.app.domain.model.network.response.Calibration.Rotation,
+    val rotation: Rotation,
     val rotationClockWise: Boolean,
-    val zones1: com.ome.app.domain.model.network.response.KnobDto.CalibrationDto.ZoneDto?,
-    val zones2: _root_ide_package_.com.ome.app.domain.model.network.response.KnobDto.CalibrationDto.ZoneDto?
+    val zones1: KnobDto.CalibrationDto.ZoneDto?,
+    val zones2: KnobDto.CalibrationDto.ZoneDto?
 ): Parcelable{
     enum class Rotation{
         CLOCKWISE,
@@ -73,8 +73,8 @@ data class Calibration(
 
 val Int?.rotation
     get() = when(this){
-        1 -> _root_ide_package_.com.ome.app.domain.model.network.response.Calibration.Rotation.CLOCKWISE
-        -1 -> _root_ide_package_.com.ome.app.domain.model.network.response.Calibration.Rotation.COUNTER_CLOCKWISE
-        2 -> _root_ide_package_.com.ome.app.domain.model.network.response.Calibration.Rotation.DUAL
-        else -> _root_ide_package_.com.ome.app.domain.model.network.response.Calibration.Rotation.CLOCKWISE
+        1 -> Calibration.Rotation.CLOCKWISE
+        -1 -> Calibration.Rotation.COUNTER_CLOCKWISE
+        2 -> Calibration.Rotation.DUAL
+        else -> Calibration.Rotation.CLOCKWISE
     }

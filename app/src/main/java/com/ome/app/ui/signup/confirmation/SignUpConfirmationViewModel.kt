@@ -6,11 +6,11 @@ import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
 import com.ome.app.data.remote.user.UserRepository
+import com.ome.app.domain.model.base.ResponseWrapper
+import com.ome.app.domain.model.network.request.CreateUserRequest
+import com.ome.app.domain.model.network.response.UserResponse
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
-import com.ome.app.domain.model.base.ResponseWrapper
-import com.ome.app.ui.model.network.request.CreateUserRequest
-import com.ome.app.ui.model.network.response.UserResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -59,12 +59,12 @@ class SignUpConfirmationViewModel @Inject constructor(
                     userId = it
                 )
             )) {
-                is com.ome.app.domain.model.base.ResponseWrapper.Error -> {
+                is ResponseWrapper.Error -> {
                     defaultErrorLiveData.postValue(result.message)
                     signUpConfirmationResultLiveData.postValue(false)
                     loadingLiveData.postValue(false)
                 }
-                is com.ome.app.domain.model.base.ResponseWrapper.Success -> {
+                is ResponseWrapper.Success -> {
                     saveUserData(result.value)
                     signUpConfirmationResultLiveData.postValue(true)
                 }
@@ -86,7 +86,7 @@ class SignUpConfirmationViewModel @Inject constructor(
         codeValidationLiveData.postValue(true)
     }
 
-    private suspend fun saveUserData(userData: UserResponse) = preferencesProvider.saveUserData(userData)
+    private fun saveUserData(userData: UserResponse) = preferencesProvider.saveUserData(userData)
 
     suspend fun signIn(username: String, password: String): AmplifyResultValue =
         amplifyManager.signUserIn(username.trim(), password)

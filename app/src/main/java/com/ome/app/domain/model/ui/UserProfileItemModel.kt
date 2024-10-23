@@ -1,6 +1,6 @@
-package com.ome.app.model.ui
+package com.ome.app.domain.model.ui
 
-import com.ome.app.ui.model.network.response.UserResponse
+import com.ome.app.domain.model.network.response.UserResponse
 import com.ome.app.ui.base.recycler.ItemModel
 
 data class UserProfileItemModel(

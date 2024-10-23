@@ -8,11 +8,10 @@ import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.data.remote.websocket.WebSocketManager
+import com.ome.app.domain.model.base.ResponseWrapper
+import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
-import com.ome.app.domain.model.base.ResponseWrapper
-import com.ome.app.domain.model.network.request.StoveRequest
-import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.isNotEmpty
 import com.ome.app.utils.logi
@@ -38,16 +37,16 @@ class MainVM @Inject constructor(
     var knobs= savedStateHandle.getStateFlow("knobs", buildList {
         if(BuildConfig.DEBUG){
             add(
-                com.ome.app.domain.model.network.response.KnobDto(
+                KnobDto(
                     angle = 126,
                     battery = 90,
                     batteryVolts = 4.5,
                     calibrated = false,
-                    calibration = com.ome.app.domain.model.network.response.KnobDto.CalibrationDto(
+                    calibration = KnobDto.CalibrationDto(
                         offAngle = 0,
                         rotationDir = 1,
                         zones = listOf(
-                            com.ome.app.domain.model.network.response.KnobDto.CalibrationDto.ZoneDto(
+                            KnobDto.CalibrationDto.ZoneDto(
                                 highAngle = 300,
                                 lowAngle = 100,
                                 mediumAngle = 200,
@@ -92,7 +91,7 @@ class MainVM @Inject constructor(
     fun getUserInfo(){
         launch{
             val result = withContext(ioContext){ userRepository.getUserData() }
-            if(result is com.ome.app.domain.model.base.ResponseWrapper.Success)
+            if(result is ResponseWrapper.Success)
                 savedStateHandle["userInfo"] = result.value
         }
     }
@@ -125,7 +124,7 @@ class MainVM @Inject constructor(
                                 preferencesProvider.saveAccessToken(accessToken)
 
                                 when (val result = userRepository.getUserData()) {
-                                    is com.ome.app.domain.model.base.ResponseWrapper.Error -> {
+                                    is ResponseWrapper.Error -> {
                                         if (result.message.contains("Not found")) {
                                             amplifyManager.deleteUser()
                                             preferencesProvider.clearData()
@@ -134,7 +133,7 @@ class MainVM @Inject constructor(
                                             startDestinationInitialized.postValue(R.id.dashboardFragment to null)
                                         }
                                     }
-                                    is com.ome.app.domain.model.base.ResponseWrapper.Success -> {
+                                    is ResponseWrapper.Success -> {
                                         initDone = true
                                         withContext(mainContext){
                                             savedStateHandle["userInfo"] = result.value

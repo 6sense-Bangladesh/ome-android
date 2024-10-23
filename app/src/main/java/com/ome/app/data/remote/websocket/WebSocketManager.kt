@@ -1,7 +1,7 @@
 package com.ome.app.data.remote.websocket
 
 import com.ome.app.BuildConfig
-import com.ome.app.model.network.websocket.*
+import com.ome.app.domain.model.network.websocket.*
 import com.ome.app.utils.FlowStreamAdapter
 import com.tinder.scarlet.Scarlet
 import com.tinder.scarlet.messageadapter.gson.GsonMessageAdapter

@@ -5,7 +5,7 @@ data class CreateKnobResponse(
     val battery: Int,
     val batteryVolts: Double,
     val calibrated: Boolean,
-    val calibration: com.ome.app.domain.model.network.response.KnobDto.CalibrationDto,
+    val calibration: KnobDto.CalibrationDto,
     val connectStatus: String,
     val firmwareVersion: String,
     val gasOrElectric: String,

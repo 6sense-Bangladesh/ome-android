@@ -3,11 +3,11 @@ package com.ome.app.ui.dashboard.profile
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.user.UserRepository
-import com.ome.app.model.ui.UserProfileItemModel
-import com.ome.app.model.ui.toItemModel
+import com.ome.app.domain.model.network.request.CreateUserRequest
+import com.ome.app.domain.model.ui.UserProfileItemModel
+import com.ome.app.domain.model.ui.toItemModel
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
-import com.ome.app.ui.model.network.request.CreateUserRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

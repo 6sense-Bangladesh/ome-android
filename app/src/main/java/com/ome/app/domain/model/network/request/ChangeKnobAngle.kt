@@ -1,4 +1,4 @@
-package com.ome.app.model.network.request
+package com.ome.app.domain.model.network.request
 
 data class ChangeKnobAngle(
     val level: Int

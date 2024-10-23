@@ -1,6 +1,6 @@
 package com.ome.app.data.remote.websocket
 
-import com.ome.app.model.network.websocket.KnobMessageEvent
+import com.ome.app.domain.model.network.websocket.KnobMessageEvent
 import com.tinder.scarlet.ws.Receive
 import kotlinx.coroutines.flow.Flow
 

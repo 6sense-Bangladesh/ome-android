@@ -1,4 +1,4 @@
-package com.ome.app.model.local
+package com.ome.app.domain.model.local
 
 data class User(
     var firstName: String = "",
