@@ -8,8 +8,6 @@ import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.core.AmplifyConfiguration
 import com.amplifyframework.kotlin.core.Amplify
 import com.chesire.lifecyklelog.LifecykleLog
-import com.ome.app.BuildConfig
-import com.ome.app.R
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

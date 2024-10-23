@@ -869,24 +869,6 @@ fun String.isValidPassword(): Boolean {
     return hasUpper && hasLower && hasNumber && isGraterThan8
 }
 
-fun String.isValidPasswordResult(fieldName: String= "Field"): ResponseWrapper<Boolean> {
-    val hasUpper = this.any { it.isUpperCase() }
-    val hasLower = this.any { it.isLowerCase() }
-    val hasNumber = this.any { it.isDigit() }
-    val isGraterThan8 = this.length > 8
-    val isGraterThan25 = this.length > 25
-//    val hasSpecial = this.any { "!@#\$%^&*()-_=+[]{};:'\",.<>?/\\|`~".contains(it) }
-    return when{
-        trim().isEmpty() -> ResponseWrapper.Error("$fieldName is required.")
-        !hasUpper -> ResponseWrapper.Error("Doesn't contains uppercase letter.")
-        !hasLower -> ResponseWrapper.Error("Doesn't contains lowercase letter.")
-        !hasNumber -> ResponseWrapper.Error("Doesn't contains number.")
-        !isGraterThan8 -> ResponseWrapper.Error("Length is smaller than 9.")
-        isGraterThan25 -> ResponseWrapper.Error("Length is greater than 25.")
-        else -> ResponseWrapper.Success(true)
-    }
-}
-
 fun String?.isJson(): Boolean {
     if (this == null) return false
     // A regex pattern for valid JSON

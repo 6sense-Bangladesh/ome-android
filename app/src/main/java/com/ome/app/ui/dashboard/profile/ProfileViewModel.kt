@@ -2,6 +2,7 @@ package com.ome.app.ui.dashboard.profile
 
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
+import com.ome.app.domain.model.base.DefaultValidation
 import com.ome.app.domain.model.base.Validation
 import com.ome.app.domain.model.network.request.CreateUserRequest
 import com.ome.app.domain.repo.UserRepository
@@ -35,10 +36,9 @@ class ProfileViewModel @Inject constructor(
 
     fun updateUserName(firstName: String, lastName: String)= launch(ioContext) {
         when {
-            firstName.isEmpty() ->
-                validationErrorFlow.emit(Pair(Validation.FIRST_NAME, "First name is required."))
-            lastName.isEmpty() ->
-                validationErrorFlow.emit(Pair(Validation.LAST_NAME, "Last name is required."))
+            firstName.isEmpty() -> validationErrorFlow.emit(Pair(Validation.FIRST_NAME, DefaultValidation.REQUIRED))
+            lastName.isEmpty() -> validationErrorFlow.emit(Pair(Validation.LAST_NAME, DefaultValidation.REQUIRED))
+            firstName.isEmpty() && lastName.isEmpty() -> validationErrorFlow.emit(Pair(Validation.ALL_FIELDS, DefaultValidation.REQUIRED))
             else -> {
                 userRepository.userFlow.value?.let {
                     if (firstName == it.firstName && lastName == it.lastName){

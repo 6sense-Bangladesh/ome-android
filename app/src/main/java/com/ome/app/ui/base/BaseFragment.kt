@@ -130,7 +130,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
 
     protected open fun onError(errorMessage: String?) = context?.let {
         MaterialAlertDialogBuilder(it)
-            .setTitle("Error")
+            .setTitle("Warning")
             .setMessage(errorMessage ?: "Something went wrong.")
             .setPositiveButton(
                 "Okay"

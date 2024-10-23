@@ -198,6 +198,10 @@ class ProfileFragment :
                     binding.firstNameLayout.error = it.second
                 Validation.LAST_NAME ->
                     binding.lastNameLayout.error = it.second
+                Validation.ALL_FIELDS -> {
+                    binding.firstNameLayout.error = it.second
+                    binding.lastNameLayout.error = it.second
+                }
                 null -> onError(it.second)
                 else -> Unit
             }

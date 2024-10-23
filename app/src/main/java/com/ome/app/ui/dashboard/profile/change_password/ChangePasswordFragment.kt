@@ -6,15 +6,12 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import com.google.android.material.textfield.TextInputLayout
 import com.ome.app.R
 import com.ome.app.databinding.FragmentChangePasswordBinding
 import com.ome.app.domain.model.base.Validation
+import com.ome.app.domain.model.base.errorPassword
 import com.ome.app.ui.base.BaseFragment
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.subscribe
-import com.ome.app.utils.toast
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -57,6 +54,7 @@ class ChangePasswordFragment:  BaseFragment<ChangePasswordViewModel, FragmentCha
     override fun observeLiveData() {
         super.observeLiveData()
         viewModel.validationSuccessFlow.collectWithLifecycle{
+            closeKeyboard()
             viewModel.updatePassword()
         }
         viewModel.passwordChangedFlow.collectWithLifecycle{result->
@@ -70,15 +68,13 @@ class ChangePasswordFragment:  BaseFragment<ChangePasswordViewModel, FragmentCha
         }
         viewModel.validationErrorFlow.collectWithLifecycle{
             when(it.first){
-                Validation.OLD_PASSWORD -> {
-                    binding.oldPasswordLayout.error = it.second
-                    binding.oldPasswordLayout.errorIconDrawable = null
-                    binding.oldPasswordLayout.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
-                }
-                Validation.NEW_PASSWORD -> {
-                    binding.newPasswordLayout.error = it.second
-                    binding.newPasswordLayout.errorIconDrawable = null
-                    binding.newPasswordLayout.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
+                Validation.OLD_PASSWORD ->
+                    binding.oldPasswordLayout.errorPassword = it.second
+                Validation.NEW_PASSWORD ->
+                    binding.newPasswordLayout.errorPassword = it.second
+                Validation.ALL_FIELDS ->{
+                    binding.oldPasswordLayout.errorPassword = it.second
+                    binding.newPasswordLayout.errorPassword = it.second
                 }
                 else -> Unit
             }
