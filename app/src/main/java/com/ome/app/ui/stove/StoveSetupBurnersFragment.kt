@@ -81,7 +81,7 @@ class StoveSetupBurnersFragment :
         if(isFromDeepLink){
             binding.continueBtn.text = getString(R.string.update)
         }else{
-            mainViewModel.stoveData.stoveOrientation.enum?.let {
+            mainViewModel.stoveData.stoveOrientation.stoveOrientation?.let {
                 viewModel.stoveOrientation = it
                 activity?.findViewById<AppCompatImageView>(it.layoutRes)?.let { burnerIv ->
                     handleButtonClick(burnerIv)

@@ -37,7 +37,7 @@ class AmplifyManager {
         )
 
     suspend fun fetchAuthSession(): AmplifyResultValue {
-        val resultValue: AmplifyResultValue = AmplifyResultValue()
+        val resultValue = AmplifyResultValue()
         return try {
             val session = kotAuth.fetchAuthSession()
             resultValue.session = session

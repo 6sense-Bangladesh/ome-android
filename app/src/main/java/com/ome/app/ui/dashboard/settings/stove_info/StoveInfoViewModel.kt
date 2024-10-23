@@ -6,6 +6,7 @@ import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.ui.stove.BasePhotoViewModel
 import com.ome.app.ui.stove.StoveOrientation
 import com.ome.app.ui.stove.StoveType
+import com.ome.app.ui.stove.stoveType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -25,18 +26,11 @@ class StoveInfoViewModel @Inject constructor(
     fun loadData() = launch(ioContext) {
         userRepository.userFlow.collect { user ->
             user?.let {
-                it.stoveGasOrElectric?.let { stoveType ->
-                    val foundValue = StoveType.values().firstOrNull { it.type == stoveType }
-                    foundValue?.let {
-                        stoveTypeLiveData.postValue(it)
-                    }
+                it.stoveGasOrElectric.stoveType?.let { stoveType ->
+                    stoveTypeLiveData.postValue(stoveType)
                 }
-                it.stoveOrientation?.let { stoveOrientation ->
-                    val foundValue =
-                        StoveOrientation.values().firstOrNull { it.number == stoveOrientation }
-                    foundValue?.let { orientation ->
-                        stoveOrientationLiveData.postValue(orientation)
-                    }
+                it.stoveOrientation.enum?.let { orientation ->
+                    stoveOrientationLiveData.postValue(orientation)
                 }
                 stoveNameLiveData.postValue("Family #1 Stove")
             }

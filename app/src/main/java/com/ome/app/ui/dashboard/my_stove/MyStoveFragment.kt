@@ -13,7 +13,6 @@ import com.ome.app.ui.dashboard.DashboardFragmentDirections
 import com.ome.app.ui.dashboard.profile.ProfileViewModel
 import com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragmentParams
 import com.ome.app.ui.stove.StoveOrientation
-import com.ome.app.ui.stove.enum
 import com.ome.app.ui.views.KnobView
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint

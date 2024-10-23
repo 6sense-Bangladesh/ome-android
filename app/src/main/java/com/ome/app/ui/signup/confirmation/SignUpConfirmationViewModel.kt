@@ -5,10 +5,10 @@ import com.ome.app.BuildConfig
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
-import com.ome.app.domain.repo.UserRepository
 import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.model.network.request.CreateUserRequest
 import com.ome.app.domain.model.network.response.UserResponse
+import com.ome.app.domain.repo.UserRepository
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -68,7 +68,6 @@ class SignUpConfirmationViewModel @Inject constructor(
                     saveUserData(result.value)
                     signUpConfirmationResultLiveData.postValue(true)
                 }
-                else -> {}
             }
         } ?: run {
             signUpConfirmationResultLiveData.postValue(false)

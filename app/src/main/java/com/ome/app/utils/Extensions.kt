@@ -49,7 +49,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ome.app.BuildConfig
-import com.ome.app.domain.model.base.ResponseWrapper
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose

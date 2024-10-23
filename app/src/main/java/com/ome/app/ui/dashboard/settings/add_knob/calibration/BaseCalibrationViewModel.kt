@@ -77,7 +77,7 @@ abstract class BaseCalibrationViewModel constructor(
         launch(ioContext) {
             webSocketManager.knobAngleFlow.collect {
                 it?.let {
-                    var angle = it.value.toFloat()
+                    val angle = it.value.toFloat()
                     if (!isDualKnob) {
                         knobAngleLiveData.postValue(angle)
                     } else {
