@@ -166,5 +166,6 @@
     <string name="turn_off">Turn Off</string>
     <string name="menu_feedback">Feedback</string>
     <string name="menu_logout">Logout</string>
+    <string name="logout">Log Out</string>
 
 </resources>

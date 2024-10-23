@@ -35,8 +35,8 @@ class ChangePasswordViewModel @Inject constructor(private val amplifyManager: Am
         launch {
             val validator = new.isValidPasswordResult()
             when {
-                old.trim().isEmpty() -> validationErrorFlow.emit(Pair(Validation.OLD_PASSWORD, DefaultValidation.REQUIRED))
                 old.trim().isEmpty() && new.trim().isEmpty() -> validationErrorFlow.emit(Pair(Validation.ALL_FIELDS, DefaultValidation.REQUIRED))
+                old.trim().isEmpty() -> validationErrorFlow.emit(Pair(Validation.OLD_PASSWORD, DefaultValidation.REQUIRED))
                 validator is ResponseWrapper.Error-> validationErrorFlow.emit(Pair(Validation.NEW_PASSWORD, validator.message))
                 old == new -> validationErrorFlow.emit(Pair(Validation.NEW_PASSWORD, "New password must be different."))
                 else -> {

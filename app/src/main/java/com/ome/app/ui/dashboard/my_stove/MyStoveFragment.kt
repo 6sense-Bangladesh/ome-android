@@ -13,6 +13,7 @@ import com.ome.app.ui.dashboard.DashboardFragmentDirections
 import com.ome.app.ui.dashboard.profile.ProfileViewModel
 import com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragmentParams
 import com.ome.app.ui.stove.StoveOrientation
+import com.ome.app.ui.stove.stoveOrientation
 import com.ome.app.ui.views.KnobView
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,7 +64,7 @@ class MyStoveFragment :
         binding.apply {
             mainViewModel.userInfo.collectWithLifecycle {userInfo->
                 userInfo.log("userInfo")
-                when(userInfo.stoveOrientation.enum){
+                when(userInfo.stoveOrientation.stoveOrientation){
                     StoveOrientation.FOUR_BURNERS -> {
                         visible(knob1, knob2, knob3, knob4)
                         gone(knob5, knob6, knob1centerView, knob2centerView)
@@ -91,7 +92,7 @@ class MyStoveFragment :
             }
             mainViewModel.knobs.collectWithLifecycle {knobs->
                 knobs.forEach { knob->
-                    when(mainViewModel.userInfo.value.stoveOrientation.enum){
+                    when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
                         StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
                             when(knob.stovePosition){
                                 1 -> knob1.setupKnob(knob)

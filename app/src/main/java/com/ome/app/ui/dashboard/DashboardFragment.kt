@@ -87,8 +87,14 @@ class DashboardFragment :
 
     override fun onResume() {
         super.onResume()
-        if(binding.dashboardViewPager.currentItem == 2)
-            binding.topAppBar.menu?.setGroupVisible(R.id.group_profile, true)
+        when(binding.dashboardViewPager.currentItem){
+            0 -> binding.topAppBar.title = getString(R.string.menu_settings)
+            1 -> binding.topAppBar.title = getString(R.string.app_name)
+            2 -> {
+                binding.topAppBar.title = getString(R.string.menu_profile)
+                binding.topAppBar.menu?.setGroupVisible(R.id.group_profile, true)
+            }
+        }
     }
 
 
@@ -104,6 +110,8 @@ class DashboardFragment :
                 R.id.menuLogout -> {
                     showDialog(
                         message = SpannableStringBuilder(getString(R.string.confirm_logout)),
+                        positiveButtonText = getString(R.string.logout),
+                        isRedPositiveButton = true,
                         onPositiveButtonClick = {
                             mainViewModel.signOut(onEnd = {
                                 navigateSafe(R.id.action_dashboardFragment_to_launchFragment) ?: activity?.finish()

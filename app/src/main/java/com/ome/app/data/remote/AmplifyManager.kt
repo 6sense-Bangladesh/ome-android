@@ -113,6 +113,7 @@ class AmplifyManager {
         val resultValue = AmplifyResultValue()
         try {
             kotAuth.updatePassword(oldPassword, newPassword)
+            resultValue.isSuccessful = true
             resultValue.message = "Change password successfully"
         } catch (error: AuthException) {
             resultValue.authException = error

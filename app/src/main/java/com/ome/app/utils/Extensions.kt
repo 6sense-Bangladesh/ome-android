@@ -884,6 +884,11 @@ inline fun <T> T?.isNull(next: () -> Unit): T? {
     return this
 }
 
+inline fun <T> T?.isNotNull(next: (T) -> Unit): T? {
+    if (this != null) next(this)
+    return this
+}
+
 fun Int?.isNullOrZero() = this == null || this == 0
 fun Double?.toOneIfZero() = if (this == 0.0 || this == null) 1.0 else this
 fun String?.toNAifEmpty() =

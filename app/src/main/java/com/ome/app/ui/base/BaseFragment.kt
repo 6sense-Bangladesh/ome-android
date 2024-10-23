@@ -1,5 +1,7 @@
 package com.ome.app.ui.base
 
+import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
@@ -21,6 +23,7 @@ import com.ome.app.ui.dashboard.profile.ProfileFragment
 import com.ome.app.ui.dashboard.settings.SettingsFragment
 import com.ome.app.ui.launch.LaunchFragment
 import com.ome.app.ui.signup.welcome.WelcomeFragment
+import com.ome.app.utils.applyIf
 import com.ome.app.utils.subscribe
 
 
@@ -101,7 +104,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
             .setMessage(message)
             .setPositiveButton(
                 "Okay"
-            ) { dialog, p1 ->
+            ) { dialog, _ ->
                 onDismissSuccessDialog()
                 onDismiss()
                 dialog.cancel()
@@ -113,6 +116,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
         title: String = "Confirmation",
         positiveButtonText: String = "Okay",
         negativeButtonText: String = "Cancel",
+        isRedPositiveButton: Boolean = false,
         message: SpannableStringBuilder,
         onPositiveButtonClick: () -> Unit = {},
         onNegativeButtonClick: () -> Unit = {}
@@ -120,12 +124,14 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
         MaterialAlertDialogBuilder(it)
             .setTitle(title)
             .setMessage(message)
-            .setPositiveButton(positiveButtonText) { dialog, p1 ->
+            .setPositiveButton(positiveButtonText) { _, _ ->
                 onPositiveButtonClick()
-            }.setNegativeButton(negativeButtonText) { dialog, p1 ->
+            }.setNegativeButton(negativeButtonText) { _, _ ->
                 onNegativeButtonClick()
-            }
-            .show()
+            }.create().applyIf(isRedPositiveButton) {
+                val pBtn = getButton(DialogInterface.BUTTON_POSITIVE)
+                pBtn.setBackgroundColor(Color.RED)
+            }.show()
     }
 
     protected open fun onError(errorMessage: String?) = context?.let {
@@ -133,8 +139,8 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
             .setTitle("Warning")
             .setMessage(errorMessage ?: "Something went wrong.")
             .setPositiveButton(
-                "Okay"
-            ) { dialog, p1 ->
+                "Close"
+            ) { dialog, _ ->
                 onDismissErrorDialog()
                 dialog.cancel()
             }

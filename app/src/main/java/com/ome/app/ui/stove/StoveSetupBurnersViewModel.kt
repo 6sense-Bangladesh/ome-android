@@ -15,9 +15,9 @@ class StoveSetupBurnersViewModel @Inject constructor(
 ) : BaseViewModel() {
     var stoveOrientation: StoveOrientation? = null
     var brand = ""
-    var type = ""
     var stoveAutoOffMins = 15
-    var stoveKnobMounting = "vertical"
+    var stoveType = ""
+    var stoveKnobMounting = ""
 
     val createStoveLiveData = SingleLiveEvent<Boolean>()
 
@@ -41,7 +41,7 @@ class StoveSetupBurnersViewModel @Inject constructor(
                 val response = stoveRepository.createStove(
                     com.ome.app.domain.model.network.request.StoveRequest(
                         stoveAutoOffMins = stoveAutoOffMins,
-                        stoveGasOrElectric = type,
+                        stoveGasOrElectric = stoveType,
                         stoveMakeModel = brand,
                         stoveOrientation = number,
                         stoveKnobMounting = stoveKnobMounting,
@@ -65,7 +65,7 @@ class StoveSetupBurnersViewModel @Inject constructor(
                 val response = stoveRepository.updateStove(
                     com.ome.app.domain.model.network.request.StoveRequest(
                         stoveAutoOffMins = stoveAutoOffMins,
-                        stoveGasOrElectric = type,
+                        stoveGasOrElectric = stoveType,
                         stoveMakeModel = brand,
                         stoveOrientation = number,
                         stoveKnobMounting = stoveKnobMounting,

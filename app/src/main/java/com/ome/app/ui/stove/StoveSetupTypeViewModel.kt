@@ -13,12 +13,13 @@ class StoveSetupTypeViewModel @Inject constructor(
     val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    var stoveType = ""
+    var stoveType : StoveType? = null
 
     fun saveStoveType(stoveId: String, onEnd :() ->Unit) = launch(ioContext) {
         stoveRepository.updateStove(
             StoveRequest(
-                stoveGasOrElectric = stoveType
+                stoveGasOrElectric = stoveType?.type,
+                stoveKnobMounting = stoveType?.mounting
             ), stoveId)
         onEnd()
 //        userRepository.getUserData()

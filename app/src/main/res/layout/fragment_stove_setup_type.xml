@@ -40,7 +40,7 @@
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/gasStove"
+            android:id="@+id/gasTop"
             style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_50sdp"
@@ -52,7 +52,7 @@
 
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/electricStove"
+            android:id="@+id/electricTop"
             style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_50sdp"

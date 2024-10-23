@@ -17,6 +17,7 @@ data class UserResponse(
     val phone: String? = null,
     val stoveAutoOffMins: Int? = null,
     val stoveGasOrElectric: String? = null,
+    val stoveKnobMounting: String? = null,
     val stoveMakeModel: String? = null,
     val stoveOrientation: Int? = null,
     val stoveSetupComplete: Boolean? = null,

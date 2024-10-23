@@ -12,13 +12,7 @@ import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupPhotoBinding
 import com.ome.app.ui.base.navigation.DeepNavGraph
 import com.ome.app.ui.base.navigation.DeepNavGraph.encode
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.gone
-import com.ome.app.utils.loadDrawable
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.subscribe
-import com.ome.app.utils.visible
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -100,4 +94,4 @@ class StoveSetupPhotoFragment :
 }
 
 @Parcelize
-data class StoveSetupPhotoArgs(val brand: String, val type: String) : Parcelable
+data class StoveSetupPhotoArgs(val brand: String, val type: StoveType) : Parcelable

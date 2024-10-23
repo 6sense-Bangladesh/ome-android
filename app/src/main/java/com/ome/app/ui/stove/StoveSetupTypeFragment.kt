@@ -11,6 +11,7 @@ import com.ome.app.databinding.FragmentStoveSetupTypeBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.base.navigation.DeepNavGraph.getData
 import com.ome.app.ui.base.navigation.Screens
+import com.ome.app.utils.isNotNull
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
@@ -48,60 +49,49 @@ private val args by lazy { Screens.StoveType.getData(arguments) }
 //        }
         if (isFromDeepLink) {
             binding.continueBtn.text = getString(R.string.save)
-            mainViewModel.userInfo.value.let {
-                when(it.stoveGasOrElectric){
-                    "gas" -> {
-                        binding.gasStove.isChecked = true
-                        viewModel.stoveType = "gas"
-                    }
-                    "electric" -> {
-                        binding.electricStove.isChecked = true
-                        viewModel.stoveType = "electric"
-                    }
-                    "gasRange" -> {
-                        binding.gasRange.isChecked = true
-                        viewModel.stoveType = "gas"
-                    }
-                    "electricRange" -> {
-                        binding.electricRange.isChecked = true
-                        viewModel.stoveType = "electric"
-                    }
-                }
+            when(mainViewModel.userInfo.value.stoveType?.apply {
+                viewModel.stoveType = this
+            }){
+                StoveType.GAS_TOP -> binding.gasTop.isChecked = true
+                StoveType.ELECTRIC_TOP -> binding.electricTop.isChecked = true
+                StoveType.GAS_RANGE -> binding.gasRange.isChecked = true
+                StoveType.ELECTRIC_RANGE -> binding.electricRange.isChecked = true
+                null -> Unit
             }
         }else{
-            when(mainViewModel.stoveData.stoveGasOrElectric){
-                "gas" -> {
-                    binding.gasStove.isChecked = true
-                    viewModel.stoveType = "gas"
-                }
-                "electric" -> {
-                    binding.electricStove.isChecked = true
-                    viewModel.stoveType = "electric"
-                }
-                "gasRange" -> {
-                    binding.gasRange.isChecked = true
-                    viewModel.stoveType = "gas"
-                }
-                "electricRange" -> {
-                    binding.electricRange.isChecked = true
-                    viewModel.stoveType = "electric"
-                }
+            when(mainViewModel.stoveData.stoveType?.apply {
+                viewModel.stoveType = this
+            }){
+                StoveType.GAS_TOP -> binding.gasTop.isChecked = true
+                StoveType.ELECTRIC_TOP -> binding.electricTop.isChecked = true
+                StoveType.GAS_RANGE -> binding.gasRange.isChecked = true
+                StoveType.ELECTRIC_RANGE -> binding.electricRange.isChecked = true
+                null -> Unit
             }
         }
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.continueBtn.setBounceClickListener {
-            if(mainViewModel.stoveData.stoveGasOrElectric.isNullOrEmpty())
+            mainViewModel.stoveData.stoveGasOrElectric = viewModel.stoveType?.type
+            mainViewModel.stoveData.stoveKnobMounting = viewModel.stoveType?.mounting
+
+            if(mainViewModel.stoveData.stoveType == null)
                 onError("Please select stove type")
             else if (isFromDeepLink) {
                 binding.continueBtn.startAnimation()
                 viewModel.saveStoveType(mainViewModel.userInfo.value.stoveId, onEnd = mainViewModel::getUserInfo)
             }
             else{
-                findNavController().navigate(
-                    R.id.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment, bundleOf(
-                        "params" to StoveSetupPhotoArgs(args?.brand.orEmpty(), mainViewModel.stoveData.stoveGasOrElectric.orEmpty())
+                mainViewModel.stoveData.stoveType.isNotNull {
+                    findNavController().navigate(
+                        R.id.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment, bundleOf(
+                            "params" to StoveSetupPhotoArgs(
+                                brand = args?.brand.orEmpty(),
+                                type = it,
+                            )
+                        )
                     )
-                )
+                } ?: onError("Please select stove type")
+
             }
 //                findNavController().navigate(
 //                    StoveSetupTypeFragmentDirections.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment(
@@ -112,10 +102,10 @@ private val args by lazy { Screens.StoveType.getData(arguments) }
         }
         binding.stoveShipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
             when(checkedIds.first()){
-                R.id.gasStove -> mainViewModel.stoveData.stoveGasOrElectric = "gas"
-                R.id.electricStove -> mainViewModel.stoveData.stoveGasOrElectric = "electric"
-                R.id.gasRange -> mainViewModel.stoveData.stoveGasOrElectric = "gas"
-                R.id.electricRange -> mainViewModel.stoveData.stoveGasOrElectric = "electric"
+                R.id.gasTop -> viewModel.stoveType = StoveType.GAS_TOP
+                R.id.electricTop -> viewModel.stoveType = StoveType.ELECTRIC_TOP
+                R.id.gasRange -> viewModel.stoveType = StoveType.GAS_RANGE
+                R.id.electricRange -> viewModel.stoveType = StoveType.ELECTRIC_RANGE
             }
         }
 //        binding.gasIv.setOnClickListener {

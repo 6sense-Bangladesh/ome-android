@@ -43,8 +43,8 @@ class StoveSetupBurnersFragment :
 
         args?.let {
             viewModel.brand = it.brand
-            viewModel.type = it.type
-
+            viewModel.stoveType = it.type.type
+            viewModel.stoveKnobMounting = it.type.mounting
         }
 //        binding.titleTv.applyInsetter {
 //            type(navigationBars = true, statusBars = true) {
@@ -149,6 +149,6 @@ class StoveSetupBurnersFragment :
 @Parcelize
 data class StoveSetupBurnersArgs(
     val brand: String = "",
-    val type: String = "",
+    val type: StoveType,
     val isEditMode: Boolean = false
 ) : Parcelable

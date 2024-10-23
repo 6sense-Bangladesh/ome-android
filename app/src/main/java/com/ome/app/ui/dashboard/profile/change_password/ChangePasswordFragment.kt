@@ -11,7 +11,10 @@ import com.ome.app.databinding.FragmentChangePasswordBinding
 import com.ome.app.domain.model.base.Validation
 import com.ome.app.domain.model.base.errorPassword
 import com.ome.app.ui.base.BaseFragment
-import com.ome.app.utils.*
+import com.ome.app.utils.closeKeyboard
+import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -79,11 +82,11 @@ class ChangePasswordFragment:  BaseFragment<ChangePasswordViewModel, FragmentCha
                 else -> Unit
             }
         }
-        subscribe(viewModel.loadingLiveData){
+        viewModel.loadingFlow.collectWithLifecycle{
             if (it)
                 binding.continueBtn.startAnimation()
             else
-                binding.continueBtn.stopAnimation()
+                binding.continueBtn.revertAnimation()
         }
     }
 
