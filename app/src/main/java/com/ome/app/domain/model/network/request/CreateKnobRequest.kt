@@ -1,4 +1,4 @@
-package com.ome.app.ui.model.network.request
+package com.ome.app.domain.model.network.request
 
 data class CreateKnobRequest(
     val highAngle: Int? = null,

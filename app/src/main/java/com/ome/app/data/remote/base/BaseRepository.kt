@@ -1,8 +1,8 @@
 package com.ome.app.data.remote.base
 
 import com.google.gson.Gson
-import com.ome.app.ui.model.base.ErrorType
-import com.ome.app.ui.model.base.ResponseWrapper
+import com.ome.app.domain.model.base.ErrorType
+import com.ome.app.domain.model.base.ResponseWrapper
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
@@ -11,21 +11,22 @@ import kotlin.coroutines.CoroutineContext
 
 open class BaseRepository {
 
-    suspend fun <T> safeApiCall(dispatcher: CoroutineContext, apiCall: suspend () -> T): ResponseWrapper<T> {
+    suspend fun <T> safeApiCall(dispatcher: CoroutineContext, apiCall: suspend () -> T): com.ome.app.domain.model.base.ResponseWrapper<T> {
         return withContext(dispatcher) {
             try {
-                ResponseWrapper.Success(apiCall.invoke())
+                com.ome.app.domain.model.base.ResponseWrapper.Success(apiCall.invoke())
             } catch (throwable: Throwable) {
                 when (throwable) {
-                    is UnknownHostException -> ResponseWrapper.Error(ErrorType.NO_INTERNET.message, ErrorType.NO_INTERNET)
-                    is IOException -> ResponseWrapper.Error(ErrorType.NETWORK.message, ErrorType.NETWORK)
+                    is UnknownHostException -> com.ome.app.domain.model.base.ResponseWrapper.Error(
+                        com.ome.app.domain.model.base.ErrorType.NO_INTERNET.message, com.ome.app.domain.model.base.ErrorType.NO_INTERNET)
+                    is IOException -> com.ome.app.domain.model.base.ResponseWrapper.Error(com.ome.app.domain.model.base.ErrorType.NETWORK.message, com.ome.app.domain.model.base.ErrorType.NETWORK)
                     is HttpException -> {
                         val code = throwable.code()
                         val errorResponse = convertErrorBody(throwable)
-                        ResponseWrapper.Error(errorResponse?.message ?: ErrorType.DEFAULT.message, code = code)
+                        com.ome.app.domain.model.base.ResponseWrapper.Error(errorResponse?.message ?: com.ome.app.domain.model.base.ErrorType.DEFAULT.message, code = code)
                     }
                     else -> {
-                        ResponseWrapper.Error(throwable.message ?: ErrorType.DEFAULT.message)
+                        com.ome.app.domain.model.base.ResponseWrapper.Error(throwable.message ?: com.ome.app.domain.model.base.ErrorType.DEFAULT.message)
                     }
                 }
             }

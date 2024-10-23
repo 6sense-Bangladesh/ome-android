@@ -10,7 +10,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.ome.app.R
 import com.ome.app.databinding.FragmentChangePasswordBinding
 import com.ome.app.ui.base.BaseFragment
-import com.ome.app.ui.model.base.ResponseWrapper
+import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.gone
 import com.ome.app.utils.isValidPasswordResult
@@ -51,8 +51,8 @@ class ChangePasswordFragment:  BaseFragment<ChangePasswordViewModel, FragmentCha
             binding.newPasswordLayout.error = null
             if(it.toString().trim().isNotEmpty()){
                 when (val validator = it.toString().isValidPasswordResult()) {
-                    is ResponseWrapper.Success -> binding.continueBtn.isEnabled = true
-                    is ResponseWrapper.Error -> {
+                    is com.ome.app.domain.model.base.ResponseWrapper.Success -> binding.continueBtn.isEnabled = true
+                    is com.ome.app.domain.model.base.ResponseWrapper.Error -> {
                         binding.newPasswordLayout.error = validator.message
                         binding.newPasswordLayout.errorIconDrawable = null
                         binding.newPasswordLayout.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE

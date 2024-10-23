@@ -11,7 +11,7 @@ import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.dashboard.DashboardFragmentDirections
 import com.ome.app.ui.dashboard.profile.ProfileViewModel
 import com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragmentParams
-import com.ome.app.ui.model.network.response.KnobDto
+import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.ui.stove.StoveOrientation
 import com.ome.app.ui.stove.enum
 import com.ome.app.ui.views.KnobView
@@ -128,7 +128,7 @@ class MyStoveFragment :
         }
     }
 
-    private fun KnobView.setupKnob(knob: KnobDto) {
+    private fun KnobView.setupKnob(knob: _root_ide_package_.com.ome.app.domain.model.network.response.KnobDto) {
         setBounceClickListener{
             navController?.navigate(
                 DashboardFragmentDirections.actionDashboardFragmentToDeviceSettingsFragment(

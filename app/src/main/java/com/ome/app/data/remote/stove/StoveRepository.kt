@@ -6,30 +6,30 @@ import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.model.network.request.ChangeKnobAngle
 import com.ome.app.model.network.request.InitCalibrationRequest
 import com.ome.app.model.network.request.SetCalibrationRequest
-import com.ome.app.ui.model.base.ResponseWrapper
+import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.ui.model.network.request.CreateKnobRequest
-import com.ome.app.ui.model.network.request.StoveRequest
+import com.ome.app.domain.model.network.request.StoveRequest
 import com.ome.app.ui.model.network.response.BaseResponse
 import com.ome.app.ui.model.network.response.ChangeKnobAngleResponse
 import com.ome.app.ui.model.network.response.CreateKnobResponse
-import com.ome.app.ui.model.network.response.KnobDto
+import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.ui.model.network.response.KnobOwnershipResponse
 import com.ome.app.ui.model.network.response.StoveResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.coroutines.coroutineContext
 
 interface StoveRepository {
-    suspend fun createStove(params: StoveRequest): ResponseWrapper<StoveResponse>
-    suspend fun updateStove(params: StoveRequest, stoveId: String): ResponseWrapper<StoveResponse>
-    suspend fun getAllKnobs(): List<KnobDto>
+    suspend fun createStove(params: com.ome.app.domain.model.network.request.StoveRequest): com.ome.app.domain.model.base.ResponseWrapper<StoveResponse>
+    suspend fun updateStove(params: com.ome.app.domain.model.network.request.StoveRequest, stoveId: String): com.ome.app.domain.model.base.ResponseWrapper<StoveResponse>
+    suspend fun getAllKnobs(): List<com.ome.app.domain.model.network.response.KnobDto>
     suspend fun getKnobOwnership(macAddress: String): KnobOwnershipResponse
-    suspend fun initCalibration(params: InitCalibrationRequest, macAddress: String): KnobDto
-    suspend fun setCalibration(params: SetCalibrationRequest, macAddress: String): KnobDto
+    suspend fun initCalibration(params: InitCalibrationRequest, macAddress: String): com.ome.app.domain.model.network.response.KnobDto
+    suspend fun setCalibration(params: SetCalibrationRequest, macAddress: String): com.ome.app.domain.model.network.response.KnobDto
     suspend fun changeKnobAngle(params: ChangeKnobAngle, macAddress: String): ChangeKnobAngleResponse
     suspend fun createKnob(params: CreateKnobRequest, macAddress: String): CreateKnobResponse
     suspend fun updateKnobInfo(params: CreateKnobRequest, macAddress: String): CreateKnobResponse
     suspend fun clearWifi(macAddress: String): BaseResponse
-    val knobsFlow: MutableStateFlow<List<KnobDto>?>
+    val knobsFlow: MutableStateFlow<List<com.ome.app.domain.model.network.response.KnobDto>?>
 }
 
 class StoveRepositoryImpl(
@@ -37,22 +37,22 @@ class StoveRepositoryImpl(
     private val webSocketManager: WebSocketManager
 ) : StoveRepository, BaseRepository() {
 
-    override suspend fun createStove(params: StoveRequest): ResponseWrapper<StoveResponse> {
+    override suspend fun createStove(params: com.ome.app.domain.model.network.request.StoveRequest): com.ome.app.domain.model.base.ResponseWrapper<StoveResponse> {
         return safeApiCall(coroutineContext) {
             stoveService.createStove(params)
         }
     }
 
     override suspend fun updateStove(
-        params: StoveRequest,
+        params: com.ome.app.domain.model.network.request.StoveRequest,
         stoveId: String
-    ): ResponseWrapper<StoveResponse> {
+    ): com.ome.app.domain.model.base.ResponseWrapper<StoveResponse> {
         return safeApiCall(coroutineContext) {
             stoveService.updateStoveInfo(params, stoveId)
         }
     }
 
-    override suspend fun getAllKnobs(): List<KnobDto> {
+    override suspend fun getAllKnobs(): List<com.ome.app.domain.model.network.response.KnobDto> {
         val response = stoveService.getAllKnobs()
         knobsFlow.tryEmit(response)
         return response
@@ -65,14 +65,14 @@ class StoveRepositoryImpl(
     override suspend fun initCalibration(
         params: InitCalibrationRequest,
         macAddress: String
-    ): KnobDto {
+    ): com.ome.app.domain.model.network.response.KnobDto {
         return stoveService.initCalibration(params, macAddress)
     }
 
     override suspend fun setCalibration(
         params: SetCalibrationRequest,
         macAddress: String
-    ): KnobDto {
+    ): com.ome.app.domain.model.network.response.KnobDto {
         return stoveService.setCalibration(params, macAddress)
     }
 
@@ -101,6 +101,6 @@ class StoveRepositoryImpl(
         return stoveService.clearWifi(macAddress)
     }
 
-    override val knobsFlow: MutableStateFlow<List<KnobDto>?> = MutableStateFlow(listOf())
+    override val knobsFlow: MutableStateFlow<List<com.ome.app.domain.model.network.response.KnobDto>?> = MutableStateFlow(listOf())
 
 }

@@ -10,9 +10,9 @@ import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
-import com.ome.app.ui.model.base.ResponseWrapper
-import com.ome.app.ui.model.network.request.StoveRequest
-import com.ome.app.ui.model.network.response.KnobDto
+import com.ome.app.domain.model.base.ResponseWrapper
+import com.ome.app.domain.model.network.request.StoveRequest
+import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.isNotEmpty
 import com.ome.app.utils.logi
@@ -37,40 +37,44 @@ class MainVM @Inject constructor(
     var userInfo= savedStateHandle.getStateFlow("userInfo", preferencesProvider.getUserData())
     var knobs= savedStateHandle.getStateFlow("knobs", buildList {
         if(BuildConfig.DEBUG){
-            add(KnobDto(
-                angle = 126,
-                battery = 90,
-                batteryVolts = 4.5,
-                calibrated = false,
-                calibration = KnobDto.CalibrationDto(
-                    offAngle = 0,
-                    rotationDir = 1,
-                    zones = listOf(KnobDto.CalibrationDto.ZoneDto(
-                        highAngle = 300,
-                        lowAngle = 100,
-                        mediumAngle = 200,
-                        zoneName = "Single",
-                        zoneNumber = 1
-                    ))
-                ),
-                connectStatus = "error",
-                firmwareVersion = "ceteros",
-                gasOrElectric = "graeci",
-                ipAddress = "explicari",
-                lastScheduleCommand = "intellegebat",
-                macAddr = "fake_mac",
-                mountingSurface = "dolor",
-                rssi = 1597,
-                safetyLock = false,
-                scheduleFinishTime = 9022,
-                schedulePauseRemainingTime = 3846,
-                scheduleStartTime = 4237,
-                stoveId = "pri",
-                stovePosition = 1,
-                temperature = 6.7,
-                updated = "explicari",
-                userId = "enim"
-            ))
+            add(
+                com.ome.app.domain.model.network.response.KnobDto(
+                    angle = 126,
+                    battery = 90,
+                    batteryVolts = 4.5,
+                    calibrated = false,
+                    calibration = com.ome.app.domain.model.network.response.KnobDto.CalibrationDto(
+                        offAngle = 0,
+                        rotationDir = 1,
+                        zones = listOf(
+                            com.ome.app.domain.model.network.response.KnobDto.CalibrationDto.ZoneDto(
+                                highAngle = 300,
+                                lowAngle = 100,
+                                mediumAngle = 200,
+                                zoneName = "Single",
+                                zoneNumber = 1
+                            )
+                        )
+                    ),
+                    connectStatus = "error",
+                    firmwareVersion = "ceteros",
+                    gasOrElectric = "graeci",
+                    ipAddress = "explicari",
+                    lastScheduleCommand = "intellegebat",
+                    macAddr = "fake_mac",
+                    mountingSurface = "dolor",
+                    rssi = 1597,
+                    safetyLock = false,
+                    scheduleFinishTime = 9022,
+                    schedulePauseRemainingTime = 3846,
+                    scheduleStartTime = 4237,
+                    stoveId = "pri",
+                    stovePosition = 1,
+                    temperature = 6.7,
+                    updated = "explicari",
+                    userId = "enim"
+                )
+            )
         }
     })
 
@@ -83,12 +87,12 @@ class MainVM @Inject constructor(
     var initDone = false
     var startDestinationJob: Job? = null
 
-    var stoveData = StoveRequest()
+    var stoveData = com.ome.app.domain.model.network.request.StoveRequest()
 
     fun getUserInfo(){
         launch{
             val result = withContext(ioContext){ userRepository.getUserData() }
-            if(result is ResponseWrapper.Success)
+            if(result is com.ome.app.domain.model.base.ResponseWrapper.Success)
                 savedStateHandle["userInfo"] = result.value
         }
     }
@@ -121,7 +125,7 @@ class MainVM @Inject constructor(
                                 preferencesProvider.saveAccessToken(accessToken)
 
                                 when (val result = userRepository.getUserData()) {
-                                    is ResponseWrapper.Error -> {
+                                    is com.ome.app.domain.model.base.ResponseWrapper.Error -> {
                                         if (result.message.contains("Not found")) {
                                             amplifyManager.deleteUser()
                                             preferencesProvider.clearData()
@@ -130,7 +134,7 @@ class MainVM @Inject constructor(
                                             startDestinationInitialized.postValue(R.id.dashboardFragment to null)
                                         }
                                     }
-                                    is ResponseWrapper.Success -> {
+                                    is com.ome.app.domain.model.base.ResponseWrapper.Success -> {
                                         initDone = true
                                         withContext(mainContext){
                                             savedStateHandle["userInfo"] = result.value
@@ -141,7 +145,7 @@ class MainVM @Inject constructor(
                                             startDestinationInitialized.postValue(R.id.myStoveSetupNavGraph to null)
                                             return@launch
                                         }
-                                        val knobs = mutableListOf<KnobDto>()
+                                        val knobs = mutableListOf<com.ome.app.domain.model.network.response.KnobDto>()
 
                                         try {
                                             knobs.addAll(stoveRepository.getAllKnobs())

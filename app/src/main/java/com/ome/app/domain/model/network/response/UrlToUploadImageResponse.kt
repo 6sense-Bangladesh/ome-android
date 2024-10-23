@@ -1,4 +1,4 @@
-package com.ome.app.ui.model.network.response
+package com.ome.app.domain.model.network.response
 
 data class UrlToUploadImageResponse(
     val uploadTo: String

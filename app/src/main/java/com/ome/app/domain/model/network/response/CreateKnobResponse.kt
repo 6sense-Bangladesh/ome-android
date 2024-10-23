@@ -1,11 +1,11 @@
-package com.ome.app.ui.model.network.response
+package com.ome.app.domain.model.network.response
 
 data class CreateKnobResponse(
     val angle: Int,
     val battery: Int,
     val batteryVolts: Double,
     val calibrated: Boolean,
-    val calibration: KnobDto.CalibrationDto,
+    val calibration: com.ome.app.domain.model.network.response.KnobDto.CalibrationDto,
     val connectStatus: String,
     val firmwareVersion: String,
     val gasOrElectric: String,

@@ -1,6 +1,6 @@
 package com.ome.app.data.remote
 
-import com.ome.app.ui.model.network.response.UrlToUploadImageResponse
+import com.ome.app.domain.model.network.response.UrlToUploadImageResponse
 import com.ome.app.ui.model.network.request.CreateUserRequest
 import com.ome.app.ui.model.network.response.BaseResponse
 import com.ome.app.ui.model.network.response.UserResponse
@@ -26,7 +26,7 @@ interface UserService {
     suspend fun updateUser(@Body params: CreateUserRequest): UserResponse
 
     @GET("/user/uploadImageUrl")
-    suspend fun getUrlToUploadImage(@Query("fileName") fileName: String): UrlToUploadImageResponse
+    suspend fun getUrlToUploadImage(@Query("fileName") fileName: String): com.ome.app.domain.model.network.response.UrlToUploadImageResponse
 
     @PUT
     suspend fun uploadImage(@Url url: String, @Body body: RequestBody)

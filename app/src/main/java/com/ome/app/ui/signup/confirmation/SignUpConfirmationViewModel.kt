@@ -8,7 +8,7 @@ import com.ome.app.data.remote.AmplifyResultValue
 import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
-import com.ome.app.ui.model.base.ResponseWrapper
+import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.ui.model.network.request.CreateUserRequest
 import com.ome.app.ui.model.network.response.UserResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,12 +59,12 @@ class SignUpConfirmationViewModel @Inject constructor(
                     userId = it
                 )
             )) {
-                is ResponseWrapper.Error -> {
+                is com.ome.app.domain.model.base.ResponseWrapper.Error -> {
                     defaultErrorLiveData.postValue(result.message)
                     signUpConfirmationResultLiveData.postValue(false)
                     loadingLiveData.postValue(false)
                 }
-                is ResponseWrapper.Success -> {
+                is com.ome.app.domain.model.base.ResponseWrapper.Success -> {
                     saveUserData(result.value)
                     signUpConfirmationResultLiveData.postValue(true)
                 }

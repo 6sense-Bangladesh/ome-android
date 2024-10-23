@@ -7,8 +7,8 @@ import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.user.UserRepository
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
-import com.ome.app.ui.model.base.ResponseWrapper
-import com.ome.app.ui.model.network.request.StoveRequest
+import com.ome.app.domain.model.base.ResponseWrapper
+import com.ome.app.domain.model.network.request.StoveRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -27,8 +27,11 @@ class StoveSetupBurnersViewModel @Inject constructor(
 
     fun updateStoveOrientation(stoveId: String, onEnd :() ->Unit) = launch(dispatcher = ioContext) {
         stoveOrientation?.let {
-            val result = stoveRepository.updateStove(StoveRequest(stoveOrientation = it.number), stoveId = stoveId)
-            if(result is ResponseWrapper.Error)
+            val result = stoveRepository.updateStove(
+                com.ome.app.domain.model.network.request.StoveRequest(
+                    stoveOrientation = it.number
+                ), stoveId = stoveId)
+            if(result is com.ome.app.domain.model.base.ResponseWrapper.Error)
                 error(result.message)
             onEnd()
 //            userRepository.getUserData()
@@ -40,7 +43,7 @@ class StoveSetupBurnersViewModel @Inject constructor(
         launch(dispatcher = ioContext) {
             stoveOrientation?.number?.let { number ->
                 val response = stoveRepository.createStove(
-                    StoveRequest(
+                    com.ome.app.domain.model.network.request.StoveRequest(
                         stoveAutoOffMins = stoveAutoOffMins,
                         stoveGasOrElectric = type,
                         stoveMakeModel = brand,
@@ -64,7 +67,7 @@ class StoveSetupBurnersViewModel @Inject constructor(
         launch(dispatcher = ioContext) {
             stoveOrientation?.number?.let { number ->
                 val response = stoveRepository.updateStove(
-                    StoveRequest(
+                    com.ome.app.domain.model.network.request.StoveRequest(
                         stoveAutoOffMins = stoveAutoOffMins,
                         stoveGasOrElectric = type,
                         stoveMakeModel = brand,
@@ -75,9 +78,9 @@ class StoveSetupBurnersViewModel @Inject constructor(
                     stoveId = stoveId
                 )
                 when (response) {
-                    is ResponseWrapper.Success ->
+                    is com.ome.app.domain.model.base.ResponseWrapper.Success ->
                         createStoveLiveData.postValue(true)
-                    is ResponseWrapper.Error -> {
+                    is com.ome.app.domain.model.base.ResponseWrapper.Error -> {
                         loadingLiveData.postValue(false)
                         error(response.message)
                     }
