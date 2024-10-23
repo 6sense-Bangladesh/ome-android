@@ -16,7 +16,7 @@ class ForgotPasswordViewModel @Inject constructor(val amplifyManager: AmplifyMan
 
     var email = ""
 
-    fun forgotPassword()  = launch(dispatcher = ioContext) {
+    fun forgotPassword()  = launch(ioContext) {
         val result = amplifyManager.resetPassword(email)
         forgotPasswordSuccess.postValue(result)
     }

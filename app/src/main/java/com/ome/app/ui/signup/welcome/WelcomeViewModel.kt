@@ -23,7 +23,7 @@ class WelcomeViewModel @Inject constructor(
 
     val fetchUserDataStatus: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
-    fun setup() = launch(dispatcher = ioContext) {
+    fun setup() = launch(ioContext) {
 
     }
 

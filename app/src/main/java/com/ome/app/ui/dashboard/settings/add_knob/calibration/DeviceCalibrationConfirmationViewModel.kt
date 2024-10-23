@@ -38,7 +38,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
         knobAngleLiveData.postValue(value)
     }
 
-    fun triggerCurrentStepAgain() = launch(dispatcher = ioContext) {
+    fun triggerCurrentStepAgain() = launch(ioContext) {
         if (currentStepTriggerCount < 1) {
             when (currentCalibrationStateLiveData.value) {
                 CalibrationState.OFF -> {
@@ -102,7 +102,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
 
     }
 
-    fun nextStep() = launch(dispatcher = ioContext) {
+    fun nextStep() = launch(ioContext) {
         when (currentCalibrationStateLiveData.value) {
             CalibrationState.OFF -> {
                 if (!isDualKnob) {
@@ -216,7 +216,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
         currentStepTriggerCount = 0
     }
 
-    private fun setCalibration() = launch(dispatcher = ioContext) {
+    private fun setCalibration() = launch(ioContext) {
         if (!isDualKnob) {
             if (offAngle != null && lowSingleAngle != null && mediumAngle != null && highSingleAngle != null && rotationDir != null) {
                 stoveRepository.setCalibration(
@@ -279,7 +279,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
         stoveRepository.getAllKnobs()
     }
 
-    fun previousStep() = launch(dispatcher = ioContext) {
+    fun previousStep() = launch(ioContext) {
         when (currentCalibrationStateLiveData.value) {
             CalibrationState.OFF -> {
                 if (!isDualKnob) {

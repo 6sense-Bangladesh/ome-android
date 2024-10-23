@@ -20,7 +20,7 @@ class SettingsViewModel @Inject constructor(
 
     val settingsList = SingleLiveEvent<List<ItemModel>>()
 
-    fun loadSettings() = launch(dispatcher = ioContext) {
+    fun loadSettings() = launch(ioContext) {
         settingsList.postValue(
             mutableListOf(
                 SettingsItemModel(option = Settings.ADD_NEW_KNOB.option, isActive = true),

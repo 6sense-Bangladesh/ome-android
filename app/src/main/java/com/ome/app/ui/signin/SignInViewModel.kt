@@ -9,7 +9,6 @@ import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
-import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -41,9 +40,9 @@ class SignInViewModel @Inject constructor(
 
         }
 
-    fun deleteUser() = launch(dispatcher = ioContext) {
+    fun deleteUser() = launch(ioContext) {
         val result = amplifyManager.deleteUser()
-        if (result.wasCallSuccessful) {
+        if (result.isSuccessful) {
             deleteStatus.postValue(true)
         } else {
             defaultErrorLiveData.postValue(result.authException?.message)
@@ -51,7 +50,7 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun signIn(username: String, password: String) = launch(dispatcher = ioContext) {
+    fun signIn(username: String, password: String) = launch(ioContext) {
         if (username.isEmpty()) {
             defaultErrorLiveData.postValue("Please make sure to enter an email")
             signInStatus.postValue(false)
@@ -66,7 +65,7 @@ class SignInViewModel @Inject constructor(
         signInStatus.postValue(true)
     }
 
-    fun fetchUserData() = launch(dispatcher = ioContext) {
+    fun fetchUserData() = launch(ioContext) {
         val userAttributes =
             withContext(Dispatchers.Default) { amplifyManager.fetchUserAttributes() }
         val authSession =

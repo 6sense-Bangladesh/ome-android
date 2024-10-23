@@ -22,7 +22,7 @@ class StoveInfoViewModel @Inject constructor(
 
     var stoveId = ""
 
-    fun loadData() = launch(dispatcher = ioContext) {
+    fun loadData() = launch(ioContext) {
         userRepository.userFlow.collect { user ->
             user?.let {
                 it.stoveGasOrElectric?.let { stoveType ->

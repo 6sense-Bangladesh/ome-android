@@ -27,7 +27,7 @@ class ConnectToWifiViewModel @Inject constructor(
 
 
     init {
-        launch(dispatcher = ioContext) {
+        launch(ioContext) {
             socketManager.networksFlow.collect { list ->
                 if (list.isNotEmpty()) {
                     wifiNetworksListLiveData.postValue(list)
@@ -44,12 +44,12 @@ class ConnectToWifiViewModel @Inject constructor(
     }
 
     private fun connectToSocket() {
-        launch(dispatcher = ioContext) {
+        launch(ioContext) {
             socketManager.connect()
         }
     }
 
-    fun initListeners() = launch(dispatcher = ioContext) {
+    fun initListeners() = launch(ioContext) {
         socketManager.messageReceived = { type, message ->
             if (type == KnobSocketMessage.GET_MAC) {
                 if (message == macAddr) {
@@ -62,12 +62,12 @@ class ConnectToWifiViewModel @Inject constructor(
         }
     }
 
-    private fun sendMessage(message: KnobSocketMessage) = launch(dispatcher = ioContext) {
+    private fun sendMessage(message: KnobSocketMessage) = launch(ioContext) {
         socketManager.sendMessage(message)
     }
 
 
-    fun connectToWifi() = launch(dispatcher = ioContext) {
+    fun connectToWifi() = launch(ioContext) {
         if(isChangeWifiMode){
             stoveRepository.clearWifi(macAddr)
             delay(6000)

@@ -24,7 +24,7 @@ class StoveSetupBurnersViewModel @Inject constructor(
 
     val createStoveLiveData = SingleLiveEvent<Boolean>()
 
-    fun updateStoveOrientation(stoveId: String, onEnd :() ->Unit) = launch(dispatcher = ioContext) {
+    fun updateStoveOrientation(stoveId: String, onEnd :() ->Unit) = launch(ioContext) {
         stoveOrientation?.let {
             val result = stoveRepository.updateStove(
                 com.ome.app.domain.model.network.request.StoveRequest(
@@ -39,7 +39,7 @@ class StoveSetupBurnersViewModel @Inject constructor(
     }
 
     fun createStove() {
-        launch(dispatcher = ioContext) {
+        launch(ioContext) {
             stoveOrientation?.number?.let { number ->
                 val response = stoveRepository.createStove(
                     com.ome.app.domain.model.network.request.StoveRequest(
@@ -63,7 +63,7 @@ class StoveSetupBurnersViewModel @Inject constructor(
     }
 
     fun updateUserStove(stoveId: String) {
-        launch(dispatcher = ioContext) {
+        launch(ioContext) {
             stoveOrientation?.number?.let { number ->
                 val response = stoveRepository.updateStove(
                     com.ome.app.domain.model.network.request.StoveRequest(

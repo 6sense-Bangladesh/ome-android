@@ -2,13 +2,12 @@ package com.ome.app.ui.dashboard.profile
 
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
-import com.ome.app.domain.repo.UserRepository
+import com.ome.app.domain.model.base.Validation
 import com.ome.app.domain.model.network.request.CreateUserRequest
-import com.ome.app.domain.model.ui.UserProfileItemModel
-import com.ome.app.domain.model.ui.toItemModel
+import com.ome.app.domain.repo.UserRepository
 import com.ome.app.ui.base.BaseViewModel
-import com.ome.app.ui.base.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -19,11 +18,8 @@ class ProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val preferencesProvider: PreferencesProvider
 ) : BaseViewModel() {
-
-    val userLiveData: SingleLiveEvent<UserProfileItemModel> = SingleLiveEvent()
-
     fun signOut(onEnd: () -> Unit) {
-        launch(dispatcher = ioContext) {
+        launch(ioContext) {
             amplifyManager.signUserOut()
             preferencesProvider.clearData()
             userRepository.userFlow.emit(null)
@@ -34,15 +30,28 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun initUserDataSubscription() = launch(dispatcher = ioContext) {
-        userRepository.userFlow.collect { user ->
-            user?.let {
-                userLiveData.postValue(it.toItemModel())
+    val validationErrorFlow = MutableSharedFlow<Pair<Validation?, String>>()
+
+
+    fun updateUserName(firstName: String, lastName: String)= launch(ioContext) {
+        when {
+            firstName.isEmpty() ->
+                validationErrorFlow.emit(Pair(Validation.FIRST_NAME, "First name is required."))
+            lastName.isEmpty() ->
+                validationErrorFlow.emit(Pair(Validation.LAST_NAME, "Last name is required."))
+            else -> {
+                userRepository.userFlow.value?.let {
+                    if (firstName == it.firstName && lastName == it.lastName){
+                        return@launch
+                    }
+                }
+                userRepository.updateUser(CreateUserRequest(firstName = firstName))
+                userRepository.getUserData()
             }
         }
     }
 
-    fun updateFirstName(firstName: String) = launch(dispatcher = ioContext) {
+    private fun updateFirstName(firstName: String) = launch(ioContext) {
         if (firstName.isEmpty()) {
             return@launch
         }
@@ -55,7 +64,7 @@ class ProfileViewModel @Inject constructor(
         userRepository.getUserData()
     }
 
-    fun updateLastName(lastName: String) = launch(dispatcher = ioContext) {
+    private fun updateLastName(lastName: String) = launch(ioContext) {
         if (lastName.isEmpty()) {
             return@launch
         }
@@ -69,7 +78,7 @@ class ProfileViewModel @Inject constructor(
     }
 
 
-    fun deleteUser(onEnd: () -> Unit) = launch(dispatcher = ioContext) {
+    fun deleteUser(onEnd: () -> Unit) = launch(ioContext) {
         userRepository.deleteUser()
         amplifyManager.deleteUser()
         preferencesProvider.clearData()

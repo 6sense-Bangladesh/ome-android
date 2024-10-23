@@ -15,7 +15,7 @@ class StoveSetupTypeViewModel @Inject constructor(
 
     var stoveType = ""
 
-    fun saveStoveType(stoveId: String, onEnd :() ->Unit) = launch(dispatcher = ioContext) {
+    fun saveStoveType(stoveId: String, onEnd :() ->Unit) = launch(ioContext) {
         stoveRepository.updateStove(
             StoveRequest(
                 stoveGasOrElectric = stoveType

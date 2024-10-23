@@ -25,19 +25,19 @@ class SignUpPasswordViewModel @Inject constructor(private val amplifyManager: Am
     var isForgotPassword = false
 
 
-    fun signUp() = launch(dispatcher = ioContext) {
+    fun signUp() = launch(ioContext) {
         val result = amplifyManager.signUp(email, currentPassword, phone)
         signUpResultLiveData.postValue(result)
     }
 
-    fun confirmResetPassword() = launch(dispatcher = ioContext) {
+    fun confirmResetPassword() = launch(ioContext) {
         val result =
             amplifyManager.confirmResetPassword(password = currentPassword, confirmationCode = code)
         passwordResetLiveData.postValue(result)
     }
 
 
-    fun resendCode() = launch(dispatcher = ioContext) {
+    fun resendCode() = launch(ioContext) {
         val result = amplifyManager.resendSignUpCode(email)
         signUpResultLiveData.postValue(result)
     }

@@ -19,14 +19,14 @@ class AmplifyResultValue {
     var signInResult: AuthSignInResult? = null
     var authException: AuthException? = null
     var message: String? = null
-    var wasCallSuccessful: Boolean = false
+    var isSuccessful: Boolean = false
     var deliveryDetails: AuthCodeDeliveryDetails? = null
     var authResetPasswordResult: AuthResetPasswordResult? = null
 }
 
 class AmplifyManager {
 
-    companion object{
+    companion object {
         var kotAuth: KotlinAuthFacade = Amplify.Auth
     }
 
@@ -41,11 +41,11 @@ class AmplifyManager {
         return try {
             val session = kotAuth.fetchAuthSession()
             resultValue.session = session
-            resultValue.wasCallSuccessful = true
+            resultValue.isSuccessful = true
             resultValue
         } catch (error: AuthException) {
             resultValue.authException = error
-            resultValue.wasCallSuccessful = false
+            resultValue.isSuccessful = false
             resultValue
         }
     }
@@ -96,11 +96,11 @@ class AmplifyManager {
         try {
             kotAuth.deleteUser()
 
-            resultValue.wasCallSuccessful = true
+            resultValue.isSuccessful = true
         } catch (error: AuthException) {
 
             resultValue.authException = error
-            resultValue.wasCallSuccessful = false
+            resultValue.isSuccessful = false
         }
 
         return resultValue
@@ -111,9 +111,14 @@ class AmplifyManager {
         newPassword: String,
     ): AmplifyResultValue {
         val resultValue = AmplifyResultValue()
-        kotAuth.updatePassword(oldPassword, newPassword)
-        resultValue.message = "Change password succeeded"
-
+        try {
+            kotAuth.updatePassword(oldPassword, newPassword)
+            resultValue.message = "Change password successfully"
+        } catch (error: AuthException) {
+            resultValue.authException = error
+            resultValue.isSuccessful = false
+            resultValue.message = "Something went wrong. Couldn't change password"
+        }
         return resultValue
     }
 
@@ -126,7 +131,7 @@ class AmplifyManager {
 
         kotAuth.confirmResetPassword(password, confirmationCode)
 
-        resultValue.wasCallSuccessful = true
+        resultValue.isSuccessful = true
         resultValue.message = "Password reset confirmed"
 
         return resultValue
@@ -150,7 +155,7 @@ class AmplifyManager {
         val signUpResult = kotAuth.signUp(email, password, signUpOptions.build())
 
         resultValue.signUpResult = signUpResult
-        resultValue.wasCallSuccessful = true
+        resultValue.isSuccessful = true
 
         return resultValue
     }
@@ -164,7 +169,7 @@ class AmplifyManager {
 
         val resendSignUpCodeResult = kotAuth.resendSignUpCode(email, options)
 
-        resultValue.wasCallSuccessful = true
+        resultValue.isSuccessful = true
         resultValue.deliveryDetails = resendSignUpCodeResult.nextStep.codeDeliveryDetails
 
 
@@ -181,7 +186,7 @@ class AmplifyManager {
 
         val confirmSignUpResultValue = kotAuth.confirmSignUp(email, confirmationCode)
 
-        resultValue.wasCallSuccessful = true
+        resultValue.isSuccessful = true
         resultValue.signUpResult = confirmSignUpResultValue
 
         return resultValue
@@ -193,7 +198,7 @@ class AmplifyManager {
 
         val resetPasswordResultValue = kotAuth.resetPassword(email)
 
-        resultValue.wasCallSuccessful = true
+        resultValue.isSuccessful = true
         resultValue.authResetPasswordResult = resetPasswordResultValue
 
         return resultValue

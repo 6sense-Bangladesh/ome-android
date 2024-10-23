@@ -23,7 +23,7 @@ class ManualSetupViewModel @Inject constructor(
 
     init {
         connectionStatusListener.shouldReactOnChanges = false
-        launch(dispatcher = ioContext) {
+        launch(ioContext) {
             socketManager.networksFlow.collect { list->
                 if(list.isNotEmpty()){
                     wifiNetworksListLiveData.postValue(list)
@@ -32,11 +32,11 @@ class ManualSetupViewModel @Inject constructor(
         }
     }
 
-    fun connectToSocket() = launch(dispatcher = ioContext) {
+    fun connectToSocket() = launch(ioContext) {
         socketManager.connect()
     }
 
-    fun initListeners() = launch(dispatcher = ioContext) {
+    fun initListeners() = launch(ioContext) {
         socketManager.onSocketConnect = {
             getNetworks()
         }
@@ -45,7 +45,7 @@ class ManualSetupViewModel @Inject constructor(
         }
     }
 
-    private fun getNetworks() = launch(dispatcher = ioContext) {
+    private fun getNetworks() = launch(ioContext) {
         socketManager.sendMessage(KnobSocketMessage.GET_NETWORKS)
     }
 }

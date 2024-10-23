@@ -69,7 +69,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
         }
     }
 
-    private fun disconnectFromNetwork() = launch(dispatcher = ioContext) {
+    private fun disconnectFromNetwork() = launch(ioContext) {
         val response = wifiHandler.disconnectFromNetwork()
         withDelay(3000) {
             connectionStatusListener.shouldReactOnChanges = true
@@ -120,7 +120,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
         ssid: String = "",
         password: String = "",
         securityType: String = ""
-    ) = launch(dispatcher = ioContext) {
+    ) = launch(ioContext) {
         socketManager.sendMessage(message, ssid, password, securityType)
     }
 

@@ -42,7 +42,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                         when (step) {
                             CalibrationState.OFF -> {
                                 offAngle = angle
-                                launch(dispatcher = ioContext) {
+                                launch(ioContext) {
                                     stoveRepository.initCalibration(
                                         InitCalibrationRequest(
                                             offAngle = angle.toInt(),
@@ -89,7 +89,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                         when (step) {
                             CalibrationState.OFF -> {
                                 offAngle = angle
-                                launch(dispatcher = ioContext) {
+                                launch(ioContext) {
                                     rotationDir?.let { dir ->
                                         stoveRepository.initCalibration(
                                             InitCalibrationRequest(

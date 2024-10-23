@@ -31,7 +31,7 @@ class AutoShutOffViewModel @Inject constructor(
     )
 
 
-    fun loadData() = launch(dispatcher = ioContext) {
+    fun loadData() = launch(ioContext) {
         userRepository.userFlow.collect {
             it?.stoveAutoOffMins?.let { value ->
                 selectedTime = value
@@ -41,7 +41,7 @@ class AutoShutOffViewModel @Inject constructor(
     }
 
 
-    fun updateAutoShutOffTime() = launch(dispatcher = ioContext) {
+    fun updateAutoShutOffTime() = launch(ioContext) {
         userRepository.userFlow.value?.stoveAutoOffMins?.let {
             if (it != selectedTime) {
                 stoveRepository.updateStove(

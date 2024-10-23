@@ -39,7 +39,7 @@ class DashboardViewModel @Inject constructor(
 //                }
 //            }
 //        }
-//        launch(dispatcher = ioContext) {
+//        launch(ioContext) {
 //            userRepository.userFlow.collect { user ->
 //                user?.let {
 //                    stoveExistLiveData.postValue(it.stoveId != null)
@@ -51,7 +51,7 @@ class DashboardViewModel @Inject constructor(
     fun connectBottomNavController(navControllerFlow: StateFlow<NavController>) {
 //        currentBottomNavController = navControllerFlow.asLiveData()
 
-        launch(dispatcher = ioContext) {
+        launch(ioContext) {
             amplifyManager.signOutFlow.collect {
                 if (it) {
                     signOutLiveData.postValue(Unit)

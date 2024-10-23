@@ -26,7 +26,7 @@ class SelectBurnerViewModel @Inject constructor(
     val knobPositionResponseLiveData: SingleLiveEvent<Boolean> =
         SingleLiveEvent()
 
-    fun loadData() = launch(dispatcher = ioContext) {
+    fun loadData() = launch(ioContext) {
         stoveRepository.knobsFlow.collect { knobs ->
             if (knobs != null && userRepository.userFlow.value?.stoveOrientation != null) {
                 val foundValue = userRepository.userFlow.value?.stoveOrientation.enum
@@ -38,7 +38,7 @@ class SelectBurnerViewModel @Inject constructor(
         }
     }
 
-    fun changeKnobPosition(stovePosition: Int) = launch(dispatcher = ioContext) {
+    fun changeKnobPosition(stovePosition: Int) = launch(ioContext) {
         stoveRepository.updateKnobInfo(
             params = CreateKnobRequest(
                 stovePosition = stovePosition,

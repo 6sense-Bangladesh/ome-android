@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#14ae5c</color>
     <color name="red">#F84F48</color>
+    <color name="redTrans">#40F84F48</color>
     <color name="ic_launcher_background">#FFFFFFFF</color>
 
     <color name="navigation_bar_color">#40000000</color>
@@ -20,6 +21,7 @@
     <color name="colorPrimary">#0099d7</color>
     <color name="colorBackground">#effaff</color>
     <color name="colorPrimaryTrans">#404098EB</color>
+    <color name="colorPrimaryTransLess">#6021BAF8</color>
 
     <color name="colorSelection">#550099d7</color>
 

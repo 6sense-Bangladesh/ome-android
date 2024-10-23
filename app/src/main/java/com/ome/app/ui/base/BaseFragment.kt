@@ -16,7 +16,7 @@ import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ome.app.MainVM
 import com.ome.app.ui.dashboard.members.MembersFragment
-import com.ome.app.ui.dashboard.mystove.MyStoveFragment
+import com.ome.app.ui.dashboard.my_stove.MyStoveFragment
 import com.ome.app.ui.dashboard.profile.ProfileFragment
 import com.ome.app.ui.dashboard.settings.SettingsFragment
 import com.ome.app.ui.launch.LaunchFragment
@@ -100,7 +100,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(
-                "Ok"
+                "Okay"
             ) { dialog, p1 ->
                 onDismissSuccessDialog()
                 onDismiss()
@@ -111,7 +111,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
 
     protected open fun showDialog(
         title: String = "Confirmation",
-        positiveButtonText: String = "Ok",
+        positiveButtonText: String = "Okay",
         negativeButtonText: String = "Cancel",
         message: SpannableStringBuilder,
         onPositiveButtonClick: () -> Unit = {},
@@ -128,12 +128,12 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
             .show()
     }
 
-    protected open fun onError(errorMessage: String) = context?.let {
+    protected open fun onError(errorMessage: String?) = context?.let {
         MaterialAlertDialogBuilder(it)
             .setTitle("Error")
-            .setMessage(errorMessage)
+            .setMessage(errorMessage ?: "Something went wrong.")
             .setPositiveButton(
-                "Ok"
+                "Okay"
             ) { dialog, p1 ->
                 onDismissErrorDialog()
                 dialog.cancel()

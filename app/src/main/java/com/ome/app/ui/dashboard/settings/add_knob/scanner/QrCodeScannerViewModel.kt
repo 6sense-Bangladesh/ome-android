@@ -22,7 +22,7 @@ class QrCodeScannerViewModel @Inject constructor(
     val isKnobAddedLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val knobCreatedLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
-    fun checkStoveOwnership(macAddress: String) = launch(dispatcher = ioContext) {
+    fun checkStoveOwnership(macAddress: String) = launch(ioContext) {
        // val filteredMacID = macAddress.filter { macIDFilter.contains(it) }
         val response = stoveRepository.getKnobOwnership(macAddress)
         response.status?.let { status ->
@@ -48,7 +48,7 @@ class QrCodeScannerViewModel @Inject constructor(
     }
 
 
-    fun addNewKnob() = launch(dispatcher = ioContext) {
+    fun addNewKnob() = launch(ioContext) {
         if (macAddress != null && stovePosition != null) {
             stoveRepository.createKnob(
                 params = CreateKnobRequest(

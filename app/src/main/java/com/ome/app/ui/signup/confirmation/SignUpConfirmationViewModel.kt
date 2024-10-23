@@ -37,7 +37,7 @@ class SignUpConfirmationViewModel @Inject constructor(
     val resendClickedResultLiveData: SingleLiveEvent<AmplifyResultValue> = SingleLiveEvent()
     val codeValidationLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
-    fun confirmSignUp() = launch(dispatcher = ioContext) {
+    fun confirmSignUp() = launch(ioContext) {
         amplifyManager.confirmSignUp(email, code)
         signIn(email, currentPassword)
         fetchUserData()
@@ -111,7 +111,7 @@ class SignUpConfirmationViewModel @Inject constructor(
         }
     }
 
-    fun resendCode(email: String) = launch(dispatcher = ioContext) {
+    fun resendCode(email: String) = launch(ioContext) {
         val result = amplifyManager.resendSignUpCode(email)
         resendClickedResultLiveData.postValue(result)
     }

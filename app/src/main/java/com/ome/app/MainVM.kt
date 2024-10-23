@@ -7,7 +7,9 @@ import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.base.ResponseWrapper
+import com.ome.app.domain.model.network.request.StoveRequest
 import com.ome.app.domain.model.network.response.KnobDto
+import com.ome.app.domain.model.network.response.UserResponse
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.ui.base.BaseViewModel
@@ -86,20 +88,29 @@ class MainVM @Inject constructor(
     var initDone = false
     var startDestinationJob: Job? = null
 
-    var stoveData = com.ome.app.domain.model.network.request.StoveRequest()
+    var stoveData = StoveRequest()
+
+    init {
+        launch(ioContext){
+            userRepository.userFlow.collect {
+                if(it == null) return@collect
+                withContext(mainContext){
+                    savedStateHandle["userInfo"] = it
+                }
+            }
+        }
+    }
 
     fun getUserInfo(){
-        launch{
-            val result = withContext(ioContext){ userRepository.getUserData() }
-            if(result is ResponseWrapper.Success)
-                savedStateHandle["userInfo"] = result.value
+        launch(ioContext){
+            userRepository.getUserData()
         }
     }
 
     fun initStartDestination() {
         if (initDone) return
         startDestinationJob?.cancel()
-        startDestinationJob = launch(dispatcher = ioContext) {
+        startDestinationJob = launch(ioContext) {
             val authSession =
                 withContext(Dispatchers.Default + defaultErrorHandler) { amplifyManager.fetchAuthSession() }
             authSession.session?.let {
@@ -135,9 +146,9 @@ class MainVM @Inject constructor(
                                     }
                                     is ResponseWrapper.Success -> {
                                         initDone = true
-                                        withContext(mainContext){
-                                            savedStateHandle["userInfo"] = result.value
-                                        }
+//                                        withContext(mainContext){
+//                                            savedStateHandle["userInfo"] = result.value
+//                                        }
                                         if (result.value.stoveMakeModel.isNullOrEmpty() ||
                                             result.value.stoveGasOrElectric.isNullOrEmpty()
                                         ){
@@ -157,14 +168,14 @@ class MainVM @Inject constructor(
                                             knobs.clear()
                                         }
                                         preferencesProvider.getUserId()?.let { userId ->
-                                            launch(dispatcher = ioContext) {
+                                            launch(ioContext) {
                                                 knobs.map { knob -> knob.macAddr }.isNotEmpty {macs->
                                                     webSocketManager.initWebSocket(macs, userId)
                                                 }
 
                                             }
 
-                                            launch(dispatcher = ioContext) {
+                                            launch(ioContext) {
                                                 webSocketManager.knobConnectStatusFlow.collect {
                                                     val text = ""
                                                 }
@@ -191,7 +202,7 @@ class MainVM @Inject constructor(
         }
     }
 
-    fun connectToSocket() = launch(dispatcher = ioContext) {
+    fun connectToSocket() = launch(ioContext) {
         val knobs = stoveRepository.getAllKnobs()
         withContext(mainContext){
             savedStateHandle["knobs"] = knobs.toList()
@@ -204,10 +215,11 @@ class MainVM @Inject constructor(
     }
 
     fun signOut(onEnd: () -> Unit) {
-        launch(dispatcher = ioContext) {
+        launch(ioContext) {
             amplifyManager.signUserOut()
             preferencesProvider.clearData()
             userRepository.userFlow.emit(null)
+            savedStateHandle.remove<UserResponse>("userInfo")
             amplifyManager.signOutFlow.emit(true)
             withContext(mainContext) {
                 onEnd()

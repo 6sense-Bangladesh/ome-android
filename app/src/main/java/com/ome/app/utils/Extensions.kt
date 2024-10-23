@@ -6,41 +6,24 @@ import android.Manifest
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ActivityNotFoundException
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
+import android.content.*
 import android.content.Context.VIBRATOR_SERVICE
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.VibrationEffect
-import android.os.Vibrator
-import android.os.VibratorManager
+import android.os.*
 import android.provider.Settings
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.util.Patterns
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.ColorRes
 import androidx.annotation.IdRes
@@ -59,11 +42,7 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.*
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -72,22 +51,9 @@ import com.google.gson.reflect.TypeToken
 import com.ome.app.BuildConfig
 import com.ome.app.domain.model.base.ResponseWrapper
 import es.dmoral.toasty.Toasty
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.*
 import java.io.IOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -190,7 +156,7 @@ fun FragmentActivity.showKeyboard() {
 fun Fragment.showKeyboard() = activity?.showKeyboard()
 fun Fragment.closeKeyboard() = activity?.closeKeyboard()
 
-fun View.hideKeyboard() {
+fun View.closeKeyboard() {
     context?.apply {
         val inputMethodManager =
             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -903,18 +869,21 @@ fun String.isValidPassword(): Boolean {
     return hasUpper && hasLower && hasNumber && isGraterThan8
 }
 
-fun String.isValidPasswordResult(): com.ome.app.domain.model.base.ResponseWrapper<Boolean> {
+fun String.isValidPasswordResult(fieldName: String= "Field"): ResponseWrapper<Boolean> {
     val hasUpper = this.any { it.isUpperCase() }
     val hasLower = this.any { it.isLowerCase() }
     val hasNumber = this.any { it.isDigit() }
     val isGraterThan8 = this.length > 8
+    val isGraterThan25 = this.length > 25
 //    val hasSpecial = this.any { "!@#\$%^&*()-_=+[]{};:'\",.<>?/\\|`~".contains(it) }
     return when{
-        !hasUpper -> com.ome.app.domain.model.base.ResponseWrapper.Error("Doesn't contains uppercase letter")
-        !hasLower -> com.ome.app.domain.model.base.ResponseWrapper.Error("Doesn't contains lowercase letter")
-        !hasNumber -> com.ome.app.domain.model.base.ResponseWrapper.Error("Doesn't contains number")
-        !isGraterThan8 -> com.ome.app.domain.model.base.ResponseWrapper.Error("Length is smaller than 9")
-        else -> com.ome.app.domain.model.base.ResponseWrapper.Success(true)
+        trim().isEmpty() -> ResponseWrapper.Error("$fieldName is required.")
+        !hasUpper -> ResponseWrapper.Error("Doesn't contains uppercase letter.")
+        !hasLower -> ResponseWrapper.Error("Doesn't contains lowercase letter.")
+        !hasNumber -> ResponseWrapper.Error("Doesn't contains number.")
+        !isGraterThan8 -> ResponseWrapper.Error("Length is smaller than 9.")
+        isGraterThan25 -> ResponseWrapper.Error("Length is greater than 25.")
+        else -> ResponseWrapper.Success(true)
     }
 }
 

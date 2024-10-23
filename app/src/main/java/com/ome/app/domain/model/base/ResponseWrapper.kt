@@ -2,7 +2,7 @@ package com.ome.app.domain.model.base
 
 sealed class ResponseWrapper<out T> {
     data class Success<out T>(val value: T): ResponseWrapper<T>()
-    data class Error(val message: String, val type: ErrorType = ErrorType.DEFAULT, val code: Int = -1): com.ome.app.domain.model.base.ResponseWrapper<Nothing>()
+    data class Error(val message: String, val type: ErrorType = ErrorType.DEFAULT, val code: Int = -1): ResponseWrapper<Nothing>()
 
     val isSuccess: Boolean
         get() = this is Success

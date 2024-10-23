@@ -8,6 +8,7 @@
 
         <item name="colorSurfaceContainerHigh">@color/white</item>
         <item name="colorSurfaceContainerLow">@color/white</item>
+<!--        <item name="colorSurface">@color/white</item>-->
 
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/colorPrimary</item>

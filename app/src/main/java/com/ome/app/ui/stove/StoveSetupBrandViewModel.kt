@@ -34,7 +34,7 @@ class StoveSetupBrandViewModel @Inject constructor(
 
     var selectedBrand = ""
 
-    fun updateSelectedBrand(stoveId: String, onEnd :() ->Unit) = launch(dispatcher = ioContext) {
+    fun updateSelectedBrand(stoveId: String, onEnd :() ->Unit) = launch(ioContext) {
         selectedBrand.isNotEmpty {
             stoveRepository.updateStove(
                 StoveRequest(

@@ -9,7 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDashboardBinding
 import com.ome.app.ui.base.BaseFragment
-import com.ome.app.ui.dashboard.mystove.MyStoveFragment
+import com.ome.app.ui.dashboard.my_stove.MyStoveFragment
 import com.ome.app.ui.dashboard.profile.ProfileFragment
 import com.ome.app.ui.dashboard.settings.SettingsFragment
 import com.ome.app.ui.views.ViewPagerAdapter
@@ -112,9 +112,7 @@ class DashboardFragment :
                     true
                 }
                 R.id.menuFeedback ->{
-                    mainViewModel.signOut(onEnd = {
-                        navigateSafe(R.id.action_dashboardFragment_to_supportFragment)
-                    })
+                    navigateSafe(R.id.action_dashboardFragment_to_supportFragment)
                     true
                 }
                 else -> false

@@ -22,7 +22,7 @@ class WifiListViewModel @Inject constructor(
 
 
     init {
-        launch(dispatcher = ioContext) {
+        launch(ioContext) {
             socketManager.networksFlow.collect { list ->
                 if (list.isNotEmpty()) {
                     wifiNetworksListLiveData.postValue(list)
@@ -31,7 +31,7 @@ class WifiListViewModel @Inject constructor(
         }
     }
 
-    fun sendMessage(message: KnobSocketMessage) = launch(dispatcher = ioContext) {
+    fun sendMessage(message: KnobSocketMessage) = launch(ioContext) {
         socketManager.sendMessage(message)
     }
 }

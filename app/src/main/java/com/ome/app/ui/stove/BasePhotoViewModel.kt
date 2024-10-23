@@ -20,7 +20,7 @@ abstract class BasePhotoViewModel(val userRepository: UserRepository) :
 
     val imageUploadedLiveData = SingleLiveEvent<Boolean>()
 
-    fun uploadImage() = launch(dispatcher = ioContext) {
+    fun uploadImage() = launch(ioContext) {
         currentFile?.let {
             loadingLiveData.postValue(true)
             val urlToUploadResponse = userRepository.getUrlToUploadImage("$fileName.png")

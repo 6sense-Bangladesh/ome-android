@@ -30,7 +30,7 @@ class DeviceSettingsViewModel @Inject constructor(
     var highDualAngle: Float? = null
 
     fun initSubscriptions() {
-        launch(dispatcher = ioContext) {
+        launch(ioContext) {
             webSocketManager.knobAngleFlow.collect {
                 it?.let {
                     logi("angle ViewModel ${it.value.toFloat()}")
@@ -38,7 +38,7 @@ class DeviceSettingsViewModel @Inject constructor(
                 }
             }
         }
-        launch(dispatcher = ioContext) {
+        launch(ioContext) {
             stoveRepository.knobsFlow.collect { knobs ->
                 knobs?.let {
                     val foundKnob = knobs.firstOrNull { it.macAddr == macAddress }

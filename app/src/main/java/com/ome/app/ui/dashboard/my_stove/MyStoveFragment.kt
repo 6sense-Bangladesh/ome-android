@@ -1,4 +1,4 @@
-package com.ome.app.ui.dashboard.mystove
+package com.ome.app.ui.dashboard.my_stove
 
 import android.os.Bundle
 import android.view.View
@@ -15,11 +15,7 @@ import com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragmentParams
 import com.ome.app.ui.stove.StoveOrientation
 import com.ome.app.ui.stove.enum
 import com.ome.app.ui.views.KnobView
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.gone
-import com.ome.app.utils.log
-import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.visible
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -69,11 +65,11 @@ class MyStoveFragment :
             mainViewModel.userInfo.collectWithLifecycle {userInfo->
                 userInfo.log("userInfo")
                 when(userInfo.stoveOrientation.enum){
-                    StoveOrientation.FOUR_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
+                    StoveOrientation.FOUR_BURNERS -> {
                         visible(knob1, knob2, knob3, knob4)
                         gone(knob5, knob6, knob1centerView, knob2centerView)
                     }
-                    StoveOrientation.FIVE_BURNERS -> {
+                    StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
                         visible(knob1, knob2, knob3, knob4, knob1centerView)
                         gone(knob5, knob6, knob2centerView)
                     }
@@ -97,7 +93,7 @@ class MyStoveFragment :
             mainViewModel.knobs.collectWithLifecycle {knobs->
                 knobs.forEach { knob->
                     when(mainViewModel.userInfo.value.stoveOrientation.enum){
-                        StoveOrientation.FIVE_BURNERS -> {
+                        StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
                             when(knob.stovePosition){
                                 1 -> knob1.setupKnob(knob)
                                 2 -> knob2.setupKnob(knob)

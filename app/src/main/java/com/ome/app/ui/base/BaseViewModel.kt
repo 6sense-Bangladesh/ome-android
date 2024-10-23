@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDestination
 import com.ome.app.data.ConnectionStatusListener
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -15,7 +16,7 @@ import kotlin.coroutines.CoroutineContext
 abstract class BaseViewModel : ViewModel() {
     val defaultErrorLiveData: SingleLiveEvent<String?> = SingleLiveEvent()
     val successMessageLiveData: SingleLiveEvent<String?> = SingleLiveEvent()
-    val loadingFlow = MutableStateFlow(false)
+    val loadingFlow = MutableSharedFlow<Boolean>()
 
     val loadingLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val currentDestination = MutableStateFlow<NavDestination?>(null)
@@ -32,7 +33,6 @@ abstract class BaseViewModel : ViewModel() {
     }
 
     protected fun launch(
-        loadingLiveData: MutableStateFlow<Boolean>? = loadingFlow,
         dispatcher: CoroutineContext = mainContext,
         coroutineExceptionHandler: CoroutineExceptionHandler = defaultErrorHandler,
         block: suspend CoroutineScope.() -> Unit
@@ -40,19 +40,19 @@ abstract class BaseViewModel : ViewModel() {
         return viewModelScope.launch(dispatcher + coroutineExceptionHandler) {
             try {
                 withContext(mainContext) {
-                    loadingLiveData?.value = true
+                    loadingFlow.emit(true)
                 }
                 this.block()
             } finally {
                 withContext(mainContext) {
-                    loadingLiveData?.value = false
+                    loadingFlow.emit(false)
                 }
             }
         }
     }
 
     protected fun sendError(throwable: Throwable) {
-        launch(dispatcher = mainContext) {
+        launch(mainContext) {
             defaultErrorLiveData.setNewValue(throwable.message)
         }
     }

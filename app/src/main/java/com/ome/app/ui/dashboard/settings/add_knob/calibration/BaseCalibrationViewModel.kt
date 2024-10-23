@@ -74,7 +74,7 @@ abstract class BaseCalibrationViewModel constructor(
     }
 
     fun initSubscriptions() {
-        launch(dispatcher = ioContext) {
+        launch(ioContext) {
             webSocketManager.knobAngleFlow.collect {
                 it?.let {
                     var angle = it.value.toFloat()
@@ -91,7 +91,7 @@ abstract class BaseCalibrationViewModel constructor(
                 }
             }
         }
-        launch(dispatcher = ioContext) {
+        launch(ioContext) {
             stoveRepository.knobsFlow.collect { knobs ->
                 knobs?.let {
                     val foundKnob = knobs.firstOrNull { it.macAddr == macAddress }
