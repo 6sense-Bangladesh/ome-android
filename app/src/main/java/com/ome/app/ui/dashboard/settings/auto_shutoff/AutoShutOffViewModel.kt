@@ -1,10 +1,10 @@
 package com.ome.app.ui.dashboard.settings.auto_shutoff
 
-import com.ome.app.data.remote.stove.StoveRepository
-import com.ome.app.data.remote.user.UserRepository
+import com.ome.app.domain.model.network.request.StoveRequest
+import com.ome.app.domain.repo.StoveRepository
+import com.ome.app.domain.repo.UserRepository
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
-import com.ome.app.domain.model.network.request.StoveRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -45,7 +45,7 @@ class AutoShutOffViewModel @Inject constructor(
         userRepository.userFlow.value?.stoveAutoOffMins?.let {
             if (it != selectedTime) {
                 stoveRepository.updateStove(
-                    com.ome.app.domain.model.network.request.StoveRequest(stoveAutoOffMins = selectedTime),
+                    StoveRequest(stoveAutoOffMins = selectedTime),
                     userRepository.userFlow.value?.stoveId ?: ""
                 )
                 userRepository.getUserData()

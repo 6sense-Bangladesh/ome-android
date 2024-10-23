@@ -1,11 +1,12 @@
 package com.ome.app.ui.dashboard.settings.device
 
-import com.ome.app.data.remote.stove.StoveRepository
-import com.ome.app.data.remote.user.UserRepository
+
 import com.ome.app.data.remote.websocket.WebSocketManager
+import com.ome.app.domain.model.network.response.KnobDto
+import com.ome.app.domain.repo.StoveRepository
+import com.ome.app.domain.repo.UserRepository
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
-import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,7 +19,7 @@ class DeviceSettingsViewModel @Inject constructor(
     val webSocketManager: WebSocketManager) : BaseViewModel() {
 
     val knobAngleLiveData = SingleLiveEvent<Float?>()
-    val zonesLiveData = SingleLiveEvent<_root_ide_package_.com.ome.app.domain.model.network.response.KnobDto.CalibrationDto>()
+    val zonesLiveData = SingleLiveEvent<KnobDto.CalibrationDto>()
     var macAddress = ""
 
     var offAngle: Float? = null

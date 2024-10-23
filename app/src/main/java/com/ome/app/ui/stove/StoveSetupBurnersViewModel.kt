@@ -3,8 +3,8 @@ package com.ome.app.ui.stove
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import com.ome.app.R
-import com.ome.app.data.remote.stove.StoveRepository
-import com.ome.app.data.remote.user.UserRepository
+import com.ome.app.domain.repo.StoveRepository
+import com.ome.app.domain.repo.UserRepository
 import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent

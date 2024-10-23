@@ -5,7 +5,7 @@ import com.ome.app.BuildConfig
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
-import com.ome.app.data.remote.user.UserRepository
+import com.ome.app.domain.repo.UserRepository
 import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.model.network.request.CreateUserRequest
 import com.ome.app.domain.model.network.response.UserResponse

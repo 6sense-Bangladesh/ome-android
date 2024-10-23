@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import com.ome.app.R
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
-import com.ome.app.data.remote.user.UserRepository
+import com.ome.app.domain.repo.UserRepository
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel

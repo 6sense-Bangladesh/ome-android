@@ -1,7 +1,7 @@
 package com.ome.app.ui.stove
 
 import android.graphics.Bitmap
-import com.ome.app.data.remote.user.UserRepository
+import com.ome.app.domain.repo.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

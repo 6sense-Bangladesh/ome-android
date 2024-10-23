@@ -5,10 +5,10 @@ import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.local.ResourceProvider
-import com.ome.app.data.remote.stove.StoveRepository
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.data.local.SocketManager
+import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.withDelay
 import dagger.hilt.android.lifecycle.HiltViewModel
