@@ -36,7 +36,6 @@ class NoInternetConnectionFragment :
                 ConnectionStatusListener.ConnectionStatusState.HasConnection,
                 ConnectionStatusListener.ConnectionStatusState.Dismissed -> {
                     if(mainViewModel.startDestinationInitialized.value==null){
-                        mainViewModel.initDone = false
                         mainViewModel.initStartDestination()
                     } else {
                         findNavController().popBackStack()

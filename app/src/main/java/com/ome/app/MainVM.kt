@@ -15,13 +15,11 @@ import com.ome.app.domain.repo.UserRepository
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.utils.WifiHandler
+import com.ome.app.utils.isFalse
 import com.ome.app.utils.isNotEmpty
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 
@@ -81,11 +79,12 @@ class MainVM @Inject constructor(
 
     override var defaultErrorHandler = CoroutineExceptionHandler { _, _ ->
         startDestinationInitialized.postValue(R.id.launchFragment to null)
+//        savedStateHandle["startDestination"] = R.id.launchFragment
     }
     val startDestinationInitialized = SingleLiveEvent<Pair<Int, Bundle?>>()
+    val startDestination = savedStateHandle.getStateFlow<Int?>("startDestination", null)
 
     var isSplashScreenLoading = true
-    var initDone = false
     var startDestinationJob: Job? = null
 
     var stoveData = StoveRequest()
@@ -94,9 +93,7 @@ class MainVM @Inject constructor(
         launch(ioContext){
             userRepository.userFlow.collect {
                 if(it == null) return@collect
-                withContext(mainContext){
-                    savedStateHandle["userInfo"] = it
-                }
+                savedStateHandle["userInfo"] = it
             }
         }
     }
@@ -108,7 +105,7 @@ class MainVM @Inject constructor(
     }
 
     fun initStartDestination() {
-        if (initDone) return
+        if (startDestination.value != null) return
         startDestinationJob?.cancel()
         startDestinationJob = launch(ioContext) {
             val authSession =
@@ -139,30 +136,31 @@ class MainVM @Inject constructor(
                                         if (result.message.contains("Not found")) {
                                             amplifyManager.deleteUser()
                                             preferencesProvider.clearData()
-                                            startDestinationInitialized.postValue(R.id.launchFragment to null)
+                                            savedStateHandle["startDestination"] = R.id.launchFragment
                                         } else {
-                                            startDestinationInitialized.postValue(R.id.dashboardFragment to null)
+                                            savedStateHandle["startDestination"] = R.id.dashboardFragment
                                         }
                                     }
                                     is ResponseWrapper.Success -> {
-                                        initDone = true
+//                                        initDone = true
 //                                        withContext(mainContext){
 //                                            savedStateHandle["userInfo"] = result.value
 //                                        }
-                                        if (result.value.stoveMakeModel.isNullOrEmpty() ||
-                                            result.value.stoveGasOrElectric.isNullOrEmpty()
-                                        ){
-                                            startDestinationInitialized.postValue(R.id.myStoveSetupNavGraph to null)
+                                        if (result.value.stoveSetupComplete.isFalse()){
+                                            savedStateHandle["startDestination"] = R.id.myStoveSetupNavGraph
                                             return@launch
                                         }
-                                        val knobs = mutableListOf<com.ome.app.domain.model.network.response.KnobDto>()
+                                        savedStateHandle["startDestination"] = R.id.dashboardFragment
+                                        val knobs = mutableListOf<KnobDto>()
+
+                                        launch(ioContext){
+
+                                        }
 
                                         try {
                                             knobs.addAll(stoveRepository.getAllKnobs())
-                                            withContext(mainContext){
-                                                knobs.isNotEmpty {
-                                                    savedStateHandle["knobs"] = knobs.toList()
-                                                }
+                                            knobs.isNotEmpty {
+                                                savedStateHandle["knobs"] = knobs.toList()
                                             }
                                         } catch (ex: Exception) {
                                             knobs.clear()
@@ -182,31 +180,27 @@ class MainVM @Inject constructor(
                                             }
 
                                         }
-
-                                        startDestinationInitialized.postValue(R.id.dashboardFragment to null)
                                     }
                                 }
                             } else {
-                                startDestinationInitialized.postValue(R.id.launchFragment to null)
+                                savedStateHandle["startDestination"] = R.id.launchFragment
                             }
                         } else {
-                            startDestinationInitialized.postValue(R.id.launchFragment to null)
+                            savedStateHandle["startDestination"] = R.id.launchFragment
                         }
                     }
                 } else {
-                    startDestinationInitialized.postValue(R.id.launchFragment to null)
+                    savedStateHandle["startDestination"] = R.id.launchFragment
                 }
             } ?: run {
-                startDestinationInitialized.postValue(R.id.launchFragment to null)
+                savedStateHandle["startDestination"] = R.id.launchFragment
             }
         }
     }
 
     fun connectToSocket() = launch(ioContext) {
         val knobs = stoveRepository.getAllKnobs()
-        withContext(mainContext){
-            savedStateHandle["knobs"] = knobs.toList()
-        }
+        savedStateHandle["knobs"] = knobs.toList()
         preferencesProvider.getUserId()?.let {userId->
             knobs.map { it.macAddr }.isNotEmpty {
                 webSocketManager.initWebSocket(it, userId)

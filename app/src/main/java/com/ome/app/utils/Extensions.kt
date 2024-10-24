@@ -825,6 +825,7 @@ fun Map<String, Any?>.toBundle(): Bundle {
 
 fun Boolean.toYesNo() = if (this) "YES" else "NO"
 fun Boolean?.isTrue() = this != null && this
+fun Boolean?.isFalse() = this == null || !this
 
 inline fun <R> Boolean?.isTrue(next: () -> R): R? {
     return if (isTrue()) next() else null

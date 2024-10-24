@@ -8,6 +8,7 @@ import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
+import com.ome.app.utils.isFalse
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -81,9 +82,7 @@ class SignInViewModel @Inject constructor(
                 }
                 is com.ome.app.domain.model.base.ResponseWrapper.Success -> {
                     loadingLiveData.postValue(false)
-                    if (result.value.stoveMakeModel.isNullOrEmpty() ||
-                        result.value.stoveGasOrElectric.isNullOrEmpty()
-                    ){
+                    if (result.value.stoveSetupComplete.isFalse()){
                         destinationAfterSignInLiveData.postValue(R.id.myStoveSetupNavGraph to null)
                         return@launch
                     }
