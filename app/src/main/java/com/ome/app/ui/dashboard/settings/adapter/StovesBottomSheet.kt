@@ -11,6 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ome.app.R
 import com.ome.app.ui.base.recycler.RecyclerDelegationAdapter
 import com.ome.app.ui.dashboard.profile.adapter.SimpleDividerItemDecoration
+import com.ome.app.ui.dashboard.settings.adapter.model.StoveItemModel
 
 
 class StovesBottomSheet : BottomSheetDialogFragment() {

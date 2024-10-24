@@ -13,7 +13,6 @@ import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.ui.base.recycler.ItemModel
 import com.ome.app.ui.dashboard.DashboardFragmentDirections
 import com.ome.app.ui.dashboard.settings.adapter.SettingItemAdapter
-import com.ome.app.ui.dashboard.settings.adapter.SettingsItemDecoration
 import com.ome.app.ui.dashboard.settings.adapter.StovesBottomSheet
 import com.ome.app.ui.dashboard.settings.adapter.model.SettingsItemModel
 import com.ome.app.ui.dashboard.settings.adapter.model.SettingsKnobItemModel
@@ -64,9 +63,9 @@ class SettingsFragment :
 
 
     override fun setupUI() {
-        binding.recyclerView.addItemDecoration(
-            SettingsItemDecoration()
-        )
+//        binding.recyclerView.addItemDecoration(
+//            SettingsItemDecoration()
+//        )
         binding.recyclerView.adapter = adapter
 //        binding.recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     }

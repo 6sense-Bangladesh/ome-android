@@ -10,6 +10,7 @@ import com.ome.app.databinding.SettingsTitleItemBinding
 import com.ome.app.ui.base.recycler.ItemModel
 import com.ome.app.ui.dashboard.settings.adapter.model.SettingsItemModel
 import com.ome.app.ui.dashboard.settings.adapter.model.SettingsKnobItemModel
+import com.ome.app.ui.dashboard.settings.adapter.model.SettingsTitleItemModel
 import com.ome.app.utils.changeVisibility
 import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.toast

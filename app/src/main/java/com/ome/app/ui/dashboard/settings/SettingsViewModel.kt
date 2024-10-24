@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.ui.base.BaseViewModel
-import com.ome.app.ui.dashboard.settings.adapter.SettingsTitleItemModel
+import com.ome.app.ui.dashboard.settings.adapter.model.SettingsTitleItemModel
 import com.ome.app.ui.dashboard.settings.adapter.model.toItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
