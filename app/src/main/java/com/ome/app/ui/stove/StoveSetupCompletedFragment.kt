@@ -25,7 +25,7 @@ class StoveSetupCompletedFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setStatusBarTheme(true)
+        setStatusBarAppearance(true)
 
 //        binding.imageView2.applyInsetter {
 //            type(navigationBars = true, statusBars = true) {

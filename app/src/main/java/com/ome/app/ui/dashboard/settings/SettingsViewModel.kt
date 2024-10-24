@@ -43,8 +43,8 @@ enum class Settings(val option: String) {
     ADD_NEW_KNOB("Add New Knob"),
     STOVE_BRAND("Stove Brand"),
     STOVE_TYPE("Stove Type"),
-    STOVE_LAYOUT("Stove layout"),
-    STOVE_AUTO_SHUT_OFF("Stove Auto-Off Settings"),
+    STOVE_LAYOUT("Stove Layout"),
+    STOVE_AUTO_SHUT_OFF("Auto Shut-Off Settings"),
 //    STOVE_INFO_SETTINGS("Stove Information Settings"),
 //    STOVE_HISTORY("Stove History"),
 //    LEAVE_STOVE("Leave Stove")

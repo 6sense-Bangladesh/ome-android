@@ -30,7 +30,7 @@ class StoveSetupPhotoFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setStatusBarTheme(true)
+        setStatusBarAppearance(true)
 
 //        viewModel.currentContentUri?.let {
 //            binding.shaftIv.setImageURI(it)

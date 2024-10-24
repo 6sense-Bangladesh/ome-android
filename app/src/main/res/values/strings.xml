@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Ome</string>
-    <string name="create_account">Create account</string>
-    <string name="sign_in">Sign in</string>
+    <string name="create_account">Create An Account</string>
+    <string name="sign_in">Sign In</string>
     <string name="continue_btn">Continue</string>
     <string name="scan_again">Scan Again</string>
     <string name="add_a_stove">Add a Stove</string>

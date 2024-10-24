@@ -62,15 +62,13 @@
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/saveBtn"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:gravity="center"
-        style="@style/OmeButton.Gradient.WithLoadingState"
+        style="@style/OmeButton.Blue"
         android:layout_marginTop="16dp"
+        android:gravity="center"
         android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/autoShutOffContainer"
-        app:layout_constraintStart_toStartOf="@+id/autoShutOffContainer"
-        app:layout_constraintTop_toBottomOf="@+id/autoShutOffContainer" />
+        app:layout_constraintStart_toStartOf="@+id/autoShutOffContainer" />
 
 
     <TextView

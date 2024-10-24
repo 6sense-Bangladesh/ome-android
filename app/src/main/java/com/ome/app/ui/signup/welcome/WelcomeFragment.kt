@@ -33,7 +33,7 @@ class WelcomeFragment :
                 margin(bottom = true)
             }
         }
-        setStatusBarTheme(true)
+        setStatusBarAppearance(true)
         if(BuildConfig.DEBUG){
             binding.textView.setBounceClickListener {
                 findNavController().navigate(R.id.stoveSetupCompletedFragment)

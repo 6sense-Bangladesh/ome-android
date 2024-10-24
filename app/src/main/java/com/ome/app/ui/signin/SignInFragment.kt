@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.ome.app.R
 import com.ome.app.databinding.FragmentSignInBinding
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.utils.closeKeyboard
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -31,6 +32,7 @@ class SignInFragment :
         binding.continueBtn.setOnClickListener {
             binding.continueBtn.startAnimation()
             viewModel.signIn(binding.email.getText(), binding.password.getText())
+            closeKeyboard()
         }
 
 //        binding.deleteBtn.setOnClickListener {

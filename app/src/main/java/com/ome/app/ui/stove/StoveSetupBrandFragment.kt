@@ -1,7 +1,5 @@
 package com.ome.app.ui.stove
 
-import android.os.Bundle
-import android.view.View
 import android.widget.AdapterView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
@@ -13,6 +11,7 @@ import com.ome.app.ui.base.navigation.DeepNavGraph
 import com.ome.app.ui.base.navigation.DeepNavGraph.encode
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
+import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -20,37 +19,26 @@ import dagger.hilt.android.AndroidEntryPoint
 class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentStoveSetupBrandBinding>(FragmentStoveSetupBrandBinding::inflate) {
     override val viewModel: StoveSetupBrandViewModel by viewModels()
 
-    override fun onResume() {
-        super.onResume()
-//        viewModel.selectedBrand = viewModel.brandArray.find{
-//            it == binding.stoveSelector.text.toString()
-//        }.orEmpty()
-        mainViewModel.stoveData.stoveMakeModel?.let {
+    override fun setupUI() {
+        if(isFromDeepLink) {
+            binding.continueBtn.text = getString(R.string.update)
+            mainViewModel.userInfo.value.stoveMakeModel
+        }else{
+            mainViewModel.stoveData.stoveMakeModel
+        }?.also {
             binding.stoveSelector.setText(it)
             viewModel.selectedBrand = it
         }
         binding.stoveSelector.setSimpleItems(viewModel.brandArray.toTypedArray())
-        if(isFromDeepLink)
-            binding.continueBtn.text =  getString(R.string.update)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setStatusBarTheme(true)
-//        binding.stoveSelector.setSimpleItems(viewModel.brandArray.toTypedArray())
-//        binding.stoveSelector.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, viewModel.brandArray))
-
+    override fun setupListener() {
         binding.stoveSelector.onItemClickListener =
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 val selectedBrand = viewModel.brandArray.getOrNull(position).orEmpty()
                 viewModel.selectedBrand = selectedBrand
             }
-//        binding.imageView2.applyInsetter {
-//            type(navigationBars = true, statusBars = true) {
-//                padding(horizontal = true)
-//                margin(top = true)
-//            }
-//        }
+
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.continueBtn.setBounceClickListener {
             mainViewModel.stoveData.stoveMakeModel = viewModel.selectedBrand
@@ -74,5 +62,10 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
 
     override fun setupObserver() {
         super.setupObserver()
+        subscribe(viewModel.loadingLiveData){
+            binding.continueBtn.revertAnimation()
+            if(isFromDeepLink)
+                findNavController().popBackStack()
+        }
     }
 }

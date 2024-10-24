@@ -38,7 +38,7 @@ private val args by lazy { Screens.StoveType.getData(arguments) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setStatusBarTheme(true)
+        setStatusBarAppearance(true)
 
 //        initButtonsStates()
 //        binding.imageView2.applyInsetter {
@@ -185,7 +185,8 @@ private val args by lazy { Screens.StoveType.getData(arguments) }
         super.setupObserver()
         subscribe(viewModel.loadingLiveData){
             binding.continueBtn.revertAnimation()
-            findNavController().popBackStack()
+            if(isFromDeepLink)
+                findNavController().popBackStack()
         }
     }
 }

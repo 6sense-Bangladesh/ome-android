@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ome.app.BuildConfig
@@ -31,28 +30,32 @@ class StoveSetupBurnersFragment :
 //    private val args by navArgs<StoveSetupBurnersFragmentArgs>()
     private val args by lazy { Screens.StoveLayout.getData(arguments) }
 
-    override fun onResume() {
-        super.onResume()
-        if(isFromDeepLink)
-            binding.continueBtn.text =  getString(R.string.update)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setStatusBarTheme(true)
-
+    override fun setupUI() {
         args?.let {
             viewModel.brand = it.brand
             viewModel.stoveType = it.type.type
             viewModel.stoveKnobMounting = it.type.mounting
         }
-//        binding.titleTv.applyInsetter {
-//            type(navigationBars = true, statusBars = true) {
-//                padding(horizontal = true)
-//                margin(top = true)
-//            }
-//        }
+        if(isFromDeepLink){
+            binding.continueBtn.text = getString(R.string.update)
+            mainViewModel.userInfo.value.stoveOrientation.stoveOrientation
+        }else{
+            mainViewModel.stoveData.stoveOrientation.stoveOrientation
+        } ?.also {
+            viewModel.stoveOrientation = it
+            activity?.findViewById<AppCompatImageView>(it.layoutRes)?.let { burnerIv ->
+                handleButtonClick(burnerIv)
+            }
+        }
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+    }
+
+    override fun setupListener() {
         binding.fourBurnersIv.setBounceClickListener {
             handleButtonClick(it)
             viewModel.stoveOrientation = StoveOrientation.FOUR_BURNERS
@@ -76,17 +79,6 @@ class StoveSetupBurnersFragment :
         binding.twoBurnersVerticalIv.setBounceClickListener {
             handleButtonClick(it)
             viewModel.stoveOrientation = StoveOrientation.TWO_BURNERS_VERTICAL
-        }
-
-        if(isFromDeepLink){
-            binding.continueBtn.text = getString(R.string.update)
-        }else{
-            mainViewModel.stoveData.stoveOrientation.stoveOrientation?.let {
-                viewModel.stoveOrientation = it
-                activity?.findViewById<AppCompatImageView>(it.layoutRes)?.let { burnerIv ->
-                    handleButtonClick(burnerIv)
-                }
-            }
         }
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         if(BuildConfig.DEBUG){
@@ -112,10 +104,10 @@ class StoveSetupBurnersFragment :
         resetAllButtons()
         view.isSelected = true
         binding.continueBtn.isEnabled = true
-        ContextCompat.getDrawable(requireContext(), R.drawable.ome_gradient_button_unpressed_color)
-            ?.let {
-                binding.continueBtn.drawableBackground = it
-            }
+//        ContextCompat.getDrawable(requireContext(), R.drawable.ome_gradient_button_unpressed_color)
+//            ?.let {
+//                binding.continueBtn.drawableBackground = it
+//            }
 //        binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_unpressed_color)
     }
 

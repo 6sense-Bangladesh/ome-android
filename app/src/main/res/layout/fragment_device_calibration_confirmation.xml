@@ -82,7 +82,7 @@
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/continueBtn"
-        style="@style/OmeButton.Gradient.WithLoadingState"
+        style="@style/OmeButton.Blue"
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:layout_marginBottom="12dp"
@@ -98,7 +98,7 @@
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/noBtn"
-        style="@style/OmeButton.TransparentPurpleBorders"
+        style="@style/OmeButton.Blue.Outline"
         android:layout_width="0dp"
         android:layout_height="44dp"
         android:visibility="visible"

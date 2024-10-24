@@ -83,8 +83,8 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginTop="12dp"
-            style="@style/OmeButton.White.WithLoadingState"
-            android:text="@string/continue_btn"
+            style="@style/OmeButton.White.Outline"
+            android:text="@string/sign_in"
             app:layout_constraintEnd_toEndOf="@+id/password"
             app:layout_constraintStart_toStartOf="@+id/password"
             app:layout_constraintTop_toBottomOf="@+id/password"/>
@@ -95,7 +95,7 @@
 <!--            android:layout_width="0dp"-->
 <!--            android:layout_height="40dp"-->
 <!--            android:layout_marginTop="12dp"-->
-<!--            style="@style/OmeButton.White.WithLoadingState"-->
+<!--            style="@style/OmeButton.White.Outline"-->
 <!--            android:text="Delete"-->
 <!--            app:layout_constraintEnd_toEndOf="@+id/continueBtn"-->
 <!--            app:layout_constraintStart_toStartOf="@+id/continueBtn"-->

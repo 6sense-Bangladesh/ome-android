@@ -23,7 +23,7 @@
         <item name="android:windowBackground">@android:color/white</item>
 
 
-        <item name="textAppearanceTitleLarge">@style/Title.Medium</item>
+        <item name="textAppearanceTitleLarge">@style/Title.Large</item>
         <item name="android:textColorHighlight">@color/colorPrimaryTrans</item>
         <item name="android:autofilledHighlight" tools:targetApi="26">@drawable/autofill_shape</item>
 
