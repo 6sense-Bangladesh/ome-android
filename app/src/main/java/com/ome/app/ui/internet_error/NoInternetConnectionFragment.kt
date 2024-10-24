@@ -28,8 +28,8 @@ class NoInternetConnectionFragment :
 
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.connectionStatusListener.connectionStatusFlow) { status ->
             when (status) {
                 ConnectionStatusListener.ConnectionStatusState.Default,

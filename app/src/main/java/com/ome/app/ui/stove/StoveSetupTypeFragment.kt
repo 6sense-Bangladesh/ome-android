@@ -181,8 +181,8 @@ private val args by lazy { Screens.StoveType.getData(arguments) }
 //    }
 
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.loadingLiveData){
             binding.continueBtn.revertAnimation()
             findNavController().popBackStack()

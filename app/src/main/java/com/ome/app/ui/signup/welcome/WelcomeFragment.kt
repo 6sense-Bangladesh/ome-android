@@ -49,8 +49,8 @@ class WelcomeFragment :
     }
 
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.loadingLiveData) {
             binding.continueBtn.revertAnimation()
         }

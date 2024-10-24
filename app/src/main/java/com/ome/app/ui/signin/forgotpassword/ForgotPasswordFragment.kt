@@ -43,8 +43,8 @@ class ForgotPasswordFragment :
 
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.forgotPasswordSuccess) {
             binding.continueBtn.revertAnimation()
             findNavController().navigate(

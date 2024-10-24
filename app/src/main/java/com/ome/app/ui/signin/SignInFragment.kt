@@ -44,8 +44,8 @@ class SignInFragment :
 
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
 
         subscribe(viewModel.signInStatus) {
             if (it) {

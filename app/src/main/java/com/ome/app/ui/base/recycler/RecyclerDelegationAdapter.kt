@@ -1,5 +1,6 @@
 package com.ome.app.ui.base.recycler
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.SparseArray
 import android.view.ViewGroup
@@ -18,7 +19,7 @@ open class RecyclerDelegationAdapter(
 
     private val delegates: MutableList<AdapterDelegate> = ArrayList()
     private val itemTypeToDelegatesMap = SparseArray<AdapterDelegate>()
-    protected val items: MutableList<ItemModel> = ArrayList()
+    private val items: MutableList<ItemModel> = ArrayList()
     private var recyclerView: RecyclerView? = null
     private var diffJob: Job? = null
 
@@ -92,6 +93,7 @@ open class RecyclerDelegationAdapter(
         delegates.remove(delegate)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setItems(items: List<ItemModel>) {
         this.items.clear()
         this.items.addAll(items)
@@ -108,6 +110,7 @@ open class RecyclerDelegationAdapter(
         notifyItemInserted(index)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addItems(item: List<ItemModel>) {
         items.addAll(item)
         notifyDataSetChanged()
@@ -184,6 +187,7 @@ open class RecyclerDelegationAdapter(
         return delegates.filterIsInstance(kClass.java).firstOrNull()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun clearItems() {
         this.items.clear()
         notifyDataSetChanged()

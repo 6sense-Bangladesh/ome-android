@@ -54,8 +54,8 @@ class ChangePasswordFragment:  BaseFragment<ChangePasswordViewModel, FragmentCha
         binding.termsAndConditions.setLinkTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         viewModel.validationSuccessFlow.collectWithLifecycle{
             closeKeyboard()
             viewModel.updatePassword()

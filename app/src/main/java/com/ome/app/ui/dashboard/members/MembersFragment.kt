@@ -19,8 +19,8 @@ class MembersFragment :
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
     }
 
 }

@@ -79,6 +79,6 @@ class StoveRepositoryImpl(
         return stoveService.clearWifi(macAddress)
     }
 
-    override val knobsFlow: MutableStateFlow<List<KnobDto>?> = MutableStateFlow(listOf())
+    override val knobsFlow: MutableStateFlow<List<KnobDto>> = MutableStateFlow(listOf())
 
 }

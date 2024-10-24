@@ -87,8 +87,8 @@ class StoveInfoFragment :
         }
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.stoveNameLiveData) { type ->
             binding.firstNameEt.setText(type)
         }

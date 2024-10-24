@@ -67,8 +67,8 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
     }
 
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.wifiNetworksListLiveData) {
             binding.scanAgainBtn.revertAnimation()
             adapter.setItems(it)

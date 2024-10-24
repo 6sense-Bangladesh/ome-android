@@ -47,11 +47,20 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handleBackPressEvent()
-        observeLiveData()
+        setupListener()
+        setupObserver()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupUI()
+    }
+
+    open fun setupUI() = Unit
+    open fun setupListener() = Unit
+
     @CallSuper
-    open fun observeLiveData() {
+    open fun setupObserver() {
         subscribe(viewModel.defaultErrorLiveData) { message ->
             message?.let {
                 onError(it)

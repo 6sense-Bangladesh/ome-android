@@ -81,8 +81,8 @@ class DeviceSettingsFragment :
     }
 
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.zonesLiveData) {
             if (it.rotationDir == 2) {
                 binding.knobView.setOffPosition(it.offAngle.toFloat())

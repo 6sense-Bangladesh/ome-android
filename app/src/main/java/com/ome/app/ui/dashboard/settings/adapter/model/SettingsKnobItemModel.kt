@@ -1,5 +1,15 @@
 package com.ome.app.ui.dashboard.settings.adapter.model
 
+import android.os.Parcelable
+import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.ui.base.recycler.ItemModel
+import kotlinx.parcelize.Parcelize
 
-data class SettingsKnobItemModel(val name: String, val macAddr: String): ItemModel
+@Parcelize
+data class SettingsKnobItemModel(val name: String, val macAddr: String, val showDivider: Boolean = true): ItemModel, Parcelable
+
+fun KnobDto.toItemModel(showDivider: Boolean = true) =
+    SettingsKnobItemModel(
+        name = "Knob #$stovePosition",
+        macAddr = macAddr
+    )

@@ -33,22 +33,15 @@ class MyStoveFragment :
 //        binding.test.setOnClickListener {
             //navController.navigate(MyStoveFragmentDirections.actionMyStoveFragmentToKnobWakeUpFragment(false))
 //        }
-        setupListener()
-        setupObserver()
     }
 
-    override fun onResume() {
-        super.onResume()
-        setupUI()
-    }
-
-    private fun setupUI() {
+    override fun setupUI() {
         binding.apply {
             initKnob(knob1, knob2, knob3, knob4, knob5, knob6, knob1center, knob2center)
         }
     }
 
-    private fun setupListener() {
+    override fun setupListener() {
         binding.apply {
             listOf(knob1, knob2, knob3, knob4, knob5, knob6, knob1center, knob2center).forEach { knobView->
                 knobView.setBounceClickListener{
@@ -60,7 +53,42 @@ class MyStoveFragment :
         }
     }
 
-    private fun setupObserver() {
+    private fun KnobView.setupKnob(knob: KnobDto) {
+        setBounceClickListener{
+            navController?.navigate(
+                DashboardFragmentDirections.actionDashboardFragmentToDeviceSettingsFragment(
+                    DeviceSettingsFragmentParams(
+                        name = "Knob #${knob.stovePosition}",
+                        macAddr = knob.macAddr
+                    )
+                )
+            )
+        }
+        changeKnobState(KnobView.KnobState.NORMAL)
+        val calibration = knob.calibration.toCalibration()
+        setStovePosition(knob.stovePosition)
+        setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
+        setOffPosition(calibration.offAngle.toFloat())
+        calibration.zones1?.let { zone ->
+            setHighSinglePosition(zone.highAngle.toFloat())
+            setMediumPosition(zone.mediumAngle.toFloat())
+            setLowSinglePosition(zone.lowAngle.toFloat())
+        }
+        calibration.zones2?.let { zone ->
+            setHighDualPosition(zone.highAngle.toFloat())
+//            setMediumDualPosition(zone.mediumAngle.toFloat())
+            setLowDualPosition(zone.lowAngle.toFloat())
+        }
+    }
+
+    private fun initKnob(vararg know : KnobView) {
+        know.forEach {
+            it.changeKnobState(KnobView.KnobState.ADD)
+        }
+    }
+
+    override fun setupObserver() {
+        super.setupObserver()
         binding.apply {
             mainViewModel.userInfo.collectWithLifecycle {userInfo->
                 userInfo.log("userInfo")
@@ -122,44 +150,6 @@ class MyStoveFragment :
                 }
             }
         }
-    }
-
-    private fun KnobView.setupKnob(knob: KnobDto) {
-        setBounceClickListener{
-            navController?.navigate(
-                DashboardFragmentDirections.actionDashboardFragmentToDeviceSettingsFragment(
-                    DeviceSettingsFragmentParams(
-                        name = "Knob #${knob.stovePosition}",
-                        macAddr = knob.macAddr
-                    )
-                )
-            )
-        }
-        changeKnobState(KnobView.KnobState.NORMAL)
-        val calibration = knob.calibration.toCalibration()
-        setStovePosition(knob.stovePosition)
-        setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
-        setOffPosition(calibration.offAngle.toFloat())
-        calibration.zones1?.let { zone ->
-            setHighSinglePosition(zone.highAngle.toFloat())
-            setMediumPosition(zone.mediumAngle.toFloat())
-            setLowSinglePosition(zone.lowAngle.toFloat())
-        }
-        calibration.zones2?.let { zone ->
-            setHighDualPosition(zone.highAngle.toFloat())
-//            setMediumDualPosition(zone.mediumAngle.toFloat())
-            setLowDualPosition(zone.lowAngle.toFloat())
-        }
-    }
-
-    private fun initKnob(vararg know : KnobView) {
-        know.forEach {
-            it.changeKnobState(KnobView.KnobState.ADD)
-        }
-    }
-
-    override fun observeLiveData() {
-        super.observeLiveData()
     }
 
     override fun handleBackPressEvent() {}

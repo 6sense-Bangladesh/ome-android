@@ -59,8 +59,8 @@ class KnobInstallationManual2Fragment :
         }
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
     }
 }
 

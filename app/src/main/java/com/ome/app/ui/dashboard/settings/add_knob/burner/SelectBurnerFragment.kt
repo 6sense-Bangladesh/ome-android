@@ -70,7 +70,7 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
                         message = SpannableStringBuilder(
                             getString(
                                 R.string.confirm_position_body,
-                                it
+                                it.toString()
                             )
                         ),
                         onPositiveButtonClick = {
@@ -94,8 +94,8 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
         viewModel.loadData()
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.selectedIndexesLiveData) {
             binding.burnerSelectionView.initStoveBurners(it.first, it.second)
         }

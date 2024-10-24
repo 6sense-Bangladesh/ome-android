@@ -85,8 +85,7 @@ class DashboardFragment :
         }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun setupUI() {
         when(binding.dashboardViewPager.currentItem){
             0 -> binding.topAppBar.title = getString(R.string.menu_settings)
             1 -> binding.topAppBar.title = getString(R.string.app_name)
@@ -173,8 +172,8 @@ class DashboardFragment :
 //        )
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
 //        subscribe(viewModel.bottomBarVisible) {
 //            binding.bottomNavigation.isVisible = it
 //        }

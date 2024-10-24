@@ -16,5 +16,5 @@ interface StoveRepository {
     suspend fun createKnob(params: CreateKnobRequest, macAddress: String): CreateKnobResponse
     suspend fun updateKnobInfo(params: CreateKnobRequest, macAddress: String): CreateKnobResponse
     suspend fun clearWifi(macAddress: String): BaseResponse
-    val knobsFlow: MutableStateFlow<List<KnobDto>?>
+    val knobsFlow: MutableStateFlow<List<KnobDto>>
 }

@@ -52,8 +52,8 @@ class AutoShutOffSettingsFragment :
         viewModel.loadData()
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.autoShutOffLiveData) {
             binding.autoShutOffSelector.selectedIndex = viewModel.timeList.indexOf(it)
             binding.saveBtn.revertAnimation()

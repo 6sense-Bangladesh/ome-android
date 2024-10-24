@@ -416,7 +416,7 @@ fun Any?.log(tag: String = "TAG", hints: String = "") {
 }
 
 /**View Extension Function*/
-fun View.changeVisibility(isVisible: Boolean, useGone: Boolean = true) {
+fun View.changeVisibility(isVisible: Boolean, useGone: Boolean = false) {
     visibility = if (isVisible) View.VISIBLE else if (useGone) View.GONE else View.INVISIBLE
 }
 
@@ -1056,6 +1056,11 @@ fun Fragment.toast(msg: String?) {
     context?.let {
         Toast.makeText(it, msg, Toast.LENGTH_SHORT).show()
     }
+}
+
+fun Context?.toast(msg: String?) {
+    if (msg.isNullOrEmpty()) return
+    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 
 @Suppress("SpellCheckingInspection")

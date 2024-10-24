@@ -170,8 +170,8 @@ class ProfileFragment :
     }
 
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         mainViewModel.userInfo.collectWithLifecycle{
             binding.firstName.setText(it.firstName)
             binding.lastName.setText(it.lastName)

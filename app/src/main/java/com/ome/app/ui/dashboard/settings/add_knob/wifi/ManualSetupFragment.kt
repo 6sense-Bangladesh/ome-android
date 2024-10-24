@@ -62,8 +62,8 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
         viewModel.macAddr = args.params.macAddrs
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.wifiNetworksListLiveData) {
             binding.connectBtn.revertAnimation()
             findNavController().navigate(

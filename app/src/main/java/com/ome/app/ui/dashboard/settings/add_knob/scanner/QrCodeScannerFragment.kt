@@ -114,8 +114,8 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
         super.onPause()
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.isKnobAddedLiveData) {
             if (it) {
                 viewModel.loadingLiveData.postValue(false)

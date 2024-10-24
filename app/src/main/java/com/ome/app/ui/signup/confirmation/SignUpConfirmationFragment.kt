@@ -53,8 +53,8 @@ class SignUpConfirmationFragment :
         viewModel.isForgotPassword = args.params.isForgotPassword
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.signUpConfirmationResultLiveData) {
             binding.continueBtn.revertAnimation()
             if (it) {

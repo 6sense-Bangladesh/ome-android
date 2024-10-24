@@ -130,8 +130,8 @@ class StoveSetupBurnersFragment :
     }
 
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.createStoveLiveData) {
             mainViewModel.getUserInfo()
             binding.continueBtn.revertAnimation()

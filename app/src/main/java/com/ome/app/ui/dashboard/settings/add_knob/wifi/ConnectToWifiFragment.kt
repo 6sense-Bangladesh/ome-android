@@ -86,8 +86,8 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
         }
     }
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.loadingLiveData) {
             if (it) {
                 binding.connectBtn.startAnimation()

@@ -43,8 +43,8 @@ class SignUpEmailAndPhoneFragment :
     }
 
 
-    override fun observeLiveData() {
-        super.observeLiveData()
+    override fun setupObserver() {
+        super.setupObserver()
         subscribe(viewModel.emailAndPassValidationLiveData) {
             findNavController().navigate(
                 SignUpEmailAndPhoneFragmentDirections.actionSignUpEmailAndPhoneFragmentToSignUpPasswordFragment(
