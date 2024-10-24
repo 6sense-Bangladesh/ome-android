@@ -121,7 +121,7 @@
     <string name="calibration_confirmation_label">Is knob at %1$s?</string>
     <string name="confirm_position">Confirm Position</string>
     <string name="confirm_position_body">Are you sure you want to put the knob at burner %1$s ?</string>
-    <string name="confirm_logout">Are you sure you want to logout?</string>
+    <string name="confirm_logout">Are you sure you want to log out?</string>
     <string name="confirm_delete_account">Are you sure you want to delete your account?</string>
     <string name="change_burner_position_success_body">The change burner operation was a success</string>
     <string name="calibration_confirmation_dual_label">Is knob at %1$s for the %2$s zone burner?</string>

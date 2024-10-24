@@ -114,11 +114,13 @@ class AmplifyManager {
         try {
             kotAuth.updatePassword(oldPassword, newPassword)
             resultValue.isSuccessful = true
-            resultValue.message = "Change password successfully"
+            resultValue.message = "Password changed successfully"
         } catch (error: AuthException) {
+            error.printStackTrace()
             resultValue.authException = error
             resultValue.isSuccessful = false
-            resultValue.message = "Something went wrong. Couldn't change password"
+            resultValue.message = error.error
+                .replace("username or", "old")
         }
         return resultValue
     }
@@ -206,3 +208,11 @@ class AmplifyManager {
 
     }
 }
+
+val AuthException.error: String
+    get () = cause?.message
+        ?.split('.')
+        ?.firstOrNull()
+        ?.plus('.')
+        ?: message
+        ?: "Something went wrong."

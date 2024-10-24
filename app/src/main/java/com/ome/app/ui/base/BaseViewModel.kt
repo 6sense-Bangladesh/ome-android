@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDestination
+import com.amplifyframework.auth.AuthException
 import com.ome.app.data.ConnectionStatusListener
+import com.ome.app.data.remote.error
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +31,9 @@ abstract class BaseViewModel : ViewModel() {
 
     protected open var defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
         loadingLiveData.postValue(false)
-        sendError(throwable)
+        loadingLiveData.postValue(false)
+        if (throwable is AuthException) sendError(Throwable(throwable.error))
+        else sendError(throwable)
     }
 
     protected fun launch(

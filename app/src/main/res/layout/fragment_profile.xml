@@ -172,10 +172,11 @@
         android:text="@string/delete_account"
         android:textColor="@color/red"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/softwareVersion"
+        app:layout_constraintTop_toBottomOf="@+id/btnChangePassword"
         app:layout_constraintVertical_bias="0.0"
         app:rippleColor="@color/redTrans"
         app:strokeColor="@color/red"
+        tools:layout_editor_absoluteX="19dp"
         tools:visibility="visible" />
 
     <TextView
@@ -187,7 +188,8 @@
         android:layout_margin="@dimen/_15sdp"
         android:src="@drawable/ic_yellow_circle"
         android:textColor="@color/gray_color"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/deleteAccount"
+        tools:layout_editor_absoluteX="19dp"
         tools:text="Software Version 1.0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

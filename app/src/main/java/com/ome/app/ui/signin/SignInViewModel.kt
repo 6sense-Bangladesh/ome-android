@@ -1,7 +1,6 @@
 package com.ome.app.ui.signin
 
 import android.os.Bundle
-import com.amplifyframework.auth.AuthException
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.ome.app.R
 import com.ome.app.data.local.PreferencesProvider
@@ -11,7 +10,6 @@ import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -28,17 +26,6 @@ class SignInViewModel @Inject constructor(
     val deleteStatus: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     val destinationAfterSignInLiveData = SingleLiveEvent<Pair<Int, Bundle?>>()
-
-    override var defaultErrorHandler: CoroutineExceptionHandler =
-        CoroutineExceptionHandler { _, throwable ->
-            loadingLiveData.postValue(false)
-            if (throwable is AuthException) {
-                sendError(Throwable("Incorrect username or password"))
-            } else {
-                sendError(throwable)
-            }
-
-        }
 
     fun deleteUser() = launch(ioContext) {
         val result = amplifyManager.deleteUser()

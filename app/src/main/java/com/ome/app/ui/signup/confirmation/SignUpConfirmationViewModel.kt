@@ -87,7 +87,7 @@ class SignUpConfirmationViewModel @Inject constructor(
 
     private fun saveUserData(userData: UserResponse) = preferencesProvider.saveUserData(userData)
 
-    suspend fun signIn(username: String, password: String): AmplifyResultValue =
+    private suspend fun signIn(username: String, password: String): AmplifyResultValue =
         amplifyManager.signUserIn(username.trim(), password)
 
 

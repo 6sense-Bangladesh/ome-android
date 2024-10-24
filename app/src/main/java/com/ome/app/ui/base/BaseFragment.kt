@@ -23,7 +23,6 @@ import com.ome.app.ui.dashboard.profile.ProfileFragment
 import com.ome.app.ui.dashboard.settings.SettingsFragment
 import com.ome.app.ui.launch.LaunchFragment
 import com.ome.app.ui.signup.welcome.WelcomeFragment
-import com.ome.app.utils.applyIf
 import com.ome.app.utils.subscribe
 
 
@@ -128,10 +127,13 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                 onPositiveButtonClick()
             }.setNegativeButton(negativeButtonText) { _, _ ->
                 onNegativeButtonClick()
-            }.create().applyIf(isRedPositiveButton) {
-                val pBtn = getButton(DialogInterface.BUTTON_POSITIVE)
-                pBtn.setBackgroundColor(Color.RED)
-            }.show()
+            }.create().apply {
+                show()
+                if (isRedPositiveButton) {
+                    val pBtn = getButton(DialogInterface.BUTTON_POSITIVE)
+                    pBtn?.setTextColor(Color.RED)
+                }
+            }
     }
 
     protected open fun onError(errorMessage: String?) = context?.let {

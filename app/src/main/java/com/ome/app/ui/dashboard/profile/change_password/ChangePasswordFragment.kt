@@ -61,7 +61,6 @@ class ChangePasswordFragment:  BaseFragment<ChangePasswordViewModel, FragmentCha
             viewModel.updatePassword()
         }
         viewModel.passwordChangedFlow.collectWithLifecycle{result->
-            binding.continueBtn.stopAnimation()
             if(result.isSuccessful){
                 toast(result.message)
                 onBackPressed()
