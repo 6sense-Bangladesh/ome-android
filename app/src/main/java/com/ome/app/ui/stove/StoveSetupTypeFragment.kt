@@ -1,8 +1,6 @@
 package com.ome.app.ui.stove
 
-import android.os.Bundle
 import android.os.Parcelable
-import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -11,35 +9,21 @@ import com.ome.app.databinding.FragmentStoveSetupTypeBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.base.navigation.DeepNavGraph.getData
 import com.ome.app.ui.base.navigation.Screens
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.isNotNull
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.setBounceClickListener
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
 
 @AndroidEntryPoint
 class StoveSetupTypeFragment :
-    BaseFragment<StoveSetupTypeViewModel, FragmentStoveSetupTypeBinding>(
-        FragmentStoveSetupTypeBinding::inflate
-    ) {
+    BaseFragment<StoveSetupTypeViewModel, FragmentStoveSetupTypeBinding>(FragmentStoveSetupTypeBinding::inflate) {
 
     override val viewModel: StoveSetupTypeViewModel by viewModels()
 
 //    private val args by navArgs<StoveSetupTypeFragmentArgs>()
-private val args by lazy { Screens.StoveType.getData(arguments) }
+    private val args by lazy { Screens.StoveType.getData(arguments) }
 
-    override fun onResume() {
-        super.onResume()
-        if(isFromDeepLink)
-            binding.continueBtn.text =  getString(R.string.update)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setStatusBarAppearance(true)
-
+    override fun setupUI() {
 //        initButtonsStates()
 //        binding.imageView2.applyInsetter {
 //            type(navigationBars = true, statusBars = true) {
@@ -49,19 +33,13 @@ private val args by lazy { Screens.StoveType.getData(arguments) }
 //        }
         if (isFromDeepLink) {
             binding.continueBtn.text = getString(R.string.save)
-            when(mainViewModel.userInfo.value.stoveType?.apply {
-                viewModel.stoveType = this
-            }){
-                StoveType.GAS_TOP -> binding.gasTop.isChecked = true
-                StoveType.ELECTRIC_TOP -> binding.electricTop.isChecked = true
-                StoveType.GAS_RANGE -> binding.gasRange.isChecked = true
-                StoveType.ELECTRIC_RANGE -> binding.electricRange.isChecked = true
-                null -> Unit
-            }
+            mainViewModel.userInfo.value.stoveType
         }else{
-            when(mainViewModel.stoveData.stoveType?.apply {
-                viewModel.stoveType = this
-            }){
+            mainViewModel.stoveData.stoveType
+        }.also {
+            viewModel.stoveType = it
+            it.log("stoveType")
+            when(it){
                 StoveType.GAS_TOP -> binding.gasTop.isChecked = true
                 StoveType.ELECTRIC_TOP -> binding.electricTop.isChecked = true
                 StoveType.GAS_RANGE -> binding.gasRange.isChecked = true
@@ -69,6 +47,9 @@ private val args by lazy { Screens.StoveType.getData(arguments) }
                 null -> Unit
             }
         }
+    }
+
+    override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.continueBtn.setBounceClickListener {
             mainViewModel.stoveData.stoveGasOrElectric = viewModel.stoveType?.type

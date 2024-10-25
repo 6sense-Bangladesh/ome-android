@@ -28,7 +28,7 @@ class SelectBurnerViewModel @Inject constructor(
 
     fun loadData() = launch(ioContext) {
         stoveRepository.knobsFlow.collect { knobs ->
-            if (knobs.isNotEmpty() && userRepository.userFlow.value?.stoveOrientation != null) {
+            if (userRepository.userFlow.value?.stoveOrientation != null) {
                 userRepository.userFlow.value?.stoveOrientation.stoveOrientation
                 ?.let { stoveOrientation ->
                     selectedIndexesLiveData.postValue(stoveOrientation to knobs.map { it.stovePosition })

@@ -215,5 +215,6 @@ dependencies {
     implementation("io.coil-kt:coil:2.7.0")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
 
+    implementation("com.airbnb.android:lottie:6.5.2")
 
 }

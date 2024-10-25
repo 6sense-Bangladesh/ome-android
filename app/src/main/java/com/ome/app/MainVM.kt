@@ -20,6 +20,7 @@ import com.ome.app.utils.isNotEmpty
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
 
 
@@ -91,8 +92,7 @@ class MainVM @Inject constructor(
 
     init {
         launch(ioContext){
-            userRepository.userFlow.collect {
-                if(it == null) return@collect
+            userRepository.userFlow.filterNotNull().collect {
                 savedStateHandle["userInfo"] = it
             }
         }

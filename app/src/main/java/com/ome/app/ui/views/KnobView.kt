@@ -5,7 +5,6 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.SparseArray
-import android.view.View
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import androidx.annotation.DrawableRes
@@ -13,12 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.ome.app.R
 import com.ome.app.databinding.KnobViewLayoutBinding
 import com.ome.app.ui.dashboard.settings.add_knob.calibration.CalibrationState
-import com.ome.app.utils.inflate
-import com.ome.app.utils.loadDrawable
-import com.ome.app.utils.logi
-import com.ome.app.utils.makeGone
-import com.ome.app.utils.makeVisible
-import com.ome.app.utils.toStringLocale
+import com.ome.app.utils.*
 
 class KnobView @JvmOverloads constructor(
     context: Context,
@@ -43,7 +37,7 @@ class KnobView @JvmOverloads constructor(
         val rotationSafeAngle = if (rotateClockwise) angle else angle - 360
         if(rotationSafeAngle!=mCurrAngle){
             logi("angle KnobView $rotationSafeAngle")
-            animateCircle(mCurrAngle, rotationSafeAngle, ANIMATION_DURATION)
+            animateCircle(mCurrAngle, rotationSafeAngle)
         }
     }
 
@@ -76,42 +70,42 @@ class KnobView @JvmOverloads constructor(
         binding.offCl.makeVisible()
         binding.offCl.rotation = angle
         binding.offTv.rotation = -angle
-        animateCircle(mCurrAngle, angle, ANIMATION_DURATION)
+        animateCircle(mCurrAngle, angle)
     }
 
     fun setLowSinglePosition(angle: Float) {
         binding.lowSingleCl.makeVisible()
         binding.lowSingleCl.rotation = angle
         binding.lowSingleTv.rotation = -angle
-        animateCircle(mCurrAngle, angle, ANIMATION_DURATION)
+        animateCircle(mCurrAngle, angle)
     }
 
     fun setMediumPosition(angle: Float) {
         binding.mediumCl.makeVisible()
         binding.mediumCl.rotation = angle
         binding.mediumTv.rotation = -angle
-        animateCircle(mCurrAngle, angle, ANIMATION_DURATION)
+        animateCircle(mCurrAngle, angle)
     }
 
     fun setHighSinglePosition(angle: Float) {
         binding.highSingleCl.makeVisible()
         binding.highSingleCl.rotation = angle
         binding.highSingleTv.rotation = -angle
-        animateCircle(mCurrAngle, angle, ANIMATION_DURATION)
+        animateCircle(mCurrAngle, angle)
     }
 
     fun setHighDualPosition(angle: Float) {
         binding.highDualCl.makeVisible()
         binding.highDualCl.rotation = angle
         binding.highDualTv.rotation = -angle
-        animateCircle(mCurrAngle, angle, ANIMATION_DURATION)
+        animateCircle(mCurrAngle, angle)
     }
 
     fun setLowDualPosition(angle: Float) {
         binding.lowDualCl.makeVisible()
         binding.lowDualCl.rotation = angle
         binding.lowDualTv.rotation = -angle
-        animateCircle(mCurrAngle, angle, ANIMATION_DURATION)
+        animateCircle(mCurrAngle, angle)
     }
 
     fun changeKnobState(knobState: KnobState) {
@@ -129,7 +123,7 @@ class KnobView @JvmOverloads constructor(
         NORMAL(R.drawable.ic_knob_circle)
     }
 
-    private fun animateCircle(fromDeg: Float, toDeg: Float, durationMilis: Long) {
+    private fun animateCircle(fromDeg: Float, toDeg: Float) {
         val rotateAnimation = RotateAnimation(
             fromDeg, toDeg,
             RotateAnimation.RELATIVE_TO_SELF, 0.5F,
@@ -137,7 +131,7 @@ class KnobView @JvmOverloads constructor(
         )
         rotateAnimation.interpolator = LinearInterpolator()
 
-        rotateAnimation.duration = durationMilis
+        rotateAnimation.duration = ANIMATION_DURATION
         rotateAnimation.isFillEnabled = true
         rotateAnimation.fillAfter = true
 
@@ -145,23 +139,21 @@ class KnobView @JvmOverloads constructor(
         mCurrAngle = toDeg
     }
 
-    @Suppress("UNCHECKED_CAST")
-    public override fun onSaveInstanceState(): Parcelable? {
+    public override fun onSaveInstanceState(): Parcelable {
         val superState = super.onSaveInstanceState()
         val ss = SavedState(superState)
         ss.childrenStates = SparseArray()
         for (i in 0 until childCount) {
-            getChildAt(i).saveHierarchyState(ss.childrenStates as SparseArray<Parcelable>)
+            getChildAt(i).saveHierarchyState(ss.childrenStates)
         }
         return ss
     }
 
-    @Suppress("UNCHECKED_CAST")
     public override fun onRestoreInstanceState(state: Parcelable) {
         val ss = state as SavedState
         super.onRestoreInstanceState(ss.superState)
         for (i in 0 until childCount) {
-            getChildAt(i).restoreHierarchyState(ss.childrenStates as SparseArray<Parcelable>)
+            getChildAt(i).restoreHierarchyState(ss.childrenStates)
         }
     }
 
@@ -173,8 +165,8 @@ class KnobView @JvmOverloads constructor(
         dispatchThawSelfOnly(container)
     }
 
-    class SavedState(superState: Parcelable?) : View.BaseSavedState(superState) {
-        var childrenStates: SparseArray<Any>? = null
+    class SavedState(superState: Parcelable?) : BaseSavedState(superState) {
+        var childrenStates: SparseArray<Parcelable>? = null
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)

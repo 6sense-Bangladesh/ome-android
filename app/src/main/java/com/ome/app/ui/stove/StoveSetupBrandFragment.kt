@@ -21,7 +21,7 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
 
     override fun setupUI() {
         if(isFromDeepLink) {
-            binding.continueBtn.text = getString(R.string.update)
+            binding.continueBtn.text = getString(R.string.save)
             mainViewModel.userInfo.value.stoveMakeModel
         }else{
             mainViewModel.stoveData.stoveMakeModel

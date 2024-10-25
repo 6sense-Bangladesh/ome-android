@@ -1,6 +1,5 @@
 package com.ome.app.ui.stove
 
-import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
@@ -38,7 +37,7 @@ class StoveSetupBurnersFragment :
             viewModel.stoveKnobMounting = it.type.mounting
         }
         if(isFromDeepLink){
-            binding.continueBtn.text = getString(R.string.update)
+            binding.continueBtn.text = getString(R.string.save)
             mainViewModel.userInfo.value.stoveOrientation.stoveOrientation
         }else{
             mainViewModel.stoveData.stoveOrientation.stoveOrientation
@@ -50,11 +49,6 @@ class StoveSetupBurnersFragment :
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-    }
 
     override fun setupListener() {
         binding.fourBurnersIv.setBounceClickListener {

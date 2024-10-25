@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.text.SpannableStringBuilder
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -45,19 +44,6 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
 
         binding.burnerSelectionView.onBurnerSelect = { index ->
             binding.continueBtn.isEnabled = true
-            ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ome_gradient_button_unpressed_color
-            )
-                ?.let {
-                    binding.continueBtn.drawableBackground = it
-                }
-            binding.continueBtn.isEnabled = true
-            ContextCompat.getDrawable(requireContext(), R.drawable.ome_gradient_button_unpressed_color)
-                ?.let {
-                    binding.continueBtn.drawableBackground = it
-                }
-            binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_unpressed_color)
             viewModel.selectedBurnerIndex = index
         }
         binding.continueBtn.setOnClickListener {

@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.amplifyframework.kotlin.core.Amplify
 import com.ome.app.R
+import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.databinding.FragmentSignInBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.utils.closeKeyboard
@@ -65,6 +67,7 @@ class SignInFragment :
 
         subscribe(viewModel.destinationAfterSignInLiveData){
             binding.continueBtn.revertAnimation()
+            AmplifyManager.kotAuth = Amplify.Auth
             findNavController().navigate(it.first)
         }
     }

@@ -28,6 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
 
+
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/stoveShipGroup"
         android:layout_width="match_parent"
@@ -36,7 +37,8 @@
         app:chipStrokeColor="@color/gray_color"
         app:layout_constraintTop_toBottomOf="@+id/titleTv"
         app:selectionRequired="true"
-        app:singleSelection="true">
+        app:singleSelection="true"
+        tools:layout_editor_absoluteX="0dp">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/gasTop"
@@ -105,7 +107,6 @@
 
 
     </com.google.android.material.chip.ChipGroup>
-
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/continueBtn"

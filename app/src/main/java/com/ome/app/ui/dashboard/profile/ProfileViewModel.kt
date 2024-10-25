@@ -45,7 +45,7 @@ class ProfileViewModel @Inject constructor(
                         return@launch
                     }
                 }
-                userRepository.updateUser(CreateUserRequest(firstName = firstName))
+                userRepository.updateUser(CreateUserRequest(firstName = firstName, lastName = lastName))
                 userRepository.getUserData()
             }
         }

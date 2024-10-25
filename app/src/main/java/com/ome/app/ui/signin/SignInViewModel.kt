@@ -5,6 +5,7 @@ import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.ome.app.R
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
+import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
@@ -72,7 +73,7 @@ class SignInViewModel @Inject constructor(
                 }
             }
             when (val result = userRepository.getUserData()) {
-                is com.ome.app.domain.model.base.ResponseWrapper.Error -> {
+                is ResponseWrapper.Error -> {
                     loadingLiveData.postValue(false)
                     if (result.message.contains("Not found")) {
 
@@ -80,7 +81,7 @@ class SignInViewModel @Inject constructor(
                         loadingLiveData.postValue(false)
                     }
                 }
-                is com.ome.app.domain.model.base.ResponseWrapper.Success -> {
+                is ResponseWrapper.Success -> {
                     loadingLiveData.postValue(false)
                     if (result.value.stoveSetupComplete.isFalse()){
                         destinationAfterSignInLiveData.postValue(R.id.myStoveSetupNavGraph to null)

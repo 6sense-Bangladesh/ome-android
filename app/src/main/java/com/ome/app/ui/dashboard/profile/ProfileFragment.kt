@@ -67,6 +67,8 @@ class ProfileFragment :
             binding.deleteAccount.setBounceClickListener {
                 showDialog(
                     message = SpannableStringBuilder(getString(R.string.confirm_delete_account)),
+                    positiveButtonText = "Delete",
+                    isRedPositiveButton = true,
                     onPositiveButtonClick = {
                         viewModel.deleteUser{
                             navController?.navigate(R.id.action_dashboardFragment_to_launchFragment)

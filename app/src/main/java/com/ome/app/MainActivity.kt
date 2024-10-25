@@ -65,4 +65,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        savedInstanceState.getParcelable<Parcelable>("android:support:fragments")?.let {
+//
+//        }
+//        val ss = savedInstanceState as KnobView.SavedState
+//        super.onRestoreInstanceState(ss.superState)
+//        for (i in 0 until childCount) {
+//            getChildAt(i).restoreHierarchyState(ss.childrenStates)
+//        }
+//    }
 }

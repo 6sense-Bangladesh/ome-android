@@ -54,6 +54,7 @@ class SignUpConfirmationViewModel @Inject constructor(
                     firstName = firstName,
                     lastName = lastName,
                     phone = phone,
+                    stoveOrientation = -1,
                     uiAppType = "Android",
                     uiAppVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
                     userId = it

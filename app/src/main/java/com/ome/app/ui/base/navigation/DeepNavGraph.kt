@@ -42,8 +42,7 @@ object DeepNavGraph {
             )).build(), NavOptions.Builder().apply {
                 popUpToInclusive.isTrue {
                     findNavController().currentBackStack.value.firstOrNull()?.destination?.id?.let {
-                        setPopUpTo(it, inclusive = true, saveState = true)
-                        setRestoreState(true)
+                        setPopUpTo(it, inclusive = true)
                     }
                 }
                 setEnterAnim(R.anim.slide_in_right)
@@ -60,8 +59,7 @@ object DeepNavGraph {
             NavDeepLinkRequest.Builder.fromUri(Uri.parse(getDeepLinkUrl(data))).build(), NavOptions.Builder().apply {
                 popUpToInclusive.isTrue {
                     navController.currentBackStack.value.firstOrNull()?.destination?.id?.let {
-                        setPopUpTo(it, inclusive = true, saveState = true)
-                        setRestoreState(true)
+                        setPopUpTo(it, inclusive = true)
                     }
                 }
                 setEnterAnim(R.anim.slide_in_right)
