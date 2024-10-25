@@ -148,7 +148,6 @@
     <string name="setup_completed">Setup Completed</string>
     <string name="attention">Attention!</string>
     <string name="attention_skip_device_calibration_label">Are you sure you want to skip this process and use default values based on the off position?</string>
-    <string name="select_brand">Select Brand</string>
     <string name="gas_stove">Gas Stovetop</string>
     <string name="electric_stove">Electric Stovetop</string>
     <string name="gas_range">Gas Range</string>

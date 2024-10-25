@@ -9,9 +9,9 @@ import com.ome.app.databinding.FragmentStoveSetupBrandBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.base.navigation.DeepNavGraph
 import com.ome.app.ui.base.navigation.DeepNavGraph.encode
+import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -44,10 +44,8 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
             mainViewModel.stoveData.stoveMakeModel = viewModel.selectedBrand
             if(mainViewModel.stoveData.stoveMakeModel.isNullOrEmpty())
                 onError("Please select a brand")
-            else if(isFromDeepLink){
-                binding.continueBtn.startAnimation()
-                viewModel.updateSelectedBrand(mainViewModel.userInfo.value.stoveId, ::onBackPressed)
-            }
+            else if(isFromDeepLink)
+                viewModel.updateSelectedBrand(mainViewModel.userInfo.value.stoveId, onEnd= mainViewModel::getUserInfo)
             else{
                 findNavController().navigate(
                     R.id.action_stoveSetupBrandFragment_to_stoveSetupTypeFragment,
@@ -62,10 +60,14 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
 
     override fun setupObserver() {
         super.setupObserver()
-        subscribe(viewModel.loadingLiveData){
-            binding.continueBtn.revertAnimation()
-            if(isFromDeepLink)
-                findNavController().popBackStack()
+        viewModel.loadingFlow.collectWithLifecycle{
+            if(it)
+                binding.continueBtn.startAnimation()
+            else {
+                binding.continueBtn.revertAnimation()
+                if (isFromDeepLink)
+                    onBackPressed()
+            }
         }
     }
 }

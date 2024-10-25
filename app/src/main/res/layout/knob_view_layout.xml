@@ -54,13 +54,12 @@
 
         <TextView
             android:id="@+id/offTv"
-            style="@style/Title.18sp"
+            style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
             android:textSize="@dimen/_8ssp"
             android:text="@string/off_position"
-            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -80,13 +79,12 @@
 
         <TextView
             android:id="@+id/lowSingleTv"
-            style="@style/Title.16sp"
+            style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
             android:textSize="@dimen/_8ssp"
             android:text="@string/low_position"
-            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -105,13 +103,12 @@
 
         <TextView
             android:id="@+id/lowDualTv"
-            style="@style/Title.16sp"
+            style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
             android:textSize="@dimen/_8ssp"
             android:text="@string/low_position"
-            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -131,13 +128,12 @@
 
         <TextView
             android:id="@+id/mediumTv"
-            style="@style/Title.16sp"
+            style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
             android:textSize="@dimen/_8ssp"
             android:text="@string/medium_position"
-            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -156,13 +152,12 @@
 
         <TextView
             android:id="@+id/highSingleTv"
-            style="@style/Title.16sp"
+            style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
             android:textSize="@dimen/_8ssp"
             android:text="@string/high_position"
-            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -182,13 +177,12 @@
 
         <TextView
             android:id="@+id/highDualTv"
-            style="@style/Title.16sp"
+            style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
             android:textSize="@dimen/_8ssp"
             android:text="@string/high_position"
-            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

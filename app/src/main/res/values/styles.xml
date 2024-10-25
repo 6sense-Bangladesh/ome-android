@@ -25,12 +25,14 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:letterSpacing">.01</item>
+        <item name="android:textColor">?colorControlNormal</item>
     </style>
 
     <style name="Title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?colorControlNormal</item>
         <item name="android:letterSpacing">.01</item>
     </style>
 
@@ -176,9 +178,9 @@
     </style>
 
     <style name="OmeButton.White.Outline">
-<!--        <item name="spinning_bar_color">@color/button_color_white_background</item>-->
-<!--        <item name="spinning_bar_padding">5dp</item>-->
-<!--        <item name="spinning_bar_width">3dp</item>-->
+        <!--        <item name="spinning_bar_color">@color/button_color_white_background</item>-->
+        <!--        <item name="spinning_bar_padding">5dp</item>-->
+        <!--        <item name="spinning_bar_width">3dp</item>-->
         <item name="backgroundTint">@null</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/btn_ripple_outline_white</item>
@@ -197,8 +199,6 @@
         <item name="android:background">@drawable/ome_purple_borders_button</item>
         <item name="android:textColor">@drawable/ome_transparent_button_with_borders_selector</item>
     </style>
-
-
 
 
     <style name="OmeButton.TransparentBackground">
@@ -233,6 +233,7 @@
     <style name="ShapeAppearanceOverlay.Round.18" parent="">
         <item name="cornerSize">@dimen/_18sdp</item>
     </style>
+
     <style name="ShapeAppearanceOverlay.Round.20" parent="">
         <item name="cornerSize">@dimen/_20sdp</item>
     </style>

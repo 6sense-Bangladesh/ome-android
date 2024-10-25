@@ -10,7 +10,6 @@ import com.amplifyframework.auth.AuthException
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.remote.error
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -18,7 +17,7 @@ import kotlin.coroutines.CoroutineContext
 abstract class BaseViewModel : ViewModel() {
     val defaultErrorLiveData: SingleLiveEvent<String?> = SingleLiveEvent()
     val successMessageLiveData: SingleLiveEvent<String?> = SingleLiveEvent()
-    val loadingFlow = MutableSharedFlow<Boolean>()
+    val loadingFlow = MutableStateFlow<Boolean?>(null)
 
     val loadingLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val currentDestination = MutableStateFlow<NavDestination?>(null)
@@ -32,7 +31,7 @@ abstract class BaseViewModel : ViewModel() {
     protected open var defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
         loadingLiveData.postValue(false)
         loadingLiveData.postValue(false)
-        if (throwable is AuthException) sendError(Throwable(throwable.error))
+        if (throwable is AuthException) sendError(Throwable(throwable.error.replace("username or ", "")))
         else sendError(throwable)
     }
 

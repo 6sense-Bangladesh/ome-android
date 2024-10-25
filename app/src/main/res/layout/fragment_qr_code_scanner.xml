@@ -24,7 +24,6 @@
         android:layout_marginHorizontal="32dp"
         android:gravity="center"
         android:text="@string/take_a_picture"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/backIv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +64,6 @@
     <TextView
         android:id="@+id/labelTv"
         style="@style/Label.17sp"
-        android:textColor="@color/black"
         android:layout_marginTop="24dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

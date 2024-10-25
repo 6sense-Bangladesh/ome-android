@@ -25,7 +25,6 @@
         android:layout_marginHorizontal="32dp"
         android:gravity="center"
         android:text="@string/auto_shut_off_settings"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/backIv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

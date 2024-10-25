@@ -23,7 +23,6 @@
         android:layout_marginHorizontal="32dp"
         android:gravity="center"
         android:text="@string/part_1_knob_installation"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/backIv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +37,6 @@
         android:layout_marginTop="36dp"
         android:gravity="center"
         android:text="@string/turn_on_your_ome_knob_by_plugging_it_into_power"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -62,7 +60,6 @@
         android:layout_marginHorizontal="48dp"
         android:gravity="center"
         android:text="@string/complete_part_1_of_knob_installation_by_following_these_install_videos"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatImageView" />

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="6dp"
     android:orientation="vertical"
-    tools:context=".ui.dashboard.settings.adapter.SettingsItemAdapter">
+    tools:context=".ui.dashboard.settings.adapter.SettingItemAdapter">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/parent"
@@ -24,7 +24,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/_2sdp"
-            android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@+id/arrowIv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

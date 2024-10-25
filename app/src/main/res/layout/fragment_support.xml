@@ -54,7 +54,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="42dp"
         android:text="@string/how_can_we_help"
-        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/topicCl"
         app:layout_constraintTop_toBottomOf="@+id/topicCl" />
 

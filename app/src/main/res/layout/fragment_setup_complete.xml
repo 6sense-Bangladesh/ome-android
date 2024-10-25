@@ -15,7 +15,6 @@
         android:layout_margin="16dp"
         android:gravity="center"
         android:text="@string/setup_completed"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:text="@string/you_re_all_set"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
@@ -54,7 +52,6 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="@string/would_you_like_to_add_other_knobs_now"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />

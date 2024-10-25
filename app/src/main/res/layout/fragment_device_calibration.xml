@@ -25,7 +25,6 @@
         android:layout_marginHorizontal="32dp"
         android:gravity="center"
         android:text="@string/setup_smart_knob"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/backIv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +58,6 @@
         android:layout_marginTop="48dp"
         android:gravity="center"
         android:text="@string/device_calibration_label"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTv" />
@@ -73,7 +71,6 @@
         android:layout_marginTop="12dp"
         android:gravity="center"
         android:text="@string/device_calibration_sub_label"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelTv" />

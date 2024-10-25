@@ -16,7 +16,6 @@
         android:layout_marginHorizontal="32dp"
         android:gravity="center"
         android:text="@string/please_select_a_network_for_your_knob_to_connect_with"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTv" />
@@ -67,7 +66,6 @@
         android:layout_marginHorizontal="32dp"
         android:gravity="center"
         android:text="@string/connect_to_your_wi_fi"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/backIv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

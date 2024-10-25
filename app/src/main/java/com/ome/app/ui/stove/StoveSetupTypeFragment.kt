@@ -11,10 +11,10 @@ import com.ome.app.databinding.FragmentStoveSetupTypeBinding
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.base.navigation.DeepNavGraph.getData
 import com.ome.app.ui.base.navigation.Screens
+import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.isNotNull
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -183,10 +183,14 @@ private val args by lazy { Screens.StoveType.getData(arguments) }
 
     override fun setupObserver() {
         super.setupObserver()
-        subscribe(viewModel.loadingLiveData){
-            binding.continueBtn.revertAnimation()
-            if(isFromDeepLink)
-                findNavController().popBackStack()
+        viewModel.loadingFlow.collectWithLifecycle{
+            if(it)
+                binding.continueBtn.startAnimation()
+            else {
+                binding.continueBtn.revertAnimation()
+                if (isFromDeepLink)
+                    onBackPressed()
+            }
         }
     }
 }

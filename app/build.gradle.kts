@@ -129,6 +129,7 @@ dependencies {
     //Rest API
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     //QR code
     implementation("com.google.zxing:core:3.5.3")
@@ -149,8 +150,6 @@ dependencies {
     // Amplify coroutines
     //noinspection GradleDependency
     implementation("com.amplifyframework:core-kotlin:0.22.8") //Don't upgrade this version
-
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     //Phone validator
     implementation("com.googlecode.libphonenumber:libphonenumber:8.13.48")
@@ -202,7 +201,6 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.5.0"))
     implementation("com.google.firebase:firebase-crashlytics")
 
-
     implementation("com.intuit.sdp:sdp-android:1.1.1")
     implementation("com.intuit.ssp:ssp-android:1.1.1")
 
@@ -213,7 +211,6 @@ dependencies {
     implementation("androidx.camera:camera-camera2:$cameraX")
     implementation("androidx.camera:camera-lifecycle:$cameraX")
     implementation("androidx.camera:camera-view:$cameraX")
-
 
     implementation("io.coil-kt:coil:2.7.0")
     implementation("com.google.android.flexbox:flexbox:3.0.0")

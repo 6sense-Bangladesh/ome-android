@@ -25,7 +25,6 @@
         android:layout_marginHorizontal="32dp"
         android:gravity="center"
         android:text="@string/configure_knob"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/backIv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +40,6 @@
         android:layout_marginTop="48dp"
         android:gravity="center"
         android:text="@string/direction_label"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTv" />
@@ -95,7 +93,6 @@
         android:gravity="center"
         android:layout_marginTop="12dp"
         android:text="@string/counter_clockwise"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/counterClockWiseRl"
         app:layout_constraintStart_toStartOf="@+id/counterClockWiseRl"
         app:layout_constraintTop_toBottomOf="@+id/counterClockWiseRl" />
@@ -131,7 +128,6 @@
         android:layout_marginTop="12dp"
         android:gravity="center"
         android:text="@string/clockwise"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/clockWiseRl"
         app:layout_constraintStart_toEndOf="@+id/counterClockWiseRl"
         app:layout_constraintTop_toBottomOf="@+id/counterClockWiseRl" />
