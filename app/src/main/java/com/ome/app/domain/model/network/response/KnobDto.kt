@@ -5,43 +5,45 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class KnobDto(
-    val angle: Int,
-    val battery: Int,
-    val batteryVolts: Double,
-    val calibrated: Boolean,
-    val calibration: CalibrationDto,
-    val connectStatus: String,
-    val firmwareVersion: String,
-    val gasOrElectric: String,
-    val ipAddress: String,
-    val lastScheduleCommand: String,
-    val macAddr: String,
-    val mountingSurface: String,
-    val rssi: Int,
-    val safetyLock: Boolean,
-    val scheduleFinishTime: Int,
-    val schedulePauseRemainingTime: Int,
-    val scheduleStartTime: Int,
-    val stoveId: String,
-    val stovePosition: Int,
-    val temperature: Double,
-    val updated: String,
-    val userId: String
-): Parcelable{
+    val angle: Int = 0,
+    val battery: Int = 0,
+    val batteryVolts: Double = 0.0,
+    val calibrated: Boolean? = null,
+    val calibration: CalibrationDto = CalibrationDto(),
+    val connectStatus: String = "",
+    val firmwareVersion: String = "",
+    val gasOrElectric: String = "",
+    val ipAddress: String = "",
+    val lastScheduleCommand: String = "",
+    val macAddr: String = "",
+    val mountingSurface: String = "",
+    val rssi: Int = 0,
+    val safetyLock: Boolean = false,
+    val scheduleFinishTime: Int = 0,
+    val schedulePauseRemainingTime: Int = 0,
+    val scheduleStartTime: Int = 0,
+    val stoveId: String = "",
+    val stovePosition: Int = 0,
+    val temperature: Double = 0.0,
+    val updated: String = "",
+    val userId: String = ""
+) : Parcelable {
+
     @Parcelize
     data class CalibrationDto(
-        val offAngle: Int,
-        val rotationDir: Int,
-        val zones: List<CalibrationDto.ZoneDto>
-    ): Parcelable{
+        val offAngle: Int = 0,
+        val rotationDir: Int = 0,
+        val zones: List<ZoneDto> = emptyList()
+    ) : Parcelable {
         @Parcelize
         data class ZoneDto(
-            val highAngle: Int,
-            val lowAngle: Int,
-            val mediumAngle: Int,
-            val zoneName: String,
-            val zoneNumber: Int
-        ): Parcelable
+            val highAngle: Int = 0,
+            val lowAngle: Int = 0,
+            val mediumAngle: Int = 0,
+            val zoneName: String = "",
+            val zoneNumber: Int = 0
+        ) : Parcelable
+
         fun toCalibration() =
             Calibration(
                 offAngle = offAngle,

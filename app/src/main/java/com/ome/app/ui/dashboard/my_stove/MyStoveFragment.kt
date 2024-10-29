@@ -79,6 +79,7 @@ class MyStoveFragment :
 //            setMediumDualPosition(zone.mediumAngle.toFloat())
             setLowDualPosition(zone.lowAngle.toFloat())
         }
+        changeKnobStatus(knob)
     }
 
     private fun initKnob(vararg know : KnobView) {

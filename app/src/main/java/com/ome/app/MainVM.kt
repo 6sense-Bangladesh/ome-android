@@ -34,48 +34,9 @@ class MainVM @Inject constructor(
     private val webSocketManager: WebSocketManager,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
-    var userInfo= savedStateHandle.getStateFlow("userInfo", preferencesProvider.getUserData())
-    var knobs= savedStateHandle.getStateFlow("knobs", buildList {
-        if(BuildConfig.DEBUG){
-            add(
-                KnobDto(
-                    angle = 126,
-                    battery = 90,
-                    batteryVolts = 4.5,
-                    calibrated = false,
-                    calibration = KnobDto.CalibrationDto(
-                        offAngle = 0,
-                        rotationDir = 1,
-                        zones = listOf(
-                            KnobDto.CalibrationDto.ZoneDto(
-                                highAngle = 300,
-                                lowAngle = 100,
-                                mediumAngle = 200,
-                                zoneName = "Single",
-                                zoneNumber = 1
-                            )
-                        )
-                    ),
-                    connectStatus = "error",
-                    firmwareVersion = "ceteros",
-                    gasOrElectric = "graeci",
-                    ipAddress = "explicari",
-                    lastScheduleCommand = "intellegebat",
-                    macAddr = "fake_mac",
-                    mountingSurface = "dolor",
-                    rssi = 1597,
-                    safetyLock = false,
-                    scheduleFinishTime = 9022,
-                    schedulePauseRemainingTime = 3846,
-                    scheduleStartTime = 4237,
-                    stoveId = "pri",
-                    stovePosition = 1,
-                    temperature = 6.7,
-                    updated = "explicari",
-                    userId = "enim"
-                )
-            )
-        }
+    var userInfo = savedStateHandle.getStateFlow("userInfo", preferencesProvider.getUserData())
+    var knobs = savedStateHandle.getStateFlow("knobs", buildList {
+        if (BuildConfig.DEBUG) addAll(dummyKnobs)
     })
 
     override var defaultErrorHandler = CoroutineExceptionHandler { _, _ ->
@@ -91,15 +52,15 @@ class MainVM @Inject constructor(
     var stoveData = StoveRequest()
 
     init {
-        launch(ioContext){
+        launch(ioContext) {
             userRepository.userFlow.filterNotNull().collect {
                 savedStateHandle["userInfo"] = it
             }
         }
     }
 
-    fun getUserInfo(){
-        launch(ioContext){
+    fun getUserInfo() {
+        launch(ioContext) {
             userRepository.getUserData()
         }
     }
@@ -136,24 +97,29 @@ class MainVM @Inject constructor(
                                         if (result.message.contains("Not found")) {
                                             amplifyManager.deleteUser()
                                             preferencesProvider.clearData()
-                                            savedStateHandle["startDestination"] = R.id.launchFragment
+                                            savedStateHandle["startDestination"] =
+                                                R.id.launchFragment
                                         } else {
-                                            savedStateHandle["startDestination"] = R.id.dashboardFragment
+                                            savedStateHandle["startDestination"] =
+                                                R.id.dashboardFragment
                                         }
                                     }
+
                                     is ResponseWrapper.Success -> {
 //                                        initDone = true
 //                                        withContext(mainContext){
 //                                            savedStateHandle["userInfo"] = result.value
 //                                        }
-                                        if (result.value.stoveSetupComplete.isFalse()){
-                                            savedStateHandle["startDestination"] = R.id.myStoveSetupNavGraph
+                                        if (result.value.stoveSetupComplete.isFalse()) {
+                                            savedStateHandle["startDestination"] =
+                                                R.id.myStoveSetupNavGraph
                                             return@launch
                                         }
-                                        savedStateHandle["startDestination"] = R.id.dashboardFragment
+                                        savedStateHandle["startDestination"] =
+                                            R.id.dashboardFragment
                                         val knobs = mutableListOf<KnobDto>()
 
-                                        launch(ioContext){
+                                        launch(ioContext) {
 
                                         }
 
@@ -167,9 +133,10 @@ class MainVM @Inject constructor(
                                         }
                                         preferencesProvider.getUserId()?.let { userId ->
                                             launch(ioContext) {
-                                                knobs.map { knob -> knob.macAddr }.isNotEmpty {macs->
-                                                    webSocketManager.initWebSocket(macs, userId)
-                                                }
+                                                knobs.map { knob -> knob.macAddr }
+                                                    .isNotEmpty { macs ->
+                                                        webSocketManager.initWebSocket(macs, userId)
+                                                    }
 
                                             }
 
@@ -201,7 +168,7 @@ class MainVM @Inject constructor(
     fun connectToSocket() = launch(ioContext) {
         val knobs = stoveRepository.getAllKnobs()
         savedStateHandle["knobs"] = knobs.toList()
-        preferencesProvider.getUserId()?.let {userId->
+        preferencesProvider.getUserId()?.let { userId ->
             knobs.map { it.macAddr }.isNotEmpty {
                 webSocketManager.initWebSocket(it, userId)
             }
@@ -221,3 +188,151 @@ class MainVM @Inject constructor(
         }
     }
 }
+
+val dummyKnobs = listOf(
+    KnobDto(
+        angle = 126,
+        battery = 30,
+        batteryVolts = 4.5,
+        calibrated = true,
+        calibration = KnobDto.CalibrationDto(
+            offAngle = 0,
+            rotationDir = 1,
+            zones = listOf(
+                KnobDto.CalibrationDto.ZoneDto(
+                    highAngle = 300,
+                    lowAngle = 100,
+                    mediumAngle = 200,
+                    zoneName = "Single",
+                    zoneNumber = 1
+                )
+            )
+        ),
+        connectStatus = "offline",
+        firmwareVersion = "ceteros",
+        gasOrElectric = "graeci",
+        ipAddress = "explicari",
+        lastScheduleCommand = "intellegebat",
+        macAddr = "fake_mac",
+        mountingSurface = "dolor",
+        rssi = 1597,
+        safetyLock = false,
+        scheduleFinishTime = 9022,
+        schedulePauseRemainingTime = 3846,
+        scheduleStartTime = 4237,
+        stoveId = "pri",
+        stovePosition = 1,
+        temperature = 6.7,
+        updated = "explicari",
+        userId = "enim"
+    ),
+    KnobDto(
+        angle = 70,
+        battery = 10,
+        batteryVolts = 4.5,
+        calibrated = true,
+        calibration = KnobDto.CalibrationDto(
+            offAngle = 0,
+            rotationDir = 1,
+            zones = listOf(
+                KnobDto.CalibrationDto.ZoneDto(
+                    highAngle = 300,
+                    lowAngle = 100,
+                    mediumAngle = 200,
+                    zoneName = "Single",
+                    zoneNumber = 1
+                )
+            )
+        ),
+        connectStatus = "online",
+        firmwareVersion = "ceteros",
+        gasOrElectric = "graeci",
+        ipAddress = "explicari",
+        lastScheduleCommand = "intellegebat",
+        macAddr = "fake_mac",
+        mountingSurface = "dolor",
+        rssi = 1597,
+        safetyLock = false,
+        scheduleFinishTime = 9022,
+        schedulePauseRemainingTime = 3846,
+        scheduleStartTime = 4237,
+        stoveId = "pri",
+        stovePosition = 2,
+        temperature = 6.7,
+        updated = "explicari",
+        userId = "enim"
+    ),
+    KnobDto(
+        angle = 30,
+        battery = 70,
+        batteryVolts = 4.5,
+        calibrated = null,
+        calibration = KnobDto.CalibrationDto(
+            offAngle = 0,
+            rotationDir = 1,
+            zones = listOf(
+                KnobDto.CalibrationDto.ZoneDto(
+                    highAngle = 300,
+                    lowAngle = 100,
+                    mediumAngle = 200,
+                    zoneName = "Single",
+                    zoneNumber = 1
+                )
+            )
+        ),
+        connectStatus = "charging",
+        firmwareVersion = "ceteros",
+        gasOrElectric = "graeci",
+        ipAddress = "explicari",
+        lastScheduleCommand = "intellegebat",
+        macAddr = "fake_mac",
+        mountingSurface = "dolor",
+        rssi = -20,
+        safetyLock = false,
+        scheduleFinishTime = 9022,
+        schedulePauseRemainingTime = 3846,
+        scheduleStartTime = 4237,
+        stoveId = "pri",
+        stovePosition = 3,
+        temperature = 6.7,
+        updated = "explicari",
+        userId = "enim"
+    ),
+    KnobDto(
+        angle = 220,
+        battery = 90,
+        batteryVolts = 4.5,
+        calibrated = false,
+        calibration = KnobDto.CalibrationDto(
+            offAngle = 0,
+            rotationDir = 1,
+            zones = listOf(
+                KnobDto.CalibrationDto.ZoneDto(
+                    highAngle = 300,
+                    lowAngle = 100,
+                    mediumAngle = 200,
+                    zoneName = "Single",
+                    zoneNumber = 1
+                )
+            )
+        ),
+        connectStatus = "online",
+        firmwareVersion = "ceteros",
+        gasOrElectric = "graeci",
+        ipAddress = "explicari",
+        lastScheduleCommand = "intellegebat",
+        macAddr = "fake_mac",
+        mountingSurface = "dolor",
+        rssi = -70,
+        safetyLock = false,
+        scheduleFinishTime = 9022,
+        schedulePauseRemainingTime = 3846,
+        scheduleStartTime = 4237,
+        stoveId = "pri",
+        stovePosition = 4,
+        temperature = 6.7,
+        updated = "explicari",
+        userId = "enim"
+    )
+)
+

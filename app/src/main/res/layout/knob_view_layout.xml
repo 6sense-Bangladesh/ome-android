@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:clipChildren="false"
+    tools:context=".ui.views.KnobView">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/knobCircleCl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/statusText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -18,7 +20,7 @@
             android:id="@+id/knobSrc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="25dp"
+            android:layout_margin="20dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/configure_knob"
             android:src="@drawable/ic_knob_circle"
@@ -31,11 +33,11 @@
 
     <TextView
         android:id="@+id/stovePositionTv"
+        style="@style/Label.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Label.Medium"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
         app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
         app:layout_constraintStart_toStartOf="@+id/knobCircleCl"
         app:layout_constraintTop_toTopOf="@+id/knobCircleCl"
@@ -57,9 +59,9 @@
             style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
-            android:textSize="@dimen/_8ssp"
+            android:layout_marginTop="5dp"
             android:text="@string/off_position"
+            android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -82,9 +84,9 @@
             style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
-            android:textSize="@dimen/_8ssp"
+            android:layout_marginTop="5dp"
             android:text="@string/low_position"
+            android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -106,9 +108,9 @@
             style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
-            android:textSize="@dimen/_8ssp"
+            android:layout_marginTop="5dp"
             android:text="@string/low_position"
+            android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -131,9 +133,9 @@
             style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
-            android:textSize="@dimen/_8ssp"
+            android:layout_marginTop="5dp"
             android:text="@string/medium_position"
+            android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -155,9 +157,9 @@
             style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
-            android:textSize="@dimen/_8ssp"
+            android:layout_marginTop="5dp"
             android:text="@string/high_position"
+            android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -180,14 +182,66 @@
             style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
-            android:textSize="@dimen/_8ssp"
+            android:layout_marginTop="5dp"
             android:text="@string/high_position"
+            android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:id="@+id/statusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginTop="-25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/knobCircleCl"
+        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/connectionStatus"
+            style="@style/Label.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_wifi_off"
+            android:drawablePadding="@dimen/_3sdp"
+            android:gravity="center"
+            android:text="@string/no_wifi"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/noBattery"
+            style="@style/Label.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_low_battery"
+            android:drawablePadding="@dimen/_3sdp"
+            android:gravity="center"
+            android:text="@string/no_battery"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/notConfigured"
+            style="@style/Label.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_settings_small"
+            android:drawablePadding="@dimen/_3sdp"
+            android:gravity="center"
+            android:text="@string/configure"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

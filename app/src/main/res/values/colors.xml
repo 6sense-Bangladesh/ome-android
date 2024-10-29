@@ -10,6 +10,7 @@
     <color name="whiteTrans">#75FFFFFF</color>
     <color name="green">#14ae5c</color>
     <color name="red">#F84F48</color>
+    <color name="redDeep">#ba1a1a</color>
     <color name="redTrans">#40F84F48</color>
     <color name="ic_launcher_background">#FFFFFFFF</color>
 

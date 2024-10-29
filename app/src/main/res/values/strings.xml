@@ -134,10 +134,10 @@
     <string name="zone_label">What type of burner are you setting up now?</string>
     <string name="counter_clockwise">Counter clockwise</string>
     <string name="clockwise">Clockwise</string>
-    <string name="off_position">OFF</string>
-    <string name="low_position">LOW</string>
-    <string name="medium_position">MED</string>
-    <string name="high_position">HIGH</string>
+    <string name="off_position">O</string>
+    <string name="low_position">L</string>
+    <string name="medium_position">M</string>
+    <string name="high_position">H</string>
     <string name="setup_smart_knob">Setup Smart Knob</string>
     <string name="skip">Skip</string>
     <string name="do_the_settings_below_match_your_stove_knob">Do the settings below match your stove knob?</string>
@@ -166,5 +166,12 @@
     <string name="menu_feedback">Feedback</string>
     <string name="menu_logout">Logout</string>
     <string name="logout">Log Out</string>
+
+    <string name="charging">Charging</string>
+    <string name="configure">Configure</string>
+    <string name="no_wifi">No Wi-Fi</string>
+    <string name="poor_signal">Poor Signal</string>
+    <string name="no_battery">No Battery</string>
+
 
 </resources>

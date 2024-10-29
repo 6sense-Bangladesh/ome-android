@@ -11,6 +11,7 @@ import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.ome.app.R
 import com.ome.app.databinding.KnobViewLayoutBinding
+import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.ui.dashboard.settings.add_knob.calibration.CalibrationState
 import com.ome.app.utils.*
 
@@ -34,7 +35,8 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun setKnobPosition(angle: Float, rotateClockwise: Boolean = true) {
-        val rotationSafeAngle = if (rotateClockwise) angle else angle - 360
+//        val rotationSafeAngle = if (rotateClockwise) angle else angle - 360
+        val rotationSafeAngle = angle
         if(rotationSafeAngle!=mCurrAngle){
             logi("angle KnobView $rotationSafeAngle")
             animateCircle(mCurrAngle, rotationSafeAngle)
@@ -51,7 +53,7 @@ class KnobView @JvmOverloads constructor(
     }
 
 
-    fun hideLabel(label: CalibrationState) {
+    fun hideLabel(label: CalibrationState? = null) {
         when (label) {
             CalibrationState.OFF -> binding.offCl.makeGone()
             CalibrationState.LOW_SINGLE -> binding.lowSingleCl.makeGone()
@@ -59,6 +61,13 @@ class KnobView @JvmOverloads constructor(
             CalibrationState.HIGH_SINGLE -> binding.highSingleCl.makeGone()
             CalibrationState.HIGH_DUAL -> binding.highDualCl.makeGone()
             CalibrationState.LOW_DUAL -> binding.lowDualCl.makeGone()
+            else -> {
+                binding.offCl.makeGone()
+                binding.lowSingleCl.makeGone()
+                binding.mediumCl.makeGone()
+                binding.highSingleCl.makeGone()
+                binding.highDualCl.makeGone()
+            }
         }
     }
 
@@ -115,12 +124,97 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
+    fun changeKnobStatus(knob: KnobDto) {
+        changeWiFiState(wifiRSSI = knob.rssi)
+        changeBatteryState(batteryLevel = knob.battery)
+        changeConfigurationState(isCalibrated = knob.calibrated)
+        changeConnectionState(connectionStatus = knob.connectStatus, batteryLevel = knob.battery)
+        when{
+            knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.OFFLINE || knob.rssi in -100..-80 || knob.battery <= 15 -> {
+                hideLabel()
+                changeKnobState(KnobState.DARK)
+                binding.knobSrc.alpha =.5f
+            }
+            else -> {
+                changeKnobState(KnobState.NORMAL)
+                binding.knobSrc.alpha = 1f
+            }
+        }
+    }
+
+    fun changeWiFiState(wifiRSSI: Int) {
+        if(wifiRSSI in -100..-80){
+            binding.connectionStatus.visible()
+            binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wifi_poor, 0, 0, 0)
+            binding.connectionStatus.text = context.getString(R.string.poor_signal)
+        }else {
+            binding.connectionStatus.gone()
+        }
+    }
+
+    fun changeBatteryState(batteryLevel: Int) {
+        if (batteryLevel <= 15) {
+            binding.noBattery.visible()
+        }else{
+            binding.noBattery.gone()
+        }
+    }
+
+    fun changeConfigurationState(isCalibrated: Boolean?) {
+        if (isCalibrated.isFalse()) {
+            binding.notConfigured.visible()
+        } else{
+            binding.notConfigured.gone()
+        }
+    }
+
+    fun changeConnectionState(connectionStatus: String, batteryLevel: Int) {
+        when (connectionStatus.connectionState) {
+            ConnectionState.ONLINE -> {
+                binding.connectionStatus.gone()
+            }
+            ConnectionState.OFFLINE -> {
+                binding.connectionStatus.visible()
+                binding.connectionStatus.text = context.getString(R.string.no_wifi)
+                binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wifi_off, 0, 0, 0)
+            }
+            ConnectionState.CHARGING -> {
+                binding.connectionStatus.visible()
+                binding.connectionStatus.text = context.getString(R.string.charging)
+                when (batteryLevel) {
+                    in 0..20 ->
+                        binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_charging_20, 0, 0, 0)
+                    in 21..30 ->
+                        binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_charging_30, 0, 0, 0)
+                    in 31..50 ->
+                        binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_charging_50, 0, 0, 0)
+                    in 51..80 ->
+                        binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_charging_80, 0, 0, 0)
+                    in 81..95 ->
+                        binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_charging_90, 0, 0, 0)
+                    in 96..100 ->
+                        binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_battery_full, 0, 0, 0)
+                }
+            }
+        }
+    }
+
     val knobState : KnobState
-    get() = KnobState.entries.find { it.icon == knobSrc.tag } ?: KnobState.NORMAL
+        get() = KnobState.entries.find { it.icon == knobSrc.tag } ?: KnobState.NORMAL
+
+    private val String?.connectionState : ConnectionState
+        get() = ConnectionState.entries.find { it.type == this } ?: ConnectionState.OFFLINE
 
     enum class KnobState(@DrawableRes val icon: Int){
         ADD(R.drawable.ic_knob_circle_add),
-        NORMAL(R.drawable.ic_knob_circle)
+        NORMAL(R.drawable.ic_knob_circle),
+        DARK(R.drawable.ic_knob_circle_dark)
+    }
+
+    enum class ConnectionState(val type: String){
+        ONLINE("online"),
+        OFFLINE("offline"),
+        CHARGING("charging")
     }
 
     private fun animateCircle(fromDeg: Float, toDeg: Float) {
