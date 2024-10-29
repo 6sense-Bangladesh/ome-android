@@ -6,6 +6,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
+import androidx.core.content.ContextCompat
 import com.ome.app.utils.loge
 import com.ome.app.utils.logi
 import kotlinx.coroutines.channels.BufferOverflow
@@ -44,7 +45,7 @@ class ConnectionStatusListenerImpl(
         MutableStateFlow(ConnectionStatusListener.ConnectionStatusState.Default)
 
     private val connectivityManager by lazy {
-        context.applicationContext.getSystemService(ConnectivityManager::class.java)
+        ContextCompat.getSystemService(context.applicationContext, ConnectivityManager::class.java)
     }
     private val networkRequest = NetworkRequest.Builder()
         .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)

@@ -8,9 +8,11 @@ import android.net.NetworkRequest
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.ome.app.R
 import com.ome.app.data.local.ResourceProvider
 import com.thanosfisherman.wifiutils.WifiUtils
@@ -82,7 +84,15 @@ class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) 
         }
     }
 
-    private suspend fun getCurrentWifiSsid() = suspendCoroutine{ continuation->
+    private suspend fun getCurrentWifiSsid(): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+            getCurrentWifiSsidNew()
+        else
+            getCurrentWifiSsidOld()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private suspend fun getCurrentWifiSsidNew() = suspendCoroutine{ continuation->
         val connectivityManager = context.applicationContext.getSystemService(ConnectivityManager::class.java)
         val request =
             NetworkRequest.Builder()
@@ -90,20 +100,18 @@ class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) 
                 .build()
         val networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
-                val wifiInfo = networkCapabilities.transportInfo as? WifiInfo
+                val wifiInfo = networkCapabilities.transportInfo as WifiInfo
                 // Use wifiInfo as needed
-                continuation.resume(wifiInfo?.ssid?.replace("\"", ""))
+                continuation.resume(wifiInfo.ssid.replace("\"", ""))
             }
         }
-        connectivityManager.requestNetwork(request, networkCallback) // For request
-        connectivityManager.registerNetworkCallback(request, networkCallback) // For listen
+        connectivityManager?.requestNetwork(request, networkCallback)
     }
 
+    @Suppress("DEPRECATION")
     private fun getCurrentWifiSsidOld(): String {
-        val wifiManager = context.applicationContext.getSystemService(
-            Context.WIFI_SERVICE
-        ) as WifiManager
-        @Suppress("DEPRECATION")
+        val wifiManager = context.applicationContext
+            .getSystemService(Context.WIFI_SERVICE) as WifiManager
         return wifiManager.connectionInfo.ssid.replace("\"", "")
     }
 
