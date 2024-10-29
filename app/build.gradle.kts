@@ -131,8 +131,15 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
+    val cameraX = "1.3.4"
+    implementation("androidx.camera:camera-core:$cameraX")
+    implementation("androidx.camera:camera-camera2:$cameraX")
+    implementation("androidx.camera:camera-lifecycle:$cameraX")
+    implementation("androidx.camera:camera-view:$cameraX")
+
     //QR code
-    implementation("com.google.zxing:core:3.5.3")
+    implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.1")
+    implementation("androidx.camera:camera-mlkit-vision:1.5.0-alpha02")
 
     //UI
     implementation("com.github.fornewid:neumorphism:0.3.2")
@@ -205,12 +212,6 @@ dependencies {
     implementation("com.intuit.ssp:ssp-android:1.1.1")
 
     implementation("com.github.chesire:lifecyklelog:3.1.1")
-
-    val cameraX = "1.3.4"
-    implementation("androidx.camera:camera-core:$cameraX")
-    implementation("androidx.camera:camera-camera2:$cameraX")
-    implementation("androidx.camera:camera-lifecycle:$cameraX")
-    implementation("androidx.camera:camera-view:$cameraX")
 
     implementation("io.coil-kt:coil:2.7.0")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
