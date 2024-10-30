@@ -1,6 +1,7 @@
 package com.ome.app.domain.model.network.response
 
 import android.os.Parcelable
+import com.ome.app.utils.Rssi
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -17,7 +18,7 @@ data class KnobDto(
     val lastScheduleCommand: String = "",
     val macAddr: String = "",
     val mountingSurface: String = "",
-    val rssi: Int = 0,
+    val rssi: Rssi = 0,
     val safetyLock: Boolean = false,
     val scheduleFinishTime: Int = 0,
     val schedulePauseRemainingTime: Int = 0,

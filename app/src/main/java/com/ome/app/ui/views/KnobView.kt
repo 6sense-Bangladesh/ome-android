@@ -14,6 +14,7 @@ import com.ome.app.databinding.KnobViewLayoutBinding
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.ui.dashboard.settings.add_knob.calibration.CalibrationState
 import com.ome.app.utils.*
+import com.ome.app.utils.WifiHandler.Companion.signalStrengthPercentage
 
 class KnobView @JvmOverloads constructor(
     context: Context,
@@ -21,18 +22,16 @@ class KnobView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : ConstraintLayout(context, attrs, defStyle) {
 
-
-    private val ANIMATION_DURATION: Long = 500
+    companion object{
+        private const val ANIMATION_DURATION: Long = 500L
+    }
 
     private val binding = inflate<KnobViewLayoutBinding>()
     private val knobSrc = binding.knobSrc
 
-    var prevAngle = 0.0f
-    private var mCurrAngle = 0.0f
+    var prevAngle = 0.0F
+    private var mCurrAngle = 0.0F
 
-    init {
-
-    }
 
     fun setKnobPosition(angle: Float, rotateClockwise: Boolean = true) {
 //        val rotationSafeAngle = if (rotateClockwise) angle else angle - 360
@@ -125,12 +124,15 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun changeKnobStatus(knob: KnobDto) {
-        changeWiFiState(wifiRSSI = knob.rssi)
         changeBatteryState(batteryLevel = knob.battery)
         changeConfigurationState(isCalibrated = knob.calibrated)
-        changeConnectionState(connectionStatus = knob.connectStatus, batteryLevel = knob.battery)
-        when{
-            knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.OFFLINE || knob.rssi in -100..-80 || knob.battery <= 15 -> {
+        changeConnectionState(
+            connectionStatus = knob.connectStatus,
+            wifiRSSI = knob.rssi,
+            batteryLevel = knob.battery
+        )
+        when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.OFFLINE ||
+            ( knob.connectStatus.connectionState == ConnectionState.ONLINE && knob.rssi.signalStrengthPercentage in 0..35) -> {
                 hideLabel()
                 changeKnobState(KnobState.DARK)
                 binding.knobSrc.alpha =.5f
@@ -142,8 +144,8 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
-    fun changeWiFiState(wifiRSSI: Int) {
-        if(wifiRSSI in -100..-80){
+    fun changeWiFiState(wifiRSSI: Rssi) {
+        if(wifiRSSI.signalStrengthPercentage in 0..35){
             binding.connectionStatus.visible()
             binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wifi_poor, 0, 0, 0)
             binding.connectionStatus.text = context.getString(R.string.poor_signal)
@@ -168,10 +170,11 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
-    fun changeConnectionState(connectionStatus: String, batteryLevel: Int) {
+    fun changeConnectionState(connectionStatus: String, wifiRSSI: Rssi, batteryLevel: Int) {
         when (connectionStatus.connectionState) {
             ConnectionState.ONLINE -> {
                 binding.connectionStatus.gone()
+                changeWiFiState(wifiRSSI)
             }
             ConnectionState.OFFLINE -> {
                 binding.connectionStatus.visible()

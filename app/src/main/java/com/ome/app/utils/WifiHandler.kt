@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+typealias Rssi = Int
 
 class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) {
 
@@ -34,7 +35,15 @@ class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) 
     var currentSSID = ""
 
     companion object {
-        const val password = "password"
+        private const val PASSWORD = "password"
+        private const val MIN_RSSI = -100
+        private const val MAX_RSSI = -50
+
+        val Rssi.signalStrengthPercentage : Int
+            get(){
+                val boundedRssi = coerceIn(MIN_RSSI, MAX_RSSI) // Ensure the RSSI value is within the expected range
+                return ((boundedRssi - MIN_RSSI) * 100 / (MAX_RSSI - MIN_RSSI))
+            }
     }
 
     val handler = Handler(Looper.getMainLooper())
@@ -58,7 +67,7 @@ class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) 
                 WifiUtils.withContext(context)
                     .connectWith(
                         currentSSID,
-                        password,
+                        PASSWORD,
                     )
                     .onConnectionResult(object : ConnectionSuccessListener {
                         override fun success() {
