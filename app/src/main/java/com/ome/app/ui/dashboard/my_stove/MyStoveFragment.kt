@@ -10,8 +10,8 @@ import com.ome.app.databinding.FragmentMyStoveBinding
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.dashboard.DashboardFragmentDirections
+import com.ome.app.ui.dashboard.my_stove.device.DeviceFragmentParams
 import com.ome.app.ui.dashboard.profile.ProfileViewModel
-import com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragmentParams
 import com.ome.app.ui.stove.StoveOrientation
 import com.ome.app.ui.stove.stoveOrientation
 import com.ome.app.ui.views.KnobView
@@ -45,9 +45,9 @@ class MyStoveFragment :
         binding.apply {
             listOf(knob1, knob2, knob3, knob4, knob5, knob6, knob1center, knob2center).forEach { knobView->
                 knobView.setBounceClickListener{
-                    if(knobView.knobState == KnobView.KnobState.ADD)
-//                        navController?.navigate(DashboardFragmentDirections.actionDashboardFragmentToAddKnobNavGraph())
+                    if(knobView.isKnobInAddState)
                         navController?.navigate(R.id.action_dashboardFragment_to_addKnobNavGraph)
+//                        navController?.navigate(DashboardFragmentDirections.actionDashboardFragmentToAddKnobNavGraph())
                 }
             }
         }
@@ -56,8 +56,8 @@ class MyStoveFragment :
     private fun KnobView.setupKnob(knob: KnobDto) {
         setBounceClickListener{
             navController?.navigate(
-                DashboardFragmentDirections.actionDashboardFragmentToDeviceSettingsFragment(
-                    DeviceSettingsFragmentParams(
+                DashboardFragmentDirections.actionDashboardFragmentToDeviceDetailsFragment(
+                    DeviceFragmentParams(
                         name = "Knob #${knob.stovePosition}",
                         macAddr = knob.macAddr
                     )

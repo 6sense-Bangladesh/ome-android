@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:adjustViewBounds="true"
+            android:tag="@drawable/ic_knob_circle"
             android:contentDescription="@string/configure_knob"
             android:src="@drawable/ic_knob_circle"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -22,11 +22,7 @@ import androidx.core.content.ContextCompat
 import androidx.exifinterface.media.ExifInterface
 import coil.imageLoader
 import coil.request.ImageRequest
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import okhttp3.HttpUrl
 import java.io.File
 import java.io.FileNotFoundException
@@ -93,6 +89,7 @@ fun ImageView.loadDrawable(data: Any?, @DrawableRes defaultSrc: Int? = null) {
 //        .transformations(CircleCropTransformation())
 //        .placeholder(defaultSrc ?: R.drawable.ic_profile_small)
 //        .error(defaultSrc ?: R.drawable.ic_profile_small)
+        .crossfade(true)
         .setHeader("Cache-Control", "max-age=31536000")
         .data(data)
         .target(this)

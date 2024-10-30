@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/onboardingNavGraph"
-    tools:ignore="InvalidNavigation">
+    tools:ignore="InvalidNavigation"
+    app:startDestination="@id/deviceDetailsFragment">
 
     <include app:graph="@navigation/my_stove_nav_graph"/>
     <include app:graph="@navigation/add_knob_nav_graph"/>
@@ -186,6 +187,13 @@
             app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_dashboardFragment_to_supportFragment"
             app:destination="@id/supportFragment" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_dashboardFragment_to_deviceDetailsFragment"
+            app:destination="@id/deviceDetailsFragment" />
     </fragment>
 
     <action
@@ -213,13 +221,30 @@
         tools:layout="@layout/fragment_auto_shut_off_settings"  />
 
     <fragment
+        android:id="@+id/deviceDetailsFragment"
+        android:name="com.ome.app.ui.dashboard.my_stove.device.DeviceDetailsFragment"
+        android:label="fragment_device_details"
+        tools:layout="@layout/fragment_device_details" >
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.ui.dashboard.my_stove.device.DeviceFragmentParams" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_deviceDetailsFragment_to_deviceSettingsFragment2"
+            app:destination="@id/deviceSettingsFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/deviceSettingsFragment"
-        android:name="com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragment"
+        android:name="com.ome.app.ui.dashboard.my_stove.device.DeviceSettingsFragment"
         android:label="AutoShutOffSettingsFragment"
         tools:layout="@layout/fragment_device_settings" >
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.device.DeviceSettingsFragmentParams" />
+            app:argType="com.ome.app.ui.dashboard.my_stove.device.DeviceFragmentParams" />
     </fragment>
 
     <fragment

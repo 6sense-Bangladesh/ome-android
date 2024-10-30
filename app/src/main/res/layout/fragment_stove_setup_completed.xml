@@ -10,8 +10,8 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
+        style="@style/Widget.App.Toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:title="Setup Completed" />
 
@@ -21,7 +21,7 @@
         android:layout_height="@dimen/_36sdp"
         android:background="@color/green"
         android:layout_marginBottom="@dimen/_100sdp"
-        android:src="@drawable/ic_done"
+        android:src="@drawable/ic_done_small"
         app:layout_constraintBottom_toTopOf="@+id/skipKnobSetupBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

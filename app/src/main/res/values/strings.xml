@@ -165,6 +165,7 @@
     <string name="turn_off">Turn Off</string>
     <string name="menu_feedback">Feedback</string>
     <string name="menu_logout">Logout</string>
+    <string name="menu_device_setting">Device Setting</string>
     <string name="logout">Log Out</string>
 
     <string name="charging">Charging</string>
@@ -172,6 +173,11 @@
     <string name="no_wifi">No Wi-Fi</string>
     <string name="poor_signal">Poor Signal</string>
     <string name="no_battery">No Battery</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="knob_details">Knob Details</string>
+    <string name="selected">Selected</string>
+    <string name="choose">Choose</string>
 
 
 </resources>

@@ -5,13 +5,11 @@
     <group android:id="@+id/group_profile" android:visible="false">
         <item
             android:id="@+id/menuFeedback"
-            android:enabled="true"
             android:icon="@drawable/ic_feedback"
             android:title="@string/menu_feedback"
             app:showAsAction="ifRoom"/>
         <item
             android:id="@+id/menuLogout"
-            android:enabled="true"
             android:icon="@drawable/ic_logout"
             android:title="@string/menu_logout"
             app:showAsAction="ifRoom"/>

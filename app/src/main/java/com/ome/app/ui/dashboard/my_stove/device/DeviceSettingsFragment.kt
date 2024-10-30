@@ -1,9 +1,8 @@
-package com.ome.app.ui.dashboard.settings.device
+package com.ome.app.ui.dashboard.my_stove.device
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
@@ -12,18 +11,13 @@ import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.base.navigation.DeepNavGraph.navigate
 import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.utils.subscribe
-import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
-import kotlinx.parcelize.Parcelize
 
 
-@AndroidEntryPoint
 class DeviceSettingsFragment :
-    BaseFragment<DeviceSettingsViewModel, FragmentDeviceSettingsBinding>(
-        FragmentDeviceSettingsBinding::inflate
-    ) {
+    BaseFragment<DeviceViewModel, FragmentDeviceSettingsBinding>(FragmentDeviceSettingsBinding::inflate) {
 
-    override val viewModel: DeviceSettingsViewModel by viewModels()
+    override val viewModel: DeviceViewModel by activityViewModels()
 
     private val args by navArgs<DeviceSettingsFragmentArgs>()
 
@@ -115,6 +109,3 @@ class DeviceSettingsFragment :
     }
 
 }
-
-@Parcelize
-data class DeviceSettingsFragmentParams(val name: String, val macAddr: String) : Parcelable

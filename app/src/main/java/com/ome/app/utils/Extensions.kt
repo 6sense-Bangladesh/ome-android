@@ -9,7 +9,6 @@ import android.app.Activity
 import android.content.*
 import android.content.Context.VIBRATOR_SERVICE
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -46,6 +45,7 @@ import androidx.lifecycle.*
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexboxLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ome.app.BuildConfig
@@ -432,6 +432,14 @@ fun visible(vararg views: View) {
     }
 }
 
+fun changeFlexBasisPercent(percent: Float, vararg views: View) {
+    views.forEach {
+        val lp= it.layoutParams as FlexboxLayout.LayoutParams
+        lp.flexBasisPercent = percent
+        it.layoutParams = lp
+    }
+}
+
 fun gone(vararg views: View) {
     views.forEach {
         if(it.visibility != View.GONE)
@@ -520,16 +528,16 @@ inline fun runWithoutException(block: () -> Unit) {
 //    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
 /** Converts pixel into dp */
-val Int.px: Int
-    get() = (this / Resources.getSystem().displayMetrics.density).toInt()
+//val Int.px: Int
+//    get() = (this / Resources.getSystem().displayMetrics.density).toInt()
 
 ///**Converts DP into pixel */
 //val Float.dp: Float
 //    get() = (this * Resources.getSystem().displayMetrics.density)
 
 /** Converts pixel into dp */
-val Float.px: Float
-    get() = (this / Resources.getSystem().displayMetrics.density)
+//val Float.px: Float
+//    get() = (this / Resources.getSystem().displayMetrics.density)
 
 
 infix fun ViewGroup.inflate(@LayoutRes view: Int): View {

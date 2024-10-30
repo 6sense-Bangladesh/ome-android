@@ -1,6 +1,7 @@
-package com.ome.app.ui.dashboard.settings.device
+package com.ome.app.ui.dashboard.my_stove.device
 
 
+import android.os.Parcelable
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.repo.StoveRepository
@@ -9,11 +10,12 @@ import com.ome.app.ui.base.BaseViewModel
 import com.ome.app.ui.base.SingleLiveEvent
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
 
 @HiltViewModel
-class DeviceSettingsViewModel @Inject constructor(
+class DeviceViewModel @Inject constructor(
     val userRepository: UserRepository,
     val stoveRepository: StoveRepository,
     val webSocketManager: WebSocketManager) : BaseViewModel() {
@@ -54,4 +56,7 @@ class DeviceSettingsViewModel @Inject constructor(
     }
 
 }
+
+@Parcelize
+data class DeviceFragmentParams(val name: String, val macAddr: String) : Parcelable
 

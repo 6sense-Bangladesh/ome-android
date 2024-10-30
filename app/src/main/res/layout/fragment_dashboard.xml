@@ -10,6 +10,7 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
+        style="@style/Widget.App.Toolbar"
         android:layout_width="match_parent"
         app:title="@string/app_name"
         app:menu="@menu/menu_dashboard"
@@ -31,6 +32,15 @@
             app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
 
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        layout="@layout/fragment_my_stove"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar"/>
 
 <!--    <androidx.fragment.app.FragmentContainerView-->
 <!--        android:id="@+id/dashboardContainer"-->

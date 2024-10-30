@@ -117,9 +117,10 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun changeKnobState(knobState: KnobState) {
+        knobSrc.animate().alpha(knobState.alpha).start()
+        knobSrc.tag = knobState.icon
         post {
             knobSrc.loadDrawable(knobState.icon)
-            knobSrc.tag = knobState.icon
         }
     }
 
@@ -134,13 +135,9 @@ class KnobView @JvmOverloads constructor(
         when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.OFFLINE ||
             ( knob.connectStatus.connectionState == ConnectionState.ONLINE && knob.rssi.signalStrengthPercentage in 0..35) -> {
                 hideLabel()
-                changeKnobState(KnobState.DARK)
-                binding.knobSrc.alpha =.5f
+                changeKnobState(KnobState.TRANSPARENT)
             }
-            else -> {
-                changeKnobState(KnobState.NORMAL)
-                binding.knobSrc.alpha = 1f
-            }
+            else -> changeKnobState(KnobState.NORMAL)
         }
     }
 
@@ -205,13 +202,16 @@ class KnobView @JvmOverloads constructor(
     val knobState : KnobState
         get() = KnobState.entries.find { it.icon == knobSrc.tag } ?: KnobState.NORMAL
 
+    val isKnobInAddState
+        get() = knobState == KnobState.ADD
+
     private val String?.connectionState : ConnectionState
         get() = ConnectionState.entries.find { it.type == this } ?: ConnectionState.OFFLINE
 
-    enum class KnobState(@DrawableRes val icon: Int){
-        ADD(R.drawable.ic_knob_circle_add),
-        NORMAL(R.drawable.ic_knob_circle),
-        DARK(R.drawable.ic_knob_circle_dark)
+    enum class KnobState(@DrawableRes val icon: Int, val alpha : Float){
+        ADD(R.drawable.ic_knob_circle_add, 1F),
+        NORMAL(R.drawable.ic_knob_circle, 1F),
+        TRANSPARENT(R.drawable.ic_knob_circle, .6F)
     }
 
     enum class ConnectionState(val type: String){
