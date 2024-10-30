@@ -191,7 +191,7 @@ class MainVM @Inject constructor(
 
 val dummyKnobs = listOf(
     KnobDto(
-        angle = 126,
+        angle = 0,
         battery = 30,
         batteryVolts = 4.5,
         calibrated = true,
@@ -213,7 +213,7 @@ val dummyKnobs = listOf(
         gasOrElectric = "graeci",
         ipAddress = "explicari",
         lastScheduleCommand = "intellegebat",
-        macAddr = "fake_mac",
+        macAddr = "fake_mac1",
         mountingSurface = "dolor",
         rssi = 1597,
         safetyLock = false,
@@ -227,8 +227,8 @@ val dummyKnobs = listOf(
         userId = "enim"
     ),
     KnobDto(
-        angle = 70,
-        battery = 10,
+        angle = 0,
+        battery = 70,
         batteryVolts = 4.5,
         calibrated = true,
         calibration = KnobDto.CalibrationDto(
@@ -249,7 +249,7 @@ val dummyKnobs = listOf(
         gasOrElectric = "graeci",
         ipAddress = "explicari",
         lastScheduleCommand = "intellegebat",
-        macAddr = "fake_mac",
+        macAddr = "fake_mac2",
         mountingSurface = "dolor",
         rssi = 1597,
         safetyLock = false,
@@ -263,7 +263,7 @@ val dummyKnobs = listOf(
         userId = "enim"
     ),
     KnobDto(
-        angle = 30,
+        angle = 0,
         battery = 70,
         batteryVolts = 4.5,
         calibrated = null,
@@ -285,7 +285,7 @@ val dummyKnobs = listOf(
         gasOrElectric = "graeci",
         ipAddress = "explicari",
         lastScheduleCommand = "intellegebat",
-        macAddr = "fake_mac",
+        macAddr = "fake_mac3",
         mountingSurface = "dolor",
         rssi = -20,
         safetyLock = false,
@@ -299,7 +299,7 @@ val dummyKnobs = listOf(
         userId = "enim"
     ),
     KnobDto(
-        angle = 220,
+        angle = 0,
         battery = 90,
         batteryVolts = 4.5,
         calibrated = false,
@@ -321,7 +321,7 @@ val dummyKnobs = listOf(
         gasOrElectric = "graeci",
         ipAddress = "explicari",
         lastScheduleCommand = "intellegebat",
-        macAddr = "fake_mac",
+        macAddr = "fake_mac4",
         mountingSurface = "dolor",
         rssi = -70,
         safetyLock = false,

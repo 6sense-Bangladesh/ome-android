@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.ome.app.utils
 
 import android.content.res.Resources

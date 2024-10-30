@@ -9,6 +9,7 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.setMargins
 import com.ome.app.R
 import com.ome.app.databinding.KnobViewLayoutBinding
 import com.ome.app.domain.model.network.response.KnobDto
@@ -49,6 +50,13 @@ class KnobView @JvmOverloads constructor(
         binding.mediumTv.textSize = size
         binding.highSingleTv.textSize = size
         binding.highDualTv.textSize = size
+
+        (binding.offTv.layoutParams as MarginLayoutParams).setMargins(0)
+        (binding.lowSingleTv.layoutParams as MarginLayoutParams).setMargins(0)
+        (binding.lowDualTv.layoutParams as MarginLayoutParams).setMargins(0)
+        (binding.mediumTv.layoutParams as MarginLayoutParams).setMargins(0)
+        (binding.highSingleTv.layoutParams as MarginLayoutParams).setMargins(0)
+        (binding.highDualTv.layoutParams as MarginLayoutParams).setMargins(0)
     }
 
 
@@ -124,7 +132,7 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
-    fun changeKnobStatus(knob: KnobDto) {
+    fun changeKnobStatus(knob: KnobDto): Boolean {
         changeBatteryState(batteryLevel = knob.battery)
         changeConfigurationState(isCalibrated = knob.calibrated)
         changeConnectionState(
@@ -132,12 +140,18 @@ class KnobView @JvmOverloads constructor(
             wifiRSSI = knob.rssi,
             batteryLevel = knob.battery
         )
-        when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.OFFLINE ||
+        return when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.OFFLINE ||
             ( knob.connectStatus.connectionState == ConnectionState.ONLINE && knob.rssi.signalStrengthPercentage in 0..35) -> {
                 hideLabel()
                 changeKnobState(KnobState.TRANSPARENT)
+                changeKnobProgressVisibility(false)
+            false
             }
-            else -> changeKnobState(KnobState.NORMAL)
+            else -> {
+                changeKnobState(KnobState.NORMAL)
+                changeKnobProgressVisibility(true)
+                true
+            }
         }
     }
 
@@ -197,6 +211,10 @@ class KnobView @JvmOverloads constructor(
                 }
             }
         }
+    }
+
+    fun changeKnobProgressVisibility(isVisible: Boolean) {
+        binding.knobProgress.changeVisibility(isVisible)
     }
 
     val knobState : KnobState

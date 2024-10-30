@@ -3,15 +3,17 @@ package com.ome.app.ui.dashboard.my_stove.device
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceSettingsBinding
 import com.ome.app.ui.base.BaseFragment
-import com.ome.app.ui.base.navigation.DeepNavGraph.navigate
-import com.ome.app.ui.base.navigation.Screens
+import com.ome.app.ui.base.recycler.ItemModel
+import com.ome.app.ui.dashboard.my_stove.MyStoveFragment.Companion.setupKnob
+import com.ome.app.ui.dashboard.settings.adapter.SettingItemAdapter
+import com.ome.app.ui.dashboard.settings.adapter.model.SettingsItemModel
+import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.subscribe
-import dev.chrisbanes.insetter.applyInsetter
 
 
 class DeviceSettingsFragment :
@@ -21,16 +23,21 @@ class DeviceSettingsFragment :
 
     private val args by navArgs<DeviceSettingsFragmentArgs>()
 
+    private val adapter by lazy { SettingItemAdapter(onClick) }
+
+    override fun setupUI() {
+        binding.apply {
+//            name.text = args.params.name
+            mainViewModel.knobs.value.find { it.macAddr == args.params.macAddr }?.let {
+                knobView.setupKnob(it, null)
+//                knobView.setFontSize(18F)
+            }
+            recyclerView.adapter = adapter
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.backIv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-
 
         viewModel.knobAngleLiveData.postValue(null)
         viewModel.initSubscriptions()
@@ -38,8 +45,8 @@ class DeviceSettingsFragment :
         binding.knobView.setFontSize(14f)
         binding.knobTv.text = args.params.name
         binding.macAddressTv.text = getString(R.string.knob_mac_addr_label, args.params.macAddr)
-        binding.backIv.setOnClickListener { findNavController().popBackStack() }
-        binding.changeKnobOrientationCl.setOnClickListener {
+
+//        binding.changeKnobOrientationCl.setOnClickListener {
 //            findNavController().navigate(
 //                DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToKnobInstallationManual1Fragment(
 //                    KnobInstallationManual1FragmentParams(
@@ -49,8 +56,8 @@ class DeviceSettingsFragment :
 //
 //                )
 //            )
-        }
-        binding.changeWifiCl.setOnClickListener {
+//        }
+//        binding.changeWifiCl.setOnClickListener {
 //            findNavController().navigate(
 //                DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToConnectToWifiFragment(
 //                    ConnectToWifiParams(
@@ -60,9 +67,9 @@ class DeviceSettingsFragment :
 //                    )
 //                )
 //            )
-        }
-        binding.changeKnobPositionCl.setOnClickListener {
-            Screens.StoveLayout.navigate()
+//        }
+//        binding.changeKnobPositionCl.setOnClickListener {
+//            Screens.StoveLayout.navigate()
 //            findNavController().navigate(
 //                DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToSelectBurnerFragment(
 //                    SelectBurnerFragmentParams(
@@ -71,7 +78,11 @@ class DeviceSettingsFragment :
 //                    )
 //                )
 //            )
-        }
+//        }
+    }
+
+    override fun setupListener() {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
     }
 
 
@@ -106,6 +117,17 @@ class DeviceSettingsFragment :
         subscribe(viewModel.knobAngleLiveData) { angle ->
             angle?.let { binding.knobView.setKnobPosition(it) }
         }
+
+        viewModel.deviceSettingsList.collectWithLifecycle {
+            adapter.submitList(it)
+        }
     }
 
+    private val onClick: (ItemModel) -> Unit = { item ->
+        when (item) {
+            is SettingsItemModel -> {
+
+            }
+        }
+    }
 }

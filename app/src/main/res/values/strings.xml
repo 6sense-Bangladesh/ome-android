@@ -82,7 +82,7 @@
     <string name="change_knob_position">Change Knob Position</string>
     <string name="change_wifi">Change Wifi</string>
     <string name="change_knob_orientation">Change Knob Orientation</string>
-    <string name="knob_mac_addr_label">MAC ID:%1$s</string>
+    <string name="knob_mac_addr_label">MAC ID: %1$s</string>
     <string name="part_1_knob_installation">Part 1: Knob Installation</string>
     <string name="turn_on_your_ome_knob_by_plugging_it_into_power">Turn on your Ome knob by plugging it into power.</string>
     <string name="complete_part_1_of_knob_installation_by_following_these_install_videos">Complete Part 1 of knob installation by following these <a href="https://ome-kitchen.myshopify.com/pages/installation#accord1">install videos</a></string>
@@ -178,6 +178,10 @@
     <string name="knob_details">Knob Details</string>
     <string name="selected">Selected</string>
     <string name="choose">Choose</string>
+    <string name="off">Off</string>
+    <string name="status">Status:</string>
+    <string name="battery">Battery:</string>
+    <string name="set_timer">Set Timer</string>
 
 
 </resources>

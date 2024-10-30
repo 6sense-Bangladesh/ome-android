@@ -2,12 +2,15 @@ package com.ome.app.ui.dashboard.settings.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.ome.app.R
 import com.ome.app.databinding.SettingsItemBinding
 import com.ome.app.databinding.SettingsTitleItemBinding
 import com.ome.app.ui.base.recycler.ItemModel
+import com.ome.app.ui.dashboard.settings.adapter.model.DeviceSettingsItemModel
 import com.ome.app.ui.dashboard.settings.adapter.model.SettingsItemModel
 import com.ome.app.ui.dashboard.settings.adapter.model.SettingsKnobItemModel
 import com.ome.app.ui.dashboard.settings.adapter.model.SettingsTitleItemModel
@@ -46,6 +49,15 @@ class SettingItemAdapter(private val onClick: (ItemModel) -> Unit) :
                 is SettingsKnobItemModel -> {
                     binding.optionTv.text = item.name
                     binding.divider.changeVisibility(item.showDivider)
+                }
+
+                is DeviceSettingsItemModel -> {
+                    binding.optionTv.text = item.option
+                    if(item == DeviceSettingsItemModel.DeleteKnob)
+                        binding.optionTv.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
+                    binding.optionTv.setCompoundDrawablesRelativeWithIntrinsicBounds(item.icon,0,0,0)
+                    binding.optionTv.compoundDrawablePadding = binding.root.context.resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._5sdp)
+                    onClick(item)
                 }
             }
 

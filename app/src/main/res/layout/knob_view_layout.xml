@@ -20,11 +20,11 @@
             android:id="@+id/knobSrc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="38dp"
             android:adjustViewBounds="true"
-            android:tag="@drawable/ic_knob_circle"
             android:contentDescription="@string/configure_knob"
             android:src="@drawable/ic_knob_circle"
+            android:tag="@drawable/ic_knob_circle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,10 +32,42 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+<!--    <com.google.android.material.progressindicator.CircularProgressIndicator-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:progress="86"-->
+<!--        android:rotation="25"-->
+<!--        app:trackColor="@android:color/transparent"-->
+<!--        app:indicatorSize="@dimen/_200sdp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/knobCircleCl"-->
+<!--        app:trackCornerRadius="@dimen/_10sdp"-->
+<!--        app:trackThickness="@dimen/_10sdp" />-->
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/knobProgress"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:srcCompat="@drawable/ic_progress_gradient"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="26dp"
+        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
+        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
+        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"
+        app:layout_constraintTop_toTopOf="@+id/knobCircleCl"
+        />
+
+
     <TextView
         android:id="@+id/stovePositionTv"
         style="@style/Label.Medium"
         android:layout_width="wrap_content"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
@@ -197,13 +229,13 @@
         android:id="@+id/statusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-25dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_marginTop="-25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/knobCircleCl"
-        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl">
+        app:layout_constraintTop_toBottomOf="@+id/knobCircleCl">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/connectionStatus"
@@ -241,8 +273,6 @@
             android:visibility="gone"
             tools:visibility="visible" />
     </LinearLayout>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

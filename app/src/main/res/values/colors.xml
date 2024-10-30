@@ -61,7 +61,7 @@
     <color name="divider_color">#F0F0F5</color>
     <color name="cardBackground">#f1f4f9</color>
     <color name="cardStrokeColor">#eef1f6</color>
-    <color name="cardStrokeColorDeep">#c1c7ce</color>
+    <color name="cardStrokeColorDeep">#dde3ea</color>
 
 
 </resources>

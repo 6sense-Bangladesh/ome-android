@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".ui.dashboard.my_stove.device.DeviceDetailsFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -16,4 +17,166 @@
         app:title="@string/knob_details"
         app:titleMargin="@dimen/_5sdp" />
 
-</FrameLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/burnerSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_14sdp"
+        app:contentPadding="@dimen/_9sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar"
+        app:strokeColor="@color/cardStrokeColorDeep"
+        app:strokeWidth="@dimen/_2sdp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_marginEnd="@dimen/_6sdp"
+                    android:background="@drawable/rounded_shape"
+                    android:backgroundTint="@color/cardStrokeColor" />
+
+                <View
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:background="@drawable/rounded_shape" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_6sdp">
+
+                <View
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_marginEnd="@dimen/_6sdp"
+                    android:background="@drawable/rounded_shape"
+                    android:backgroundTint="@color/cardStrokeColor" />
+
+                <View
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:background="@drawable/rounded_shape"
+                    android:backgroundTint="@color/cardStrokeColor" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/burnerSelection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/burnerSelection"
+        app:layout_constraintTop_toTopOf="@+id/burnerSelection">
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/Title.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_yellow_circle"
+            app:layout_constraintEnd_toEndOf="@+id/avatarIv"
+            app:layout_constraintStart_toStartOf="@+id/avatarIv"
+            app:layout_constraintTop_toBottomOf="@+id/avatarIv"
+            tools:text="Burner 1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/Label.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_yellow_circle"
+                android:text="@string/status"
+                app:layout_constraintEnd_toEndOf="@+id/avatarIv"
+                app:layout_constraintStart_toStartOf="@+id/avatarIv"
+                app:layout_constraintTop_toBottomOf="@+id/avatarIv" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/status"
+                style="@style/Widget.Material3.Chip.Assist"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:clickable="false"
+                android:text="@string/off"
+                android:textColor="@drawable/color_text_selector"
+                android:textSize="@dimen/_10ssp"
+                app:chipBackgroundColor="@color/chip_color_state_list"
+                app:chipIconTint="@drawable/color_text_selector"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Round" />
+
+            <TextView
+                style="@style/Label.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:text="@string/battery"
+                app:layout_constraintEnd_toEndOf="@+id/avatarIv"
+                app:layout_constraintStart_toStartOf="@+id/avatarIv"
+                app:layout_constraintTop_toBottomOf="@+id/avatarIv" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/batteryIv"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:src="@drawable/ic_battery_4" />
+
+            <TextView
+                android:id="@+id/batteryPercentage"
+                style="@style/Label.Mini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/avatarIv"
+                app:layout_constraintStart_toStartOf="@+id/avatarIv"
+                app:layout_constraintTop_toBottomOf="@+id/avatarIv"
+                tools:text="69%" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.ome.app.ui.views.KnobView
+        android:id="@+id/knob"
+        android:layout_width="@dimen/_220sdp"
+        android:layout_height="@dimen/_220sdp"
+        app:layout_constraintBottom_toTopOf="@+id/continueBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/burnerSelection" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/continueBtn"
+        style="@style/OmeButton.Blue"
+        android:layout_width="wrap_content"
+        android:text="@string/set_timer"
+        app:icon="@drawable/ic_timer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

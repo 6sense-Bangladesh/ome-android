@@ -53,33 +53,37 @@ class MyStoveFragment :
         }
     }
 
-    private fun KnobView.setupKnob(knob: KnobDto) {
-        setBounceClickListener{
-            navController?.navigate(
-                DashboardFragmentDirections.actionDashboardFragmentToDeviceDetailsFragment(
-                    DeviceFragmentParams(
-                        name = "Knob #${knob.stovePosition}",
-                        macAddr = knob.macAddr
+    companion object{
+        fun KnobView.setupKnob(knob: KnobDto, navController: NavController?) {
+            navController?.apply {
+                setBounceClickListener{
+                    navController.navigate(
+                        DashboardFragmentDirections.actionDashboardFragmentToDeviceDetailsFragment(
+                            DeviceFragmentParams(
+                                name = "Burner ${knob.stovePosition}",
+                                macAddr = knob.macAddr
+                            )
+                        )
                     )
-                )
-            )
-        }
-        changeKnobState(KnobView.KnobState.NORMAL)
-        val calibration = knob.calibration.toCalibration()
-        setStovePosition(knob.stovePosition)
-        setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
-        setOffPosition(calibration.offAngle.toFloat())
-        calibration.zones1?.let { zone ->
-            setHighSinglePosition(zone.highAngle.toFloat())
-            setMediumPosition(zone.mediumAngle.toFloat())
-            setLowSinglePosition(zone.lowAngle.toFloat())
-        }
-        calibration.zones2?.let { zone ->
-            setHighDualPosition(zone.highAngle.toFloat())
+                }
+            }
+            if(changeKnobStatus(knob)) {
+                val calibration = knob.calibration.toCalibration()
+                setStovePosition(knob.stovePosition)
+                setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
+                calibration.zones1?.let { zone ->
+                    setHighSinglePosition(zone.highAngle.toFloat())
+                    setMediumPosition(zone.mediumAngle.toFloat())
+                    setLowSinglePosition(zone.lowAngle.toFloat())
+                }
+                calibration.zones2?.let { zone ->
+                    setHighDualPosition(zone.highAngle.toFloat())
 //            setMediumDualPosition(zone.mediumAngle.toFloat())
-            setLowDualPosition(zone.lowAngle.toFloat())
+                    setLowDualPosition(zone.lowAngle.toFloat())
+                }
+                setOffPosition(calibration.offAngle.toFloat())
+            }
         }
-        changeKnobStatus(knob)
     }
 
     private fun initKnob(vararg know : KnobView) {
@@ -124,27 +128,27 @@ class MyStoveFragment :
                     when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
                         StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
                             when(knob.stovePosition){
-                                1 -> knob1.setupKnob(knob)
-                                2 -> knob2.setupKnob(knob)
-                                3 -> knob3.setupKnob(knob)
-                                4 -> knob4.setupKnob(knob)
-                                5 -> knob1center.setupKnob(knob)
+                                1 -> knob1.setupKnob(knob, navController)
+                                2 -> knob2.setupKnob(knob, navController)
+                                3 -> knob3.setupKnob(knob, navController)
+                                4 -> knob4.setupKnob(knob, navController)
+                                5 -> knob1center.setupKnob(knob, navController)
                             }
                         }
                         StoveOrientation.TWO_BURNERS_VERTICAL -> {
                             when(knob.stovePosition){
-                                1 -> knob1center.setupKnob(knob)
-                                2 -> knob2center.setupKnob(knob)
+                                1 -> knob1center.setupKnob(knob, navController)
+                                2 -> knob2center.setupKnob(knob, navController)
                             }
                         }
                         else -> {
                             when(knob.stovePosition){
-                                1 -> knob1.setupKnob(knob)
-                                2 -> knob2.setupKnob(knob)
-                                3 -> knob3.setupKnob(knob)
-                                4 -> knob4.setupKnob(knob)
-                                5 -> knob5.setupKnob(knob)
-                                6 -> knob6.setupKnob(knob)
+                                1 -> knob1.setupKnob(knob, navController)
+                                2 -> knob2.setupKnob(knob, navController)
+                                3 -> knob3.setupKnob(knob, navController)
+                                4 -> knob4.setupKnob(knob, navController)
+                                5 -> knob5.setupKnob(knob, navController)
+                                6 -> knob6.setupKnob(knob, navController)
                             }
                         }
                     }
