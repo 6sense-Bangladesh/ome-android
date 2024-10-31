@@ -22,7 +22,7 @@
         android:id="@+id/burnerSelection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginStart="@dimen/_12sdp"
         android:layout_marginTop="@dimen/_30sdp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/_14sdp"
@@ -38,41 +38,91 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <View
+                    android:id="@+id/knob1"
                     android:layout_width="@dimen/_16sdp"
                     android:layout_height="@dimen/_16sdp"
-                    android:layout_marginEnd="@dimen/_6sdp"
                     android:background="@drawable/rounded_shape"
-                    android:backgroundTint="@color/cardStrokeColor" />
+                    android:backgroundTint="@color/cardStrokeColor"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <View
+                    android:id="@+id/knob2"
                     android:layout_width="@dimen/_16sdp"
                     android:layout_height="@dimen/_16sdp"
-                    android:background="@drawable/rounded_shape" />
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:background="@drawable/rounded_shape"
+                    android:backgroundTint="@color/cardStrokeColor"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <View
+                    android:id="@+id/knob3"
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:background="@drawable/rounded_shape"
+                    android:backgroundTint="@color/cardStrokeColor"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
 
             </LinearLayout>
 
-            <LinearLayout
+            <View
+                android:id="@+id/knob7"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_shape"
+                android:backgroundTint="@color/cardStrokeColor"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <View
+                android:id="@+id/spacer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_6sdp">
+                android:layout_height="@dimen/_6sdp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <View
+                    android:id="@+id/knob4"
                     android:layout_width="@dimen/_16sdp"
                     android:layout_height="@dimen/_16sdp"
-                    android:layout_marginEnd="@dimen/_6sdp"
                     android:background="@drawable/rounded_shape"
-                    android:backgroundTint="@color/cardStrokeColor" />
+                    android:backgroundTint="@color/cardStrokeColor"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
                 <View
+                    android:id="@+id/knob5"
                     android:layout_width="@dimen/_16sdp"
                     android:layout_height="@dimen/_16sdp"
+                    android:layout_marginStart="@dimen/_6sdp"
                     android:background="@drawable/rounded_shape"
-                    android:backgroundTint="@color/cardStrokeColor" />
+                    android:backgroundTint="@color/cardStrokeColor"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <View
+                    android:id="@+id/knob6"
+                    android:layout_width="@dimen/_16sdp"
+                    android:layout_height="@dimen/_16sdp"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:background="@drawable/rounded_shape"
+                    android:backgroundTint="@color/cardStrokeColor"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
 
             </LinearLayout>
         </LinearLayout>
@@ -83,7 +133,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_6sdp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/burnerSelection"
         app:layout_constraintEnd_toEndOf="parent"
@@ -101,32 +151,36 @@
             app:layout_constraintTop_toBottomOf="@+id/avatarIv"
             tools:text="Burner 1" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
             android:gravity="center_vertical">
 
             <TextView
+                android:id="@+id/tv1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 style="@style/Label.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_yellow_circle"
                 android:text="@string/status"
-                app:layout_constraintEnd_toEndOf="@+id/avatarIv"
-                app:layout_constraintStart_toStartOf="@+id/avatarIv"
-                app:layout_constraintTop_toBottomOf="@+id/avatarIv" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/status"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 style="@style/Widget.Material3.Chip.Assist"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_35sdp"
+                app:layout_constraintStart_toEndOf="@+id/tv1"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:clickable="false"
                 android:text="@string/off"
                 android:textColor="@drawable/color_text_selector"
-                android:textSize="@dimen/_10ssp"
+                android:textSize="@dimen/_9ssp"
                 app:chipBackgroundColor="@color/chip_color_state_list"
                 app:chipIconTint="@drawable/color_text_selector"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Round" />
@@ -135,29 +189,31 @@
                 style="@style/Label.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_30sdp"
                 android:text="@string/battery"
-                app:layout_constraintEnd_toEndOf="@+id/avatarIv"
-                app:layout_constraintStart_toStartOf="@+id/avatarIv"
-                app:layout_constraintTop_toBottomOf="@+id/avatarIv" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/batteryIcon"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/batteryIv"
+                android:id="@+id/batteryIcon"
                 android:layout_width="@dimen/_16sdp"
                 android:layout_height="@dimen/_16sdp"
-                android:layout_marginStart="@dimen/_2sdp"
-                android:src="@drawable/ic_battery_4" />
+                android:src="@drawable/ic_battery_4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/batteryPercentage"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/batteryPercentage"
                 style="@style/Label.Mini"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="@+id/avatarIv"
-                app:layout_constraintStart_toStartOf="@+id/avatarIv"
-                app:layout_constraintTop_toBottomOf="@+id/avatarIv"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="69%" />
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
     <com.ome.app.ui.views.KnobView

@@ -7,10 +7,15 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceSettingsBinding
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.ui.base.navigation.DeepNavGraph.navigate
+import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.ui.base.recycler.ItemModel
 import com.ome.app.ui.dashboard.my_stove.MyStoveFragment.Companion.setupKnob
 import com.ome.app.ui.dashboard.settings.adapter.SettingItemAdapter
-import com.ome.app.ui.dashboard.settings.adapter.model.SettingsItemModel
+import com.ome.app.ui.dashboard.settings.adapter.model.DeviceSettingsItemModel
+import com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
+import com.ome.app.ui.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
+import com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiParams
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.subscribe
@@ -42,8 +47,8 @@ class DeviceSettingsFragment :
         viewModel.knobAngleLiveData.postValue(null)
         viewModel.initSubscriptions()
         viewModel.macAddress = args.params.macAddr
-        binding.knobView.setFontSize(14f)
-        binding.knobTv.text = args.params.name
+//        binding.knobView.setFontSize(14f)
+        binding.knobTv.text = getString(R.string.knob_, args.params.stovePosition)
         binding.macAddressTv.text = getString(R.string.knob_mac_addr_label, args.params.macAddr)
 
 //        binding.changeKnobOrientationCl.setOnClickListener {
@@ -125,8 +130,21 @@ class DeviceSettingsFragment :
 
     private val onClick: (ItemModel) -> Unit = { item ->
         when (item) {
-            is SettingsItemModel -> {
+            is DeviceSettingsItemModel -> {
+                when (item) {
+                    DeviceSettingsItemModel.KnobPosition -> Screens.SelectBurnerPosition.navigate(
+                        SelectBurnerFragmentParams(isChangeMode= true, macAddress = viewModel.macAddress)
+                    )
+                    DeviceSettingsItemModel.KnobWiFI -> Screens.ConnectToWifi.navigate(
+                        ConnectToWifiParams(isChangeWifiMode = true, macAddrs = viewModel.macAddress)
+                    )
+                    DeviceSettingsItemModel.KnobOrientation -> Screens.DirectionSelection.navigate(
+                        DirectionSelectionFragmentParams(isChangeMode = true, macAddress = viewModel.macAddress)
+                    )
+                    DeviceSettingsItemModel.DeleteKnob -> {
 
+                    }
+                }
             }
         }
     }

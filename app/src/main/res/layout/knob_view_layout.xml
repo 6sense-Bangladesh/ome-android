@@ -53,8 +53,7 @@
         android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:srcCompat="@drawable/ic_progress_gradient"
-        android:layout_marginTop="10dp"
+        app:srcCompat="@drawable/ic_knob_level_single_zone"
         android:layout_marginHorizontal="26dp"
         app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
         app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
@@ -229,7 +228,7 @@
         android:id="@+id/statusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-25dp"
+        android:layout_marginTop="-45dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
@@ -246,8 +245,7 @@
             android:drawablePadding="@dimen/_3sdp"
             android:gravity="center"
             android:text="@string/no_wifi"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            android:visibility="gone"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/noBattery"
@@ -258,8 +256,7 @@
             android:drawablePadding="@dimen/_3sdp"
             android:gravity="center"
             android:text="@string/no_battery"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            android:visibility="gone" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/notConfigured"
@@ -270,8 +267,7 @@
             android:drawablePadding="@dimen/_3sdp"
             android:gravity="center"
             android:text="@string/configure"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            android:visibility="gone" />
     </LinearLayout>
 
 

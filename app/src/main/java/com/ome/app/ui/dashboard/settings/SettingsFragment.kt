@@ -132,7 +132,7 @@ class SettingsFragment :
                 navController?.navigate(
                     DashboardFragmentDirections.actionDashboardFragmentToDeviceSettingsFragment(
                         DeviceFragmentParams(
-                            name = item.name,
+                            stovePosition = item.stovePosition,
                             macAddr = item.macAddr
                         )
                     )

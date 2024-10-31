@@ -36,7 +36,7 @@ class SettingItemAdapter(private val onClick: (ItemModel) -> Unit) :
                             binding.root.context.toast("Operation not allowed")
                     }
 
-                    is SettingsKnobItemModel -> onClick(item)
+                    is SettingsKnobItemModel, is DeviceSettingsItemModel -> onClick(item)
                 }
             }
 
@@ -47,7 +47,7 @@ class SettingItemAdapter(private val onClick: (ItemModel) -> Unit) :
                 }
 
                 is SettingsKnobItemModel -> {
-                    binding.optionTv.text = item.name
+                    binding.optionTv.text = binding.root.context.getString(R.string.knob_, item.stovePosition)
                     binding.divider.changeVisibility(item.showDivider)
                 }
 
@@ -57,7 +57,6 @@ class SettingItemAdapter(private val onClick: (ItemModel) -> Unit) :
                         binding.optionTv.setTextColor(ContextCompat.getColor(binding.root.context, R.color.red))
                     binding.optionTv.setCompoundDrawablesRelativeWithIntrinsicBounds(item.icon,0,0,0)
                     binding.optionTv.compoundDrawablePadding = binding.root.context.resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._5sdp)
-                    onClick(item)
                 }
             }
 

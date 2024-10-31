@@ -3,16 +3,14 @@ package com.ome.app.ui.dashboard.settings.add_knob.direction
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.ome.app.R
 import com.ome.app.databinding.FragmentDirectionSelectionBinding
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.ui.base.navigation.DeepNavGraph.getData
+import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.ui.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
-import com.ome.app.utils.makeGone
-import com.ome.app.utils.makeVisible
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.parcelize.Parcelize
@@ -24,11 +22,13 @@ class DirectionSelectionFragment :
     ) {
     override val viewModel: DirectionSelectionViewModel by viewModels()
 
-    private val args by navArgs<DirectionSelectionFragmentArgs>()
+//    private val args by navArgs<DirectionSelectionFragmentArgs>()
+    private val args by lazy { Screens.DirectionSelection.getData(arguments) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.backIv.applyInsetter {
+        viewModel.macAddress = args?.macAddress.orEmpty()
+            binding.backIv.applyInsetter {
             type(navigationBars = true, statusBars = true) {
                 padding(horizontal = true)
                 margin(top = true)
@@ -42,17 +42,21 @@ class DirectionSelectionFragment :
         binding.backIv.setOnClickListener { findNavController().popBackStack() }
 
         binding.continueBtn.setOnClickListener {
-            findNavController().navigate(
-                DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
-                    DeviceCalibrationFragmentParams(
-                        isComeFromSettings = args.params.isComeFromSettings,
-                        zoneNumber = args.params.zoneNumber,
-                        isDualKnob = args.params.isDualKnob,
-                        rotateDir = viewModel.clockwiseDir,
-                        macAddr = args.params.macAddress
+            if(args?.isChangeMode.isTrue()){
+                viewModel.updateDirection()
+            }else {
+                findNavController().navigate(
+                    DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
+                        DeviceCalibrationFragmentParams(
+                            isComeFromSettings = args?.isComeFromSettings.orFalse(),
+                            zoneNumber = args?.zoneNumber.orZero(),
+                            isDualKnob = args?.isDualKnob.orFalse(),
+                            rotateDir = viewModel.clockwiseDir,
+                            macAddr = args?.macAddress.orEmpty()
+                        )
                     )
                 )
-            )
+            }
         }
         binding.counterClockWiseRl.setOnClickListener {
             binding.clockWiseCoverIv.makeVisible()
@@ -71,16 +75,19 @@ class DirectionSelectionFragment :
 
     private fun enableContinueButton() {
         binding.continueBtn.isEnabled = true
-        ContextCompat.getDrawable(requireContext(), R.drawable.ome_gradient_button_unpressed_color)
-            ?.let {
-                binding.continueBtn.drawableBackground = it
-            }
-        binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_unpressed_color)
+//        ContextCompat.getDrawable(requireContext(), R.drawable.ome_gradient_button_unpressed_color)
+//            ?.let {
+//                binding.continueBtn.drawableBackground = it
+//            }
+//        binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_unpressed_color)
     }
 
 
     override fun setupObserver() {
         super.setupObserver()
+        viewModel.loadingFlow.collectWithLifecycle {
+            if (!it) onBackPressed()
+        }
     }
 }
 
@@ -89,6 +96,7 @@ data class DirectionSelectionFragmentParams(
     val isComeFromSettings: Boolean = true,
     val zoneNumber: Int = 0,
     val isDualKnob: Boolean = false,
-    val macAddress: String = ""
+    val macAddress: String = "",
+    val isChangeMode: Boolean = false
 ) : Parcelable
 

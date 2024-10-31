@@ -36,9 +36,11 @@
         android:name="com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragment"
         android:label="SelectBurnerFragment"
         tools:layout="@layout/fragment_select_burner">
-        <argument
-            android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams" />
+<!--        <argument-->
+<!--            android:name="params"-->
+<!--            app:argType="com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams" />-->
+        <argument android:name="nav_arg" app:argType="string"/>
+        <deepLink app:uri="ome://navigation/knob_position/{nav_arg}" />
         <action
             android:id="@+id/action_selectBurnerFragment_to_qrCodeScannerFragment"
             app:destination="@id/qrCodeScannerFragment"
@@ -69,9 +71,11 @@
         android:name="com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiFragment"
         android:label="ConnectToWifiFragment"
         tools:layout="@layout/fragment_connect_to_wifi">
-        <argument
-            android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiParams" />
+<!--        <argument-->
+<!--            android:name="params"-->
+<!--            app:argType="com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiParams" />-->
+        <argument android:name="nav_arg" app:argType="string"/>
+        <deepLink app:uri="ome://navigation/connect_wifi/{nav_arg}" />
         <action
             android:id="@+id/action_connectToWifiFragment_to_manualSetupFragment"
             app:destination="@id/manualSetupFragment"
@@ -225,9 +229,12 @@
         android:name="com.ome.app.ui.dashboard.settings.add_knob.direction.DirectionSelectionFragment"
         android:label="DirectionSelectionFragment"
         tools:layout="@layout/fragment_direction_selection">
-        <argument
-            android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams" />
+
+<!--        <argument-->
+<!--            android:name="params"-->
+<!--            app:argType="com.ome.app.ui.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams" />-->
+        <argument android:name="nav_arg" app:argType="string"/>
+        <deepLink app:uri="ome://navigation/knob_orientation/{nav_arg}" />
         <action
             android:id="@+id/action_directionSelectionFragment_to_deviceCalibrationFragment"
             app:destination="@id/deviceCalibrationFragment"

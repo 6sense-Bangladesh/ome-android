@@ -10,6 +10,8 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentZoneSelectionBinding
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.ui.base.navigation.DeepNavGraph.navigate
+import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.ui.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
 import com.ome.app.ui.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
 import com.ome.app.utils.makeGone
@@ -56,16 +58,24 @@ class ZoneSelectionFragment :
                     )
                 )
             } else {
-                findNavController().navigate(
-                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(
-                        DirectionSelectionFragmentParams(
-                            args.params.isComeFromSettings,
-                            viewModel.zoneNumber,
-                            viewModel.isDualKnob,
-                            args.params.macAddr
-                        )
+                Screens.DirectionSelection.navigate(
+                    DirectionSelectionFragmentParams(
+                        isComeFromSettings = args.params.isComeFromSettings,
+                        zoneNumber = viewModel.zoneNumber,
+                        isDualKnob = viewModel.isDualKnob,
+                        macAddress = args.params.macAddr
                     )
                 )
+//                findNavController().navigate(
+//                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(
+//                        DirectionSelectionFragmentParams(
+//                            args.params.isComeFromSettings,
+//                            viewModel.zoneNumber,
+//                            viewModel.isDualKnob,
+//                            args.params.macAddr
+//                        )
+//                    )
+//                )
             }
 
         }

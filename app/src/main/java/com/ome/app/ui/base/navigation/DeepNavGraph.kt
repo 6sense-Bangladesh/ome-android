@@ -10,6 +10,9 @@ import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.ome.app.R
+import com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
+import com.ome.app.ui.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
+import com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiParams
 import com.ome.app.ui.stove.StoveSetupBurnersArgs
 import com.ome.app.ui.stove.StoveSetupTypeArgs
 import com.ome.app.utils.fromJson
@@ -23,6 +26,10 @@ sealed class Screens<T>(val destination: String) {
     data object StoveBrand : Screens<Unit>("stove_brand")
     data object StoveType : Screens<StoveSetupTypeArgs>("stove_type")
     data object StoveLayout : Screens<StoveSetupBurnersArgs>("stove_layout")
+
+    data object SelectBurnerPosition : Screens<SelectBurnerFragmentParams>("knob_position")
+    data object ConnectToWifi : Screens<ConnectToWifiParams>("connect_wifi")
+    data object DirectionSelection : Screens<DirectionSelectionFragmentParams>("knob_orientation")
 }
 
 object DeepNavGraph {

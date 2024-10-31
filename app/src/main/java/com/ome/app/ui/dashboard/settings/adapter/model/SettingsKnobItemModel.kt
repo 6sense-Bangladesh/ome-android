@@ -5,10 +5,10 @@ import com.ome.app.ui.base.recycler.ItemModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class SettingsKnobItemModel(val name: String, val macAddr: String, val showDivider: Boolean = true): ItemModel
+data class SettingsKnobItemModel(val stovePosition: Int, val macAddr: String, val showDivider: Boolean = true): ItemModel
 
 fun KnobDto.toItemModel(showDivider: Boolean = true) =
     SettingsKnobItemModel(
-        name = "Knob #$stovePosition",
+        stovePosition = stovePosition,
         macAddr = macAddr
     )

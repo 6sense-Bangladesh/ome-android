@@ -81,3 +81,12 @@ val Int?.rotation
         2 -> Calibration.Rotation.DUAL
         else -> Calibration.Rotation.CLOCKWISE
     }
+
+enum class ConnectionState(val type: String){
+    Online("online"),
+    Offline("offline"),
+    Charging("charging")
+}
+
+val String?.connectionState : ConnectionState
+    get() = ConnectionState.entries.find { it.type == this } ?: ConnectionState.Offline

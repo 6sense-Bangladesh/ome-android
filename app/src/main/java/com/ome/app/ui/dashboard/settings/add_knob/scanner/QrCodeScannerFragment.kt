@@ -9,11 +9,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentQrCodeScannerBinding
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.ui.base.navigation.DeepNavGraph.navigate
+import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiParams
 import com.ome.app.ui.views.code_scanner.startQrScanner
 import com.ome.app.utils.changeVisibility
@@ -129,11 +130,14 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
         subscribe(viewModel.isKnobAddedLiveData) {
             if (it) {
                 viewModel.macAddress?.let {
-                    findNavController().navigate(
-                        QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
-                            ConnectToWifiParams(macAddrs = it, isComeFromSettings = args.params.isComeFromSettings)
-                        )
+                    Screens.ConnectToWifi.navigate(
+                        ConnectToWifiParams(macAddrs = it, isComeFromSettings = args.params.isComeFromSettings)
                     )
+//                    findNavController().navigate(
+//                        QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
+//                            ConnectToWifiParams(macAddrs = it, isComeFromSettings = args.params.isComeFromSettings)
+//                        )
+//                    )
                 }
             } else {
                 viewModel.addNewKnob()
@@ -141,11 +145,14 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
         }
         subscribe(viewModel.knobCreatedLiveData) {
             viewModel.macAddress?.let {
-                findNavController().navigate(
-                    QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
-                        ConnectToWifiParams(macAddrs = it, isComeFromSettings = args.params.isComeFromSettings)
-                    )
+                Screens.ConnectToWifi.navigate(
+                    ConnectToWifiParams(macAddrs = it, isComeFromSettings = args.params.isComeFromSettings)
                 )
+//                findNavController().navigate(
+//                    QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
+//                        ConnectToWifiParams(macAddrs = it, isComeFromSettings = args.params.isComeFromSettings)
+//                    )
+//                )
             }
         }
         viewModel.loadingFlow.collectWithLifecycle{

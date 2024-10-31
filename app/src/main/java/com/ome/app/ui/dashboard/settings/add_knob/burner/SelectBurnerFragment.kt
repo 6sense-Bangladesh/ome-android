@@ -6,11 +6,14 @@ import android.text.SpannableStringBuilder
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentSelectBurnerBinding
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.ui.base.navigation.DeepNavGraph.getData
+import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.ui.dashboard.settings.add_knob.scanner.QrCodeScannerParams
+import com.ome.app.utils.isTrue
+import com.ome.app.utils.orFalse
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -22,7 +25,8 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
 ) {
     override val viewModel: SelectBurnerViewModel by viewModels()
 
-    private val args by navArgs<SelectBurnerFragmentArgs>()
+//    private val args by navArgs<SelectBurnerFragmentArgs>()
+    private val args by lazy { Screens.SelectBurnerPosition.getData(arguments) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +43,10 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
             }
         }
 
-        viewModel.macAddress = args.params.macAddress
+        args?.macAddress?.let {
+            viewModel.macAddress = it
+        }
+
         binding.backIv.setOnClickListener { findNavController().popBackStack() }
 
         binding.burnerSelectionView.onBurnerSelect = { index ->
@@ -48,7 +55,7 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
         }
         binding.continueBtn.setOnClickListener {
             viewModel.selectedBurnerIndex?.let {
-                if (args.params.isChangeMode) {
+                if (args?.isChangeMode.isTrue()) {
                     showDialog(
                         title = getString(R.string.confirm_position),
                         positiveButtonText = getString(R.string.yes_btn),
@@ -68,7 +75,7 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
                     findNavController().navigate(
                         SelectBurnerFragmentDirections.actionSelectBurnerFragmentToQrCodeScannerFragment(
                             QrCodeScannerParams(
-                                isComeFromSettings = args.params.isComeFromSettings,
+                                isComeFromSettings = args?.isComeFromSettings.orFalse(),
                                 selectedIndex = it
                             )
                         )

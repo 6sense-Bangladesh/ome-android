@@ -71,5 +71,5 @@ class DeviceViewModel @Inject constructor(
 }
 
 @Parcelize
-data class DeviceFragmentParams(val name: String, val macAddr: String) : Parcelable
+data class DeviceFragmentParams(val stovePosition: Int, val macAddr: String) : Parcelable
 

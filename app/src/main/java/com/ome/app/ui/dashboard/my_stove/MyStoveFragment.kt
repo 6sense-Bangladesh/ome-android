@@ -59,10 +59,7 @@ class MyStoveFragment :
                 setBounceClickListener{
                     navController.navigate(
                         DashboardFragmentDirections.actionDashboardFragmentToDeviceDetailsFragment(
-                            DeviceFragmentParams(
-                                name = "Burner ${knob.stovePosition}",
-                                macAddr = knob.macAddr
-                            )
+                            DeviceFragmentParams(knob.stovePosition, knob.macAddr)
                         )
                     )
                 }

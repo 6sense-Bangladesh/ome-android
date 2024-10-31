@@ -6,6 +6,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ome.app.databinding.FragmentMetalPlateBinding
 import com.ome.app.ui.base.BaseFragment
+import com.ome.app.ui.base.navigation.DeepNavGraph.navigate
+import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -34,14 +36,20 @@ class MetalPlateInstallationFragment :
             }
         }
         binding.continueBtn.setOnClickListener {
-            findNavController().navigate(
-                MetalPlateInstallationFragmentDirections.actionMetalPlateInstallationFragmentToSelectBurnerFragment(
-                    SelectBurnerFragmentParams(
-                        isComeFromSettings = false,
-                        isChangeMode = false
-                    )
+            Screens.SelectBurnerPosition.navigate(
+                SelectBurnerFragmentParams(
+                    isComeFromSettings = false,
+                    isChangeMode = false
                 )
             )
+//            findNavController().navigate(
+//                MetalPlateInstallationFragmentDirections.actionMetalPlateInstallationFragmentToSelectBurnerFragment(
+//                    SelectBurnerFragmentParams(
+//                        isComeFromSettings = false,
+//                        isChangeMode = false
+//                    )
+//                )
+//            )
         }
         binding.backIv.setOnClickListener { findNavController().popBackStack() }
 

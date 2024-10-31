@@ -1,10 +1,13 @@
 package com.ome.app.ui.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.Log
 import android.util.SparseArray
+import android.view.MotionEvent
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import androidx.annotation.DrawableRes
@@ -12,10 +15,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.setMargins
 import com.ome.app.R
 import com.ome.app.databinding.KnobViewLayoutBinding
-import com.ome.app.domain.model.network.response.KnobDto
+import com.ome.app.domain.model.network.response.*
 import com.ome.app.ui.dashboard.settings.add_knob.calibration.CalibrationState
 import com.ome.app.utils.*
 import com.ome.app.utils.WifiHandler.Companion.signalStrengthPercentage
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
+import kotlin.math.atan2
 
 class KnobView @JvmOverloads constructor(
     context: Context,
@@ -140,16 +146,21 @@ class KnobView @JvmOverloads constructor(
             wifiRSSI = knob.rssi,
             batteryLevel = knob.battery
         )
-        return when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.OFFLINE ||
-            ( knob.connectStatus.connectionState == ConnectionState.ONLINE && knob.rssi.signalStrengthPercentage in 0..35) -> {
+        return when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.Offline ||
+            ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.signalStrengthPercentage in 0..35) -> {
                 hideLabel()
                 changeKnobState(KnobState.TRANSPARENT)
                 changeKnobProgressVisibility(false)
-            false
+                false
             }
             else -> {
                 changeKnobState(KnobState.NORMAL)
                 changeKnobProgressVisibility(true)
+                when(knob.calibration.rotationDir.rotation){
+                    Calibration.Rotation.CLOCKWISE -> binding.knobProgress.scaleX = 1F
+                    Calibration.Rotation.COUNTER_CLOCKWISE -> binding.knobProgress.scaleX = -1F
+                    else -> Unit
+                }
                 true
             }
         }
@@ -183,16 +194,16 @@ class KnobView @JvmOverloads constructor(
 
     fun changeConnectionState(connectionStatus: String, wifiRSSI: Rssi, batteryLevel: Int) {
         when (connectionStatus.connectionState) {
-            ConnectionState.ONLINE -> {
+            ConnectionState.Online -> {
                 binding.connectionStatus.gone()
                 changeWiFiState(wifiRSSI)
             }
-            ConnectionState.OFFLINE -> {
+            ConnectionState.Offline -> {
                 binding.connectionStatus.visible()
                 binding.connectionStatus.text = context.getString(R.string.no_wifi)
                 binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wifi_off, 0, 0, 0)
             }
-            ConnectionState.CHARGING -> {
+            ConnectionState.Charging -> {
                 binding.connectionStatus.visible()
                 binding.connectionStatus.text = context.getString(R.string.charging)
                 when (batteryLevel) {
@@ -220,22 +231,14 @@ class KnobView @JvmOverloads constructor(
     val knobState : KnobState
         get() = KnobState.entries.find { it.icon == knobSrc.tag } ?: KnobState.NORMAL
 
+
     val isKnobInAddState
         get() = knobState == KnobState.ADD
-
-    private val String?.connectionState : ConnectionState
-        get() = ConnectionState.entries.find { it.type == this } ?: ConnectionState.OFFLINE
 
     enum class KnobState(@DrawableRes val icon: Int, val alpha : Float){
         ADD(R.drawable.ic_knob_circle_add, 1F),
         NORMAL(R.drawable.ic_knob_circle, 1F),
         TRANSPARENT(R.drawable.ic_knob_circle, .6F)
-    }
-
-    enum class ConnectionState(val type: String){
-        ONLINE("online"),
-        OFFLINE("offline"),
-        CHARGING("charging")
     }
 
     private fun animateCircle(fromDeg: Float, toDeg: Float) {
@@ -252,6 +255,46 @@ class KnobView @JvmOverloads constructor(
 
         binding.knobCircleCl.startAnimation(rotateAnimation)
         mCurrAngle = toDeg
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun doOnRotationChange() = callbackFlow{
+
+        binding.knobProgress.setOnTouchListener { v, event ->
+            when(event.action){
+                MotionEvent.ACTION_UP -> trySend(mCurrAngle)
+            }
+            // Get location of knobProgress on the screen
+            val location = IntArray(2)
+            v.getLocationOnScreen(location)
+
+            // Calculate the center of knobProgress
+            val centerX = location[0] + v.width / 2
+            val centerY = location[1] + v.height / 2
+
+            // Get touch coordinates relative to the screen
+            val touchX = event.rawX
+            val touchY = event.rawY
+
+            // Calculate the distance from the center to the touch point
+            val deltaX = touchX - centerX
+            val deltaY = touchY - centerY
+
+            // Calculate the angle in degrees using atan2
+            var angle = Math.toDegrees(atan2(deltaY.toDouble(), deltaX.toDouble())).toFloat()
+
+            // Adjust angle to be in the 0–360 range
+            if (angle < 0) {
+                angle += 360f
+            }
+
+            angle += 90
+
+            Log.d(TAG, "setOnTouchListener: $angle")
+            animateCircle(mCurrAngle, angle)
+            true
+        }
+        awaitClose()
     }
 
     public override fun onSaveInstanceState(): Parcelable {

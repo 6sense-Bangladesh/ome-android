@@ -916,6 +916,7 @@ fun Double?.orZero() = this ?: 0.0
 fun Float?.orZero() = this ?: 0.0F
 fun String?.orZero() = this?.toIntOrNull() ?: 0
 fun String?.orZeroD() = this?.toDoubleOrNull() ?: 0.0
+fun Boolean?.orFalse() = this ?: false
 
 fun Int?.isZero() = this == null || this == 0
 fun Long?.isZero() = this == null || this == 0L
