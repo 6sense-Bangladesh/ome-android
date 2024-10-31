@@ -10,5 +10,6 @@ data class SettingsKnobItemModel(val stovePosition: Int, val macAddr: String, va
 fun KnobDto.toItemModel(showDivider: Boolean = true) =
     SettingsKnobItemModel(
         stovePosition = stovePosition,
-        macAddr = macAddr
+        macAddr = macAddr,
+        showDivider = showDivider
     )
