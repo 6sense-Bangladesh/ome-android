@@ -1,5 +1,6 @@
 package com.ome.app.data.remote.websocket
 
+import android.util.Log
 import com.ome.app.BuildConfig
 import com.ome.app.domain.model.network.websocket.*
 import com.ome.app.utils.FlowStreamAdapter
@@ -58,6 +59,7 @@ class WebSocketManager {
     suspend fun subscribe() {
         try{
             getKnobService()?.knobMessageEvent()?.collect {
+                Log.d("getKnobService", "subscribe: ${it.name} - ${it.name} ${it.value} ${it.macAddr}")
                 when (it.name) {
                     "angle" -> {
                         knobAngleFlow.tryEmit(

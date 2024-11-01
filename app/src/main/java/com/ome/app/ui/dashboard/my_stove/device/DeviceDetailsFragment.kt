@@ -33,6 +33,7 @@ class DeviceDetailsFragment :
 
     @OptIn(FlowPreview::class)
     override fun setupUI() {
+        viewModel.macAddress = args.params.macAddr
         val selectedColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
         binding.apply {
             name.text = context?.getString(R.string.knob_, args.params.stovePosition)
@@ -41,51 +42,7 @@ class DeviceDetailsFragment :
                 knobView.setFontSize(18F)
                 val batteryLevel = it.battery
                 batteryPercentage.text = batteryLevel.addPercentage()
-                it.connectStatus.connectionState.apply {
-                    status.text = name
-                    when(this){
-                        ConnectionState.Charging -> {
-                            status.chipBackgroundColor  = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimaryTransLess)
-                            status.chipStrokeWidth = 0F
-                        }
-                        ConnectionState.Online -> {
-                            status.chipBackgroundColor  = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
-                            status.chipStrokeWidth = 0F
-                            status.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                        }
-                        ConnectionState.Offline -> {
-                            status.chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.white)
-                            status.chipStrokeWidth = 1F
-                        }
-                    }
-                    if(this != ConnectionState.Charging){
-                        when (batteryLevel) {
-                            in 0 .. 9 -> batteryIcon.setImageResource(R.drawable.ic_battery_0)
-                            in 10..20 -> batteryIcon.setImageResource(R.drawable.ic_battery_1)
-                            in 21..38 -> batteryIcon.setImageResource(R.drawable.ic_battery_2)
-                            in 39..50 -> batteryIcon.setImageResource(R.drawable.ic_battery_3)
-                            in 51..62 -> batteryIcon.setImageResource(R.drawable.ic_battery_4)
-                            in 63..75 -> batteryIcon.setImageResource(R.drawable.ic_battery_5)
-                            in 76..94 -> batteryIcon.setImageResource(R.drawable.ic_battery_6)
-                            in 95..100 -> batteryIcon.setImageResource(R.drawable.ic_battery_7)
-                        }
-                        if(batteryLevel in 0..20)
-                            batteryIcon.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.red)
-                        else
-                            batteryIcon.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.black)
-                    }else{
-                        batteryIcon.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
-                        when (batteryLevel) {
-                            in 0 .. 20 -> batteryIcon.setImageResource(R.drawable.ic_charging_20)
-                            in 21..30 -> batteryIcon.setImageResource(R.drawable.ic_charging_30)
-                            in 31..50 -> batteryIcon.setImageResource(R.drawable.ic_charging_50)
-                            in 51..60 -> batteryIcon.setImageResource(R.drawable.ic_charging_60)
-                            in 61..80 -> batteryIcon.setImageResource(R.drawable.ic_charging_80)
-                            in 81..95 -> batteryIcon.setImageResource(R.drawable.ic_charging_90)
-                            in 96..100 -> batteryIcon.setImageResource(R.drawable.ic_battery_full)
-                        }
-                    }
-                }
+                changeBatteryStates(it.connectStatus.connectionState, batteryLevel)
             }
             knobView.doOnRotationChange(doRotate = isEnable)
 //                .debounce(700)
@@ -215,15 +172,25 @@ class DeviceDetailsFragment :
             .collectWithLifecycle {
                 binding.knobView.changeWiFiState(it.value)
             }
+        var connectionState = ConnectionState.Offline
+        var batteryLevel = 0
         viewModel.webSocketManager.knobBatteryFlow
             .filter { it?.macAddr == viewModel.macAddress }
             .collectWithLifecycle {
-                binding.knobView.changeBatteryState(it.value)
+//                binding.knobView.changeBatteryState(it.value)
+                batteryLevel = it.value
+                changeBatteryStates(connectionState, batteryLevel)
             }
         viewModel.webSocketManager.knobConnectStatusFlow
             .filter { it?.macAddr == viewModel.macAddress }
             .collectWithLifecycle {
-                isEnable.value = it.value.connectionState == ConnectionState.Online
+                connectionState = it.value.connectionState
+                isEnable.value =connectionState == ConnectionState.Online
+                changeBatteryStates(connectionState, batteryLevel)
+//                binding.knobView.changeConnectionState(
+//                    connectionStatus = it.value,
+//                    batteryLevel = mainViewModel.knobs.value.find { knob -> knob.macAddr == viewModel.macAddress }?.battery ?: 0
+//                )
             }
         combine(viewModel.webSocketManager.knobConnectStatusFlow.filter { it?.macAddr == viewModel.macAddress }.filterNotNull(),
             viewModel.webSocketManager.knobRssiFlow.filter { it?.macAddr == viewModel.macAddress }.filterNotNull(),
@@ -231,11 +198,11 @@ class DeviceDetailsFragment :
         ){ knobConnectStatusFlow, knobRssiFlow,  knobBatteryFlow ->
             Triple(knobConnectStatusFlow, knobRssiFlow, knobBatteryFlow)
         }.collectWithLifecycle {
-            binding.knobView.changeConnectionState(
-                connectionStatus = it.first.value,
-                wifiRSSI = it.second.value,
-                batteryLevel = it.third.value
-            )
+//            binding.knobView.changeConnectionState(
+//                connectionStatus = it.first.value,
+//                wifiRSSI = it.second.value,
+//                batteryLevel = it.third.value
+//            )
         }
 //        viewModel.webSocketManager.knobConnectStatusFlow
 //            .filter { it?.macAddr == viewModel.macAddress }
@@ -265,6 +232,68 @@ class DeviceDetailsFragment :
                 setLowDualPosition(zone.lowAngle.toFloat())
             }
             setOffPosition(calibration.offAngle.toFloat())
+        }
+    }
+
+    private fun changeBatteryStates(
+        connectionState: ConnectionState,
+        batteryLevel: Int
+    ) {
+        binding.status.text = connectionState.name
+        when (connectionState) {
+            ConnectionState.Charging -> {
+                binding.status.chipBackgroundColor =
+                    ContextCompat.getColorStateList(requireContext(), R.color.colorPrimaryTransLess)
+                binding.status.chipStrokeWidth = 0F
+            }
+
+            ConnectionState.Online -> {
+                binding.status.chipBackgroundColor =
+                    ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
+                binding.status.chipStrokeWidth = 0F
+                binding.status.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.white
+                    )
+                )
+            }
+
+            ConnectionState.Offline -> {
+                binding.status.chipBackgroundColor =
+                    ContextCompat.getColorStateList(requireContext(), R.color.white)
+                binding.status.chipStrokeWidth = 1F
+            }
+        }
+        if (connectionState != ConnectionState.Charging) {
+            when (batteryLevel) {
+                in 0..9 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_0)
+                in 10..20 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_1)
+                in 21..38 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_2)
+                in 39..50 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_3)
+                in 51..62 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_4)
+                in 63..75 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_5)
+                in 76..94 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_6)
+                in 95..100 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_7)
+            }
+            if (batteryLevel in 0..20)
+                binding.batteryIcon.imageTintList =
+                    ContextCompat.getColorStateList(requireContext(), R.color.red)
+            else
+                binding.batteryIcon.imageTintList =
+                    ContextCompat.getColorStateList(requireContext(), R.color.black)
+        } else {
+            binding.batteryIcon.imageTintList =
+                ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
+            when (batteryLevel) {
+                in 0..20 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_20)
+                in 21..30 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_30)
+                in 31..50 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_50)
+                in 51..60 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_60)
+                in 61..80 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_80)
+                in 81..95 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_90)
+                in 96..100 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_full)
+            }
         }
     }
 
