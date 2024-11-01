@@ -92,7 +92,7 @@
     <string name="take_a_picture">Take a Picture</string>
     <string name="knob_in_use">Another user owns this knob you\'ll need to select another or the user will need to remove the knob</string>
     <string name="knob_doesnt_exist">The scanned knob QR code does not exist.  Please try scanning again.  If the issue persists, contact support \n855–663–5227 \nsupport@omekitchen.com</string>
-    <string name="scan_the_qr_code_on_the_bottom_of_your_knob">Scan the QR code on the bottom of your knob</string>
+    <string name="scan_qr_code">Scan the QR code on the back of the Knob Top. To see the code, detach the Knob Top from the Knob Bottom. After the Wi-Fi connection is complete, you can re-attach.</string>
     <string name="let_s_connect_to_your_local_wi_fi_network">Let\'s connect to your local Wi-Fi network</string>
     <string name="before_we_connect_label">Before we connect your device to your Wifi, let’s make sure your devices are on and ready.\n\n\n Are your device on?</string>
     <string name="manual_btn">Manual</string>
@@ -122,6 +122,7 @@
     <string name="confirm_position">Confirm Position</string>
     <string name="confirm_position_body">Are you sure you want to put the knob at burner %1$s ?</string>
     <string name="confirm_logout">Are you sure you want to log out?</string>
+    <string name="confirm_delete">Are you sure you want to delete this knob?</string>
     <string name="confirm_delete_account">Are you sure you want to delete your account?</string>
     <string name="change_burner_position_success_body">The change burner operation was a success</string>
     <string name="calibration_confirmation_dual_label">Is knob at %1$s for the %2$s zone burner?</string>
@@ -167,6 +168,7 @@
     <string name="menu_logout">Logout</string>
     <string name="menu_device_setting">Device Setting</string>
     <string name="logout">Log Out</string>
+    <string name="delete">Delete</string>
     <string name="charging">Charging</string>
     <string name="configure">Configure</string>
     <string name="no_wifi">No Wi-Fi</string>
@@ -179,8 +181,9 @@
     <string name="status">Status:</string>
     <string name="battery">Battery:</string>
     <string name="set_timer">Set Timer</string>
-    <string name="knob_">Knob %1$d</string>
+    <string name="knob_">Knob #%1$d</string>
     <string name="burner_">Burner %1$d</string>
+    <string name="manually_turn_the_knob_on">Please manually turn the knob on if you want to control it from the app.</string>
 
 
 </resources>

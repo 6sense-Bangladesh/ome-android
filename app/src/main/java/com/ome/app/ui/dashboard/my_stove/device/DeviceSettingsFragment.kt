@@ -1,8 +1,10 @@
 package com.ome.app.ui.dashboard.my_stove.device
 
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceSettingsBinding
@@ -10,15 +12,12 @@ import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.base.navigation.DeepNavGraph.navigate
 import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.ui.base.recycler.ItemModel
-import com.ome.app.ui.dashboard.my_stove.MyStoveFragment.Companion.setupKnob
 import com.ome.app.ui.dashboard.settings.adapter.SettingItemAdapter
 import com.ome.app.ui.dashboard.settings.adapter.model.DeviceSettingsItemModel
 import com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
 import com.ome.app.ui.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
 import com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiParams
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.subscribe
+import com.ome.app.utils.*
 
 
 class DeviceSettingsFragment :
@@ -34,7 +33,7 @@ class DeviceSettingsFragment :
         binding.apply {
 //            name.text = args.params.name
             mainViewModel.knobs.value.find { it.macAddr == args.params.macAddr }?.let {
-                knobView.setupKnob(it, null)
+                knobView.setStovePosition(it.stovePosition)
 //                knobView.setFontSize(18F)
             }
             recyclerView.adapter = adapter
@@ -126,6 +125,10 @@ class DeviceSettingsFragment :
         viewModel.deviceSettingsList.collectWithLifecycle {
             adapter.submitList(it)
         }
+
+//        viewModel.loadingFlow.collectWithLifecycle {
+//            binding.loadingLayout.root.changeVisibility(it)
+//        }
     }
 
     private val onClick: (ItemModel) -> Unit = { item ->
@@ -142,7 +145,18 @@ class DeviceSettingsFragment :
                         DirectionSelectionFragmentParams(isChangeMode = true, macAddress = viewModel.macAddress)
                     )
                     DeviceSettingsItemModel.DeleteKnob -> {
-
+                        showDialog(
+                            message = SpannableStringBuilder(getString(R.string.confirm_delete)),
+                            positiveButtonText = getString(R.string.delete),
+                            isRedPositiveButton = true,
+                            onPositiveButtonClick = {
+                                binding.loadingLayout.root.visible()
+                                viewModel.deleteKnob{
+                                    findNavController().popBackStack(R.id.dashboardFragment, false)
+                                    binding.loadingLayout.root.gone()
+                                }
+                            }
+                        )
                     }
                 }
             }

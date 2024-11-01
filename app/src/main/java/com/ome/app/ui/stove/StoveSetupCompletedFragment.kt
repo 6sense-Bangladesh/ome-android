@@ -38,7 +38,7 @@ class StoveSetupCompletedFragment :
             findNavController().navigate(R.id.action_stoveSetupCompletedFragment_to_addKnobNavGraph)
         }
         binding.skipKnobSetupBtn.setBounceClickListener {
-            Screens.Dashboard.navigate(popUpToInclusive = true)
+            Screens.Dashboard.navigate(data = Unit,popUpToInclusive = true)
 //            findNavController().navigate(R.id.action_stoveSetupCompletedFragment_to_dashboardFragment)
         }
     }

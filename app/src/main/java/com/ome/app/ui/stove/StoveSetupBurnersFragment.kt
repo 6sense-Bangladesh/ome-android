@@ -31,12 +31,14 @@ class StoveSetupBurnersFragment :
     private val args by lazy { Screens.StoveLayout.getData(arguments) }
 
     override fun setupUI() {
-        args?.let {
+        args.let {
             viewModel.brand = it.brand
-            viewModel.stoveType = it.type.type
-            viewModel.stoveKnobMounting = it.type.mounting
+            it.type?.apply {
+                viewModel.stoveType = type
+                viewModel.stoveKnobMounting = mounting
+            }
         }
-        if(isFromDeepLink){
+        if (args.isEditMode) {
             binding.continueBtn.text = getString(R.string.save)
             mainViewModel.userInfo.value.stoveOrientation.stoveOrientation
         }else{
@@ -82,7 +84,7 @@ class StoveSetupBurnersFragment :
             }
         }
         binding.continueBtn.setBounceClickListener  {
-            if(isFromDeepLink){
+            if (args.isEditMode) {
                 binding.continueBtn.startAnimation()
                 mainViewModel.stoveData.stoveOrientation = viewModel.stoveOrientation?.number
                 viewModel.updateStoveOrientation(mainViewModel.userInfo.value.stoveId, onEnd = mainViewModel::getUserInfo)
@@ -129,7 +131,7 @@ class StoveSetupBurnersFragment :
                 binding.continueBtn.startAnimation()
             else {
                 binding.continueBtn.revertAnimation()
-                if (isFromDeepLink)
+                if (args.isEditMode)
                     onBackPressed()
             }
         }
@@ -139,6 +141,6 @@ class StoveSetupBurnersFragment :
 @Parcelize
 data class StoveSetupBurnersArgs(
     val brand: String = "",
-    val type: StoveType,
+    val type: StoveType? = null,
     val isEditMode: Boolean = false
 ) : Parcelable

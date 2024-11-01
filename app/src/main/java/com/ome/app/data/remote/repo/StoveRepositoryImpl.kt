@@ -68,6 +68,10 @@ class StoveRepositoryImpl(
         return stoveService.createKnob(params, macAddress)
     }
 
+    override suspend fun deleteKnob(macAddress: String): BaseResponse {
+        return stoveService.deleteKnob(macAddress)
+    }
+
     override suspend fun updateKnobInfo(
         params: CreateKnobRequest,
         macAddress: String

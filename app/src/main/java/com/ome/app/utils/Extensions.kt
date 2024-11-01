@@ -922,6 +922,8 @@ fun Int?.isZero() = this == null || this == 0
 fun Long?.isZero() = this == null || this == 0L
 fun Double?.isZero() = this == null || this == 0.0
 fun Float?.isZero() = this == null || this == 0.0F
+fun Float?.isMinusOne() = this == null || this == -1.0F
+fun Float?.isZeroOrMinusOne() = this == null || this == 0.0F || this == -1.0F
 fun String?.isZero() = this == null || this.toIntOrNull() == 0
 fun String?.isZeroD() = this == null || this.toDoubleOrNull() == 0.0
 

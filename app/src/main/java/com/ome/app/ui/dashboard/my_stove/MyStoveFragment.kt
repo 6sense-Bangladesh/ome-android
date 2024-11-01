@@ -52,36 +52,34 @@ class MyStoveFragment :
             }
         }
     }
-
-    companion object{
-        fun KnobView.setupKnob(knob: KnobDto, navController: NavController?) {
-            navController?.apply {
-                setBounceClickListener{
-                    navController.navigate(
-                        DashboardFragmentDirections.actionDashboardFragmentToDeviceDetailsFragment(
-                            DeviceFragmentParams(knob.stovePosition, knob.macAddr)
-                        )
+    private fun KnobView.setupKnob(knob: KnobDto, navController: NavController?) {
+        navController?.apply {
+            setBounceClickListener{
+                navController.navigate(
+                    DashboardFragmentDirections.actionDashboardFragmentToDeviceDetailsFragment(
+                        DeviceFragmentParams(knob.stovePosition, knob.macAddr)
                     )
-                }
-            }
-            if(changeKnobStatus(knob)) {
-                val calibration = knob.calibration.toCalibration()
-                setStovePosition(knob.stovePosition)
-                setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
-                calibration.zones1?.let { zone ->
-                    setHighSinglePosition(zone.highAngle.toFloat())
-                    setMediumPosition(zone.mediumAngle.toFloat())
-                    setLowSinglePosition(zone.lowAngle.toFloat())
-                }
-                calibration.zones2?.let { zone ->
-                    setHighDualPosition(zone.highAngle.toFloat())
-//            setMediumDualPosition(zone.mediumAngle.toFloat())
-                    setLowDualPosition(zone.lowAngle.toFloat())
-                }
-                setOffPosition(calibration.offAngle.toFloat())
+                )
             }
         }
+        if(changeKnobStatus(knob)) {
+            val calibration = knob.calibration.toCalibration()
+            setStovePosition(knob.stovePosition)
+            setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
+            calibration.zones1?.let { zone ->
+                setHighSinglePosition(zone.highAngle.toFloat())
+                setMediumPosition(zone.mediumAngle.toFloat())
+                setLowSinglePosition(zone.lowAngle.toFloat())
+            }
+            calibration.zones2?.let { zone ->
+                setHighDualPosition(zone.highAngle.toFloat())
+//            setMediumDualPosition(zone.mediumAngle.toFloat())
+                setLowDualPosition(zone.lowAngle.toFloat())
+            }
+            setOffPosition(calibration.offAngle.toFloat())
+        }
     }
+
 
     private fun initKnob(vararg know : KnobView) {
         know.forEach {

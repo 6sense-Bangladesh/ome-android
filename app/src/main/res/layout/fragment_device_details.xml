@@ -26,7 +26,7 @@
         android:layout_marginTop="@dimen/_30sdp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/_14sdp"
-        app:contentPadding="@dimen/_9sdp"
+        app:contentPadding="@dimen/_8sdp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topAppBar"
         app:strokeColor="@color/cardStrokeColorDeep"
@@ -43,8 +43,8 @@
 
                 <View
                     android:id="@+id/knob1"
-                    android:layout_width="@dimen/_16sdp"
-                    android:layout_height="@dimen/_16sdp"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
                     android:visibility="gone"
@@ -52,9 +52,9 @@
 
                 <View
                     android:id="@+id/knob2"
-                    android:layout_width="@dimen/_16sdp"
-                    android:layout_height="@dimen/_16sdp"
-                    android:layout_marginStart="@dimen/_6sdp"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
                     android:visibility="gone"
@@ -62,9 +62,9 @@
 
                 <View
                     android:id="@+id/knob3"
-                    android:layout_width="@dimen/_16sdp"
-                    android:layout_height="@dimen/_16sdp"
-                    android:layout_marginStart="@dimen/_6sdp"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
                     android:visibility="gone"
@@ -75,8 +75,8 @@
 
             <View
                 android:id="@+id/knob7"
-                android:layout_width="@dimen/_16sdp"
-                android:layout_height="@dimen/_16sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
                 android:background="@drawable/rounded_shape"
                 android:backgroundTint="@color/cardStrokeColor"
@@ -86,7 +86,7 @@
             <View
                 android:id="@+id/spacer"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_6sdp"
+                android:layout_height="@dimen/_4sdp"
                 android:layout_gravity="center"
                 android:visibility="gone"
                 tools:visibility="visible" />
@@ -97,8 +97,8 @@
 
                 <View
                     android:id="@+id/knob4"
-                    android:layout_width="@dimen/_16sdp"
-                    android:layout_height="@dimen/_16sdp"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
                     android:visibility="gone"
@@ -106,9 +106,9 @@
 
                 <View
                     android:id="@+id/knob5"
-                    android:layout_width="@dimen/_16sdp"
-                    android:layout_height="@dimen/_16sdp"
-                    android:layout_marginStart="@dimen/_6sdp"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
                     android:visibility="gone"
@@ -116,9 +116,9 @@
 
                 <View
                     android:id="@+id/knob6"
-                    android:layout_width="@dimen/_16sdp"
-                    android:layout_height="@dimen/_16sdp"
-                    android:layout_marginStart="@dimen/_6sdp"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
                     android:visibility="gone"
@@ -209,7 +209,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="69%" />
@@ -217,7 +217,7 @@
     </LinearLayout>
 
     <com.ome.app.ui.views.KnobView
-        android:id="@+id/knob"
+        android:id="@+id/knobView"
         android:layout_width="@dimen/_220sdp"
         android:layout_height="@dimen/_220sdp"
         app:layout_constraintBottom_toTopOf="@+id/continueBtn"

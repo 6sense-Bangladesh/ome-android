@@ -31,7 +31,7 @@ class StoveSetupTypeFragment :
 //                margin(top = true)
 //            }
 //        }
-        if (isFromDeepLink) {
+        if (args.isEditMode) {
             binding.continueBtn.text = getString(R.string.save)
             mainViewModel.userInfo.value.stoveType
         }else{
@@ -57,7 +57,7 @@ class StoveSetupTypeFragment :
 
             if(mainViewModel.stoveData.stoveType == null)
                 onError("Please select stove type")
-            else if (isFromDeepLink) {
+            else if (args.isEditMode) {
                 binding.continueBtn.startAnimation()
                 viewModel.saveStoveType(mainViewModel.userInfo.value.stoveId, onEnd = mainViewModel::getUserInfo)
             }
@@ -66,7 +66,7 @@ class StoveSetupTypeFragment :
                     findNavController().navigate(
                         R.id.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment, bundleOf(
                             "params" to StoveSetupPhotoArgs(
-                                brand = args?.brand.orEmpty(),
+                                brand = args.brand,
                                 type = it,
                             )
                         )
@@ -169,7 +169,7 @@ class StoveSetupTypeFragment :
                 binding.continueBtn.startAnimation()
             else {
                 binding.continueBtn.revertAnimation()
-                if (isFromDeepLink)
+                if (args.isEditMode)
                     onBackPressed()
             }
         }

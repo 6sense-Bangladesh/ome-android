@@ -4,6 +4,7 @@ package com.ome.app.ui.dashboard.my_stove.device
 import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import com.ome.app.data.remote.websocket.WebSocketManager
+import com.ome.app.domain.model.network.request.ChangeKnobAngle
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
@@ -13,6 +14,7 @@ import com.ome.app.ui.dashboard.settings.adapter.model.DeviceSettingsItemModel
 import com.ome.app.ui.dashboard.settings.adapter.model.SettingsTitleItemModel
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.filter
 import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
@@ -21,7 +23,7 @@ import javax.inject.Inject
 class DeviceViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val stoveRepository: StoveRepository,
-    private val webSocketManager: WebSocketManager,
+    val webSocketManager: WebSocketManager,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
@@ -46,7 +48,7 @@ class DeviceViewModel @Inject constructor(
 
     fun initSubscriptions() {
         launch(ioContext) {
-            webSocketManager.knobAngleFlow.collect {
+            webSocketManager.knobAngleFlow.filter { it?.macAddr == macAddress }.collect {
                 it?.let {
                     logi("angle ViewModel ${it.value.toFloat()}")
                     knobAngleLiveData.postValue(it.value.toFloat())
@@ -55,7 +57,7 @@ class DeviceViewModel @Inject constructor(
         }
         launch(ioContext) {
             stoveRepository.knobsFlow.collect { knobs ->
-                knobs?.let {
+                knobs.let {
                     val foundKnob = knobs.firstOrNull { it.macAddr == macAddress }
                     foundKnob?.let {
                         zonesLiveData.postValue(foundKnob.calibration)
@@ -65,6 +67,22 @@ class DeviceViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun changeKnobAngle(angle: Float) {
+        launch {
+            stoveRepository.changeKnobAngle(
+                params = ChangeKnobAngle(angle.toInt()),
+                macAddress
+            )
+        }
+    }
+
+    fun deleteKnob(onEnd: () -> Unit) {
+        launch {
+            stoveRepository.deleteKnob(macAddress)
+            onEnd()
         }
     }
 

@@ -35,8 +35,8 @@ class MainVM @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
     var userInfo = savedStateHandle.getStateFlow("userInfo", preferencesProvider.getUserData())
-    var knobs = savedStateHandle.getStateFlow("knobs", buildList {
-        if (BuildConfig.DEBUG) addAll(dummyKnobs)
+    var knobs = savedStateHandle.getStateFlow("knobs", buildList<KnobDto> {
+//        if (BuildConfig.DEBUG) addAll(dummyKnobs)
     })
 
     override var defaultErrorHandler = CoroutineExceptionHandler { _, _ ->
@@ -50,6 +50,8 @@ class MainVM @Inject constructor(
     var startDestinationJob: Job? = null
 
     var stoveData = StoveRequest()
+
+    var selectedBurnerIndex: Int? = null
 
     init {
         launch(ioContext) {

@@ -12,11 +12,9 @@ import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.base.navigation.DeepNavGraph.getData
 import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.ui.dashboard.settings.add_knob.scanner.QrCodeScannerParams
-import com.ome.app.utils.isTrue
-import com.ome.app.utils.orFalse
+import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
@@ -31,31 +29,36 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.backIv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-        binding.continueBtn.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                margin(bottom = true)
-            }
-        }
+//        binding.backIv.applyInsetter {
+//            type(navigationBars = true, statusBars = true) {
+//                padding(horizontal = true)
+//                margin(top = true)
+//            }
+//        }
+//        binding.continueBtn.applyInsetter {
+//            type(navigationBars = true, statusBars = true) {
+//                margin(bottom = true)
+//            }
+//        }
 
-        args?.macAddress?.let {
-            viewModel.macAddress = it
+    }
+
+    override fun setupUI() {
+        viewModel.macAddress = args.macAddress
+        viewModel.loadData()
+        mainViewModel.selectedBurnerIndex?.let {
+
         }
+    }
 
-        binding.backIv.setOnClickListener { findNavController().popBackStack() }
-
+    override fun setupListener() {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.burnerSelectionView.onBurnerSelect = { index ->
-            binding.continueBtn.isEnabled = true
             viewModel.selectedBurnerIndex = index
         }
         binding.continueBtn.setOnClickListener {
             viewModel.selectedBurnerIndex?.let {
-                if (args?.isChangeMode.isTrue()) {
+                if (args.isChangeMode) {
                     showDialog(
                         title = getString(R.string.confirm_position),
                         positiveButtonText = getString(R.string.yes_btn),
@@ -72,19 +75,18 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
                         }
                     )
                 } else {
+                    mainViewModel.selectedBurnerIndex = viewModel.selectedBurnerIndex
                     findNavController().navigate(
                         SelectBurnerFragmentDirections.actionSelectBurnerFragmentToQrCodeScannerFragment(
                             QrCodeScannerParams(
-                                isComeFromSettings = args?.isComeFromSettings.orFalse(),
+                                isComeFromSettings = args.isComeFromSettings,
                                 selectedIndex = it
                             )
                         )
                     )
                 }
-            }
+            } ?: onError("Please select burner position")
         }
-
-        viewModel.loadData()
     }
 
     override fun setupObserver() {

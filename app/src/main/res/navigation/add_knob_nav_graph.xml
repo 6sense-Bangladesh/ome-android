@@ -11,12 +11,20 @@
         android:label="KnobWakeUpFragment"
         tools:layout="@layout/fragment_knob_wake_up">
         <action
-            android:id="@+id/action_knobWakeUpFragment_to_metalPlateInstallationFragment"
-            app:destination="@id/metalPlateInstallationFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_knobWakeUpFragment_to_metalPlateInstallationFragment"
+            app:destination="@id/metalPlateInstallationFragment"
+/>
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_knobWakeUpFragment_to_selectBurnerFragment"
+            app:destination="@id/selectBurnerFragment" />
     </fragment>
     <fragment
         android:id="@+id/metalPlateInstallationFragment"

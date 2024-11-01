@@ -21,17 +21,12 @@ class WebSocketManager {
     val knobConnectIpAddrFlow: MutableStateFlow<KnobConnectIpAddr?> = MutableStateFlow(null)
     val knobFirmwareVersionFlow: MutableStateFlow<KnobFirmwareVersion?> = MutableStateFlow(null)
     val knobMountingSurfaceFlow: MutableStateFlow<KnobMountingSurface?> = MutableStateFlow(null)
-    val knobReportedScheduleStopFlow: MutableStateFlow<KnobReportedScheduleStop?> =
-        MutableStateFlow(null)
+    val knobReportedScheduleStopFlow: MutableStateFlow<KnobReportedScheduleStop?> = MutableStateFlow(null)
     val knobRssiFlow: MutableStateFlow<KnobRssi?> = MutableStateFlow(null)
     val knobTemperatureFlow: MutableStateFlow<KnobTemperature?> = MutableStateFlow(null)
 
     suspend fun initWebSocket(macAddrs: List<String>, userId: String) {
-        val url = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=${
-            macAddrs.joinToString(
-                separator = ","
-            ) { it }
-        }&inirvUid=$userId"
+        val url = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=${macAddrs.joinToString(separator = ",") { it }}&inirvUid=$userId"
 
         scarlet = Scarlet.Builder()
             .webSocketFactory(

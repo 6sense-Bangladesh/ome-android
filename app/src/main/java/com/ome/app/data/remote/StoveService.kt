@@ -28,6 +28,11 @@ interface StoveService {
         @Path("macAddress") macAddress: String
     ): CreateKnobResponse
 
+    @DELETE("/knob/{macAddress}")
+    suspend fun deleteKnob(
+        @Path("macAddress") macAddress: String
+    ): BaseResponse
+
     @PATCH("/knob/{macAddress}")
     suspend fun updateKnobInfo(
         @Body params: CreateKnobRequest,

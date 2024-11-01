@@ -17,6 +17,9 @@ import com.ome.app.ui.dashboard.settings.adapter.SettingItemAdapter
 import com.ome.app.ui.dashboard.settings.adapter.StovesBottomSheet
 import com.ome.app.ui.dashboard.settings.adapter.model.SettingsItemModel
 import com.ome.app.ui.dashboard.settings.adapter.model.SettingsKnobItemModel
+import com.ome.app.ui.stove.StoveSetupBrandArgs
+import com.ome.app.ui.stove.StoveSetupBurnersArgs
+import com.ome.app.ui.stove.StoveSetupTypeArgs
 import com.ome.app.utils.collectWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -119,9 +122,9 @@ class SettingsFragment :
                             //navController?.navigate(SettingsFragmentDirections.actionSettingsFragmentToKnobWakeUpFragment(isComeFromSettings = false))
                         }
 
-                        Settings.STOVE_BRAND -> Screens.StoveBrand.navigate(navController)
-                        Settings.STOVE_TYPE -> Screens.StoveType.navigate(navController)
-                        Settings.STOVE_LAYOUT -> Screens.StoveLayout.navigate(navController)
+                        Settings.STOVE_BRAND -> Screens.StoveBrand.navigate(navController, StoveSetupBrandArgs(isEditMode = true))
+                        Settings.STOVE_TYPE -> Screens.StoveType.navigate(navController, StoveSetupTypeArgs(isEditMode = true))
+                        Settings.STOVE_LAYOUT -> Screens.StoveLayout.navigate(navController, StoveSetupBurnersArgs(isEditMode = true))
                         Settings.STOVE_AUTO_SHUT_OFF ->
                             navController?.navigate(R.id.action_dashboardFragment_to_autoShutOffSettingsFragment)
                     }

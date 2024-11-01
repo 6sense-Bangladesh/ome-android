@@ -49,12 +49,15 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
     override fun setupUI() {
         checkPermission()
         viewModel.stovePosition = args.params.selectedIndex
+        initQrCodeScanner()
+    }
+
+    private fun initQrCodeScanner() {
         lifecycleScope.launch {
             val qr = binding.previewView.startQrScanner()
             viewModel.checkStoveOwnership(qr)
         }
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -73,15 +76,15 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
 //            checkPermission()
 //        }, 200)
 
-//        onDismissErrorDialog = {
-//            codeScanner.startPreview()
-//        }
 
     }
 
     override fun setupListener() {
         binding.apply {
             topAppBar.setNavigationOnClickListener(::onBackPressed)
+        }
+        onDismissErrorDialog = {
+            initQrCodeScanner()
         }
     }
 
@@ -129,9 +132,9 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
         super.setupObserver()
         subscribe(viewModel.isKnobAddedLiveData) {
             if (it) {
-                viewModel.macAddress?.let {
+                viewModel.macAddress?.let { mac ->
                     Screens.ConnectToWifi.navigate(
-                        ConnectToWifiParams(macAddrs = it, isComeFromSettings = args.params.isComeFromSettings)
+                        ConnectToWifiParams(macAddrs = mac, isComeFromSettings = args.params.isComeFromSettings)
                     )
 //                    findNavController().navigate(
 //                        QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
@@ -144,6 +147,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
             }
         }
         subscribe(viewModel.knobCreatedLiveData) {
+            mainViewModel.getUserInfo()
             viewModel.macAddress?.let {
                 Screens.ConnectToWifi.navigate(
                     ConnectToWifiParams(macAddrs = it, isComeFromSettings = args.params.isComeFromSettings)

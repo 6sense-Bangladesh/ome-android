@@ -10,7 +10,10 @@ import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.base.navigation.DeepNavGraph.getData
 import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.ui.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
-import com.ome.app.utils.*
+import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.makeGone
+import com.ome.app.utils.makeVisible
+import com.ome.app.utils.onBackPressed
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.parcelize.Parcelize
@@ -27,7 +30,7 @@ class DirectionSelectionFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.macAddress = args?.macAddress.orEmpty()
+        viewModel.macAddress = args.macAddress
             binding.backIv.applyInsetter {
             type(navigationBars = true, statusBars = true) {
                 padding(horizontal = true)
@@ -42,17 +45,17 @@ class DirectionSelectionFragment :
         binding.backIv.setOnClickListener { findNavController().popBackStack() }
 
         binding.continueBtn.setOnClickListener {
-            if(args?.isChangeMode.isTrue()){
+            if(args.isChangeMode){
                 viewModel.updateDirection()
             }else {
                 findNavController().navigate(
                     DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
                         DeviceCalibrationFragmentParams(
-                            isComeFromSettings = args?.isComeFromSettings.orFalse(),
-                            zoneNumber = args?.zoneNumber.orZero(),
-                            isDualKnob = args?.isDualKnob.orFalse(),
+                            isComeFromSettings = args.isComeFromSettings,
+                            zoneNumber = args.zoneNumber,
+                            isDualKnob = args.isDualKnob,
                             rotateDir = viewModel.clockwiseDir,
-                            macAddr = args?.macAddress.orEmpty()
+                            macAddr = args.macAddress
                         )
                     )
                 )

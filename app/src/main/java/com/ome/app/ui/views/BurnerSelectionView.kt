@@ -95,11 +95,43 @@ class BurnerSelectionView @JvmOverloads constructor(
             }else{
                 pair.first.changeButtonState(false, pair.second)
                 pair.first.setBounceClickListener{
-                    lastSelected?.changeButtonState(false, pair.second)
-                    lastSelected = pair.first
-                    lastSelected?.changeButtonState(true, pair.second)
-                    onBurnerSelect(index + 1 )
+                    selectButton(pair, index)
                 }
+            }
+        }
+    }
+
+    private fun selectButton(
+        pair: Pair<MaterialButton, TextView>,
+        index: Int
+    ) {
+        lastSelected?.changeButtonState(false, pair.second)
+        lastSelected = pair.first
+        lastSelected?.changeButtonState(true, pair.second)
+        onBurnerSelect(index + 1)
+    }
+
+    private fun selectBurnerManually(position: Int, stoveOrientation: StoveOrientation) {
+        binding.apply {
+            when(stoveOrientation){
+                StoveOrientation.FOUR_BURNERS -> {
+                    when(position){
+                        0 -> selectButton(button1 to status1, 0)
+                        1 -> selectButton(button2 to status2, 1)
+                        2 -> selectButton(button4 to status4, 2)
+                        3 -> selectButton(button5 to status5, 3)
+                    }
+                }
+                StoveOrientation.FOUR_BAR_BURNERS,StoveOrientation.FIVE_BURNERS -> {
+                    when(position){
+                        0 -> selectButton(button1 to status1, 0)
+                        1 -> selectButton(button2 to status2, 1)
+                        2 -> selectButton(button3 to status3, 2)
+                    }
+                }
+                StoveOrientation.SIX_BURNERS -> TODO()
+                StoveOrientation.TWO_BURNERS_HORIZONTAL -> TODO()
+                StoveOrientation.TWO_BURNERS_VERTICAL -> TODO()
             }
         }
     }

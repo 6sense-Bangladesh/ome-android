@@ -20,6 +20,7 @@ import com.ome.app.ui.dashboard.settings.add_knob.calibration.CalibrationState
 import com.ome.app.utils.*
 import com.ome.app.utils.WifiHandler.Companion.signalStrengthPercentage
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlin.math.atan2
 
@@ -89,6 +90,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun setOffPosition(angle: Float) {
+        if (angle.isMinusOne()) return
         binding.offCl.makeVisible()
         binding.offCl.rotation = angle
         binding.offTv.rotation = -angle
@@ -96,6 +98,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun setLowSinglePosition(angle: Float) {
+        if (angle.isZeroOrMinusOne()) return
         binding.lowSingleCl.makeVisible()
         binding.lowSingleCl.rotation = angle
         binding.lowSingleTv.rotation = -angle
@@ -103,6 +106,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun setMediumPosition(angle: Float) {
+        if (angle.isZeroOrMinusOne()) return
         binding.mediumCl.makeVisible()
         binding.mediumCl.rotation = angle
         binding.mediumTv.rotation = -angle
@@ -110,6 +114,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun setHighSinglePosition(angle: Float) {
+        if (angle.isZeroOrMinusOne()) return
         binding.highSingleCl.makeVisible()
         binding.highSingleCl.rotation = angle
         binding.highSingleTv.rotation = -angle
@@ -117,6 +122,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun setHighDualPosition(angle: Float) {
+        if (angle.isZeroOrMinusOne()) return
         binding.highDualCl.makeVisible()
         binding.highDualCl.rotation = angle
         binding.highDualTv.rotation = -angle
@@ -124,6 +130,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun setLowDualPosition(angle: Float) {
+        if (angle.isZeroOrMinusOne()) return
         binding.lowDualCl.makeVisible()
         binding.lowDualCl.rotation = angle
         binding.lowDualTv.rotation = -angle
@@ -156,6 +163,25 @@ class KnobView @JvmOverloads constructor(
             else -> {
                 changeKnobState(KnobState.NORMAL)
                 changeKnobProgressVisibility(true)
+                when(knob.calibration.rotationDir.rotation){
+                    Calibration.Rotation.CLOCKWISE -> binding.knobProgress.scaleX = 1F
+                    Calibration.Rotation.COUNTER_CLOCKWISE -> binding.knobProgress.scaleX = -1F
+                    else -> Unit
+                }
+                true
+            }
+        }
+    }
+
+    fun changeKnobBasicStatus(knob: KnobDto): Boolean {
+        changeKnobProgressVisibility(true)
+        return when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.Offline ||
+                ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.signalStrengthPercentage in 0..35) -> {
+                    changeKnobState(KnobState.TRANSPARENT)
+                    false
+                }
+            else -> {
+                changeKnobState(KnobState.NORMAL)
                 when(knob.calibration.rotationDir.rotation){
                     Calibration.Rotation.CLOCKWISE -> binding.knobProgress.scaleX = 1F
                     Calibration.Rotation.COUNTER_CLOCKWISE -> binding.knobProgress.scaleX = -1F
@@ -258,7 +284,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    fun doOnRotationChange() = callbackFlow{
+    fun doOnRotationChange(doRotate: StateFlow<Boolean>) = callbackFlow{
 
         binding.knobProgress.setOnTouchListener { v, event ->
             when(event.action){
@@ -291,7 +317,8 @@ class KnobView @JvmOverloads constructor(
             angle += 90
 
             Log.d(TAG, "setOnTouchListener: $angle")
-            animateCircle(mCurrAngle, angle)
+            if(doRotate.value)
+                animateCircle(mCurrAngle, angle)
             true
         }
         awaitClose()
