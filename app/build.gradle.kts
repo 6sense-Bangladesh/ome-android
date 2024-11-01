@@ -46,8 +46,8 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL_DEV)
-            buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL_DEV)
+            buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL_LIVE)
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL_LIVE)
         }
 
         create("demo") {
