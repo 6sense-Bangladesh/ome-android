@@ -24,7 +24,7 @@ class OmeApplication : Application() {
             Amplify.addPlugin(AWSCognitoAuthPlugin())
             val config: AmplifyConfiguration = AmplifyConfiguration.fromConfigFile(
                 applicationContext,
-                if (BuildConfig.DEBUG) {
+                if (BuildConfig.IS_INTERNAL_TESTING) {
                     R.raw.amplifyconfigurationdev
                 } else {
                     R.raw.amplifyconfigurationprod
@@ -35,7 +35,7 @@ class OmeApplication : Application() {
             Log.i("restManager", "Initialized Amplify")
         } catch (error: AmplifyException) {
 
-            Log.i("iNirvApplication", "Hey we found an error: ${error}")
+            Log.i("iNirvApplication", "Hey we found an error: $error")
         }
 
     }

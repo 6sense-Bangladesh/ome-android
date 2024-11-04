@@ -34,8 +34,8 @@ class DeviceSettingsFragment :
         binding.apply {
             viewModel.macAddress = args.params.macAddr
 //            name.text = args.params.name
-            mainViewModel.knobs.value.find { it.macAddr == args.params.macAddr }?.let {
-                knobView.setKnobPosition(it.angle.toFloat())
+            mainViewModel.knobs.value.find { it.macAddr == args.params.macAddr }?.let { knob ->
+                knobView.changeKnobBasicStatus(knob)
 //                knobView.setFontSize(18F)
             }
             recyclerView.adapter = adapter

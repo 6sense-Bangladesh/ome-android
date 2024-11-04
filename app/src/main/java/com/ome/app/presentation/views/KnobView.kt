@@ -176,6 +176,8 @@ class KnobView @JvmOverloads constructor(
 
     fun changeKnobBasicStatus(knob: KnobDto): Boolean {
         changeKnobProgressVisibility(true)
+        setKnobPosition(knob.angle.toFloat())
+        stovePosition = knob.stovePosition
         return when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.Offline ||
                 ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.signalStrengthPercentage in 0..35) -> {
                     changeKnobState(KnobState.TRANSPARENT)
