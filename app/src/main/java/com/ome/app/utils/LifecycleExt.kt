@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import es.dmoral.toasty.Toasty
 
 
 fun globalToast(context: Context, text: CharSequence, duration: Int = Toast.LENGTH_SHORT) =
@@ -18,12 +17,7 @@ fun FragmentActivity.showToast(@StringRes resId: Int, duration: Int = Toast.LENG
     globalToast(this, getString(resId), duration)
 
 fun Fragment.showToast(text: CharSequence, duration: Int = Toast.LENGTH_SHORT) =
-    Toasty.error(
-        requireContext(),
-        text,
-        duration,
-        true
-    ).show()
+    globalToast(requireContext(), text, duration)
 
 fun Fragment.showToast(@StringRes resId: Int, duration: Int = Toast.LENGTH_SHORT) =
     requireActivity().showToast(resId, duration)

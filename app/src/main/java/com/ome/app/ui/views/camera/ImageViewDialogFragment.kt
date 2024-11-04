@@ -11,11 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.ome.app.databinding.DialogFullscreenImageBinding
-import com.ome.app.utils.changeVisibility
-import com.ome.app.utils.loadDrawable
-import com.ome.app.utils.saveImage
-import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.toastyInfo
+import com.ome.app.utils.*
 
 class ImageViewDialogFragment(
     private val imageLinksOrFiles: List<Any> = emptyList(),
@@ -30,7 +26,7 @@ class ImageViewDialogFragment(
         if (isGranted)
             context.saveImage(imageLinksOrFiles.getOrNull(currentPosition))
         else
-            toastyInfo("Storage permission is denied")
+            toast("Storage permission is denied")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

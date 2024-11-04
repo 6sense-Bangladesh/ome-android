@@ -1,8 +1,9 @@
 package com.ome.app.ui.dashboard.my_stove.device
 
+import android.os.Parcelable
 import android.util.Log
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
@@ -15,19 +16,21 @@ import com.ome.app.ui.stove.StoveOrientation
 import com.ome.app.ui.stove.stoveOrientation
 import com.ome.app.ui.views.KnobView
 import com.ome.app.utils.*
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.parcelize.Parcelize
 
-
+@AndroidEntryPoint
 class DeviceDetailsFragment :
-    BaseFragment<DeviceViewModel, FragmentDeviceDetailsBinding>(FragmentDeviceDetailsBinding::inflate) {
+    BaseFragment<DeviceDetailsViewModel, FragmentDeviceDetailsBinding>(FragmentDeviceDetailsBinding::inflate) {
 
-    override val viewModel: DeviceViewModel by activityViewModels()
+    override val viewModel: DeviceDetailsViewModel by viewModels()
 
-    private val args by navArgs<DeviceSettingsFragmentArgs>()
+    private val args by navArgs<DeviceDetailsFragmentArgs>()
 
     private val isEnable = MutableStateFlow(false)
 
@@ -122,7 +125,7 @@ class DeviceDetailsFragment :
                 R.id.menuDeviceSetting -> {
                     findNavController().navigate(
                         DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToDeviceSettingsFragment(
-                            DeviceFragmentParams(
+                            DeviceSettingsFragmentParams(
                                 stovePosition = args.params.stovePosition,
                                 macAddr = args.params.macAddr
                             )
@@ -217,9 +220,8 @@ class DeviceDetailsFragment :
 
     private fun KnobView.setupKnob(knob: KnobDto) {
         isEnable.value = changeKnobBasicStatus(knob)
-        if(isEnable.value) {
+        if(isEnable.value && knob.calibrated.isTrue()) {
             val calibration = knob.calibration.toCalibration()
-            setStovePosition(knob.stovePosition)
             setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
             calibration.zones1?.let { zone ->
                 setHighSinglePosition(zone.highAngle.toFloat())
@@ -298,3 +300,6 @@ class DeviceDetailsFragment :
     }
 
 }
+
+@Parcelize
+data class DeviceDetailsFragmentParams(val stovePosition: Int, val macAddr: String) : Parcelable

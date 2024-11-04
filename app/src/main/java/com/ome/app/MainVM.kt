@@ -36,7 +36,7 @@ class MainVM @Inject constructor(
 ) : BaseViewModel() {
     var userInfo = savedStateHandle.getStateFlow("userInfo", preferencesProvider.getUserData())
     var knobs = savedStateHandle.getStateFlow("knobs", buildList<KnobDto> {
-//        if (BuildConfig.DEBUG) addAll(dummyKnobs)
+        if (BuildConfig.DEBUG) addAll(dummyKnobs)
     })
 
     override var defaultErrorHandler = CoroutineExceptionHandler { _, _ ->
@@ -126,6 +126,7 @@ class MainVM @Inject constructor(
                                         }
 
                                         try {
+                                            if (BuildConfig.DEBUG) knobs.addAll(dummyKnobs)
                                             knobs.addAll(stoveRepository.getAllKnobs())
                                             knobs.isNotEmpty {
                                                 savedStateHandle["knobs"] = knobs.toList()

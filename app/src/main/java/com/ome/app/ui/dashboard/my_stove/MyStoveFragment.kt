@@ -10,7 +10,7 @@ import com.ome.app.databinding.FragmentMyStoveBinding
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.ui.base.BaseFragment
 import com.ome.app.ui.dashboard.DashboardFragmentDirections
-import com.ome.app.ui.dashboard.my_stove.device.DeviceFragmentParams
+import com.ome.app.ui.dashboard.my_stove.device.DeviceDetailsFragmentParams
 import com.ome.app.ui.dashboard.profile.ProfileViewModel
 import com.ome.app.ui.stove.StoveOrientation
 import com.ome.app.ui.stove.stoveOrientation
@@ -57,7 +57,7 @@ class MyStoveFragment :
             setBounceClickListener{
                 navController.navigate(
                     DashboardFragmentDirections.actionDashboardFragmentToDeviceDetailsFragment(
-                        DeviceFragmentParams(knob.stovePosition, knob.macAddr)
+                        DeviceDetailsFragmentParams(knob.stovePosition, knob.macAddr)
                     )
                 )
             }

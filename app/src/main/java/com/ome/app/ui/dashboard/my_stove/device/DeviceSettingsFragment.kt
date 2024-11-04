@@ -1,9 +1,10 @@
 package com.ome.app.ui.dashboard.my_stove.device
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.SpannableStringBuilder
 import android.view.View
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
@@ -18,12 +19,14 @@ import com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragmentPar
 import com.ome.app.ui.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
 import com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiParams
 import com.ome.app.utils.*
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.parcelize.Parcelize
 
-
+@AndroidEntryPoint
 class DeviceSettingsFragment :
-    BaseFragment<DeviceViewModel, FragmentDeviceSettingsBinding>(FragmentDeviceSettingsBinding::inflate) {
+    BaseFragment<DeviceSettingsViewModel, FragmentDeviceSettingsBinding>(FragmentDeviceSettingsBinding::inflate) {
 
-    override val viewModel: DeviceViewModel by activityViewModels()
+    override val viewModel: DeviceSettingsViewModel by viewModels()
 
     private val args by navArgs<DeviceSettingsFragmentArgs>()
 
@@ -33,7 +36,7 @@ class DeviceSettingsFragment :
         binding.apply {
 //            name.text = args.params.name
             mainViewModel.knobs.value.find { it.macAddr == args.params.macAddr }?.let {
-                knobView.setStovePosition(it.stovePosition)
+                knobView.setKnobPosition(it.angle.toFloat())
 //                knobView.setFontSize(18F)
             }
             recyclerView.adapter = adapter
@@ -163,3 +166,6 @@ class DeviceSettingsFragment :
         }
     }
 }
+
+@Parcelize
+data class DeviceSettingsFragmentParams(val stovePosition: Int, val macAddr: String) : Parcelable

@@ -12,7 +12,7 @@ import com.ome.app.ui.base.navigation.DeepNavGraph.navigate
 import com.ome.app.ui.base.navigation.Screens
 import com.ome.app.ui.base.recycler.ItemModel
 import com.ome.app.ui.dashboard.DashboardFragmentDirections
-import com.ome.app.ui.dashboard.my_stove.device.DeviceFragmentParams
+import com.ome.app.ui.dashboard.my_stove.device.DeviceSettingsFragmentParams
 import com.ome.app.ui.dashboard.settings.adapter.SettingItemAdapter
 import com.ome.app.ui.dashboard.settings.adapter.StovesBottomSheet
 import com.ome.app.ui.dashboard.settings.adapter.model.SettingsItemModel
@@ -134,7 +134,7 @@ class SettingsFragment :
             is SettingsKnobItemModel -> {
                 navController?.navigate(
                     DashboardFragmentDirections.actionDashboardFragmentToDeviceSettingsFragment(
-                        DeviceFragmentParams(
+                        DeviceSettingsFragmentParams(
                             stovePosition = item.stovePosition,
                             macAddr = item.macAddr
                         )

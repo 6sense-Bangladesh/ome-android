@@ -44,7 +44,7 @@ class KnobView @JvmOverloads constructor(
     fun setKnobPosition(angle: Float, rotateClockwise: Boolean = true) {
 //        val rotationSafeAngle = if (rotateClockwise) angle else angle - 360
         val rotationSafeAngle = angle
-        if(rotationSafeAngle!=mCurrAngle){
+        if(rotationSafeAngle != mCurrAngle){
             logi("angle KnobView $rotationSafeAngle")
             animateCircle(mCurrAngle, rotationSafeAngle)
         }
@@ -268,6 +268,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     private fun animateCircle(fromDeg: Float, toDeg: Float) {
+        mCurrAngle = toDeg
         val rotateAnimation = RotateAnimation(
             fromDeg, toDeg,
             RotateAnimation.RELATIVE_TO_SELF, 0.5F,
@@ -280,7 +281,6 @@ class KnobView @JvmOverloads constructor(
         rotateAnimation.fillAfter = true
 
         binding.knobCircleCl.startAnimation(rotateAnimation)
-        mCurrAngle = toDeg
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -307,18 +307,15 @@ class KnobView @JvmOverloads constructor(
             val deltaY = touchY - centerY
 
             // Calculate the angle in degrees using atan2
-            var angle = Math.toDegrees(atan2(deltaY.toDouble(), deltaX.toDouble())).toFloat()
+            var angle = Math.toDegrees(atan2(deltaY.toDouble(), deltaX.toDouble())).toFloat() + 90
 
             // Adjust angle to be in the 0–360 range
-            if (angle < 0) {
-                angle += 360f
-            }
-
-            angle += 90
+            if (angle < 0)  angle += 360f
+            if (angle < 360)  angle -= 360f
 
             Log.d(TAG, "setOnTouchListener: $angle")
             if(doRotate.value)
-                animateCircle(mCurrAngle, angle)
+                setKnobPosition(angle)
             true
         }
         awaitClose()
