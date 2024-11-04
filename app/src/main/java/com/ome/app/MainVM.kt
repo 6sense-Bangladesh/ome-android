@@ -58,6 +58,9 @@ class MainVM @Inject constructor(
             userRepository.userFlow.filterNotNull().collect {
                 savedStateHandle["userInfo"] = it
             }
+            stoveRepository.knobsFlow.filterNotNull().collect {
+                savedStateHandle["knobs"] = it
+            }
         }
     }
 

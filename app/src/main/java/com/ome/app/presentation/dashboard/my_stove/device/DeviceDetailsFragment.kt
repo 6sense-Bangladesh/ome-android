@@ -17,7 +17,6 @@ import com.ome.app.presentation.stove.stoveOrientation
 import com.ome.app.presentation.views.KnobView
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -34,7 +33,6 @@ class DeviceDetailsFragment :
 
     private val isEnable = MutableStateFlow(false)
 
-    @OptIn(FlowPreview::class)
     override fun setupUI() {
         viewModel.macAddress = args.params.macAddr
         val selectedColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
