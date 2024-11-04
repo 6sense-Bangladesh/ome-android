@@ -5,12 +5,11 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupBurnersBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.base.navigation.DeepNavGraph.getData
-import com.ome.app.presentation.base.navigation.Screens
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
@@ -27,18 +26,17 @@ class StoveSetupBurnersFragment :
 
     override val viewModel: StoveSetupBurnersViewModel by viewModels()
 
-//    private val args by navArgs<StoveSetupBurnersFragmentArgs>()
-    private val args by lazy { Screens.StoveLayout.getData(arguments) }
+    private val args by navArgs<StoveSetupBurnersFragmentArgs>()
 
     override fun setupUI() {
         args.let {
-            viewModel.brand = it.brand
-            it.type?.apply {
+            viewModel.brand = it.params.brand
+            it.params.type?.apply {
                 viewModel.stoveType = type
                 viewModel.stoveKnobMounting = mounting
             }
         }
-        if (args.isEditMode) {
+        if (args.params.isEditMode) {
             binding.continueBtn.text = getString(R.string.save)
             mainViewModel.userInfo.value.stoveOrientation.stoveOrientation
         }else{
@@ -84,7 +82,7 @@ class StoveSetupBurnersFragment :
             }
         }
         binding.continueBtn.setBounceClickListener  {
-            if (args.isEditMode) {
+            if (args.params.isEditMode) {
                 binding.continueBtn.startAnimation()
                 mainViewModel.stoveData.stoveOrientation = viewModel.stoveOrientation?.number
                 viewModel.updateStoveOrientation(mainViewModel.userInfo.value.stoveId, onEnd = mainViewModel::getUserInfo)
@@ -131,7 +129,7 @@ class StoveSetupBurnersFragment :
                 binding.continueBtn.startAnimation()
             else {
                 binding.continueBtn.revertAnimation()
-                if (args.isEditMode)
+                if (args.params.isEditMode)
                     onBackPressed()
             }
         }

@@ -5,13 +5,12 @@ import android.widget.AdapterView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupBrandBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.base.navigation.DeepNavGraph
 import com.ome.app.presentation.base.navigation.DeepNavGraph.encode
-import com.ome.app.presentation.base.navigation.DeepNavGraph.getData
-import com.ome.app.presentation.base.navigation.Screens
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
@@ -23,10 +22,10 @@ import kotlinx.parcelize.Parcelize
 class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentStoveSetupBrandBinding>(FragmentStoveSetupBrandBinding::inflate) {
     override val viewModel: StoveSetupBrandViewModel by viewModels()
 
-    private val args by lazy { Screens.StoveBrand.getData(arguments) }
+    private val args by navArgs<StoveSetupBrandFragmentArgs>()
 
     override fun setupUI() {
-        if(args.isEditMode) {
+        if(args.params.isEditMode) {
             binding.continueBtn.text = getString(R.string.save)
             mainViewModel.userInfo.value.stoveMakeModel
         }else{
@@ -50,7 +49,7 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
             mainViewModel.stoveData.stoveMakeModel = viewModel.selectedBrand
             if(mainViewModel.stoveData.stoveMakeModel.isNullOrEmpty())
                 onError("Please select a brand")
-            else if(args.isEditMode)
+            else if(args.params.isEditMode)
                 viewModel.updateSelectedBrand(mainViewModel.userInfo.value.stoveId, onEnd= mainViewModel::getUserInfo)
             else{
                 findNavController().navigate(
@@ -71,7 +70,7 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
                 binding.continueBtn.startAnimation()
             else {
                 binding.continueBtn.revertAnimation()
-                if (args.isEditMode)
+                if (args.params.isEditMode)
                     onBackPressed()
             }
         }

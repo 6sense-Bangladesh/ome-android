@@ -60,8 +60,7 @@ class SignUpConfirmationFragment :
             if (it) {
                 AmplifyManager.kotAuth = Amplify.Auth
                 findNavController().navigate(
-//                    SignUpConfirmationFragmentDirections.actionSignUpConfirmationFragmentToDashboardFragment()
-                    R.id.myStoveSetupNavGraph
+                    SignUpConfirmationFragmentDirections.actionSignUpConfirmationFragmentToWelcomeFragment()
                 )
             }
 

@@ -114,7 +114,7 @@ class MainVM @Inject constructor(
 //                                        }
                                         if (result.value.stoveSetupComplete.isFalse()) {
                                             savedStateHandle["startDestination"] =
-                                                R.id.myStoveSetupNavGraph
+                                                R.id.welcomeFragment
                                             return@launch
                                         }
                                         savedStateHandle["startDestination"] =

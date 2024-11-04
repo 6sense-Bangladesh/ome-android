@@ -1,7 +1,6 @@
 package com.ome.app.presentation.dashboard
 
 import androidx.navigation.NavController
-import com.ome.app.R
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.domain.repo.UserRepository
@@ -60,17 +59,17 @@ class DashboardViewModel @Inject constructor(
             }
         }
 
-        launch {
-            navControllerFlow.collect {
-                if (it.graph.id == R.id.myStoveSetupNavGraph) {
+//        launch {
+//            navControllerFlow.collect {
+//                if (it.graph.id == R.id.welcomeFragment) {
 //                    val inflater = it.navInflater
 //
 //                    val graph = inflater.inflate(R.navigation.my_stove_navigation)
 //                    graph.setStartDestination(R.id.myStoveFragment)
 //                    it.setGraph(graph,null)
-                }
-            }
-        }
+//                }
+//            }
+//        }
 
 //        isStartDestination =
 //            combine(currentDestination, navControllerFlow) { navDestination, navController ->

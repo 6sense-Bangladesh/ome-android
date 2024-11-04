@@ -11,9 +11,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.ome.app.R
-import com.ome.app.presentation.stove.StoveSetupBrandArgs
-import com.ome.app.presentation.stove.StoveSetupBurnersArgs
-import com.ome.app.presentation.stove.StoveSetupTypeArgs
 import com.ome.app.utils.isTrue
 import com.ome.app.utils.toJson
 import kotlin.io.encoding.Base64
@@ -21,9 +18,9 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 
 sealed class Screens<T>(val destination: String) {
     data object Dashboard : Screens<Unit>("dashboard")
-    data object StoveBrand : Screens<StoveSetupBrandArgs>("stove_brand")
-    data object StoveType : Screens<StoveSetupTypeArgs>("stove_type")
-    data object StoveLayout : Screens<StoveSetupBurnersArgs>("stove_layout")
+//    data object StoveBrand : Screens<StoveSetupBrandArgs>("stove_brand")
+//    data object StoveType : Screens<StoveSetupTypeArgs>("stove_type")
+//    data object StoveLayout : Screens<StoveSetupBurnersArgs>("stove_layout")
 
 //    data object SelectBurnerPosition : Screens<SelectBurnerFragmentParams>("knob_position")
 //    data object ConnectToWifi : Screens<ConnectToWifiParams>("connect_wifi")

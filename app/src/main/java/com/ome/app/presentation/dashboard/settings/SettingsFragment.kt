@@ -8,8 +8,6 @@ import androidx.navigation.fragment.NavHostFragment
 import com.ome.app.R
 import com.ome.app.databinding.FragmentSettingsBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.base.navigation.DeepNavGraph.navigate
-import com.ome.app.presentation.base.navigation.Screens
 import com.ome.app.presentation.base.recycler.ItemModel
 import com.ome.app.presentation.dashboard.DashboardFragmentDirections
 import com.ome.app.presentation.dashboard.my_stove.device.DeviceSettingsFragmentParams
@@ -116,20 +114,16 @@ class SettingsFragment :
 //                                Settings.STOVE_HISTORY -> {
 //
 //                                }
-                        Settings.ADD_NEW_KNOB -> {
-                            navController?.navigate(
-                                DashboardFragmentDirections.actionDashboardFragmentToKnobWakeUpFragment(KnobWakeUpParams())
-                            )
-//                                    navController.navigate(NavGraph.AddKnob)
-                            //navController?.navigate(R.id.addKnobNavGraph)
-                            //navController?.navigate(SettingsFragmentDirections.actionSettingsFragmentToKnobWakeUpFragment(isComeFromSettings = false))
-                        }
-
-                        Settings.STOVE_BRAND -> Screens.StoveBrand.navigate(navController, StoveSetupBrandArgs(isEditMode = true))
-                        Settings.STOVE_TYPE -> Screens.StoveType.navigate(navController, StoveSetupTypeArgs(isEditMode = true))
-                        Settings.STOVE_LAYOUT -> Screens.StoveLayout.navigate(navController, StoveSetupBurnersArgs(isEditMode = true))
+                        Settings.ADD_NEW_KNOB ->
+                            navController?.navigate(DashboardFragmentDirections.actionDashboardFragmentToKnobWakeUpFragment(KnobWakeUpParams()))
+                        Settings.STOVE_BRAND ->
+                            navController?.navigate(DashboardFragmentDirections.actionDashboardFragmentToStoveSetupBrandFragment(StoveSetupBrandArgs(isEditMode = true)))
+                        Settings.STOVE_TYPE ->
+                            navController?.navigate(DashboardFragmentDirections.actionDashboardFragmentToStoveSetupTypeFragment(StoveSetupTypeArgs(isEditMode = true)))
+                        Settings.STOVE_LAYOUT ->
+                            navController?.navigate(DashboardFragmentDirections.actionDashboardFragmentToStoveSetupBurnersFragment(StoveSetupBurnersArgs(isEditMode = true)))
                         Settings.STOVE_AUTO_SHUT_OFF ->
-                            navController?.navigate(R.id.action_dashboardFragment_to_autoShutOffSettingsFragment)
+                            navController?.navigate(DashboardFragmentDirections.actionDashboardFragmentToAutoShutOffSettingsFragment())
                     }
                 }
             }

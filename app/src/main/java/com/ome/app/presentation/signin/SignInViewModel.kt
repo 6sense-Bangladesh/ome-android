@@ -84,7 +84,7 @@ class SignInViewModel @Inject constructor(
                 is ResponseWrapper.Success -> {
                     loadingLiveData.postValue(false)
                     if (result.value.stoveSetupComplete.isFalse()){
-                        destinationAfterSignInLiveData.postValue(R.id.myStoveSetupNavGraph to null)
+                        destinationAfterSignInLiveData.postValue(R.id.welcomeFragment to null)
                         return@launch
                     }
                     else

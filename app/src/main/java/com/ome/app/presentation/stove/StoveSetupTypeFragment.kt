@@ -4,11 +4,10 @@ import android.os.Parcelable
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupTypeBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.base.navigation.DeepNavGraph.getData
-import com.ome.app.presentation.base.navigation.Screens
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
@@ -20,8 +19,7 @@ class StoveSetupTypeFragment :
 
     override val viewModel: StoveSetupTypeViewModel by viewModels()
 
-//    private val args by navArgs<StoveSetupTypeFragmentArgs>()
-    private val args by lazy { Screens.StoveType.getData(arguments) }
+    private val args by navArgs<StoveSetupTypeFragmentArgs>()
 
     override fun setupUI() {
 //        initButtonsStates()
@@ -31,7 +29,7 @@ class StoveSetupTypeFragment :
 //                margin(top = true)
 //            }
 //        }
-        if (args.isEditMode) {
+        if (args.params.isEditMode) {
             binding.continueBtn.text = getString(R.string.save)
             mainViewModel.userInfo.value.stoveType
         }else{
@@ -57,7 +55,7 @@ class StoveSetupTypeFragment :
 
             if(mainViewModel.stoveData.stoveType == null)
                 onError("Please select stove type")
-            else if (args.isEditMode) {
+            else if (args.params.isEditMode) {
                 binding.continueBtn.startAnimation()
                 viewModel.saveStoveType(mainViewModel.userInfo.value.stoveId, onEnd = mainViewModel::getUserInfo)
             }
@@ -66,7 +64,7 @@ class StoveSetupTypeFragment :
                     findNavController().navigate(
                         R.id.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment, bundleOf(
                             "params" to StoveSetupPhotoArgs(
-                                brand = args.brand,
+                                brand = args.params.brand,
                                 type = it,
                             )
                         )
@@ -169,7 +167,7 @@ class StoveSetupTypeFragment :
                 binding.continueBtn.startAnimation()
             else {
                 binding.continueBtn.revertAnimation()
-                if (args.isEditMode)
+                if (args.params.isEditMode)
                     onBackPressed()
             }
         }

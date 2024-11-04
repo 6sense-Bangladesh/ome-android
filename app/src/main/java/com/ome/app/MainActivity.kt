@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
         val navController = navHostFragment.navController
         val inflater = navController.navInflater
-        val graph = inflater.inflate(R.navigation.onboarding_nav_graph)
+        val graph = inflater.inflate(R.navigation.main_nav_graph)
         graph.setStartDestination(startDestinationId)
         navController.setGraph(graph, intent.extras)
         viewModel.isSplashScreenLoading = false
