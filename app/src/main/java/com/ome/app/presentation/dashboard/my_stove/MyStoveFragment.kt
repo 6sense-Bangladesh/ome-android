@@ -72,7 +72,6 @@ class MyStoveFragment :
         stovePosition = knob.stovePosition
         if(changeKnobStatus(knob)) {
             val calibration = knob.calibration.toCalibration()
-            setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
             calibration.zones1?.let { zone ->
                 setHighSinglePosition(zone.highAngle.toFloat())
                 setMediumPosition(zone.mediumAngle.toFloat())
@@ -84,6 +83,7 @@ class MyStoveFragment :
                 setLowDualPosition(zone.lowAngle.toFloat())
             }
             setOffPosition(calibration.offAngle.toFloat())
+            setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
         }
     }
 

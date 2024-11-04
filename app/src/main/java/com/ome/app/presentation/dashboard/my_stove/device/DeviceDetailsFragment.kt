@@ -113,6 +113,7 @@ class DeviceDetailsFragment :
                     null -> burnerSelection.gone()
                 }
             }
+            viewModel.initSubscriptions()
         }
     }
 
