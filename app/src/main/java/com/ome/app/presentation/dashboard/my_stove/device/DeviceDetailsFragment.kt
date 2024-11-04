@@ -185,7 +185,8 @@ class DeviceDetailsFragment :
             if(angle == 1f){
                 changeBatteryStates(ConnectionState.Offline)
                 isEnable.value = false
-            }
+            }else
+                isEnable.value = true
             binding.knobView.setKnobPosition(angle)
         }
 
