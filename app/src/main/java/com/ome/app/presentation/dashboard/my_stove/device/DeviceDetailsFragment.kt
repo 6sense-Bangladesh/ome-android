@@ -165,11 +165,15 @@ class DeviceDetailsFragment :
 
         }
 
-        viewModel.webSocketManager.knobAngleFlow
-            .filter { it?.macAddr == viewModel.macAddress }
-            .collectWithLifecycle {angle ->
-                binding.knobView.setKnobPosition(angle.value.toFloat())
-            }
+//        viewModel.webSocketManager.knobAngleFlow
+//            .filter { it?.macAddr == viewModel.macAddress }
+//            .collectWithLifecycle {angle ->
+//                binding.knobView.setKnobPosition(angle.value.toFloat())
+//            }
+
+        subscribe(viewModel.knobAngleLiveData) { angle ->
+            angle?.let { binding.knobView.setKnobPosition(it) }
+        }
 
         viewModel.webSocketManager.knobRssiFlow
             .filter { it?.macAddr == viewModel.macAddress }
@@ -223,7 +227,7 @@ class DeviceDetailsFragment :
         isEnable.value = changeKnobBasicStatus(knob)
         if(isEnable.value && knob.calibrated.isTrue()) {
             val calibration = knob.calibration.toCalibration()
-            setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
+//            setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
             calibration.zones1?.let { zone ->
                 setHighSinglePosition(zone.highAngle.toFloat())
                 setMediumPosition(zone.mediumAngle.toFloat())
