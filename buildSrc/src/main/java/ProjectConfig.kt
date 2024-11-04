@@ -12,7 +12,7 @@ object ProjectConfig {
 
     val javaVersion = JavaVersion.VERSION_21
 
-    const val IS_INTERNAL_TESTING = false
+    const val IS_INTERNAL_TESTING = true
 
     const val BASE_URL_DEV = "\"https://app-dev.api.omekitchen.com\""
     const val BASE_URL_SANDBOX = "\"https://app-sandbox.api.omekitchen.com\""
