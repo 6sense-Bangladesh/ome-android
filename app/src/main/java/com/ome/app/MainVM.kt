@@ -12,8 +12,8 @@ import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.network.response.UserResponse
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
-import com.ome.app.ui.base.BaseViewModel
-import com.ome.app.ui.base.SingleLiveEvent
+import com.ome.app.presentation.base.BaseViewModel
+import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.isFalse
 import com.ome.app.utils.isNotEmpty

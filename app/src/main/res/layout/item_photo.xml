@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="@dimen/_5sdp"
     app:cardCornerRadius="@dimen/_10sdp"
     app:strokeWidth="1dp"
-    tools:context=".ui.views.camera.PhotoAdapter">
+    tools:context=".presentation.views.camera.PhotoAdapter">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btnRemove"

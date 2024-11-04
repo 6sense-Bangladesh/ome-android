@@ -5,7 +5,7 @@
     android:id="@+id/rootCl"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.dashboard.settings.SettingsFragment">
+    tools:context=".presentation.dashboard.settings.SettingsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

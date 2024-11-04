@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clipChildren="false"
-    tools:context=".ui.views.KnobView">
+    tools:context=".presentation.views.KnobView">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/knobCircleCl"

@@ -1,6 +1,6 @@
 package com.ome.app
 
-import com.ome.app.ui.dashboard.settings.add_knob.calibration.CalibrationState
+import com.ome.app.presentation.dashboard.settings.add_knob.calibration.CalibrationState
 import com.ome.app.utils.KnobAngleManager
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

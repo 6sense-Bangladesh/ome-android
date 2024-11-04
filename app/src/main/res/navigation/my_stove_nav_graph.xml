@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.ome.app.ui.signup.welcome.WelcomeFragment"
+        android:name="com.ome.app.presentation.signup.welcome.WelcomeFragment"
         android:label="WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/stoveSetupBrandFragment"
-        android:name="com.ome.app.ui.stove.StoveSetupBrandFragment"
+        android:name="com.ome.app.presentation.stove.StoveSetupBrandFragment"
         android:label="StoveSetupBrandFragment"
         tools:layout="@layout/fragment_stove_setup_brand">
 
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/stoveSetupTypeFragment"
-        android:name="com.ome.app.ui.stove.StoveSetupTypeFragment"
+        android:name="com.ome.app.presentation.stove.StoveSetupTypeFragment"
         android:label="StoveSetupTypeFragment"
         tools:layout="@layout/fragment_stove_setup_type">
 
@@ -54,12 +54,12 @@
     </fragment>
     <fragment
         android:id="@+id/stoveSetupPhotoFragment"
-        android:name="com.ome.app.ui.stove.StoveSetupPhotoFragment"
+        android:name="com.ome.app.presentation.stove.StoveSetupPhotoFragment"
         android:label="StoveSetupPhotoFragment"
         tools:layout="@layout/fragment_stove_setup_photo">
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.stove.StoveSetupPhotoArgs" />
+            app:argType="com.ome.app.presentation.stove.StoveSetupPhotoArgs" />
         <action
             android:id="@+id/action_stoveSetupPhotoFragment_to_stoveSetupBurnersFragment"
             app:destination="@id/stoveSetupBurnersFragment"
@@ -70,7 +70,7 @@
     </fragment>
     <fragment
         android:id="@+id/stoveSetupBurnersFragment"
-        android:name="com.ome.app.ui.stove.StoveSetupBurnersFragment"
+        android:name="com.ome.app.presentation.stove.StoveSetupBurnersFragment"
         android:label="StoveSetupBurnersFragment"
         tools:layout="@layout/fragment_stove_setup_burners">
 <!--        <argument-->
@@ -88,7 +88,7 @@
     </fragment>
     <fragment
         android:id="@+id/stoveSetupCompletedFragment"
-        android:name="com.ome.app.ui.stove.StoveSetupCompletedFragment"
+        android:name="com.ome.app.presentation.stove.StoveSetupCompletedFragment"
         android:label="StoveSetupCompletedFragment"
         tools:layout="@layout/fragment_stove_setup_completed">
         <action

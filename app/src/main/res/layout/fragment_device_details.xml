@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.dashboard.my_stove.device.DeviceDetailsFragment">
+    tools:context=".presentation.dashboard.my_stove.device.DeviceDetailsFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
@@ -216,7 +216,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
-    <com.ome.app.ui.views.KnobView
+    <com.ome.app.presentation.views.KnobView
         android:id="@+id/knobView"
         android:layout_width="@dimen/_220sdp"
         android:layout_height="@dimen/_220sdp"

@@ -1,7 +1,7 @@
 package com.ome.app.domain.model.ui
 
 import com.ome.app.domain.model.network.response.UserResponse
-import com.ome.app.ui.base.recycler.ItemModel
+import com.ome.app.presentation.base.recycler.ItemModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

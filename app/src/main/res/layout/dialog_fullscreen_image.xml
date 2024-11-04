@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
-    <com.ome.app.ui.views.camera.ImageViewZoom
+    <com.ome.app.presentation.views.camera.ImageViewZoom
         android:id="@+id/imageViewFullScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

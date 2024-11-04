@@ -109,7 +109,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
-    <com.ome.app.ui.views.KnobView
+    <com.ome.app.presentation.views.KnobView
         android:id="@+id/knobView"
         android:layout_width="250dp"
         android:layout_height="250dp"

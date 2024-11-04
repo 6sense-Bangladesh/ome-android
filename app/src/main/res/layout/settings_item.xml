@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="6dp"
     android:orientation="vertical"
-    tools:context=".ui.dashboard.settings.adapter.SettingItemAdapter">
+    tools:context=".presentation.dashboard.settings.adapter.SettingItemAdapter">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/parent"

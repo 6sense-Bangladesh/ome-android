@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
-    tools:context=".ui.dashboard.settings.add_knob.scanner.QrCodeScannerFragment">
+    tools:context=".presentation.dashboard.settings.add_knob.scanner.QrCodeScannerFragment">
 
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
 
 
-    <com.ome.app.ui.views.BurnerSelectionView
+    <com.ome.app.presentation.views.BurnerSelectionView
         android:id="@+id/burnerSelectionView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

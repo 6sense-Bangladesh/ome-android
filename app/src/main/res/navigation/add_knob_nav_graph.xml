@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/knobWakeUpFragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.wake_up.KnobWakeUpFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.wake_up.KnobWakeUpFragment"
         android:label="KnobWakeUpFragment"
         tools:layout="@layout/fragment_knob_wake_up">
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/metalPlateInstallationFragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.metal_plate.MetalPlateInstallationFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.metal_plate.MetalPlateInstallationFragment"
         android:label="MetalPlateInstallationFragment"
         tools:layout="@layout/fragment_metal_plate">
         <action
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/selectBurnerFragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.burner.SelectBurnerFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.burner.SelectBurnerFragment"
         android:label="SelectBurnerFragment"
         tools:layout="@layout/fragment_select_burner">
 <!--        <argument-->
@@ -59,13 +59,13 @@
     </fragment>
     <fragment
         android:id="@+id/qrCodeScannerFragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.scanner.QrCodeScannerFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.scanner.QrCodeScannerFragment"
         android:label="QrCodeScannerFragment"
         tools:layout="@layout/fragment_qr_code_scanner">
 
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.add_knob.scanner.QrCodeScannerParams" />
+            app:argType="com.ome.app.presentation.dashboard.settings.add_knob.scanner.QrCodeScannerParams" />
         <action
             android:id="@+id/action_qrCodeScannerFragment_to_connectToWifiFragment"
             app:destination="@id/connectToWifiFragment"
@@ -76,7 +76,7 @@
     </fragment>
     <fragment
         android:id="@+id/connectToWifiFragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiFragment"
         android:label="ConnectToWifiFragment"
         tools:layout="@layout/fragment_connect_to_wifi">
 <!--        <argument-->
@@ -102,12 +102,12 @@
 
     <fragment
         android:id="@+id/connectToWifiPasswordFragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiPasswordFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiPasswordFragment"
         android:label="ConnectToWifiPasswordFragment"
         tools:layout="@layout/fragment_connect_to_wifi_password">
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.add_knob.wifi.ConnectToWifiPasswordParams" />
+            app:argType="com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiPasswordParams" />
         <action
             android:id="@+id/action_connectToWifiPasswordFragment_to_knobInstallationManual1Fragment"
             app:destination="@id/knobInstallationManual1Fragment"
@@ -118,12 +118,12 @@
     </fragment>
     <fragment
         android:id="@+id/knobInstallationManual2Fragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.installation.KnobInstallationManual2Fragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManual2Fragment"
         android:label="KnobInstallationManual2Fragment"
         tools:layout="@layout/fragment_knob_installation_manual2">
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.add_knob.installation.KnobInstallationManual2FragmentParams" />
+            app:argType="com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManual2FragmentParams" />
         <action
             android:id="@+id/action_knobInstallationManual2Fragment_to_zoneSelectionFragment"
             app:destination="@id/zoneSelectionFragment"
@@ -134,12 +134,12 @@
     </fragment>
     <fragment
         android:id="@+id/deviceCalibrationConfirmationFragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.calibration.DeviceCalibrationConfirmationFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationConfirmationFragment"
         android:label="DeviceCalibrationConfirmationFragment"
         tools:layout="@layout/fragment_device_calibration_confirmation">
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.add_knob.calibration.DeviceCalibrationConfirmationFragmentParams" />
+            app:argType="com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationConfirmationFragmentParams" />
         <action
             android:id="@+id/action_deviceCalibrationConfirmationFragment_to_setupCompleteFragment"
             app:destination="@id/setupCompleteFragment"
@@ -153,12 +153,12 @@
 
     <fragment
         android:id="@+id/manualSetupFragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.wifi.ManualSetupFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.wifi.ManualSetupFragment"
         android:label="ManualSetupFragment"
         tools:layout="@layout/fragment_manual_setup">
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.add_knob.wifi.ManualSetupFragmentParams" />
+            app:argType="com.ome.app.presentation.dashboard.settings.add_knob.wifi.ManualSetupFragmentParams" />
         <action
             android:id="@+id/action_manualSetupFragment_to_wifiListFragment"
             app:destination="@id/wifiListFragment"
@@ -170,12 +170,12 @@
 
     <fragment
         android:id="@+id/deviceCalibrationFragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.calibration.DeviceCalibrationFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragment"
         android:label="DeviceCalibrationFragment"
         tools:layout="@layout/fragment_device_calibration">
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams" />
+            app:argType="com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams" />
         <action
             android:id="@+id/action_deviceCalibrationFragment_to_deviceCalibrationConfirmationFragment"
             app:destination="@id/deviceCalibrationConfirmationFragment"
@@ -193,12 +193,12 @@
     </fragment>
     <fragment
         android:id="@+id/knobInstallationManual1Fragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.installation.KnobInstallationManual1Fragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManual1Fragment"
         android:label="KnobInstallationManual1Fragment"
         tools:layout="@layout/fragment_knob_installation_manual1">
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.add_knob.installation.KnobInstallationManual1FragmentParams" />
+            app:argType="com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManual1FragmentParams" />
         <action
             android:id="@+id/action_knobInstallationManual1Fragment_to_knobInstallationManual2Fragment"
             app:destination="@id/knobInstallationManual2Fragment"
@@ -210,12 +210,12 @@
 
     <fragment
         android:id="@+id/zoneSelectionFragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.zone.ZoneSelectionFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.zone.ZoneSelectionFragment"
         android:label="ZoneSelectionFragment"
         tools:layout="@layout/fragment_zone_selection">
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.add_knob.zone.ZoneSelectionFragmentParams" />
+            app:argType="com.ome.app.presentation.dashboard.settings.add_knob.zone.ZoneSelectionFragmentParams" />
         <action
             android:id="@+id/action_zoneSelectionFragment_to_directionSelectionFragment"
             app:destination="@id/directionSelectionFragment"
@@ -234,7 +234,7 @@
     </fragment>
     <fragment
         android:id="@+id/directionSelectionFragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.direction.DirectionSelectionFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.direction.DirectionSelectionFragment"
         android:label="DirectionSelectionFragment"
         tools:layout="@layout/fragment_direction_selection">
 
@@ -256,7 +256,7 @@
 
     <fragment
         android:id="@+id/setupCompleteFragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.calibration.SetupCompleteFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.calibration.SetupCompleteFragment"
         android:label="SetupCompleteFragment"
         tools:layout="@layout/fragment_setup_complete">
         <argument
@@ -266,12 +266,12 @@
 
     <fragment
         android:id="@+id/wifiListFragment"
-        android:name="com.ome.app.ui.dashboard.settings.add_knob.wifi.WifiListFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.wifi.WifiListFragment"
         android:label="WifiListFragment"
         tools:layout="@layout/fragment_wifi_list">
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.dashboard.settings.add_knob.wifi.WifiListFragmentParams" />
+            app:argType="com.ome.app.presentation.dashboard.settings.add_knob.wifi.WifiListFragmentParams" />
         <action
             android:id="@+id/action_wifiListFragment_to_connectToWifiPasswordFragment"
             app:destination="@id/connectToWifiPasswordFragment"

@@ -1,6 +1,6 @@
 package com.ome.app.utils
 
-import com.ome.app.ui.dashboard.settings.add_knob.calibration.CalibrationState
+import com.ome.app.presentation.dashboard.settings.add_knob.calibration.CalibrationState
 import kotlin.math.abs
 
 object KnobAngleManager {

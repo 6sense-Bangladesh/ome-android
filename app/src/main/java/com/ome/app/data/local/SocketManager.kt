@@ -1,7 +1,7 @@
 package com.ome.app.data.local
 
 import android.content.Context
-import com.ome.app.ui.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
+import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
 import com.ome.app.utils.logi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow

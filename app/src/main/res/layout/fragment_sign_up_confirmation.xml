@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    tools:context=".ui.launch.LaunchFragment">
+    tools:context=".presentation.launch.LaunchFragment">
 
     <include
         android:id="@+id/include"
@@ -53,7 +53,7 @@
             app:layout_constraintStart_toStartOf="@+id/enterCode"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.ome.app.ui.views.OmeTextInput
+        <com.ome.app.presentation.views.OmeTextInput
             android:id="@+id/enterCode"
             android:layout_width="match_parent"
             android:layout_height="45dp"

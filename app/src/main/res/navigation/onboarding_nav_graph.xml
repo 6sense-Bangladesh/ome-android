@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/launchFragment"
-        android:name="com.ome.app.ui.launch.LaunchFragment"
+        android:name="com.ome.app.presentation.launch.LaunchFragment"
         android:label="ome_background_gradient"
         tools:layout="@layout/fragment_launch">
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.ome.app.ui.signin.SignInFragment"
+        android:name="com.ome.app.presentation.signin.SignInFragment"
         android:label="SignInFragment">
         <action
             android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
@@ -53,7 +53,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpNameFragment"
-        android:name="com.ome.app.ui.signup.name.SignUpNameFragment"
+        android:name="com.ome.app.presentation.signup.name.SignUpNameFragment"
         android:label="SignUpNameFragment">
         <action
             android:id="@+id/action_signUpNameFragment_to_signUpEmailAndPasswordFragment"
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpEmailAndPhoneFragment"
-        android:name="com.ome.app.ui.signup.email.SignUpEmailAndPhoneFragment"
+        android:name="com.ome.app.presentation.signup.email.SignUpEmailAndPhoneFragment"
         android:label="SignUpEmailAndPasswordFragment">
         <action
             android:id="@+id/action_signUpEmailAndPhoneFragment_to_signUpPasswordFragment"
@@ -76,11 +76,11 @@
             app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.signup.email.NameParams" />
+            app:argType="com.ome.app.presentation.signup.email.NameParams" />
     </fragment>
     <fragment
         android:id="@+id/signUpPasswordFragment"
-        android:name="com.ome.app.ui.signup.password.SignUpPasswordFragment"
+        android:name="com.ome.app.presentation.signup.password.SignUpPasswordFragment"
         android:label="SignUpPasswordFragment">
         <action
             android:id="@+id/action_signUpPasswordFragment_to_signUpConfirmationFragment"
@@ -91,15 +91,15 @@
             app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.signup.password.AuthParams" />
+            app:argType="com.ome.app.presentation.signup.password.AuthParams" />
     </fragment>
     <fragment
         android:id="@+id/signUpConfirmationFragment"
-        android:name="com.ome.app.ui.signup.confirmation.SignUpConfirmationFragment"
+        android:name="com.ome.app.presentation.signup.confirmation.SignUpConfirmationFragment"
         android:label="SignUpConfirmationFragment">
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.signup.password.AuthParams" />
+            app:argType="com.ome.app.presentation.signup.password.AuthParams" />
         <action
             android:id="@+id/action_signUpConfirmationFragment_to_signUpPasswordFragment"
             app:destination="@id/signUpPasswordFragment"
@@ -120,7 +120,7 @@
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.ome.app.ui.signin.forgotpassword.ForgotPasswordFragment"
+        android:name="com.ome.app.presentation.signin.forgotpassword.ForgotPasswordFragment"
         android:label="ForgotPasswordFragment">
         <action
             android:id="@+id/action_forgotPasswordFragment_to_signUpConfirmationFragment"
@@ -131,11 +131,11 @@
             app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.signup.password.AuthParams" />
+            app:argType="com.ome.app.presentation.signup.password.AuthParams" />
     </fragment>
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.ome.app.ui.dashboard.DashboardFragment"
+        android:name="com.ome.app.presentation.dashboard.DashboardFragment"
         android:label="DashboardFragment"
         tools:layout="@layout/fragment_dashboard">
 
@@ -205,29 +205,29 @@
         app:popExitAnim="@anim/slide_out_right" />
     <fragment
         android:id="@+id/noInternetConnectionFragment"
-        android:name="com.ome.app.ui.internet_error.NoInternetConnectionFragment"
+        android:name="com.ome.app.presentation.internet_error.NoInternetConnectionFragment"
         android:label="NoInternetConnectionFragment" />
 
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.ome.app.ui.dashboard.profile.change_password.ChangePasswordFragment"
+        android:name="com.ome.app.presentation.dashboard.profile.change_password.ChangePasswordFragment"
         android:label="ChangePasswordFragment"
         tools:layout="@layout/fragment_change_password"  />
 
     <fragment
         android:id="@+id/autoShutOffSettingsFragment"
-        android:name="com.ome.app.ui.dashboard.settings.auto_shutoff.AutoShutOffSettingsFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.auto_shutoff.AutoShutOffSettingsFragment"
         android:label="AutoShutOffSettingsFragment"
         tools:layout="@layout/fragment_auto_shut_off_settings"  />
 
     <fragment
         android:id="@+id/deviceDetailsFragment"
-        android:name="com.ome.app.ui.dashboard.my_stove.device.DeviceDetailsFragment"
+        android:name="com.ome.app.presentation.dashboard.my_stove.device.DeviceDetailsFragment"
         android:label="fragment_device_details"
         tools:layout="@layout/fragment_device_details" >
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.dashboard.my_stove.device.DeviceDetailsFragmentParams" />
+            app:argType="com.ome.app.presentation.dashboard.my_stove.device.DeviceDetailsFragmentParams" />
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -239,17 +239,17 @@
 
     <fragment
         android:id="@+id/deviceSettingsFragment"
-        android:name="com.ome.app.ui.dashboard.my_stove.device.DeviceSettingsFragment"
+        android:name="com.ome.app.presentation.dashboard.my_stove.device.DeviceSettingsFragment"
         android:label="AutoShutOffSettingsFragment"
         tools:layout="@layout/fragment_device_settings" >
         <argument
             android:name="params"
-            app:argType="com.ome.app.ui.dashboard.my_stove.device.DeviceSettingsFragmentParams" />
+            app:argType="com.ome.app.presentation.dashboard.my_stove.device.DeviceSettingsFragmentParams" />
     </fragment>
 
     <fragment
         android:id="@+id/supportFragment"
-        android:name="com.ome.app.ui.dashboard.settings.support.SupportFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.support.SupportFragment"
         android:label="SupportFragment"
         tools:layout="@layout/fragment_support"/>
 
