@@ -22,9 +22,9 @@ import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class DeviceSettingsFragment :
-    BaseFragment<DeviceSettingsViewModel, FragmentDeviceSettingsBinding>(FragmentDeviceSettingsBinding::inflate) {
+    BaseFragment<DeviceDetailsViewModel, FragmentDeviceSettingsBinding>(FragmentDeviceSettingsBinding::inflate) {
 
-    override val viewModel: DeviceSettingsViewModel by viewModels()
+    override val viewModel: DeviceDetailsViewModel by viewModels()
 
     private val args by navArgs<DeviceSettingsFragmentArgs>()
 
@@ -45,7 +45,7 @@ class DeviceSettingsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.knobAngleLiveData.postValue(null)
+//        viewModel.knobAngleLiveData.postValue(null)
         viewModel.initSubscriptions()
 //        binding.knobView.setFontSize(14f)
         binding.knobTv.text = getString(R.string.knob_, args.params.stovePosition)
@@ -124,8 +124,8 @@ class DeviceSettingsFragment :
 
         }
 
-        subscribe(viewModel.knobAngleLiveData) { angle ->
-            angle?.let { binding.knobView.setKnobPosition(it) }
+        viewModel.knobAngle.collectWithLifecycle { angle ->
+            binding.knobView.setKnobPosition(angle)
         }
 
         viewModel.deviceSettingsList.collectWithLifecycle {

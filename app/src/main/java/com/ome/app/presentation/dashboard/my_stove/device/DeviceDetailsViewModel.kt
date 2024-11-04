@@ -14,6 +14,7 @@ import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsTitleIt
 import com.ome.app.utils.isTrue
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
 import javax.inject.Inject
 
@@ -26,7 +27,7 @@ class DeviceDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    val knobAngleLiveData = SingleLiveEvent<Float?>()
+    val knobAngle = MutableStateFlow<Float?>(null)
     val zonesLiveData = SingleLiveEvent<KnobDto.CalibrationDto>()
     var macAddress = ""
 
@@ -50,7 +51,7 @@ class DeviceDetailsViewModel @Inject constructor(
             webSocketManager.knobAngleFlow.filter { it?.macAddr == macAddress }.collect {
                 it?.let {
                     logi("angle ViewModel ${it.value.toFloat()}")
-                    knobAngleLiveData.postValue(it.value.toFloat())
+                    knobAngle.value = it.value.toFloat()
                 }
             }
         }
@@ -63,7 +64,7 @@ class DeviceDetailsViewModel @Inject constructor(
                             zonesLiveData.postValue(foundKnob.calibration)
                         }
                         if (webSocketManager.knobAngleFlow.value == null) {
-                            knobAngleLiveData.postValue(it.angle.toFloat())
+                            knobAngle.value = it.angle.toFloat()
                         }
                     }
                 }

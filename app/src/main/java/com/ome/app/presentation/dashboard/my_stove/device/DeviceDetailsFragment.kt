@@ -1,7 +1,9 @@
 package com.ome.app.presentation.dashboard.my_stove.device
 
+import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -34,6 +36,11 @@ class DeviceDetailsFragment :
     private val isEnable = MutableStateFlow(false)
 
     override fun setupUI() {
+        super.setupUI()
+        viewModel.initSubscriptions()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.macAddress = args.params.macAddr
         val selectedColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
         binding.apply {
@@ -113,8 +120,8 @@ class DeviceDetailsFragment :
                     null -> burnerSelection.gone()
                 }
             }
-            viewModel.initSubscriptions()
         }
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun setupListener() {
@@ -163,6 +170,9 @@ class DeviceDetailsFragment :
                 binding.knobView.setHighSinglePosition(it.zones[0].highAngle.toFloat())
             }
 
+            viewModel.knobAngle.value?.let { knobAngle ->
+                binding.knobView.setKnobPosition(knobAngle)
+            }
         }
 
 //        viewModel.webSocketManager.knobAngleFlow
@@ -171,8 +181,8 @@ class DeviceDetailsFragment :
 //                binding.knobView.setKnobPosition(angle.value.toFloat())
 //            }
 
-        subscribe(viewModel.knobAngleLiveData) { angle ->
-            angle?.let { binding.knobView.setKnobPosition(it) }
+        viewModel.knobAngle.collectWithLifecycle { angle ->
+            binding.knobView.setKnobPosition(angle)
         }
 
         viewModel.webSocketManager.knobRssiFlow
