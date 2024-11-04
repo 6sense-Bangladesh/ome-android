@@ -18,6 +18,7 @@ import com.ome.app.presentation.dashboard.settings.add_knob.direction.DirectionS
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiParams
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filter
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
@@ -93,6 +94,11 @@ class DeviceSettingsFragment :
 
     override fun setupObserver() {
         super.setupObserver()
+        viewModel.webSocketManager.knobAngleFlow
+            .filter { it?.macAddr == viewModel.macAddress }
+            .collectWithLifecycle {angle ->
+                binding.knobView.setKnobPosition(angle.value.toFloat())
+            }
         subscribe(viewModel.zonesLiveData) {
             if (it.rotationDir == 2) {
                 binding.knobView.setOffPosition(it.offAngle.toFloat())

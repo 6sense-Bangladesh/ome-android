@@ -161,6 +161,9 @@ class MyStoveFragment :
                     }
                 }
             }
+            viewModel.webSocketManager.knobAngleFlow.collectWithLifecycle {
+
+            }
         }
     }
 

@@ -2,9 +2,11 @@ package com.ome.app.presentation.dashboard.profile
 
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
+import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.base.DefaultValidation
 import com.ome.app.domain.model.base.Validation
 import com.ome.app.domain.model.network.request.CreateUserRequest
+import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +19,8 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val amplifyManager: AmplifyManager,
     private val userRepository: UserRepository,
+    private val stoveRepository: StoveRepository,
+    val webSocketManager: WebSocketManager,
     private val preferencesProvider: PreferencesProvider
 ) : BaseViewModel() {
     fun signOut(onEnd: () -> Unit) {

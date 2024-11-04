@@ -165,9 +165,11 @@ class DeviceDetailsFragment :
 
         }
 
-        subscribe(viewModel.knobAngleLiveData) { angle ->
-            angle?.let { binding.knobView.setKnobPosition(it) }
-        }
+        viewModel.webSocketManager.knobAngleFlow
+            .filter { it?.macAddr == viewModel.macAddress }
+            .collectWithLifecycle {angle ->
+                binding.knobView.setKnobPosition(angle.value.toFloat())
+            }
 
         viewModel.webSocketManager.knobRssiFlow
             .filter { it?.macAddr == viewModel.macAddress }
