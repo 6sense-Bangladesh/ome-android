@@ -121,6 +121,9 @@ class DeviceSettingsFragment :
                 binding.knobView.setMediumPosition(it.zones[0].mediumAngle.toFloat())
                 binding.knobView.setHighSinglePosition(it.zones[0].highAngle.toFloat())
             }
+            viewModel.knobAngle.value?.let { knobAngle ->
+                binding.knobView.setKnobPosition(knobAngle)
+            }
 
         }
 
