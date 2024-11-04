@@ -32,7 +32,7 @@ class StoveRepositoryImpl(
 
     override suspend fun getAllKnobs(): List<KnobDto> {
         val response = stoveService.getAllKnobs()
-        knobsFlow.tryEmit(response)
+        knobsFlow.value = response
         return response
     }
 
