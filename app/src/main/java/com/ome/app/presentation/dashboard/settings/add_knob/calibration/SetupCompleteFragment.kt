@@ -45,11 +45,12 @@ class SetupCompleteFragment :
         }
 
         binding.setupAnotherKnobBtn.setOnClickListener {
-
+            mainViewModel.selectedBurnerIndex = null
             findNavController().popBackStack(R.id.knobWakeUpFragment, false)
         }
 
         binding.imDoneBtn.setOnClickListener {
+            mainViewModel.selectedBurnerIndex = null
             if(!args.isComeFromSettings){
                 findNavController().popBackStack(R.id.knobWakeUpFragment, true)
             } else {

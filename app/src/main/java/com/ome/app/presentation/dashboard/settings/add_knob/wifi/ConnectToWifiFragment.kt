@@ -13,9 +13,9 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentConnectToWifiBinding
 import com.ome.app.presentation.base.BaseFragment
+import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
@@ -25,7 +25,6 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
     override val viewModel: ConnectToWifiViewModel by viewModels()
 
     private val args by navArgs<ConnectToWifiFragmentArgs>()
-//    private val args by lazy { Screens.ConnectToWifi.getData(arguments) }
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -42,22 +41,11 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.titleTv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-        binding.connectBtn.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                margin(bottom = true)
-            }
-        }
         viewModel.isChangeWifiMode = args.params.isEditMode
         viewModel.macAddrs = args.params.macAddrs
 
         binding.connectBtn.setOnClickListener { checkPermission() }
-        binding.manualSetupTv.setOnClickListener {
+        binding.btnManual.setOnClickListener {
             findNavController().navigate(
                 ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToManualSetupFragment(
                     ManualSetupFragmentParams(
@@ -85,6 +73,10 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
         }
+    }
+
+    override fun setupListener() {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
     }
 
     override fun setupObserver() {

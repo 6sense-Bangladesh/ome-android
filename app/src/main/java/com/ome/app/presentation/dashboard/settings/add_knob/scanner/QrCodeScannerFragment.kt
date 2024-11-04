@@ -79,9 +79,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
     }
 
     override fun setupListener() {
-        binding.apply {
-            topAppBar.setNavigationOnClickListener(::onBackPressed)
-        }
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         onDismissErrorDialog = {
             initQrCodeScanner()
         }

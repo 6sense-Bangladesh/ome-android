@@ -1,8 +1,6 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
-import android.os.Bundle
 import android.os.Parcelable
-import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -11,9 +9,9 @@ import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.databinding.FragmentConnectToWifiPasswordBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManual1FragmentParams
+import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
@@ -25,20 +23,18 @@ class ConnectToWifiPasswordFragment :
 
     private val args by navArgs<ConnectToWifiPasswordFragmentArgs>()
 
+    override fun setupUI() {
+        val ssid = "\"${args.params.ssid}\""
+        binding.ssidTv.text = ssid
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.backIv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-        binding.connectBtn.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                margin(bottom = true)
-            }
-        }
+        viewModel.macAddr = args.params.macAddr
+        viewModel.ssid = args.params.ssid
+        viewModel.securityType = args.params.securityType
+    }
+
+    override fun setupListener() {
+        viewModel.initListeners()
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.connectBtn.setOnClickListener {
             binding.connectBtn.startAnimation()
 
@@ -49,10 +45,6 @@ class ConnectToWifiPasswordFragment :
                 password = binding.enterPassword.getText(),
                 securityType = viewModel.securityType
             )
-
-        }
-        binding.backIv.setOnClickListener {
-            findNavController().popBackStack()
         }
 
         onDismissSuccessDialog = {
@@ -66,15 +58,6 @@ class ConnectToWifiPasswordFragment :
                 )
             }
         }
-
-        val ssid = "\"${args.params.ssid}\""
-        binding.ssidTv.text = ssid
-
-        viewModel.macAddr = args.params.macAddr
-        viewModel.ssid = args.params.ssid
-        viewModel.securityType = args.params.securityType
-
-        viewModel.initListeners()
     }
 
 

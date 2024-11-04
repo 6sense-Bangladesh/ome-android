@@ -2,12 +2,14 @@ package com.ome.app.presentation.signup.welcome
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.FragmentWelcomeBinding
 import com.ome.app.presentation.base.BaseFragment
+import com.ome.app.utils.onBackPressedIgnoreCallback
 import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,6 +58,13 @@ class WelcomeFragment :
         }
         subscribe(viewModel.fetchUserDataStatus) {
 //            findNavController().navigate(R.id.action_welcomeFragment_to_stoveSetupBrandFragment)
+        }
+    }
+
+    override fun handleBackPressEvent() {
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner) {
+            mainViewModel.selectedBurnerIndex = null
+            onBackPressedIgnoreCallback()
         }
     }
 }

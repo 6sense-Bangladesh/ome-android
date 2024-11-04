@@ -1,8 +1,6 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
-import android.os.Bundle
 import android.os.Parcelable
-import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -11,9 +9,9 @@ import com.ome.app.databinding.FragmentWifiListBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.base.recycler.RecyclerDelegationAdapter
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemAdapter
+import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
@@ -41,28 +39,19 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
         }
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.backIv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-        binding.scanAgainBtn.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                margin(bottom = true)
-            }
-        }
-        binding.scanAgainBtn.setOnClickListener {
-            binding.scanAgainBtn.startAnimation()
-            viewModel.sendMessage(KnobSocketMessage.GET_NETWORKS)
-        }
+    override fun setupUI() {
         viewModel.macAddr = args.params.macAddrs
 
         binding.recyclerView.adapter = adapter
 
+    }
+
+    override fun setupListener() {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
+        binding.scanAgainBtn.setOnClickListener {
+            binding.scanAgainBtn.startAnimation()
+            viewModel.sendMessage(KnobSocketMessage.GET_NETWORKS)
+        }
     }
 
 
