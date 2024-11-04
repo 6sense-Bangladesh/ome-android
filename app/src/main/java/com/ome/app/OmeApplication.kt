@@ -24,7 +24,7 @@ class OmeApplication : Application() {
             Amplify.addPlugin(AWSCognitoAuthPlugin())
             val config: AmplifyConfiguration = AmplifyConfiguration.fromConfigFile(
                 applicationContext,
-                if (!BuildConfig.DEBUG) {
+                if (BuildConfig.DEBUG) {
                     R.raw.amplifyconfigurationdev
                 } else {
                     R.raw.amplifyconfigurationprod

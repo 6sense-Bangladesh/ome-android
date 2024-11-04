@@ -9,12 +9,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentQrCodeScannerBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.base.navigation.DeepNavGraph.navigate
-import com.ome.app.presentation.base.navigation.Screens
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiParams
 import com.ome.app.presentation.views.code_scanner.startQrScanner
 import com.ome.app.utils.changeVisibility
@@ -48,7 +47,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
 
     override fun setupUI() {
         checkPermission()
-        viewModel.stovePosition = args.params.selectedIndex
+        viewModel.stovePosition = args.params.selectedKnobPosition
         initQrCodeScanner()
     }
 
@@ -133,30 +132,24 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
         subscribe(viewModel.isKnobAddedLiveData) {
             if (it) {
                 viewModel.macAddress?.let { mac ->
-                    Screens.ConnectToWifi.navigate(
-                        ConnectToWifiParams(macAddrs = mac, isComeFromSettings = args.params.isComeFromSettings)
+                    findNavController().navigate(
+                        QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
+                            ConnectToWifiParams(macAddrs = mac)
+                        )
                     )
-//                    findNavController().navigate(
-//                        QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
-//                            ConnectToWifiParams(macAddrs = it, isComeFromSettings = args.params.isComeFromSettings)
-//                        )
-//                    )
-                }
+                } ?: onError(getString(R.string.scan_again))
             } else {
                 viewModel.addNewKnob()
             }
         }
         subscribe(viewModel.knobCreatedLiveData) {
             mainViewModel.getUserInfo()
-            viewModel.macAddress?.let {
-                Screens.ConnectToWifi.navigate(
-                    ConnectToWifiParams(macAddrs = it, isComeFromSettings = args.params.isComeFromSettings)
+            viewModel.macAddress?.let { mac ->
+                findNavController().navigate(
+                    QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
+                        ConnectToWifiParams(macAddrs = mac)
+                    )
                 )
-//                findNavController().navigate(
-//                    QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
-//                        ConnectToWifiParams(macAddrs = it, isComeFromSettings = args.params.isComeFromSettings)
-//                    )
-//                )
             }
         }
         viewModel.loadingFlow.collectWithLifecycle{
@@ -167,6 +160,5 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
 
 @Parcelize
 data class QrCodeScannerParams(
-    val isComeFromSettings: Boolean = true,
-    val selectedIndex: Int = 0
+    val selectedKnobPosition: Int = -1
 ) : Parcelable

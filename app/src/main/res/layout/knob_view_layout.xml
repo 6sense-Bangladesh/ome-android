@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clipChildren="false"
     tools:context=".presentation.views.KnobView">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +19,7 @@
             android:id="@+id/knobSrc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="38dp"
+            android:layout_margin="100px"
             android:adjustViewBounds="true"
             android:contentDescription="@string/configure_knob"
             android:src="@drawable/ic_knob_circle"
@@ -28,38 +27,38 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="PxUsage" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-<!--    <com.google.android.material.progressindicator.CircularProgressIndicator-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:progress="86"-->
-<!--        android:rotation="25"-->
-<!--        app:trackColor="@android:color/transparent"-->
-<!--        app:indicatorSize="@dimen/_200sdp"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/knobCircleCl"-->
-<!--        app:trackCornerRadius="@dimen/_10sdp"-->
-<!--        app:trackThickness="@dimen/_10sdp" />-->
+    <!--    <com.google.android.material.progressindicator.CircularProgressIndicator-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:progress="86"-->
+    <!--        android:rotation="25"-->
+    <!--        app:trackColor="@android:color/transparent"-->
+    <!--        app:indicatorSize="@dimen/_200sdp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"-->
+    <!--        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/knobCircleCl"-->
+    <!--        app:trackCornerRadius="@dimen/_10sdp"-->
+    <!--        app:trackThickness="@dimen/_10sdp" />-->
 
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/knobProgress"
-        android:visibility="gone"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:srcCompat="@drawable/ic_knob_level_single_zone"
         android:layout_marginHorizontal="27dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
         app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
         app:layout_constraintStart_toStartOf="@+id/knobCircleCl"
         app:layout_constraintTop_toTopOf="@+id/knobCircleCl"
-        />
+        app:srcCompat="@drawable/ic_knob_level_single_zone" />
 
 
     <TextView
@@ -68,6 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"
         app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"
         app:layout_constraintStart_toStartOf="@+id/knobCircleCl"
@@ -90,7 +90,7 @@
             style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:text="@string/off_position"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -115,7 +115,7 @@
             style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:text="@string/low_position"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -139,7 +139,7 @@
             style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:text="@string/low_position"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -164,7 +164,7 @@
             style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:text="@string/medium_position"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -188,7 +188,7 @@
             style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:text="@string/high_position"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -213,7 +213,7 @@
             style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:text="@string/high_position"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -227,7 +227,7 @@
         android:id="@+id/statusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-42dp"
+        android:layout_marginTop="-37dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -243,7 +243,7 @@
             android:drawablePadding="@dimen/_3sdp"
             android:gravity="center"
             android:text="@string/no_wifi"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/noBattery"

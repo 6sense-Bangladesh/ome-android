@@ -53,31 +53,15 @@
             app:strokeColor="@color/blackTrans"
             app:cardBackgroundColor="@android:color/transparent"
             app:cardCornerRadius="@dimen/_125sdp"
-            app:contentPadding="@dimen/_109sdp"
-            app:strokeWidth="@dimen/_110sdp">
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_qr_frame"
-                />
-        </com.google.android.material.card.MaterialCardView>
+            app:strokeWidth="@dimen/_110sdp"/>
 
-        <!--        <com.ome.app.ui.views.code_scanner.CodeScannerView-->
-        <!--            android:id="@+id/scannerViewFinder"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="250dp"-->
-        <!--            app:autoFocusButtonColor="@android:color/white"-->
-        <!--            app:autoFocusButtonVisible="false"-->
-        <!--            app:flashButtonColor="@android:color/white"-->
-        <!--            app:flashButtonVisible="false"-->
-        <!--            app:frameAspectRatioHeight="1"-->
-        <!--            app:frameAspectRatioWidth="1"-->
-        <!--            app:frameColor="@android:color/white"-->
-        <!--            app:frameCornersRadius="25dp"-->
-        <!--            app:frameCornersSize="25dp"-->
-        <!--            app:frameSize="0.45"-->
-        <!--            app:frameThickness="4dp"-->
-        <!--            app:maskColor="#77000000" />-->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/_70sdp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_qr_frame"
+            />
+<!--        app:contentPadding="@dimen/_109sdp"-->
 
     </FrameLayout>
 

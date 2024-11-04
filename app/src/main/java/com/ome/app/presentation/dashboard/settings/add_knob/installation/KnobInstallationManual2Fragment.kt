@@ -53,7 +53,7 @@ class KnobInstallationManual2Fragment :
         binding.continueBtn.setOnClickListener {
             findNavController().navigate(
                 KnobInstallationManual2FragmentDirections.actionKnobInstallationManual2FragmentToZoneSelectionFragment(
-                    ZoneSelectionFragmentParams(isComeFromSettings = args.params.isComeFromSettings, macAddr = args.params.macAddr)
+                    ZoneSelectionFragmentParams(isComeFromSettings = args.params.isComeFromSettings, macAddrs = args.params.macAddr)
                 )
             )
         }

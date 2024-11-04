@@ -155,7 +155,7 @@ class DeviceCalibrationConfirmationFragment :
 
         }
         subscribe(viewModel.zoneLiveData) {
-            binding.knobView.setStovePosition(it)
+            binding.knobView.stovePosition = it
         }
         subscribe(viewModel.currentCalibrationStateLiveData) { currentStep ->
             currentStep?.let {

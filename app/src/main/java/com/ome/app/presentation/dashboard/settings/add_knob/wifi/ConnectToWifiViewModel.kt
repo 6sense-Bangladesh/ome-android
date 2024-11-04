@@ -1,11 +1,11 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
-import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.presentation.base.SingleLiveEvent
-import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
 import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.data.local.SocketManager
 import com.ome.app.domain.repo.StoveRepository
+import com.ome.app.presentation.base.BaseViewModel
+import com.ome.app.presentation.base.SingleLiveEvent
+import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
 import com.ome.app.utils.WifiHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -19,7 +19,7 @@ class ConnectToWifiViewModel @Inject constructor(
     val stoveRepository: StoveRepository
 ) : BaseViewModel() {
 
-    var macAddr = ""
+    var macAddrs = ""
     var isChangeWifiMode = false
 
     val wifiConnectedLiveData: SingleLiveEvent<Pair<Boolean, String?>> = SingleLiveEvent()
@@ -38,8 +38,8 @@ class ConnectToWifiViewModel @Inject constructor(
 
 
     fun setupWifi() {
-        if (macAddr.isNotEmpty()) {
-            wifiHandler.setup(macAddr)
+        if (macAddrs.isNotEmpty()) {
+            wifiHandler.setup(macAddrs)
         }
     }
 
@@ -52,7 +52,7 @@ class ConnectToWifiViewModel @Inject constructor(
     fun initListeners() = launch(ioContext) {
         socketManager.messageReceived = { type, message ->
             if (type == KnobSocketMessage.GET_MAC) {
-                if (message == macAddr) {
+                if (message == macAddrs) {
                     sendMessage(KnobSocketMessage.GET_NETWORKS)
                 }
             }
@@ -69,7 +69,7 @@ class ConnectToWifiViewModel @Inject constructor(
 
     fun connectToWifi() = launch(ioContext) {
         if(isChangeWifiMode){
-            stoveRepository.clearWifi(macAddr)
+            stoveRepository.clearWifi(macAddrs)
             delay(6000)
         }
         connectionStatusListener.shouldReactOnChanges = false

@@ -10,8 +10,6 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceSettingsBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.base.navigation.DeepNavGraph.navigate
-import com.ome.app.presentation.base.navigation.Screens
 import com.ome.app.presentation.base.recycler.ItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.SettingItemAdapter
 import com.ome.app.presentation.dashboard.settings.adapter.model.DeviceSettingsItemModel
@@ -34,6 +32,7 @@ class DeviceSettingsFragment :
 
     override fun setupUI() {
         binding.apply {
+            viewModel.macAddress = args.params.macAddr
 //            name.text = args.params.name
             mainViewModel.knobs.value.find { it.macAddr == args.params.macAddr }?.let {
                 knobView.setKnobPosition(it.angle.toFloat())
@@ -48,7 +47,6 @@ class DeviceSettingsFragment :
 
         viewModel.knobAngleLiveData.postValue(null)
         viewModel.initSubscriptions()
-        viewModel.macAddress = args.params.macAddr
 //        binding.knobView.setFontSize(14f)
         binding.knobTv.text = getString(R.string.knob_, args.params.stovePosition)
         binding.macAddressTv.text = getString(R.string.knob_mac_addr_label, args.params.macAddr)
@@ -138,15 +136,27 @@ class DeviceSettingsFragment :
         when (item) {
             is DeviceSettingsItemModel -> {
                 when (item) {
-                    DeviceSettingsItemModel.KnobPosition -> Screens.SelectBurnerPosition.navigate(
-                        SelectBurnerFragmentParams(isChangeMode= true, macAddress = viewModel.macAddress)
-                    )
-                    DeviceSettingsItemModel.KnobWiFI -> Screens.ConnectToWifi.navigate(
-                        ConnectToWifiParams(isChangeWifiMode = true, macAddrs = viewModel.macAddress)
-                    )
-                    DeviceSettingsItemModel.KnobOrientation -> Screens.DirectionSelection.navigate(
-                        DirectionSelectionFragmentParams(isChangeMode = true, macAddress = viewModel.macAddress)
-                    )
+                    DeviceSettingsItemModel.KnobPosition -> {
+                        findNavController().navigate(
+                            DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToSelectBurnerFragment(
+                                SelectBurnerFragmentParams(isEditMode = true, macAddress = viewModel.macAddress)
+                            )
+                        )
+                    }
+                    DeviceSettingsItemModel.KnobWiFI -> {
+                        findNavController().navigate(
+                            DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToConnectToWifiFragment(
+                                ConnectToWifiParams(isEditMode = true, macAddrs = viewModel.macAddress)
+                            )
+                        )
+                    }
+                    DeviceSettingsItemModel.KnobOrientation -> {
+                        findNavController().navigate(
+                            DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToDirectionSelectionFragment(
+                                DirectionSelectionFragmentParams(isEditMode = true, macAddress = viewModel.macAddress)
+                            )
+                        )
+                    }
                     DeviceSettingsItemModel.DeleteKnob -> {
                         showDialog(
                             message = SpannableStringBuilder(getString(R.string.confirm_delete)),

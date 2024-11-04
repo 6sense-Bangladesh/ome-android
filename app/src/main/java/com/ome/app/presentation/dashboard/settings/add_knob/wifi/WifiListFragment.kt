@@ -6,11 +6,11 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.databinding.FragmentWifiListBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.base.recycler.RecyclerDelegationAdapter
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemAdapter
-import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -33,8 +33,7 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
                             ssid = item.ssid,
                             securityType = item.securityType,
                             macAddr = viewModel.macAddr,
-                            isComeFromSettings = args.params.isComeFromSettings,
-                            isChangeWifiMode = args.params.isChangeWifiMode
+                            isEditMode = args.params.isEditMode
                         )
                     )
                 )
@@ -86,7 +85,6 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
 
 @Parcelize
 data class WifiListFragmentParams(
-    val isComeFromSettings: Boolean = true,
-    val isChangeWifiMode: Boolean = false,
+    val isEditMode: Boolean = true,
     val macAddrs: String = ""
 ) : Parcelable

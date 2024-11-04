@@ -123,7 +123,7 @@ class DeviceCalibrationFragment :
             }
         }
         subscribe(viewModel.zoneLiveData) {
-            binding.knobView.setStovePosition(it)
+            binding.knobView.stovePosition = it
         }
         subscribe(viewModel.currentCalibrationStateLiveData) { currentStep ->
             binding.knobView.hideLabel(currentStep)

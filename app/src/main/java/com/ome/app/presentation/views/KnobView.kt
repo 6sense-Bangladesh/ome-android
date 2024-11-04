@@ -85,9 +85,11 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
-    fun setStovePosition(position: Int) {
-        binding.stovePositionTv.text = position.toStringLocale()
-    }
+    var stovePosition : Int
+        get() = binding.stovePositionTv.text.toString().toIntOrNull().orMinusOne()
+        set(position) {
+            binding.stovePositionTv.text = position.toStringLocale()
+        }
 
     fun setOffPosition(angle: Float) {
         if (angle.isMinusOne()) return
@@ -140,9 +142,8 @@ class KnobView @JvmOverloads constructor(
     fun changeKnobState(knobState: KnobState) {
         knobSrc.animate().alpha(knobState.alpha).start()
         knobSrc.tag = knobState.icon
-        post {
-            knobSrc.loadDrawable(knobState.icon)
-        }
+        knobSrc.setImageResource(knobState.icon)
+        binding.stovePositionTv.changeVisibility(knobState != KnobState.ADD)
     }
 
     fun changeKnobStatus(knob: KnobDto): Boolean {
@@ -311,7 +312,7 @@ class KnobView @JvmOverloads constructor(
 
             // Adjust angle to be in the 0–360 range
             if (angle < 0)  angle += 360f
-            if (angle < 360)  angle -= 360f
+            else if (angle > 360)  angle -= 360f
 
             Log.d(TAG, "setOnTouchListener: $angle")
             if(doRotate.value)

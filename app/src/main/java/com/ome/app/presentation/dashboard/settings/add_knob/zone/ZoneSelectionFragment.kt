@@ -3,15 +3,11 @@ package com.ome.app.presentation.dashboard.settings.add_knob.zone
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.ome.app.R
 import com.ome.app.databinding.FragmentZoneSelectionBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.base.navigation.DeepNavGraph.navigate
-import com.ome.app.presentation.base.navigation.Screens
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
 import com.ome.app.utils.makeGone
@@ -53,29 +49,21 @@ class ZoneSelectionFragment :
                             isComeFromSettings = args.params.isComeFromSettings,
                             zoneNumber = viewModel.zoneNumber,
                             isDualKnob = viewModel.isDualKnob,
-                            macAddr =  args.params.macAddr
+                            macAddr =  args.params.macAddrs
                         )
                     )
                 )
             } else {
-                Screens.DirectionSelection.navigate(
-                    DirectionSelectionFragmentParams(
-                        isComeFromSettings = args.params.isComeFromSettings,
-                        zoneNumber = viewModel.zoneNumber,
-                        isDualKnob = viewModel.isDualKnob,
-                        macAddress = args.params.macAddr
+                findNavController().navigate(
+                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(
+                        DirectionSelectionFragmentParams(
+                            isComeFromSettings = args.params.isComeFromSettings,
+                            zoneNumber = viewModel.zoneNumber,
+                            isDualKnob = viewModel.isDualKnob,
+                            macAddress = args.params.macAddrs
+                        )
                     )
                 )
-//                findNavController().navigate(
-//                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(
-//                        DirectionSelectionFragmentParams(
-//                            args.params.isComeFromSettings,
-//                            viewModel.zoneNumber,
-//                            viewModel.isDualKnob,
-//                            args.params.macAddr
-//                        )
-//                    )
-//                )
             }
 
         }
@@ -84,35 +72,20 @@ class ZoneSelectionFragment :
             binding.singleZoneCoverIv.makeGone()
             viewModel.zoneNumber = 1
             viewModel.isDualKnob = false
-            enableContinueButton()
         }
         binding.dualZoneCoverIv.setOnClickListener {
             binding.singleZoneCoverIv.makeVisible()
             binding.dualZoneCoverIv.makeGone()
             viewModel.zoneNumber = 2
             viewModel.isDualKnob = true
-            enableContinueButton()
         }
     }
 
-    private fun enableContinueButton() {
-        binding.continueBtn.isEnabled = true
-        ContextCompat.getDrawable(requireContext(), R.drawable.ome_gradient_button_unpressed_color)
-            ?.let {
-                binding.continueBtn.drawableBackground = it
-            }
-        binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_unpressed_color)
-    }
-
-
-    override fun setupObserver() {
-        super.setupObserver()
-    }
 }
 
 
 @Parcelize
 data class ZoneSelectionFragmentParams(
     val isComeFromSettings: Boolean = true,
-    val macAddr: String = ""
+    val macAddrs: String = ""
 ) : Parcelable

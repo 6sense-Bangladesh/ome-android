@@ -1,17 +1,16 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.burner
 
-import android.os.Bundle
 import android.os.Parcelable
 import android.text.SpannableStringBuilder
-import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentSelectBurnerBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.base.navigation.DeepNavGraph.getData
-import com.ome.app.presentation.base.navigation.Screens
 import com.ome.app.presentation.dashboard.settings.add_knob.scanner.QrCodeScannerParams
+import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.log
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,32 +22,17 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
 ) {
     override val viewModel: SelectBurnerViewModel by viewModels()
 
-//    private val args by navArgs<SelectBurnerFragmentArgs>()
-    private val args by lazy { Screens.SelectBurnerPosition.getData(arguments) }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-//        binding.backIv.applyInsetter {
-//            type(navigationBars = true, statusBars = true) {
-//                padding(horizontal = true)
-//                margin(top = true)
-//            }
-//        }
-//        binding.continueBtn.applyInsetter {
-//            type(navigationBars = true, statusBars = true) {
-//                margin(bottom = true)
-//            }
-//        }
-
-    }
+    private val args by navArgs<SelectBurnerFragmentArgs>()
 
     override fun setupUI() {
-        viewModel.macAddress = args.macAddress
+        viewModel.macAddress = args.params.macAddress
         viewModel.loadData()
         mainViewModel.selectedBurnerIndex?.let {
-
+            viewModel.selectedBurnerIndex = it
         }
+//        if(viewModel.selectedBurnerIndex != null && viewModel.stoveOrientation != null){
+//            binding.burnerSelectionView.selectBurnerManually(viewModel.selectedBurnerIndex!!, viewModel.stoveOrientation!!)
+//        }
     }
 
     override fun setupListener() {
@@ -58,7 +42,7 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
         }
         binding.continueBtn.setOnClickListener {
             viewModel.selectedBurnerIndex?.let {
-                if (args.isChangeMode) {
+                if (args.params.isEditMode) {
                     showDialog(
                         title = getString(R.string.confirm_position),
                         positiveButtonText = getString(R.string.yes_btn),
@@ -78,21 +62,26 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
                     mainViewModel.selectedBurnerIndex = viewModel.selectedBurnerIndex
                     findNavController().navigate(
                         SelectBurnerFragmentDirections.actionSelectBurnerFragmentToQrCodeScannerFragment(
-                            QrCodeScannerParams(
-                                isComeFromSettings = args.isComeFromSettings,
-                                selectedIndex = it
-                            )
+                            QrCodeScannerParams(selectedKnobPosition = it)
                         )
                     )
                 }
-            } ?: onError("Please select burner position")
+            } ?: onError(if(args.params.isEditMode) "Already in this position" else "Please select burner position")
         }
     }
 
     override fun setupObserver() {
         super.setupObserver()
-        subscribe(viewModel.selectedIndexesLiveData) {
-            binding.burnerSelectionView.initStoveBurners(it.first, it.second)
+        viewModel.selectedIndexes.collectWithLifecycle{
+            it.second.log("selectedIndexes")
+            binding.burnerSelectionView.initStoveBurners(
+                stoveOrientation = it.first,
+                selectedBurners = it.second,
+                editModeIndex = it.third
+            )
+            if(viewModel.selectedBurnerIndex != null && viewModel.stoveOrientation != null){
+                binding.burnerSelectionView.selectBurnerManually(viewModel.selectedBurnerIndex!!, viewModel.stoveOrientation!!)
+            }
         }
         subscribe(viewModel.knobPositionResponseLiveData) {
             binding.continueBtn.revertAnimation()
@@ -106,8 +95,7 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
 
 @Parcelize
 data class SelectBurnerFragmentParams(
-    val isComeFromSettings: Boolean = false,
-    val isChangeMode: Boolean = false,
+    val isEditMode: Boolean = false,
     val macAddress: String = "",
 ) : Parcelable
 

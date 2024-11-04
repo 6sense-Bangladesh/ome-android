@@ -9,11 +9,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentConnectToWifiBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.base.navigation.DeepNavGraph.getData
-import com.ome.app.presentation.base.navigation.Screens
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -25,8 +24,8 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
 ) {
     override val viewModel: ConnectToWifiViewModel by viewModels()
 
-//    private val args by navArgs<ConnectToWifiFragmentArgs>()
-    private val args by lazy { Screens.ConnectToWifi.getData(arguments) }
+    private val args by navArgs<ConnectToWifiFragmentArgs>()
+//    private val args by lazy { Screens.ConnectToWifi.getData(arguments) }
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -54,22 +53,22 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
                 margin(bottom = true)
             }
         }
-        viewModel.isChangeWifiMode = args.isChangeWifiMode
+        viewModel.isChangeWifiMode = args.params.isEditMode
+        viewModel.macAddrs = args.params.macAddrs
+
         binding.connectBtn.setOnClickListener { checkPermission() }
         binding.manualSetupTv.setOnClickListener {
             findNavController().navigate(
                 ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToManualSetupFragment(
                     ManualSetupFragmentParams(
-                        macAddrs = viewModel.macAddr,
-                        isComeFromSettings = args.isComeFromSettings,
-                        isChangeWifiMode = args.isChangeWifiMode
+                        macAddrs = viewModel.macAddrs,
+                        isEditMode = args.params.isEditMode,
                     )
                 )
             )
         }
 
         viewModel.initListeners()
-        viewModel.macAddr = args.macAddrs
         viewModel.setupWifi()
     }
 
@@ -101,9 +100,8 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
             findNavController().navigate(
                 ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToWifiListFragment(
                     WifiListFragmentParams(
-                        macAddrs = viewModel.macAddr,
-                        isComeFromSettings = args.isComeFromSettings,
-                        isChangeWifiMode = args.isChangeWifiMode
+                        macAddrs = viewModel.macAddrs,
+                        isEditMode = viewModel.isChangeWifiMode,
                     )
                 )
             )
@@ -113,7 +111,6 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
 
 @Parcelize
 data class ConnectToWifiParams(
-    val isComeFromSettings: Boolean = true,
-    val isChangeWifiMode: Boolean = false,
+    val isEditMode: Boolean = false,
     val macAddrs: String = ""
 ) : Parcelable

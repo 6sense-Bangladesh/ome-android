@@ -5,10 +5,9 @@ import android.os.Parcelable
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentDirectionSelectionBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.base.navigation.DeepNavGraph.getData
-import com.ome.app.presentation.base.navigation.Screens
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.makeGone
@@ -25,12 +24,11 @@ class DirectionSelectionFragment :
     ) {
     override val viewModel: DirectionSelectionViewModel by viewModels()
 
-//    private val args by navArgs<DirectionSelectionFragmentArgs>()
-    private val args by lazy { Screens.DirectionSelection.getData(arguments) }
+    private val args by navArgs<DirectionSelectionFragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.macAddress = args.macAddress
+        viewModel.macAddress = args.params.macAddress
             binding.backIv.applyInsetter {
             type(navigationBars = true, statusBars = true) {
                 padding(horizontal = true)
@@ -45,17 +43,16 @@ class DirectionSelectionFragment :
         binding.backIv.setOnClickListener { findNavController().popBackStack() }
 
         binding.continueBtn.setOnClickListener {
-            if(args.isChangeMode){
+            if(args.params.isEditMode){
                 viewModel.updateDirection()
             }else {
                 findNavController().navigate(
                     DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
                         DeviceCalibrationFragmentParams(
-                            isComeFromSettings = args.isComeFromSettings,
-                            zoneNumber = args.zoneNumber,
-                            isDualKnob = args.isDualKnob,
+                            zoneNumber = args.params.zoneNumber,
+                            isDualKnob = args.params.isDualKnob,
                             rotateDir = viewModel.clockwiseDir,
-                            macAddr = args.macAddress
+                            macAddr = args.params.macAddress
                         )
                     )
                 )
@@ -100,6 +97,6 @@ data class DirectionSelectionFragmentParams(
     val zoneNumber: Int = 0,
     val isDualKnob: Boolean = false,
     val macAddress: String = "",
-    val isChangeMode: Boolean = false
+    val isEditMode: Boolean = false
 ) : Parcelable
 

@@ -7,7 +7,9 @@ import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.presentation.stove.StoveOrientation
 import com.ome.app.presentation.stove.stoveOrientation
+import com.ome.app.utils.orMinusOne
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,22 +19,22 @@ class SelectBurnerViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     var selectedBurnerIndex: Int? = null
+    var stoveOrientation: StoveOrientation? = null
 
     var macAddress = ""
 
-    val selectedIndexesLiveData: SingleLiveEvent<Pair<StoveOrientation, List<Int>>> =
-        SingleLiveEvent()
-
+    val selectedIndexes=  MutableStateFlow<Triple<StoveOrientation, List<Int>, Int>?>(null)
     val knobPositionResponseLiveData: SingleLiveEvent<Boolean> =
         SingleLiveEvent()
 
     fun loadData() = launch(ioContext) {
         stoveRepository.knobsFlow.collect { knobs ->
-            if (userRepository.userFlow.value?.stoveOrientation != null) {
-                userRepository.userFlow.value?.stoveOrientation.stoveOrientation
-                ?.let { stoveOrientation ->
-                    selectedIndexesLiveData.postValue(stoveOrientation to knobs.map { it.stovePosition })
-                }
+            userRepository.userFlow.value?.stoveOrientation.stoveOrientation?.let { stoveOrientation ->
+                this@SelectBurnerViewModel.stoveOrientation = stoveOrientation
+                val editModeIndex = knobs.find {
+                    it.macAddr == macAddress
+                }?.stovePosition?.minus(1).orMinusOne()
+                selectedIndexes.emit(Triple(stoveOrientation , knobs.map { it.stovePosition } , editModeIndex))
             }
 
         }

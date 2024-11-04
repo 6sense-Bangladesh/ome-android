@@ -17,6 +17,7 @@ import com.ome.app.presentation.dashboard.settings.adapter.SettingItemAdapter
 import com.ome.app.presentation.dashboard.settings.adapter.StovesBottomSheet
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsKnobItemModel
+import com.ome.app.presentation.dashboard.settings.add_knob.wake_up.KnobWakeUpParams
 import com.ome.app.presentation.stove.StoveSetupBrandArgs
 import com.ome.app.presentation.stove.StoveSetupBurnersArgs
 import com.ome.app.presentation.stove.StoveSetupTypeArgs
@@ -116,7 +117,9 @@ class SettingsFragment :
 //
 //                                }
                         Settings.ADD_NEW_KNOB -> {
-                            navController?.navigate(R.id.action_dashboardFragment_to_addKnobNavGraph)
+                            navController?.navigate(
+                                DashboardFragmentDirections.actionDashboardFragmentToKnobWakeUpFragment(KnobWakeUpParams())
+                            )
 //                                    navController.navigate(NavGraph.AddKnob)
                             //navController?.navigate(R.id.addKnobNavGraph)
                             //navController?.navigate(SettingsFragmentDirections.actionSettingsFragmentToKnobWakeUpFragment(isComeFromSettings = false))

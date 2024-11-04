@@ -69,8 +69,7 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
             findNavController().navigate(
                 ManualSetupFragmentDirections.actionManualSetupFragmentToWifiListFragment(
                     WifiListFragmentParams(
-                        isComeFromSettings = args.params.isComeFromSettings,
-                        isChangeWifiMode = args.params.isChangeWifiMode,
+                        isEditMode = args.params.isEditMode,
                         macAddrs = args.params.macAddrs
                     )
                 )
@@ -90,7 +89,6 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
 
 @Parcelize
 data class ManualSetupFragmentParams(
-    val isComeFromSettings: Boolean = true,
-    val isChangeWifiMode: Boolean = false,
+    val isEditMode: Boolean = false,
     val macAddrs: String = ""
 ) : Parcelable

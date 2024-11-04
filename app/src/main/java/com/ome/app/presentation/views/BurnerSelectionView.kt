@@ -3,6 +3,7 @@ package com.ome.app.presentation.views
 import android.content.Context
 import android.content.res.ColorStateList
 import android.util.AttributeSet
+import android.util.Log
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -22,12 +23,24 @@ class BurnerSelectionView @JvmOverloads constructor(
     private val binding = inflate<BurnerSelectionViewBinding>()
     private val selectedBurners: ArrayList<Int> = arrayListOf()
 
+    private var lastSelected : MaterialButton? = null
+    private val colorSecondary = ContextCompat.getColor(context, R.color.colorSecondary)
+    private val colorTertiary = ContextCompat.getColor(context, R.color.colorTertiary)
+    private val cardBackground = ContextCompat.getColor(context, R.color.cardBackground)
+
     var onBurnerSelect: (index: Int) -> Unit = {}
+    private var editModeIndex = -1
 
 
-    fun initStoveBurners(stoveOrientation: StoveOrientation, selectedBurners: List<Int>) {
+    fun initStoveBurners(stoveOrientation: StoveOrientation, selectedBurners: List<Int>, editModeIndex: Int) {
         this.selectedBurners.clear()
+        this.editModeIndex = editModeIndex
         this.selectedBurners.addAll(selectedBurners)
+        editModeIndex.log("editModeIndex")
+        if(editModeIndex != -1){
+            val allButtons = listOf(binding.button1, binding.button2, binding.button3, binding.button4, binding.button5, binding.button6)
+            lastSelected = allButtons[editModeIndex]
+        }
         binding.apply {
             when (stoveOrientation) {
                 StoveOrientation.FOUR_BURNERS -> {
@@ -66,11 +79,6 @@ class BurnerSelectionView @JvmOverloads constructor(
 
     }
 
-    private var lastSelected : MaterialButton? = null
-    private val colorSecondary = ContextCompat.getColor(context, R.color.colorSecondary)
-    private val colorTertiary = ContextCompat.getColor(context, R.color.colorTertiary)
-    private val cardBackground = ContextCompat.getColor(context, R.color.cardBackground)
-
     private fun MaterialButton.changeButtonState(isSelected: Boolean, textView: TextView){
         if(isSelected){
             setIconResource(R.drawable.ic_done)
@@ -95,43 +103,48 @@ class BurnerSelectionView @JvmOverloads constructor(
             }else{
                 pair.first.changeButtonState(false, pair.second)
                 pair.first.setBounceClickListener{
-                    selectButton(pair, index)
+                    selectButton(pair, index + 1)
                 }
+            }
+        }
+        if(editModeIndex != -1){
+            pairs[editModeIndex].first.setBounceClickListener{
+                selectButton(pairs[editModeIndex], editModeIndex + 1)
             }
         }
     }
 
     private fun selectButton(
         pair: Pair<MaterialButton, TextView>,
-        index: Int
+        position: Int
     ) {
         lastSelected?.changeButtonState(false, pair.second)
         lastSelected = pair.first
         lastSelected?.changeButtonState(true, pair.second)
-        onBurnerSelect(index + 1)
+        onBurnerSelect(position)
     }
 
-    private fun selectBurnerManually(position: Int, stoveOrientation: StoveOrientation) {
+    fun selectBurnerManually(position: Int, stoveOrientation: StoveOrientation) {
         binding.apply {
             when(stoveOrientation){
-                StoveOrientation.FOUR_BURNERS -> {
+                StoveOrientation.FOUR_BURNERS, StoveOrientation.TWO_BURNERS_HORIZONTAL, StoveOrientation.TWO_BURNERS_VERTICAL -> {
                     when(position){
-                        0 -> selectButton(button1 to status1, 0)
-                        1 -> selectButton(button2 to status2, 1)
-                        2 -> selectButton(button4 to status4, 2)
-                        3 -> selectButton(button5 to status5, 3)
+                        1 -> selectButton(button1 to status1, position)
+                        2 -> selectButton(button2 to status2, position)
+                        3 -> selectButton(button4 to status4, position)
+                        4 -> selectButton(button5 to status5, position)
                     }
                 }
-                StoveOrientation.FOUR_BAR_BURNERS,StoveOrientation.FIVE_BURNERS -> {
+                StoveOrientation.FOUR_BAR_BURNERS,StoveOrientation.FIVE_BURNERS, StoveOrientation.SIX_BURNERS -> {
                     when(position){
-                        0 -> selectButton(button1 to status1, 0)
-                        1 -> selectButton(button2 to status2, 1)
-                        2 -> selectButton(button3 to status3, 2)
+                        1 -> selectButton(button1 to status1, position)
+                        2 -> selectButton(button2 to status2, position)
+                        3 -> selectButton(button3 to status3, position)
+                        4 -> selectButton(button4 to status4, position)
+                        5 -> selectButton(button5 to status5, position)
+                        6 -> selectButton(button6 to status6, position)
                     }
                 }
-                StoveOrientation.SIX_BURNERS -> TODO()
-                StoveOrientation.TWO_BURNERS_HORIZONTAL -> TODO()
-                StoveOrientation.TWO_BURNERS_VERTICAL -> TODO()
             }
         }
     }

@@ -91,6 +91,6 @@ class KnobInstallationManual1Fragment :
 
 @Parcelize
 data class KnobInstallationManual1FragmentParams(
-    val isComeFromSettings: Boolean = true,
+    val isComeFromSettings: Boolean = false,
     val macAddr: String = ""
 ) : Parcelable
