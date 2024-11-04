@@ -149,7 +149,7 @@ dependencies {
     //UI
     implementation("com.github.fornewid:neumorphism:0.3.2")
     implementation("com.google.android.material:material:1.12.0")
-    implementation("com.github.GrenderG:Toasty:1.5.2")
+//    implementation("com.github.GrenderG:Toasty:1.5.2")
 
     // Amplify frameworks
     val amplify = "1.38.8" //Don't upgrade this version
@@ -169,7 +169,7 @@ dependencies {
     implementation("com.apachat:loadingbutton-android:1.0.11")
 
     //View
-    implementation("com.github.ramseth001:TextDrawable:1.1.6")
+//    implementation("com.github.ramseth001:TextDrawable:1.1.6")
 
     implementation("com.jaredrummler:material-spinner:1.3.1")
 
@@ -187,7 +187,7 @@ dependencies {
 
     implementation("dev.chrisbanes.insetter:insetter:0.6.1")
 
-    implementation("com.google.guava:guava:33.3.1-android")
+//    implementation("com.google.guava:guava:33.3.1-android")
 
     implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
 
@@ -199,7 +199,7 @@ dependencies {
 
     implementation("com.neovisionaries:nv-websocket-client:2.14")
 
-    implementation("com.github.santalu:maskara:1.0.0")
+//    implementation("com.github.santalu:maskara:1.0.0")
 
     testImplementation("junit:junit:4.13.2")
 
@@ -209,7 +209,7 @@ dependencies {
     implementation("com.github.chuckerteam.chucker:library:4.0.0")
 //    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
 
-    implementation(platform("com.google.firebase:firebase-bom:33.5.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
     implementation("com.google.firebase:firebase-crashlytics")
 
     implementation("com.intuit.sdp:sdp-android:1.1.1")
@@ -221,5 +221,9 @@ dependencies {
     implementation("com.google.android.flexbox:flexbox:3.0.0")
 
     implementation("com.airbnb.android:lottie:6.6.0")
+
+    // Play In-App Update:
+    implementation("com.google.android.play:app-update:2.1.0")
+    implementation("com.google.android.play:app-update-ktx:2.1.0")
 
 }

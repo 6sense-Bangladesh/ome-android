@@ -49,7 +49,6 @@ import com.google.android.flexbox.FlexboxLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ome.app.BuildConfig
-import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
@@ -69,63 +68,6 @@ import kotlin.math.roundToInt
 
 /**Activity Extension*/
 fun Activity.requireActivity() = this
-
-//Toasty->custom toast library
-fun Context.toastySuccess(text: String?) {
-    text?.let {
-        Toasty.success(this, text, Toast.LENGTH_SHORT, true)
-            .show()
-    }
-}
-
-fun Fragment.toastySuccess(text: String?) {
-    text?.let {
-        Toasty.success(requireContext(), text, Toast.LENGTH_SHORT, true)
-            .show()
-    }
-}
-
-fun Context.toastyError(text: String?) {
-    text?.let {
-        Toasty.error(this, text, Toast.LENGTH_SHORT, true)
-            .show()
-    }
-}
-
-fun Fragment.toastyError(text: String?) {
-    text?.let {
-        Toasty.error(requireContext(), text, Toast.LENGTH_SHORT, true)
-            .show()
-    }
-}
-
-fun Context.toastyInfo(text: String?) {
-    text?.let {
-        Toasty.info(this, text, Toast.LENGTH_SHORT, true)
-            .show()
-    }
-}
-
-fun Fragment.toastyInfo(text: String?, length: Int = Toasty.LENGTH_SHORT) {
-    text?.let {
-        Toasty.info(requireContext(), text, length , true)
-            .show()
-    }
-}
-
-fun Context.toastyWarning(text: String?) {
-    text?.let {
-        Toasty.warning(this, text, Toast.LENGTH_SHORT, true)
-            .show()
-    }
-}
-
-fun Fragment.toastyWarning(text: String?) {
-    text?.let {
-        Toasty.warning(requireContext(), text, Toast.LENGTH_SHORT, true)
-            .show()
-    }
-}
 
 /**AppCompatActivity, FragmentActivity Extension*/
 //default toast
@@ -206,7 +148,7 @@ inline fun <reified T> Fragment.navigate(
             }
             intent()
         })
-    } ?: toastyWarning("Unable to navigate")
+    } ?: toast("Unable to navigate")
     if (withFinish)
         activity?.finish()
 }
@@ -702,7 +644,7 @@ fun Context.setClipBoardData(data: String?) {
         val clipBoardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(data, data)
         clipBoardManager.setPrimaryClip(clip)
-        toastySuccess("$data Copied!")
+        toast("$data Copied!")
     }
 }
 

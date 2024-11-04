@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.fragment.NavHostFragment
 import com.ome.app.data.ConnectionStatusListener
+import com.ome.app.utils.InAppUpdate
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,7 +15,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    val viewModel: MainVM by viewModels()
+    private val viewModel: MainVM by viewModels()
+
+    private val inAppUpdate = InAppUpdate(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +29,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initFragment()
         subscribeConnectionListener()
+        inAppUpdate.checkForUpdate()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        inAppUpdate.onResume()
     }
 
     private fun initFragment() {

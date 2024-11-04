@@ -155,9 +155,9 @@ fun Context?.saveImage(data: Any?) {
         val result = saveImageToMediaStore(fileName, bitmap)
         withContext(Dispatchers.Main) {
             if (result != null)
-                this@saveImage.toastySuccess("Image Saved")
+                this@saveImage.toast("Image Saved")
             else
-                this@saveImage.toastyError("Image Save Failed")
+                this@saveImage.toast("Image Save Failed")
         }
     }
 }
