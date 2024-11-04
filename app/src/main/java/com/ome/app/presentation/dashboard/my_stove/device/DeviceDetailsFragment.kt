@@ -182,8 +182,27 @@ class DeviceDetailsFragment :
 //            }
 
         viewModel.knobAngle.collectWithLifecycle { angle ->
+            if(angle == 1f){
+                changeBatteryStates(ConnectionState.Offline)
+                isEnable.value = false
+            }
             binding.knobView.setKnobPosition(angle)
         }
+
+        viewModel.webSocketManager.knobMountingSurfaceFlow
+            .filter { it?.macAddr == viewModel.macAddress }
+            .collectWithLifecycle {
+                when(it.value){
+                    "vertical" -> {
+                        changeBatteryStates(ConnectionState.Online)
+                        isEnable.value = true
+                    }
+                    "horizontal" -> {
+                        changeBatteryStates(ConnectionState.Offline)
+                        isEnable.value = false
+                    }
+                }
+            }
 
         viewModel.webSocketManager.knobRssiFlow
             .filter { it?.macAddr == viewModel.macAddress }
@@ -254,7 +273,7 @@ class DeviceDetailsFragment :
 
     private fun changeBatteryStates(
         connectionState: ConnectionState,
-        batteryLevel: Int
+        batteryLevel: Int? = null
     ) {
         binding.status.text = connectionState.name
         when (connectionState) {
