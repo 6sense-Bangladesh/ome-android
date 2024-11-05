@@ -82,6 +82,7 @@ class MainVM @Inject constructor(
 
     fun getKnobStateByMac(macAddress: MacAddress) = knobState.map { it[macAddress] }
     fun getStovePositionByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.stovePosition.orMinusOne()
+    fun getOffAngleByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.calibration?.offAngle?.toFloat()
 
     fun initStartDestination() {
         if (startDestination.value != null) return

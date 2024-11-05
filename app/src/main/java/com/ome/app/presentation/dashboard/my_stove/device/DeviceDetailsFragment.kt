@@ -45,7 +45,7 @@ class DeviceDetailsFragment :
             knobView.doOnRotationChange(doRotate = viewModel.isEnable)
 //                .debounce(700)
                 .collectWithLifecycle { rotation ->
-                    Log.d(TAG, "doOnRotationChange: $rotation")
+                    Log.d(TAG, "doOnRotationChange: $rotation ${viewModel.isEnable.value}")
                     if(viewModel.isEnable.value)
                         viewModel.changeKnobAngle(rotation)
                     else{
@@ -163,31 +163,33 @@ class DeviceDetailsFragment :
                     if(it == ConnectionState.Charging)
                         isCharging = it
                 }
+//                knob.mountingSurface?.let {
+//                    if(mainViewModel.userInfo.value.stoveType?.mounting != knob.mountingSurface.key){
+//                        changeBatteryStates(isCharging ?: ConnectionState.Offline, batteryLevel)
+//                        viewModel.isEnable.value = false
+//                    }
+//                    else{
+//                        changeBatteryStates(isCharging ?: ConnectionState.Online, batteryLevel)
+//                        viewModel.isEnable.value = true
+//                    }
+//                }
                 knob.angle?.toFloat()?.let {
-                    if(it == viewModel.offAngle){
+                    if(it == mainViewModel.getOffAngleByMac(args.params.macAddr) ||
+                        (knob.mountingSurface != null && mainViewModel.userInfo.value.stoveType?.mounting != knob.mountingSurface.key)
+                    ){
                         changeBatteryStates(isCharging ?: ConnectionState.Offline, batteryLevel)
                         viewModel.isEnable.value = false
                     }else {
                         viewModel.isEnable.value = true
                         changeBatteryStates(isCharging ?: ConnectionState.Online, batteryLevel)
                     }
-                    binding.knobView.setKnobPosition(it)        
+                    binding.knobView.setKnobPosition(it)
+                    // TODO : fix needed - separate status knob & burner
                 }
+                knob.log("getKnobStateByMac ${viewModel.isEnable.value}")
                 knob.wifiStrengthPercentage?.let {
 //                    knobView.changeWiFiState(it)
                 }
-                knob.mountingSurface?.let {
-                    // TODO : fix needed - separate status knob & burner
-                    if(mainViewModel.userInfo.value.stoveType?.mounting != knob.mountingSurface.key){
-                        changeBatteryStates(isCharging ?: ConnectionState.Offline, batteryLevel)
-                        viewModel.isEnable.value = false
-                    }
-                    else{
-                        changeBatteryStates(isCharging ?: ConnectionState.Online, batteryLevel)
-                        viewModel.isEnable.value = true
-                    }
-                }
-
             }
         }
 
@@ -258,8 +260,8 @@ class DeviceDetailsFragment :
     }
 
     private fun KnobView.setupKnob(knob: KnobDto) {
-        viewModel.isEnable.value = changeKnobBasicStatus(knob)
-        if(viewModel.isEnable.value && knob.calibrated.isTrue()) {
+        changeKnobBasicStatus(knob)
+        if(knob.calibrated.isTrue()) {
             val calibration = knob.calibration.toCalibration()
             calibration.zones1?.let { zone ->
                 setHighSinglePosition(zone.highAngle.toFloat())

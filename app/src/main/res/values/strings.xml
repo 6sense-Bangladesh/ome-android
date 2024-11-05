@@ -184,7 +184,7 @@
     <string name="battery">Battery:</string>
     <string name="set_timer">Set Timer</string>
     <string name="knob_">Knob #%1$d</string>
-    <string name="burner_">Burner %1$d</string>
+    <string name="burner_">Burner #%1$d</string>
     <string name="manually_turn_the_knob_on">Please manually turn the knob on if you want to control it from the app.</string>
 
 

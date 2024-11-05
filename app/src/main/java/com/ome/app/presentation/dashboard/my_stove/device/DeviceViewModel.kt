@@ -9,7 +9,6 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.DeviceSettingsItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsTitleItemModel
-import com.ome.app.utils.isTrue
 import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,8 +31,6 @@ class DeviceViewModel @Inject constructor(
     val knobAngle = MutableStateFlow<Float?>(null)
     var macAddress = ""
 
-    var offAngle: Float? = null
-
     val deviceSettingsList = savedStateHandle.getStateFlow("deviceSettingsList",
         buildList {
             add(SettingsTitleItemModel(title = "Settings"))
@@ -54,9 +51,6 @@ class DeviceViewModel @Inject constructor(
         launch(ioContext) {
             stoveRepository.knobsFlow.mapNotNull  { dto -> dto.find { it.macAddr == macAddress }}.collect { foundKnob ->
                 savedStateHandle["currentKnob"] = foundKnob
-                foundKnob.calibrated.isTrue{
-                    offAngle = foundKnob.calibration.offAngle.toFloat()
-                }
                 if (webSocketManager.knobAngleFlow.value == null) {
                     knobAngle.value = foundKnob.angle.toFloat()
                 }
