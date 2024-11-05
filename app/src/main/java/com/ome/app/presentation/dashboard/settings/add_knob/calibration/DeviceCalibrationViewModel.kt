@@ -3,9 +3,9 @@ package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 import android.util.Log
 import com.ome.app.R
 import com.ome.app.data.local.ResourceProvider
-import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.network.request.InitCalibrationRequest
+import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -191,7 +191,6 @@ class DeviceCalibrationViewModel @Inject constructor(
                 CalibrationState.MEDIUM -> mediumAngle = null
                 CalibrationState.HIGH_SINGLE -> highSingleAngle = null
                 CalibrationState.HIGH_DUAL -> highDualAngle = null
-//                CalibrationState.MEDIUM_DUAL -> mediumDualAngle = null
                 CalibrationState.LOW_DUAL -> lowDualAngle = null
             }
             currentCalibrationStateLiveData.postValue(step)
@@ -206,6 +205,5 @@ enum class CalibrationState(val positionName: String) {
     MEDIUM("MEDIUM"),
     LOW_SINGLE("LOW"),
     HIGH_DUAL("HIGH"),
-//    MEDIUM_DUAL("MEDIUM"),
     LOW_DUAL("LOW")
 }

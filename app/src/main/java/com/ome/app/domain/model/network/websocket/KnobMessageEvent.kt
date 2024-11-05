@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 class KnobMessageEvent(
     @SerializedName("macAddr")
-    val macAddr: String,
+    val macAddr: String?,
     @SerializedName("name")
     val name: String?,
     @SerializedName("value")

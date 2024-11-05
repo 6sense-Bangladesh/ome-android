@@ -10,17 +10,17 @@ import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.model.network.request.StoveRequest
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.network.response.UserResponse
+import com.ome.app.domain.model.network.websocket.KnobState
+import com.ome.app.domain.model.network.websocket.MacAddress
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
-import com.ome.app.utils.WifiHandler
-import com.ome.app.utils.isFalse
-import com.ome.app.utils.isNotEmpty
-import com.ome.app.utils.logi
+import com.ome.app.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 
@@ -35,6 +35,7 @@ class MainVM @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
     var userInfo = savedStateHandle.getStateFlow("userInfo", preferencesProvider.getUserData())
+    private var knobState = savedStateHandle.getStateFlow("knobState", mutableMapOf<MacAddress, KnobState>())
     var knobs = savedStateHandle.getStateFlow("knobs", buildList<KnobDto> {
         if (BuildConfig.IS_INTERNAL_TESTING) addAll(dummyKnobs)
     })
@@ -58,8 +59,17 @@ class MainVM @Inject constructor(
             userRepository.userFlow.filterNotNull().collect {
                 savedStateHandle["userInfo"] = it
             }
+        }
+        launch(ioContext) {
             stoveRepository.knobsFlow.filterNotNull().collect {
-                savedStateHandle["knobs"] = it
+                savedStateHandle["knobs"] = it.toMutableList().apply {
+                    if (BuildConfig.IS_INTERNAL_TESTING) addAll(dummyKnobs)
+                }.toList()
+            }
+        }
+        launch(ioContext) {
+            webSocketManager.knobState.collect {
+                savedStateHandle["knobState"] = it
             }
         }
     }
@@ -69,6 +79,9 @@ class MainVM @Inject constructor(
             userRepository.getUserData()
         }
     }
+
+    fun getKnobStateByMac(macAddress: MacAddress) = knobState.map { it[macAddress] }
+    fun getStovePositionByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.stovePosition.orMinusOne()
 
     fun initStartDestination() {
         if (startDestination.value != null) return
@@ -124,34 +137,21 @@ class MainVM @Inject constructor(
                                             R.id.dashboardFragment
                                         val knobs = mutableListOf<KnobDto>()
 
-                                        launch(ioContext) {
-
-                                        }
 
                                         try {
-                                            if (BuildConfig.IS_INTERNAL_TESTING) knobs.addAll(dummyKnobs)
                                             knobs.addAll(stoveRepository.getAllKnobs())
-                                            knobs.isNotEmpty {
-                                                savedStateHandle["knobs"] = knobs.toList()
-                                            }
+                                            savedStateHandle["knobs"] = knobs.apply {
+                                                if (BuildConfig.IS_INTERNAL_TESTING) addAll(dummyKnobs)
+                                            }.toList()
                                         } catch (ex: Exception) {
                                             knobs.clear()
                                         }
                                         preferencesProvider.getUserId()?.let { userId ->
                                             launch(ioContext) {
-                                                knobs.map { knob -> knob.macAddr }
-                                                    .isNotEmpty { macs ->
-                                                        webSocketManager.initWebSocket(macs, userId)
-                                                    }
-
-                                            }
-
-                                            launch(ioContext) {
-                                                webSocketManager.knobConnectStatusFlow.collect {
-                                                    val text = ""
+                                                knobs.isNotEmpty { macs ->
+                                                    webSocketManager.initWebSocket(macs, userId)
                                                 }
                                             }
-
                                         }
                                     }
                                 }
@@ -175,7 +175,7 @@ class MainVM @Inject constructor(
         val knobs = stoveRepository.getAllKnobs()
         savedStateHandle["knobs"] = knobs.toList()
         preferencesProvider.getUserId()?.let { userId ->
-            knobs.map { it.macAddr }.isNotEmpty {
+            knobs.isNotEmpty {
                 webSocketManager.initWebSocket(it, userId)
             }
         }

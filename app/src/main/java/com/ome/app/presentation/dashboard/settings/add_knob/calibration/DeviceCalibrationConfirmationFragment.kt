@@ -113,22 +113,7 @@ class DeviceCalibrationConfirmationFragment :
     }
 
     private fun initLabels() {
-        if (!args.params.isDualKnob) {
-            binding.knobView.apply {
-                setOffPosition(args.params.offPosition)
-                setHighSinglePosition(args.params.highSinglePosition)
-                setMediumPosition(args.params.medPosition)
-                setLowSinglePosition(args.params.lowSinglePosition)
-            }
-        } else {
-            binding.knobView.apply {
-                setOffPosition(args.params.offPosition)
-                setLowSinglePosition(args.params.lowSinglePosition)
-                setHighSinglePosition(args.params.highSinglePosition)
-                setLowDualPosition(args.params.lowDualPosition)
-                setHighDualPosition(args.params.highDualPosition)
-            }
-        }
+
 
     }
 

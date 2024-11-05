@@ -1,62 +1,52 @@
 package com.ome.app.presentation.dashboard.my_stove.device
 
-import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
-import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceDetailsBinding
+import com.ome.app.domain.model.network.response.Calibration.Rotation
 import com.ome.app.domain.model.network.response.ConnectionState
 import com.ome.app.domain.model.network.response.KnobDto
-import com.ome.app.domain.model.network.response.connectionState
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.stove.StoveOrientation
 import com.ome.app.presentation.stove.stoveOrientation
+import com.ome.app.presentation.stove.stoveType
 import com.ome.app.presentation.views.KnobView
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class DeviceDetailsFragment :
-    BaseFragment<DeviceDetailsViewModel, FragmentDeviceDetailsBinding>(FragmentDeviceDetailsBinding::inflate) {
+    BaseFragment<DeviceViewModel, FragmentDeviceDetailsBinding>(FragmentDeviceDetailsBinding::inflate) {
 
-    override val viewModel: DeviceDetailsViewModel by viewModels()
+    override val viewModel: DeviceViewModel by viewModels()
 
     private val args by navArgs<DeviceDetailsFragmentArgs>()
 
-    private val isEnable = MutableStateFlow(false)
 
     override fun setupUI() {
-        super.setupUI()
-        viewModel.initSubscriptions()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.macAddress = args.params.macAddr
+        viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
+        viewModel.initSubscriptions()
         val selectedColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
         binding.apply {
-            name.text = context?.getString(R.string.knob_, args.params.stovePosition)
-            mainViewModel.knobs.value.find { it.macAddr == args.params.macAddr }?.let {
-                knobView.setupKnob(it)
-                knobView.setFontSize(18F)
-                val batteryLevel = it.battery
-                batteryPercentage.text = batteryLevel.addPercentage()
-                changeBatteryStates(it.connectStatus.connectionState, batteryLevel)
-            }
-            knobView.doOnRotationChange(doRotate = isEnable)
+            name.text = context?.getString(R.string.burner_, viewModel.stovePosition)
+//            mainViewModel.knobs.value.find { it.macAddr == args.params.macAddr }?.let {
+//                knobView.setFontSize(18F)
+//                val batteryLevel = it.battery
+//                batteryPercentage.text = batteryLevel.addPercentage()
+//                changeBatteryStates(it.connectStatus.connectionState, batteryLevel)
+//            }
+            knobView.doOnRotationChange(doRotate = viewModel.isEnable)
 //                .debounce(700)
                 .collectWithLifecycle { rotation ->
                     Log.d(TAG, "doOnRotationChange: $rotation")
-                    if(isEnable.value)
+                    if(viewModel.isEnable.value)
                         viewModel.changeKnobAngle(rotation)
                     else{
                         onError(
@@ -71,7 +61,7 @@ class DeviceDetailsFragment :
                     StoveOrientation.FOUR_BURNERS -> {
                         visible(knob1, knob2, knob4, knob5, spacer)
                         gone(knob3, knob6, knob7)
-                        when(args.params.stovePosition){
+                        when(viewModel.stovePosition){
                             1 -> knob1.backgroundTintList = selectedColor
                             2 -> knob2.backgroundTintList = selectedColor
                             3 -> knob4.backgroundTintList = selectedColor
@@ -81,7 +71,7 @@ class DeviceDetailsFragment :
                     StoveOrientation.FOUR_BAR_BURNERS, StoveOrientation.FIVE_BURNERS ->{
                         visible(knob1, knob2, knob4, knob5, knob7)
                         gone(knob3, knob6, spacer)
-                        when(args.params.stovePosition){
+                        when(viewModel.stovePosition){
                             1 -> knob1.backgroundTintList = selectedColor
                             2 -> knob2.backgroundTintList = selectedColor
                             3 -> knob4.backgroundTintList = selectedColor
@@ -92,7 +82,7 @@ class DeviceDetailsFragment :
                     StoveOrientation.SIX_BURNERS -> {
                         visible(knob1, knob2, knob3, knob4, knob5, knob6, spacer)
                         gone(knob7)
-                        when(args.params.stovePosition){
+                        when(viewModel.stovePosition){
                             1 -> knob1.backgroundTintList = selectedColor
                             2 -> knob2.backgroundTintList = selectedColor
                             3 -> knob3.backgroundTintList = selectedColor
@@ -104,7 +94,7 @@ class DeviceDetailsFragment :
                     StoveOrientation.TWO_BURNERS_HORIZONTAL ->{
                         visible(knob1, knob2)
                         gone(knob3, knob4, knob5, knob6, knob7, spacer)
-                        when(args.params.stovePosition){
+                        when(viewModel.stovePosition){
                             1 -> knob1.backgroundTintList = selectedColor
                             2 -> knob2.backgroundTintList = selectedColor
                         }
@@ -112,7 +102,7 @@ class DeviceDetailsFragment :
                     StoveOrientation.TWO_BURNERS_VERTICAL -> {
                         visible(knob1, knob4, spacer)
                         gone(knob2, knob3, knob5, knob6, knob7)
-                        when(args.params.stovePosition){
+                        when(viewModel.stovePosition){
                             1 -> knob1.backgroundTintList = selectedColor
                             2 -> knob4.backgroundTintList = selectedColor
                         }
@@ -121,7 +111,6 @@ class DeviceDetailsFragment :
                 }
             }
         }
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun setupListener() {
@@ -131,10 +120,7 @@ class DeviceDetailsFragment :
                 R.id.menuDeviceSetting -> {
                     findNavController().navigate(
                         DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToDeviceSettingsFragment(
-                            DeviceSettingsFragmentParams(
-                                stovePosition = args.params.stovePosition,
-                                macAddr = args.params.macAddr
-                            )
+                            DeviceSettingsFragmentParams(macAddr = args.params.macAddr)
                         )
                     )
                     true
@@ -146,32 +132,62 @@ class DeviceDetailsFragment :
 
     override fun setupObserver() {
         super.setupObserver()
-        subscribe(viewModel.zonesLiveData) {
-            if (it.rotationDir == 2) {
-                binding.knobView.setOffPosition(it.offAngle.toFloat())
-                if (it.zones[0].zoneName == "Single") {
-                    binding.knobView.setLowSinglePosition(it.zones[0].lowAngle.toFloat())
-                    binding.knobView.setHighSinglePosition(it.zones[0].highAngle.toFloat())
-                } else {
-                    binding.knobView.setLowDualPosition(it.zones[0].lowAngle.toFloat())
-                    binding.knobView.setHighDualPosition(it.zones[0].highAngle.toFloat())
-                }
-                if (it.zones[1].zoneName == "Dual") {
-                    binding.knobView.setLowDualPosition(it.zones[1].lowAngle.toFloat())
-                    binding.knobView.setHighDualPosition(it.zones[1].highAngle.toFloat())
-                } else {
-                    binding.knobView.setLowSinglePosition(it.zones[1].lowAngle.toFloat())
-                    binding.knobView.setHighSinglePosition(it.zones[1].highAngle.toFloat())
-                }
-            } else {
-                binding.knobView.setOffPosition(it.offAngle.toFloat())
-                binding.knobView.setLowSinglePosition(it.zones[0].lowAngle.toFloat())
-                binding.knobView.setMediumPosition(it.zones[0].mediumAngle.toFloat())
-                binding.knobView.setHighSinglePosition(it.zones[0].highAngle.toFloat())
+//        viewModel.zonesLiveData.collectWithLifecycle{
+//            binding.knobView.setOffPosition(it.offAngle.toFloat())
+//            if (it.rotation == Rotation.DUAL) {
+//                if (it.zones1 != null) {
+//                    binding.knobView.setLowSinglePosition(it.zones1.lowAngle.toFloat())
+//                    binding.knobView.setHighSinglePosition(it.zones1.highAngle.toFloat())
+//                } else if(it.zones2 != null){
+//                    binding.knobView.setLowDualPosition(it.zones2.lowAngle.toFloat())
+//                    binding.knobView.setHighDualPosition(it.zones2.highAngle.toFloat())
+//                }
+//            } else if (it.zones1 != null) {
+//                binding.knobView.setOffPosition(it.offAngle.toFloat())
+//                binding.knobView.setLowSinglePosition(it.zones1.lowAngle.toFloat())
+//                binding.knobView.setMediumPosition(it.zones1.mediumAngle.toFloat())
+//                binding.knobView.setHighSinglePosition(it.zones1.highAngle.toFloat())
+//            }
+//        }
+        binding.apply {
+            viewModel.currentKnob.collectWithLifecycle {
+                it.log("currentKnob")
+                knobView.setupKnob(it)
             }
+            mainViewModel.getKnobStateByMac(args.params.macAddr).collectWithLifecycle{knob ->
+                val batteryLevel = knob.battery
+                var isCharging : ConnectionState? = null
+                batteryPercentage.text = batteryLevel?.addPercentage().orEmpty()
+                knob.connectStatus?.let {
+                    changeBatteryStates(it, batteryLevel)
+                    if(it == ConnectionState.Charging)
+                        isCharging = it
+                }
+                knob.angle?.toFloat()?.let {
+                    if(it == viewModel.offAngle){
+                        changeBatteryStates(isCharging ?: ConnectionState.Offline, batteryLevel)
+                        viewModel.isEnable.value = false
+                    }else {
+                        viewModel.isEnable.value = true
+                        changeBatteryStates(isCharging ?: ConnectionState.Online, batteryLevel)
+                    }
+                    binding.knobView.setKnobPosition(it)        
+                }
+                knob.wifiStrengthPercentage?.let {
+//                    knobView.changeWiFiState(it)
+                }
+                knob.mountingSurface?.let {
+                    // TODO : fix needed - separate status knob & burner
+                    if(mainViewModel.userInfo.value.stoveType?.mounting != knob.mountingSurface.key){
+                        changeBatteryStates(isCharging ?: ConnectionState.Offline, batteryLevel)
+                        viewModel.isEnable.value = false
+                    }
+                    else{
+                        changeBatteryStates(isCharging ?: ConnectionState.Online, batteryLevel)
+                        viewModel.isEnable.value = true
+                    }
+                }
 
-            viewModel.knobAngle.value?.let { knobAngle ->
-                binding.knobView.setKnobPosition(knobAngle)
             }
         }
 
@@ -181,67 +197,55 @@ class DeviceDetailsFragment :
 //                binding.knobView.setKnobPosition(angle.value.toFloat())
 //            }
 
-        viewModel.knobAngle.collectWithLifecycle { angle ->
-            if(angle == 1f){
-                changeBatteryStates(ConnectionState.Offline)
-                isEnable.value = false
-            }else
-                isEnable.value = true
-            binding.knobView.setKnobPosition(angle)
-        }
+//        viewModel.knobAngle.collectWithLifecycle { angle ->
+//            if(angle == viewModel.offAngle){
+//                changeBatteryStates(ConnectionState.Offline)
+//                viewModel.isEnable.value = false
+//            }else
+//                viewModel.isEnable.value = true
+//            binding.knobView.setKnobPosition(angle)
+//        }
 
-        viewModel.webSocketManager.knobMountingSurfaceFlow
-            .filter { it?.macAddr == viewModel.macAddress }
-            .collectWithLifecycle {
-                when(it.value){
-                    "vertical" -> {
-                        changeBatteryStates(ConnectionState.Online)
-                        isEnable.value = true
-                    }
-                    "horizontal" -> {
-                        changeBatteryStates(ConnectionState.Offline)
-                        isEnable.value = false
-                    }
-                }
-            }
+//        viewModel.webSocketManager.knobMountingSurfaceFlow
+//            .filter { it?.macAddr == viewModel.macAddress }
+//            .collectWithLifecycle {
+//                when(it.value){
+//                    "vertical" -> {
+//                        changeBatteryStates(ConnectionState.Online)
+//                        viewModel.isEnable.value = true
+//                    }
+//                    "horizontal" -> {
+//                        changeBatteryStates(ConnectionState.Offline)
+//                        viewModel.isEnable.value = false
+//                    }
+//                }
+//            }
 
-        viewModel.webSocketManager.knobRssiFlow
-            .filter { it?.macAddr == viewModel.macAddress }
-            .collectWithLifecycle {
-                binding.knobView.changeWiFiState(it.value)
-            }
-        var connectionState = ConnectionState.Offline
-        var batteryLevel = 0
-        viewModel.webSocketManager.knobBatteryFlow
-            .filter { it?.macAddr == viewModel.macAddress }
-            .collectWithLifecycle {
-//                binding.knobView.changeBatteryState(it.value)
-                batteryLevel = it.value
-                changeBatteryStates(connectionState, batteryLevel)
-            }
-        viewModel.webSocketManager.knobConnectStatusFlow
-            .filter { it?.macAddr == viewModel.macAddress }
-            .collectWithLifecycle {
-                connectionState = it.value.connectionState
-                isEnable.value =connectionState == ConnectionState.Online
-                changeBatteryStates(connectionState, batteryLevel)
-//                binding.knobView.changeConnectionState(
-//                    connectionStatus = it.value,
-//                    batteryLevel = mainViewModel.knobs.value.find { knob -> knob.macAddr == viewModel.macAddress }?.battery ?: 0
-//                )
-            }
-        combine(viewModel.webSocketManager.knobConnectStatusFlow.filter { it?.macAddr == viewModel.macAddress }.filterNotNull(),
-            viewModel.webSocketManager.knobRssiFlow.filter { it?.macAddr == viewModel.macAddress }.filterNotNull(),
-            viewModel.webSocketManager.knobBatteryFlow.filter { it?.macAddr == viewModel.macAddress }.filterNotNull()
-        ){ knobConnectStatusFlow, knobRssiFlow,  knobBatteryFlow ->
-            Triple(knobConnectStatusFlow, knobRssiFlow, knobBatteryFlow)
-        }.collectWithLifecycle {
-//            binding.knobView.changeConnectionState(
-//                connectionStatus = it.first.value,
-//                wifiRSSI = it.second.value,
-//                batteryLevel = it.third.value
-//            )
-        }
+//        viewModel.webSocketManager.knobRssiFlow
+//            .filter { it?.macAddr == viewModel.macAddress }
+//            .collectWithLifecycle {
+//                binding.knobView.changeWiFiState(it.value)
+//            }
+//        var connectionState = ConnectionState.Offline
+//        var batteryLevel = 0
+//        viewModel.webSocketManager.knobBatteryFlow
+//            .filter { it?.macAddr == viewModel.macAddress }
+//            .collectWithLifecycle {
+////                binding.knobView.changeBatteryState(it.value)
+//                batteryLevel = it.value
+//                changeBatteryStates(connectionState, batteryLevel)
+//            }
+//        viewModel.webSocketManager.knobConnectStatusFlow
+//            .filter { it?.macAddr == viewModel.macAddress }
+//            .collectWithLifecycle {
+//                connectionState = it.value.connectionState
+//                viewModel.isEnable.value =connectionState == ConnectionState.Online
+//                changeBatteryStates(connectionState, batteryLevel)
+////                binding.knobView.changeConnectionState(
+////                    connectionStatus = it.value,
+////                    batteryLevel = mainViewModel.knobs.value.find { knob -> knob.macAddr == viewModel.macAddress }?.battery ?: 0
+////                )
+//            }
 //        viewModel.webSocketManager.knobConnectStatusFlow
 //            .filter { it?.macAddr == viewModel.macAddress }
 //            .collectWithLifecycle {
@@ -254,18 +258,17 @@ class DeviceDetailsFragment :
     }
 
     private fun KnobView.setupKnob(knob: KnobDto) {
-        isEnable.value = changeKnobBasicStatus(knob)
-        if(isEnable.value && knob.calibrated.isTrue()) {
+        viewModel.isEnable.value = changeKnobBasicStatus(knob)
+        if(viewModel.isEnable.value && knob.calibrated.isTrue()) {
             val calibration = knob.calibration.toCalibration()
-//            setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
             calibration.zones1?.let { zone ->
                 setHighSinglePosition(zone.highAngle.toFloat())
-                setMediumPosition(zone.mediumAngle.toFloat())
+                if(calibration.rotation != Rotation.DUAL)
+                    setMediumPosition(zone.mediumAngle.toFloat())
                 setLowSinglePosition(zone.lowAngle.toFloat())
             }
             calibration.zones2?.let { zone ->
                 setHighDualPosition(zone.highAngle.toFloat())
-//            setMediumDualPosition(zone.mediumAngle.toFloat())
                 setLowDualPosition(zone.lowAngle.toFloat())
             }
             setOffPosition(calibration.offAngle.toFloat())
@@ -279,30 +282,34 @@ class DeviceDetailsFragment :
         binding.status.text = connectionState.name
         when (connectionState) {
             ConnectionState.Charging -> {
-                binding.status.chipBackgroundColor =
-                    ContextCompat.getColorStateList(requireContext(), R.color.colorPrimaryTransLess)
+                binding.status.chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimaryTransLess)
                 binding.status.chipStrokeWidth = 0F
+                binding.status.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             }
-
             ConnectionState.Online -> {
-                binding.status.chipBackgroundColor =
-                    ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
+                binding.status.chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
                 binding.status.chipStrokeWidth = 0F
-                binding.status.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.white
-                    )
-                )
+                binding.status.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
             }
-
             ConnectionState.Offline -> {
-                binding.status.chipBackgroundColor =
-                    ContextCompat.getColorStateList(requireContext(), R.color.white)
+                binding.status.chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.white)
                 binding.status.chipStrokeWidth = 1F
+                binding.status.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             }
         }
-        if (connectionState != ConnectionState.Charging) {
+        if (connectionState == ConnectionState.Charging) {
+            binding.batteryIcon.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
+            when (batteryLevel) {
+                in 0..20 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_20)
+                in 21..30 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_30)
+                in 31..50 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_50)
+                in 51..60 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_60)
+                in 61..80 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_80)
+                in 81..95 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_90)
+                in 96..100 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_full)
+            }
+        }
+        else{
             when (batteryLevel) {
                 in 0..9 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_0)
                 in 10..20 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_1)
@@ -314,27 +321,13 @@ class DeviceDetailsFragment :
                 in 95..100 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_7)
             }
             if (batteryLevel in 0..20)
-                binding.batteryIcon.imageTintList =
-                    ContextCompat.getColorStateList(requireContext(), R.color.red)
+                binding.batteryIcon.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.red)
             else
-                binding.batteryIcon.imageTintList =
-                    ContextCompat.getColorStateList(requireContext(), R.color.black)
-        } else {
-            binding.batteryIcon.imageTintList =
-                ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
-            when (batteryLevel) {
-                in 0..20 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_20)
-                in 21..30 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_30)
-                in 31..50 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_50)
-                in 51..60 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_60)
-                in 61..80 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_80)
-                in 81..95 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_90)
-                in 96..100 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_full)
-            }
+                binding.batteryIcon.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.black)
         }
     }
 
 }
 
 @Parcelize
-data class DeviceDetailsFragmentParams(val stovePosition: Int, val macAddr: String) : Parcelable
+data class DeviceDetailsFragmentParams(val macAddr: String) : Parcelable

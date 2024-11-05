@@ -1,11 +1,14 @@
 package com.ome.app.domain.model.network.response
 
+import com.google.gson.annotations.SerializedName
+
 data class StoveResponse(
-    val knobMacAddrs: List<String>,
-    val numKnobs: Int,
-    val stoveAutoOffMins: Int,
-    val stoveId: String,
-    val stoveMakeModel: String,
-    val stoveOrientation: Int,
-    val stoveSetupComplete: Boolean?
+    @SerializedName("knobMacAddrs") val knobMacAddrs: List<String>,
+    @SerializedName("numKnobs") val numKnobs: Int,
+    @SerializedName("stoveAutoOffMins") val stoveAutoOffMins: Int,
+    @SerializedName("stoveId") val stoveId: String,
+    @SerializedName("stoveMakeModel") val stoveMakeModel: String,
+    @SerializedName("stoveOrientation") val stoveOrientation: Int,
+    @SerializedName("stoveSetupComplete") val stoveSetupComplete: Boolean?
 )
+

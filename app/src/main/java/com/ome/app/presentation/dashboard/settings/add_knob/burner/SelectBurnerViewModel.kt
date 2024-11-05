@@ -48,7 +48,7 @@ class SelectBurnerViewModel @Inject constructor(
             ),
             macAddress = macAddress
         )
-        userRepository.getUserData()
+        stoveRepository.getAllKnobs()
         knobPositionResponseLiveData.postValue(true)
     }
 }

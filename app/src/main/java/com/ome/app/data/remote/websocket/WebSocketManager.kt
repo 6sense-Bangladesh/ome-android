@@ -1,9 +1,15 @@
 package com.ome.app.data.remote.websocket
 
+import android.content.Context
 import android.util.Log
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.ome.app.BuildConfig
+import com.ome.app.domain.model.network.response.KnobDto
+import com.ome.app.domain.model.network.response.asKnobState
+import com.ome.app.domain.model.network.response.connectionState
 import com.ome.app.domain.model.network.websocket.*
 import com.ome.app.utils.FlowStreamAdapter
+import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
 import com.tinder.scarlet.Scarlet
 import com.tinder.scarlet.messageadapter.gson.GsonMessageAdapter
 import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
@@ -12,11 +18,15 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
-
-class WebSocketManager {
+class WebSocketManager(
+    private val context: Context
+) {
     private var scarlet: Scarlet? = null
 
+    val knobState= MutableStateFlow(mutableMapOf<MacAddress, KnobState>())
+
     val knobAngleFlow: MutableStateFlow<KnobAngle?> = MutableStateFlow(null)
+
     val knobBatteryFlow: MutableStateFlow<KnobBattery?> = MutableStateFlow(null)
     val knobConnectStatusFlow: MutableStateFlow<KnobConnectStatus?> = MutableStateFlow(null)
     val knobConnectIpAddrFlow: MutableStateFlow<KnobConnectIpAddr?> = MutableStateFlow(null)
@@ -26,8 +36,10 @@ class WebSocketManager {
     val knobRssiFlow: MutableStateFlow<KnobRssi?> = MutableStateFlow(null)
     val knobTemperatureFlow: MutableStateFlow<KnobTemperature?> = MutableStateFlow(null)
 
-    suspend fun initWebSocket(macAddrs: List<String>, userId: String) {
-        val url = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=${macAddrs.joinToString(separator = ",") { it }}&inirvUid=$userId"
+    suspend fun initWebSocket(knobs: List<KnobDto>, userId: String) {
+        val url = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=${knobs.map { knob -> knob.macAddr }.joinToString(separator = ",") { it }}&inirvUid=$userId"
+        val knobStates= knobs.associateBy { it.macAddr }.mapValues { it.value.asKnobState }
+        knobState.value = knobStates.toMutableMap()
 
         scarlet = Scarlet.Builder()
             .webSocketFactory(
@@ -44,7 +56,8 @@ class WebSocketManager {
     ): OkHttpClient {
         val client: OkHttpClient =
             OkHttpClient.Builder()
-                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
+                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .addInterceptor(ChuckerInterceptor(context))
                 .addInterceptor(Interceptor { chain ->
                     val original = chain.request()
                     val request = original.newBuilder()
@@ -60,86 +73,146 @@ class WebSocketManager {
         try{
             getKnobService()?.knobMessageEvent()?.collect {
                 Log.d("getKnobService", "subscribe: ${it.name} - ${it.name} ${it.value} ${it.macAddr}")
-                when (it.name) {
-                    "angle" -> {
-                        knobAngleFlow.tryEmit(
-                            KnobAngle(
-                                it.macAddr,
-                                it.name,
-                                it.value as Double
-                            )
-                        )
+                val knobEntity = it.name.knobEntity
+                var needRefresh = true
+                when (knobEntity) {
+                    KnobEntity.ANGLE -> {
+                        knobAngleFlow.tryEmit(KnobAngle(
+                            it.macAddr.orEmpty(),
+                            knobEntity.key,
+                            it.value as Double
+                        ))
+                        if(it.macAddr == null) return@collect
+                        if(knobState.value.containsKey(it.macAddr))
+                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(angle = it.value)
+                        else
+                            knobState.value[it.macAddr] = KnobState(angle = it.value)
                     }
-                    "mountingSurface" -> {
-                        knobMountingSurfaceFlow.emit(
-                            KnobMountingSurface(
-                                it.macAddr,
-                                it.name,
-                                it.value as String
-                            )
-                        )
+                    KnobEntity.MOUNTING_SURFACE -> {
+                        knobMountingSurfaceFlow.emit(KnobMountingSurface(
+                            it.macAddr.orEmpty(),
+                            knobEntity.key,
+                            it.value as String
+                        ))
+                        if(it.macAddr == null) return@collect
+                        if(knobState.value.containsKey(it.macAddr))
+                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(mountingSurface = it.value.mountingSurface)
+                        else
+                            knobState.value[it.macAddr] = KnobState(mountingSurface = it.value.mountingSurface)
                     }
-                    "battery" -> {
-                        knobBatteryFlow.emit(KnobBattery(it.macAddr, it.name, it.value as Int))
+                    KnobEntity.BATTERY -> {
+                        knobBatteryFlow.emit(KnobBattery(
+                            it.macAddr.orEmpty(),
+                            knobEntity.key,
+                            it.value as Int
+                        ))
+                        if(it.macAddr == null) return@collect
+                        if(knobState.value.containsKey(it.macAddr))
+                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(battery = it.value)
+                        else
+                            knobState.value[it.macAddr] = KnobState(battery = it.value)
                     }
-                    "temperature" -> {
-                        knobTemperatureFlow.emit(
-                            KnobTemperature(
-                                it.macAddr,
-                                it.name,
-                                it.value as Double
-                            )
-                        )
+                    KnobEntity.TEMPERATURE -> {
+                        knobTemperatureFlow.emit(KnobTemperature(
+                            it.macAddr.orEmpty(),
+                            knobEntity.key,
+                            it.value as Double
+                        ))
+                        if(it.macAddr == null) return@collect
+                        if(knobState.value.containsKey(it.macAddr))
+                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(temperature = it.value)
+                        else
+                            knobState.value[it.macAddr] = KnobState(temperature = it.value)
                     }
-                    "rssi" -> {
-                        knobRssiFlow.emit(KnobRssi(it.macAddr, it.name, it.value as Int))
+                    KnobEntity.RSSI -> {
+                        knobRssiFlow.emit(KnobRssi(
+                            it.macAddr.orEmpty(),
+                            knobEntity.key,
+                            it.value as Int
+                        ))
+                        if(it.macAddr == null) return@collect
+                        if(knobState.value.containsKey(it.macAddr))
+                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(wifiStrengthPercentage = it.value.wifiStrengthPercentage)
+                        else
+                            knobState.value[it.macAddr] = KnobState(wifiStrengthPercentage = it.value.wifiStrengthPercentage)
+
                     }
-                    "connectStatus" -> {
+                    KnobEntity.CONNECT_STATUS -> {
                         knobConnectStatusFlow.emit(
                             KnobConnectStatus(
-                                it.macAddr,
-                                it.name,
+                                it.macAddr.orEmpty(),
+                                knobEntity.key,
                                 it.value as String
                             )
                         )
+                        if(it.macAddr == null) return@collect
+                        if(knobState.value.containsKey(it.macAddr))
+                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(connectStatus = it.value.connectionState)
+                        else
+                            knobState.value[it.macAddr] = KnobState(connectStatus = it.value.connectionState)
                     }
-                    "connectIpAddr" -> {
+                    KnobEntity.CONNECT_IP_ADD -> {
                         knobConnectIpAddrFlow.emit(
                             KnobConnectIpAddr(
-                                it.macAddr,
-                                it.name,
+                                it.macAddr.orEmpty(),
+                                knobEntity.key,
                                 it.value as String
                             )
                         )
+                        if(it.macAddr == null) return@collect
+                        if(knobState.value.containsKey(it.macAddr))
+                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(connectIpAddr = it.value)
+                        else
+                            knobState.value[it.macAddr] = KnobState(connectIpAddr = it.value)
                     }
-                    "firmwareVersion" -> {
+                    KnobEntity.FIRMWARE_VERSION -> {
                         knobFirmwareVersionFlow.emit(
                             KnobFirmwareVersion(
-                                it.macAddr,
-                                it.name,
+                                it.macAddr.orEmpty(),
+                                knobEntity.key,
                                 it.value as String
                             )
                         )
+                        if(it.macAddr == null) return@collect
+                        if(knobState.value.containsKey(it.macAddr))
+                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(firmwareVersion = it.value)
+                        else
+                            knobState.value[it.macAddr] = KnobState(firmwareVersion = it.value)
                     }
-                    "knobReportedScheduleStopFlow" -> {
+                    KnobEntity.KNOB_REPORTED_SCHEDULE_STOP -> {
                         knobReportedScheduleStopFlow.emit(
                             KnobReportedScheduleStop(
-                                it.macAddr,
-                                it.name,
+                                it.macAddr.orEmpty(),
+                                knobEntity.key,
                                 it.value as Int
                             )
                         )
+                        if(it.macAddr == null) return@collect
+                        if(knobState.value.containsKey(it.macAddr))
+                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(knobReportedScheduleStop = it.value)
+                        else
+                            knobState.value[it.macAddr] = KnobState(knobReportedScheduleStop = it.value)
                     }
-
+                    KnobEntity.KNOB_POST, KnobEntity.KNOB_PATCH, KnobEntity.KNOB_SET_CALIBRATION, KnobEntity.KNOB_DELETE -> {
+//                        stoveRepository.getAllKnobs()
+                        needRefresh = false
+                    }
+                    KnobEntity.USER_POST, KnobEntity.USER_PATCH, KnobEntity.USER_DELETE -> {
+//                        userRepository.getUserData()
+                        needRefresh = false
+                    }
+                    null -> needRefresh = false
                 }
-
+                if(needRefresh)
+                    knobState.value = knobState.value.toMutableMap()
             }
         } catch (ex: Exception){
+            ex.printStackTrace()
         }
 
     }
 
-    suspend fun getKnobService(): KnobWebSocketService? {
+    private fun getKnobService(): KnobWebSocketService? {
         return scarlet?.create(KnobWebSocketService::class.java)
     }
 

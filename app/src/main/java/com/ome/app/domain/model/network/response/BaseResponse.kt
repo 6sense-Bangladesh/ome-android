@@ -1,3 +1,8 @@
 package com.ome.app.domain.model.network.response
 
-data class BaseResponse(val message: String? = null)
+import com.google.gson.annotations.SerializedName
+
+data class BaseResponse(
+    @SerializedName("message")
+    val message: String? = null
+)

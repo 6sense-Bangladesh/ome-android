@@ -64,7 +64,7 @@ class MyStoveFragment :
             setBounceClickListener{
                 navController.navigate(
                     DashboardFragmentDirections.actionDashboardFragmentToDeviceDetailsFragment(
-                        DeviceDetailsFragmentParams(knob.stovePosition, knob.macAddr)
+                        DeviceDetailsFragmentParams(knob.macAddr)
                     )
                 )
             }

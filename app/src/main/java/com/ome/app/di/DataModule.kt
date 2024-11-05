@@ -56,20 +56,15 @@ object DataModule {
             .baseUrl(BuildConfig.BASE_URL)
             .client(client)
             .build()
-
     }
 
+    @Provides
+    @Singleton
+    fun provideWebSocketManager(@ApplicationContext context: Context): WebSocketManager = WebSocketManager(context = context)
 
     @Provides
     @Singleton
-    fun provideWebSocketManager(): WebSocketManager = WebSocketManager()
-
-    @Provides
-    @Singleton
-    fun provideSocketManager(
-        @ApplicationContext context: Context
-    ): SocketManager =
-        SocketManager(context)
+    fun provideSocketManager(@ApplicationContext context: Context): SocketManager = SocketManager(context)
 
     @Provides
     @Singleton

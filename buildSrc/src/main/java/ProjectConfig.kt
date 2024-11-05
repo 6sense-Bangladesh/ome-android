@@ -1,6 +1,6 @@
 import org.gradle.api.JavaVersion
 
-@Suppress("ConstPropertyName")
+@Suppress("ConstPropertyName", "MemberVisibilityCanBePrivate")
 object ProjectConfig {
     const val packageName = "com.ome.app"
     const val minSdk = 21
@@ -12,7 +12,7 @@ object ProjectConfig {
 
     val javaVersion = JavaVersion.VERSION_21
 
-    const val IS_INTERNAL_TESTING = true
+    const val IS_INTERNAL_TESTING = false
 
     const val BASE_URL_DEV = "\"https://app-dev.api.omekitchen.com\""
     const val BASE_URL_SANDBOX = "\"https://app-sandbox.api.omekitchen.com\""

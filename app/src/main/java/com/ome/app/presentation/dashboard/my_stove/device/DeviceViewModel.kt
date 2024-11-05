@@ -6,9 +6,7 @@ import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.network.request.ChangeKnobAngle
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.repo.StoveRepository
-import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.presentation.dashboard.settings.adapter.model.DeviceSettingsItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsTitleItemModel
 import com.ome.app.utils.isTrue
@@ -16,27 +14,25 @@ import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 
 @HiltViewModel
-class DeviceDetailsViewModel @Inject constructor(
-    private val userRepository: UserRepository,
+class DeviceViewModel @Inject constructor(
     private val stoveRepository: StoveRepository,
     val webSocketManager: WebSocketManager,
     private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
+    var stovePosition: Int  = -1
+    val isEnable = MutableStateFlow(false)
+
+    val currentKnob = savedStateHandle.getStateFlow("currentKnob", null as KnobDto?)
 
     val knobAngle = MutableStateFlow<Float?>(null)
-    val zonesLiveData = SingleLiveEvent<KnobDto.CalibrationDto>()
     var macAddress = ""
 
     var offAngle: Float? = null
-    var lowSingleAngle: Float? = null
-    var mediumAngle: Float? = null
-    var highSingleAngle: Float? = null
-    var lowDualAngle: Float? = null
-    var highDualAngle: Float? = null
 
     val deviceSettingsList = savedStateHandle.getStateFlow("deviceSettingsList",
         buildList {
@@ -56,17 +52,13 @@ class DeviceDetailsViewModel @Inject constructor(
             }
         }
         launch(ioContext) {
-            stoveRepository.knobsFlow.collect { knobs ->
-                knobs.let {
-                    val foundKnob = knobs.firstOrNull { it.macAddr == macAddress }
-                    foundKnob?.let {
-                        foundKnob.calibrated.isTrue{
-                            zonesLiveData.postValue(foundKnob.calibration)
-                        }
-                        if (webSocketManager.knobAngleFlow.value == null) {
-                            knobAngle.value = it.angle.toFloat()
-                        }
-                    }
+            stoveRepository.knobsFlow.mapNotNull  { dto -> dto.find { it.macAddr == macAddress }}.collect { foundKnob ->
+                savedStateHandle["currentKnob"] = foundKnob
+                foundKnob.calibrated.isTrue{
+                    offAngle = foundKnob.calibration.offAngle.toFloat()
+                }
+                if (webSocketManager.knobAngleFlow.value == null) {
+                    knobAngle.value = foundKnob.angle.toFloat()
                 }
             }
         }

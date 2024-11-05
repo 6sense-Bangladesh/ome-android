@@ -18,7 +18,7 @@ import com.ome.app.databinding.KnobViewLayoutBinding
 import com.ome.app.domain.model.network.response.*
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.CalibrationState
 import com.ome.app.utils.*
-import com.ome.app.utils.WifiHandler.Companion.signalStrengthPercentage
+import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
@@ -91,52 +91,58 @@ class KnobView @JvmOverloads constructor(
             binding.stovePositionTv.text = position.toStringLocale()
         }
 
-    fun setOffPosition(angle: Float) {
+    fun setOffPosition(angle: Float, doRotate: Boolean = false) {
         if (angle.isMinusOne()) return
         binding.offCl.makeVisible()
         binding.offCl.rotation = angle
         binding.offTv.rotation = -angle
-        animateCircle(mCurrAngle, angle)
+        if(doRotate)
+            animateCircle(mCurrAngle, angle)
     }
 
-    fun setLowSinglePosition(angle: Float) {
+    fun setLowSinglePosition(angle: Float, doRotate: Boolean = false) {
         if (angle.isZeroOrMinusOne()) return
         binding.lowSingleCl.makeVisible()
         binding.lowSingleCl.rotation = angle
         binding.lowSingleTv.rotation = -angle
-        animateCircle(mCurrAngle, angle)
+        if(doRotate)
+            animateCircle(mCurrAngle, angle)
     }
 
-    fun setMediumPosition(angle: Float) {
+    fun setMediumPosition(angle: Float, doRotate: Boolean = false) {
         if (angle.isZeroOrMinusOne()) return
         binding.mediumCl.makeVisible()
         binding.mediumCl.rotation = angle
         binding.mediumTv.rotation = -angle
-        animateCircle(mCurrAngle, angle)
+        if(doRotate)
+            animateCircle(mCurrAngle, angle)
     }
 
-    fun setHighSinglePosition(angle: Float) {
+    fun setHighSinglePosition(angle: Float, doRotate: Boolean = false) {
         if (angle.isZeroOrMinusOne()) return
         binding.highSingleCl.makeVisible()
         binding.highSingleCl.rotation = angle
         binding.highSingleTv.rotation = -angle
-        animateCircle(mCurrAngle, angle)
+        if(doRotate)
+            animateCircle(mCurrAngle, angle)
     }
 
-    fun setHighDualPosition(angle: Float) {
+    fun setHighDualPosition(angle: Float, doRotate: Boolean = false) {
         if (angle.isZeroOrMinusOne()) return
         binding.highDualCl.makeVisible()
         binding.highDualCl.rotation = angle
         binding.highDualTv.rotation = -angle
-        animateCircle(mCurrAngle, angle)
+        if(doRotate)
+            animateCircle(mCurrAngle, angle)
     }
 
-    fun setLowDualPosition(angle: Float) {
+    fun setLowDualPosition(angle: Float, doRotate: Boolean = false) {
         if (angle.isZeroOrMinusOne()) return
         binding.lowDualCl.makeVisible()
         binding.lowDualCl.rotation = angle
         binding.lowDualTv.rotation = -angle
-        animateCircle(mCurrAngle, angle)
+        if(doRotate)
+            animateCircle(mCurrAngle, angle)
     }
 
     fun changeKnobState(knobState: KnobState) {
@@ -155,7 +161,7 @@ class KnobView @JvmOverloads constructor(
             batteryLevel = knob.battery
         )
         return when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.Offline ||
-            ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.signalStrengthPercentage in 0..35) -> {
+            ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) -> {
                 hideLabel()
                 changeKnobState(KnobState.TRANSPARENT)
                 changeKnobProgressVisibility(false)
@@ -176,10 +182,10 @@ class KnobView @JvmOverloads constructor(
 
     fun changeKnobBasicStatus(knob: KnobDto): Boolean {
         changeKnobProgressVisibility(true)
-        setKnobPosition(knob.angle.toFloat())
+//        setKnobPosition(knob.angle.toFloat())
         stovePosition = knob.stovePosition
         return when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.Offline ||
-                ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.signalStrengthPercentage in 0..35) -> {
+                ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) -> {
                     changeKnobState(KnobState.TRANSPARENT)
                     false
                 }
@@ -195,8 +201,8 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
-    fun changeWiFiState(wifiRSSI: Rssi) {
-        if(wifiRSSI.signalStrengthPercentage in 0..35){
+    fun changeWiFiState(wifiStrengthPercentage: Int) {
+        if(wifiStrengthPercentage in 0..35){
             binding.connectionStatus.visible()
             binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wifi_poor, 0, 0, 0)
             binding.connectionStatus.text = context.getString(R.string.poor_signal)
@@ -225,7 +231,7 @@ class KnobView @JvmOverloads constructor(
         when (connectionStatus.connectionState) {
             ConnectionState.Online -> {
                 binding.connectionStatus.gone()
-                changeWiFiState(wifiRSSI)
+                changeWiFiState(wifiRSSI.wifiStrengthPercentage)
             }
             ConnectionState.Offline -> {
                 binding.connectionStatus.visible()

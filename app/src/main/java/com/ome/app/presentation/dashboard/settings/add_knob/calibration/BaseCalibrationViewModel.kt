@@ -6,6 +6,7 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
+import kotlinx.coroutines.flow.mapNotNull
 
 abstract class BaseCalibrationViewModel constructor(
     private val webSocketManager: WebSocketManager,
@@ -92,16 +93,11 @@ abstract class BaseCalibrationViewModel constructor(
             }
         }
         launch(ioContext) {
-            stoveRepository.knobsFlow.collect { knobs ->
-                knobs?.let {
-                    val foundKnob = knobs.firstOrNull { it.macAddr == macAddress }
-                    foundKnob?.let {
-                        if (webSocketManager.knobAngleFlow.value == null) {
-                            knobAngleLiveData.postValue(it.angle.toFloat())
-                        }
-                        zoneLiveData.postValue(foundKnob.stovePosition)
-                    }
+            stoveRepository.knobsFlow.mapNotNull { dto -> dto.find { it.macAddr == macAddress } }.collect { foundKnob ->
+                if (webSocketManager.knobAngleFlow.value == null) {
+                    knobAngleLiveData.postValue(foundKnob.angle.toFloat())
                 }
+                zoneLiveData.postValue(foundKnob.stovePosition)
             }
         }
     }
