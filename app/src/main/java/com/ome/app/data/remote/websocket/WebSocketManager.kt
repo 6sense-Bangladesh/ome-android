@@ -4,13 +4,13 @@ import android.content.Context
 import android.util.Log
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.ome.app.BuildConfig
-import com.ome.app.domain.model.state.KnobEntity
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.network.response.asKnobState
+import com.ome.app.domain.model.network.websocket.*
+import com.ome.app.domain.model.state.KnobEntity
 import com.ome.app.domain.model.state.connectionState
 import com.ome.app.domain.model.state.knobEntity
 import com.ome.app.domain.model.state.mountingSurface
-import com.ome.app.domain.model.network.websocket.*
 import com.ome.app.utils.FlowStreamAdapter
 import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
 import com.ome.app.utils.orMinusOne
@@ -133,13 +133,13 @@ class WebSocketManager(
                         knobRssiFlow.emit(KnobRssi(
                             it.macAddr.orEmpty(),
                             knobEntity.key,
-                            it.value as Int
+                            it.value as Double
                         ))
                         if(it.macAddr == null) return@collect
                         if(knobState.value.containsKey(it.macAddr))
-                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(wifiStrengthPercentage = it.value.wifiStrengthPercentage)
+                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(wifiStrengthPercentage = it.value.toInt().wifiStrengthPercentage)
                         else
-                            knobState.value[it.macAddr] = KnobState(wifiStrengthPercentage = it.value.wifiStrengthPercentage)
+                            knobState.value[it.macAddr] = KnobState(wifiStrengthPercentage = it.value.toInt().wifiStrengthPercentage)
 
                     }
                     KnobEntity.CONNECT_STATUS -> {

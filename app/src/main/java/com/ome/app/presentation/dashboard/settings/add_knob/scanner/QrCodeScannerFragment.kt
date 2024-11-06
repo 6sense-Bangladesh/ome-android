@@ -128,6 +128,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
     override fun setupObserver() {
         super.setupObserver()
         subscribe(viewModel.isKnobAddedLiveData) {
+            viewModel.addNewKnob()
             if (it) {
                 viewModel.macAddress?.let { mac ->
                     findNavController().navigate(
@@ -136,8 +137,6 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
                         )
                     )
                 } ?: onError(getString(R.string.scan_again))
-            } else {
-                viewModel.addNewKnob()
             }
         }
         subscribe(viewModel.knobCreatedLiveData) {
