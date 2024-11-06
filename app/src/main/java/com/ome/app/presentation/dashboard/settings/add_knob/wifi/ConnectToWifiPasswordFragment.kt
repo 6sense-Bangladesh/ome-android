@@ -37,12 +37,11 @@ class ConnectToWifiPasswordFragment :
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.connectBtn.setOnClickListener {
             binding.connectBtn.startAnimation()
-
-            viewModel.password = binding.enterPassword.getText()
+            viewModel.password = binding.password.text.toString()
             viewModel.sendMessage(
-                KnobSocketMessage.TEST_WIFI,
+                message = KnobSocketMessage.TEST_WIFI,
                 ssid = viewModel.ssid,
-                password = binding.enterPassword.getText(),
+                password = viewModel.password,
                 securityType = viewModel.securityType
             )
         }

@@ -1,5 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
+import androidx.lifecycle.SavedStateHandle
+import com.ome.app.BuildConfig
 import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.data.local.SocketManager
 import com.ome.app.domain.repo.StoveRepository
@@ -8,7 +10,8 @@ import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
 import com.ome.app.utils.WifiHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -16,21 +19,32 @@ import javax.inject.Inject
 class ConnectToWifiViewModel @Inject constructor(
     val wifiHandler: WifiHandler,
     val socketManager: SocketManager,
-    val stoveRepository: StoveRepository
+    val stoveRepository: StoveRepository,
+    private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     var macAddrs = ""
     var isChangeWifiMode = false
 
     val wifiConnectedLiveData: SingleLiveEvent<Pair<Boolean, String?>> = SingleLiveEvent()
-    val wifiNetworksListLiveData: SingleLiveEvent<List<NetworkItemModel>> = SingleLiveEvent()
+    val wifiNetworksList = savedStateHandle.getStateFlow<List<NetworkItemModel>?>("wifiNetworksList",
+        buildList {
+            if(BuildConfig.IS_INTERNAL_TESTING) {
+                addAll(listOf(
+                    NetworkItemModel(ssid = "eloquentiam", securityType = "feugiat"),
+                    NetworkItemModel(ssid = "sumo", securityType = "libero"),
+                    NetworkItemModel(ssid = "vitae", securityType = "purus")
+                ))
+            }
+        }
+    )
 
 
     init {
         launch(ioContext) {
             socketManager.networksFlow.collect { list ->
                 if (list.isNotEmpty()) {
-                    wifiNetworksListLiveData.postValue(list)
+                    savedStateHandle["wifiNetworksList"] = list
                 }
             }
         }
@@ -67,10 +81,10 @@ class ConnectToWifiViewModel @Inject constructor(
     }
 
 
-    fun connectToWifi() = launch(ioContext) {
+    fun connectToWifi() = launch {
         if(isChangeWifiMode){
-            stoveRepository.clearWifi(macAddrs)
-            delay(6000)
+            withContext(Dispatchers.IO){ stoveRepository.clearWifi(macAddrs) }
+//            delay(6000)
         }
         connectionStatusListener.shouldReactOnChanges = false
         val result = wifiHandler.connectToWifi()

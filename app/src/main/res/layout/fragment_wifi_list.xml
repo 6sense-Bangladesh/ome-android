@@ -33,23 +33,26 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginVertical="@dimen/margin_top_bar"
+        android:layout_marginVertical="@dimen/_12sdp"
+        tools:listitem="@layout/network_item"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/scanAgainBtn"
+        app:layout_constraintBottom_toTopOf="@+id/scanAgainBtn2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+        android:id="@+id/scanAgainBtn2"
+        style="@style/OmeButton.Blue.Outline"
+        android:text="Scan Again 2"
+        app:layout_constraintBottom_toTopOf="@+id/scanAgainBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/scanAgainBtn"
         style="@style/OmeButton.Blue"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginBottom="64dp"
-        android:gravity="center"
         android:text="@string/scan_again"
-        android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

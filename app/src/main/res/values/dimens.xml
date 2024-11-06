@@ -2,6 +2,6 @@
 <resources>
     <dimen name="actionBarSize">@dimen/_50sdp</dimen>
     <dimen name="actionBarPaddingHorizontal">@dimen/_2sdp</dimen>
-    <dimen name="margin_horizontal">@dimen/_12sdp</dimen>
+    <dimen name="margin_horizontal">@dimen/_15sdp</dimen>
     <dimen name="margin_top_bar">@dimen/_30sdp</dimen>
 </resources>

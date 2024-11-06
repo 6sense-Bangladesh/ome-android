@@ -56,27 +56,23 @@ class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) 
             if (currentWifiSSID == inirvKnobSSID || currentWifiSSID == omeKnobSSID) {
                 continuation.resume(true to null)
             } else {
-                handler.postDelayed({
-                    continuation.resume(
-                        false to resourceProvider.getString(
-                            R.string.unable_to_join_the_network,
-                            currentSSID
-                        )
-                    )
-                }, 15000)
-                WifiUtils.withContext(context)
-                    .connectWith(
-                        currentSSID,
-                        PASSWORD,
-                    )
+//                handler.postDelayed({
+//                    continuation.resume(
+//                        false to resourceProvider.getString(
+//                            R.string.unable_to_join_the_network,
+//                            currentSSID
+//                        )
+//                    )
+//                }, 15000)
+                WifiUtils.withContext(context).connectWith(currentSSID, PASSWORD)
                     .onConnectionResult(object : ConnectionSuccessListener {
                         override fun success() {
-                            handler.removeCallbacksAndMessages(null)
+//                            handler.removeCallbacksAndMessages(null)
                             continuation.resume(true to null)
                         }
 
                         override fun failed(errorCode: ConnectionErrorCode) {
-                            handler.removeCallbacksAndMessages(null)
+//                            handler.removeCallbacksAndMessages(null)
                             continuation.resume(
                                 false to resourceProvider.getString(
                                     R.string.unable_to_join_the_network,
@@ -112,6 +108,7 @@ class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) 
                 val wifiInfo = networkCapabilities.transportInfo as WifiInfo
                 // Use wifiInfo as needed
                 continuation.resume(wifiInfo.ssid.replace("\"", ""))
+                connectivityManager?.unregisterNetworkCallback(this) // Unregister the callback
             }
         }
         connectivityManager?.requestNetwork(request, networkCallback)

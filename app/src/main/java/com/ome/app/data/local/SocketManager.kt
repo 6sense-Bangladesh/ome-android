@@ -2,16 +2,22 @@ package com.ome.app.data.local
 
 import android.content.Context
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
+import com.ome.app.utils.log
 import com.ome.app.utils.logi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.http.GET
 import java.io.ByteArrayOutputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.InputStream
+import java.net.ConnectException
 import java.net.Socket
 import java.nio.charset.StandardCharsets
 import javax.crypto.Cipher
@@ -19,7 +25,16 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 
-class SocketManager(val context: Context) {
+class SocketManager(
+    val context: Context,
+    retrofit: Retrofit
+) {
+    interface SocketService{
+        @GET("http://10.10.0.1/start_scan.cgi")
+        suspend fun scanForNetworks(): Response<ResponseBody>
+    }
+
+    private val socketService: SocketService = retrofit.create(SocketService::class.java)
 
     companion object {
         const val ipAddress = "10.10.0.1"
@@ -82,6 +97,10 @@ class SocketManager(val context: Context) {
     }
 
     private suspend fun read() {
+        if (lastMessageSent == KnobSocketMessage.GET_NETWORKS) {
+            scanForNetworks()
+            return
+        }
         val buffer = ByteArrayOutputStream()
 
         val data = ByteArray(16384)
@@ -98,7 +117,7 @@ class SocketManager(val context: Context) {
         val decryptedMessage = String(buffer.toByteArray().removePadding(), StandardCharsets.UTF_8)
         decryptedMessage.let {
             logi("ResponseFrom: ${lastMessageSent.path} , Message: $it")
-            if (lastMessageSent == KnobSocketMessage.GET_NETWORKS) {
+            if (lastMessageSent == KnobSocketMessage.GET_NETWORKS2) {
                 networksFlow.emit(parseNetworkList(it))
             }
             messageReceived(lastMessageSent, it)
@@ -111,6 +130,7 @@ class SocketManager(val context: Context) {
         val networksList = arrayListOf<NetworkItemModel>()
         val list = message.split("#")
         list.forEach { item ->
+            item.log("scanForNetworks2")
             if (item.isNotEmpty()) {
                 val network =
                     item.substring(33, item.length).replace("\\r", "").replace("\\n", "").trim()
@@ -139,6 +159,38 @@ class SocketManager(val context: Context) {
         return filteredArray.map { it.toByte() }.toByteArray()
     }
 
+    // TODO: need test
+    private suspend fun scanForNetworks(): List<NetworkItemModel> {
+        val networksList = mutableListOf<NetworkItemModel>()
+        try {
+            val response = socketService.scanForNetworks()
+            if(response.isSuccessful){
+
+                // Parse response body
+                val data = response.body()?.string()
+                data.log("scanForNetworks")
+                if (data != null) {
+                    val strEntries = data.split(Regex("[{}]"))
+                    for ((index, entry) in strEntries.withIndex()) {
+                        if (index % 2 != 0) {
+                            val entries = entry.split("\"")
+                            networksList.add(NetworkItemModel(
+                                ssid = entries[3],
+                                securityType = entries[11]
+                            ))
+                        }
+                    }
+                    networksFlow.emit(networksList.toList())
+                }
+                //else TODO: Handle error
+            }
+        }catch (e: Exception){
+            //TODO: Handle error
+        }
+        return networksList
+    }
+
+
 
     private fun encrypt(message: String): ByteArray {
         val cipher = Cipher.getInstance("AES/CBC/ZeroBytePadding")
@@ -165,14 +217,19 @@ class SocketManager(val context: Context) {
 
     suspend fun connect() = withContext(Dispatchers.IO) {
         if (!socket.isConnected) {
-            socket = Socket(ipAddress, port)
-            mRun = true
-            mOut = DataOutputStream(socket.getOutputStream())
-            mIn = DataInputStream(socket.getInputStream())
-        }
-        onSocketConnect()
-        while (mRun) {
-            read()
+            try {
+                socket = Socket(ipAddress, port)
+                mRun = true
+                mOut = DataOutputStream(socket.getOutputStream())
+                mIn = DataInputStream(socket.getInputStream())
+                onSocketConnect()
+                while (mRun) {
+                    read()
+                }
+            } catch (e: ConnectException) {
+                // Handle the connection error
+                throw ConnectException("Error with socket connection.")
+            }
         }
     }
 
@@ -194,6 +251,7 @@ enum class KnobSocketMessage(val path: String) {
     SET_WIFI("setwifi"),
     REBOOT("reboot"),
     GET_NETWORKS("getap \"\""),
+    GET_NETWORKS2("getap \"\""),
     RESEND_SET_WIFI(""),
     RESEND_REBOOT(""),
 }

@@ -16,8 +16,6 @@
         app:navigationIcon="@drawable/ic_back"
         app:title="@string/connect_to_your_wi_fi" />
 
-
-
     <TextView
         android:id="@+id/label1Tv"
         style="@style/Label.Medium"
