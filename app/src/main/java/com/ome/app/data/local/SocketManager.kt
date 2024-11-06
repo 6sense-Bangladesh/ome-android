@@ -70,12 +70,11 @@ class SocketManager(
         message: KnobSocketMessage,
         vararg params: String = arrayOf()
     ) = withContext(Dispatchers.IO) {
-        if (lastMessageSent == KnobSocketMessage.GET_NETWORKS2) {
-            scanForNetworks()
-            return@withContext
-        }
+//        if (lastMessageSent == KnobSocketMessage.GET_NETWORKS2) {
+//            scanForNetworks()
+//            return@withContext
+//        }
         var finalMessage = message.path
-
 
         if (message == KnobSocketMessage.TEST_WIFI || message == KnobSocketMessage.SET_WIFI) {
             finalMessage += " \"${params[0]}\" \"${params[1]}\" ${params[2]}"
@@ -96,7 +95,7 @@ class SocketManager(
         }
     }
 
-    private suspend fun read() {
+    private fun read() {
         val buffer = ByteArrayOutputStream()
 
         val data = ByteArray(16384)
@@ -260,7 +259,6 @@ enum class KnobSocketMessage(val path: String) {
     SET_WIFI("setwifi"),
     REBOOT("reboot"),
     GET_NETWORKS("getap \"\""),
-    GET_NETWORKS2("getap2 \"\""),
     RESEND_SET_WIFI(""),
     RESEND_REBOOT(""),
 }

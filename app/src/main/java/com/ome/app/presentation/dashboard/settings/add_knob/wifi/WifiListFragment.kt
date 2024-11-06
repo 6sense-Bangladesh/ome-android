@@ -48,10 +48,6 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
             binding.scanAgainBtn.startAnimation()
             viewModel.sendMessage(KnobSocketMessage.GET_NETWORKS)
         }
-        binding.scanAgainBtn2.setBounceClickListener {
-            binding.scanAgainBtn.startAnimation()
-            viewModel.sendMessage(KnobSocketMessage.GET_NETWORKS2)
-        }
     }
 
 
