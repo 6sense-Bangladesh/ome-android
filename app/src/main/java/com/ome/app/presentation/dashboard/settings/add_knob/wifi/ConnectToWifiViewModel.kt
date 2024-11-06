@@ -72,7 +72,7 @@ class ConnectToWifiViewModel @Inject constructor(
             }
         }
         socketManager.onSocketConnect = {
-//            sendMessage(KnobSocketMessage.GET_MAC)
+            sendMessage(KnobSocketMessage.GET_MAC)
             wifiConnectedLiveData.postValue(Pair(true, null))
         }
     }
