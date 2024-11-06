@@ -30,7 +30,7 @@ class SocketManager(
     retrofit: Retrofit
 ) {
     interface SocketService{
-        @GET("http://10.10.0.1/start_scan.cgi")
+        @GET("http://10.10.0.1:8/start_scan.cgi")
         suspend fun scanForNetworks(): Response<ResponseBody>
     }
 
@@ -250,7 +250,7 @@ enum class KnobSocketMessage(val path: String) {
     TEST_WIFI("testwifi"),
     SET_WIFI("setwifi"),
     REBOOT("reboot"),
-    GET_NETWORKS("getap \"\""),
+    GET_NETWORKS("getap2 \"\""),
     GET_NETWORKS2("getap \"\""),
     RESEND_SET_WIFI(""),
     RESEND_REBOOT(""),
