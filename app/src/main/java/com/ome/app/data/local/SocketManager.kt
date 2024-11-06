@@ -126,12 +126,14 @@ class SocketManager(
         val networksList = arrayListOf<NetworkItemModel>()
         val regex = Regex("""\d+\s+\d+\s+-\d+\s+([A-F0-9:]{17})\s+\d+\s+([\w\s]+)""")
         regex.findAll(message).forEach { matchResult ->
-            networksList.add(
-                NetworkItemModel(
-                    ssid = matchResult.groupValues.getOrNull(2) ?: "No Name Found",
-                    securityType = "WPA2"
+            matchResult.groupValues.getOrNull(2)?.trim()?.let {
+                networksList.add(
+                    NetworkItemModel(
+                        ssid = it,
+                        securityType = "WPA2"
+                    )
                 )
-            )
+            }
         }
         networksList.log("wifiNetworksList")
 //        val list = message.split("#")
@@ -152,7 +154,7 @@ class SocketManager(
 //                )
 //            }
 //        }
-        return networksList
+        return networksList.distinctBy { it.ssid }
     }
 
     private fun ByteArray.removePadding(): ByteArray {
