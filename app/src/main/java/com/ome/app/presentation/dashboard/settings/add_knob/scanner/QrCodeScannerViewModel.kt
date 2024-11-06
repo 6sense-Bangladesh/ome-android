@@ -3,8 +3,8 @@ package com.ome.app.presentation.dashboard.settings.add_knob.scanner
 import com.ome.app.R
 import com.ome.app.data.local.ResourceProvider
 import com.ome.app.domain.model.network.request.CreateKnobRequest
-import com.ome.app.domain.model.network.response.KnobStatus
-import com.ome.app.domain.model.network.response.knobStatus
+import com.ome.app.domain.model.state.KnobStatus
+import com.ome.app.domain.model.state.knobStatus
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent

@@ -7,6 +7,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupTypeBinding
+import com.ome.app.domain.model.state.StoveType
+import com.ome.app.domain.model.state.stoveType
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -153,7 +155,7 @@ class StoveSetupTypeFragment :
 //        } else {
 //            view.setBackgroundResource(R.drawable.stove_type_button_shape)
 //            view.setColorFilter(
-//                ContextCompat.getColor(requireContext(), R.color.gray_color),
+//                ContextCompat.getColor(requireContext(), R.color.gray),
 //                android.graphics.PorterDuff.Mode.MULTIPLY
 //            )
 //        }

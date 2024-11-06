@@ -1,6 +1,7 @@
 package com.ome.app.presentation.stove
 
 import com.ome.app.domain.model.base.ResponseWrapper
+import com.ome.app.domain.model.state.StoveOrientation
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel

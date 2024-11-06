@@ -1,5 +1,6 @@
 package com.ome.app.presentation.stove
 
+import com.ome.app.domain.model.state.StoveType
 import com.ome.app.domain.model.network.request.StoveRequest
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository

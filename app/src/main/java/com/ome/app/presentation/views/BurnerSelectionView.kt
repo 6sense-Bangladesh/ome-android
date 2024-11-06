@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.ome.app.R
 import com.ome.app.databinding.BurnerSelectionViewBinding
-import com.ome.app.presentation.stove.StoveOrientation
+import com.ome.app.domain.model.state.StoveOrientation
 import com.ome.app.utils.*
 
 
@@ -134,7 +134,7 @@ class BurnerSelectionView @JvmOverloads constructor(
                         4 -> selectButton(button5 to status5, position)
                     }
                 }
-                StoveOrientation.FOUR_BAR_BURNERS,StoveOrientation.FIVE_BURNERS, StoveOrientation.SIX_BURNERS -> {
+                StoveOrientation.FOUR_BAR_BURNERS, StoveOrientation.FIVE_BURNERS, StoveOrientation.SIX_BURNERS -> {
                     when(position){
                         1 -> selectButton(button1 to status1, position)
                         2 -> selectButton(button2 to status2, position)

@@ -4,12 +4,16 @@ import android.content.Context
 import android.util.Log
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.ome.app.BuildConfig
+import com.ome.app.domain.model.state.KnobEntity
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.network.response.asKnobState
-import com.ome.app.domain.model.network.response.connectionState
+import com.ome.app.domain.model.state.connectionState
+import com.ome.app.domain.model.state.knobEntity
+import com.ome.app.domain.model.state.mountingSurface
 import com.ome.app.domain.model.network.websocket.*
 import com.ome.app.utils.FlowStreamAdapter
 import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
+import com.ome.app.utils.orMinusOne
 import com.tinder.scarlet.Scarlet
 import com.tinder.scarlet.messageadapter.gson.GsonMessageAdapter
 import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
@@ -101,16 +105,17 @@ class WebSocketManager(
                             knobState.value[it.macAddr] = KnobState(mountingSurface = it.value.mountingSurface)
                     }
                     KnobEntity.BATTERY -> {
+                        val value = it.value.toString().toIntOrNull().orMinusOne()
                         knobBatteryFlow.emit(KnobBattery(
                             it.macAddr.orEmpty(),
                             knobEntity.key,
-                            it.value as Int
+                            value
                         ))
                         if(it.macAddr == null) return@collect
                         if(knobState.value.containsKey(it.macAddr))
-                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(battery = it.value)
+                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(battery = value)
                         else
-                            knobState.value[it.macAddr] = KnobState(battery = it.value)
+                            knobState.value[it.macAddr] = KnobState(battery = value)
                     }
                     KnobEntity.TEMPERATURE -> {
                         knobTemperatureFlow.emit(KnobTemperature(

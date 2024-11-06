@@ -57,6 +57,7 @@ abstract class BaseViewModel : ViewModel() {
 
     protected fun sendError(throwable: Throwable) {
         launch(mainContext) {
+            throwable.printStackTrace()
             defaultErrorLiveData.setNewValue(throwable.message)
         }
     }

@@ -5,8 +5,8 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
-import com.ome.app.presentation.stove.StoveOrientation
-import com.ome.app.presentation.stove.stoveOrientation
+import com.ome.app.domain.model.state.StoveOrientation
+import com.ome.app.domain.model.state.stoveOrientation
 import com.ome.app.utils.orMinusOne
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

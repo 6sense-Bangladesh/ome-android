@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="blackTrans">#75000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="off_white">#e9e8e9</color>
     <color name="whiteTrans">#75FFFFFF</color>
     <color name="green">#14ae5c</color>
     <color name="red">#F84F48</color>
@@ -21,6 +22,8 @@
     <color name="colorShadowDark">#8D8F94</color>
 
     <color name="colorPrimary">#0099d7</color>
+    <color name="colorPrimaryLight">#93cdf6</color>
+    <color name="colorPrimaryDeep">#236488</color>
     <color name="colorSecondary">#004c6d</color>
     <color name="colorTertiary">#c8e6ff</color>
     <color name="colorBackground">#effaff</color>
@@ -45,10 +48,11 @@
     <color name="light_blue_button_unpressed_state">#0371B6</color>
     <color name="light_blue_button_pressed_state">#014C7C</color>
 
-    <color name="menu_item_gray_color">#848591</color>
+    <color name="menu_item_gray">#848591</color>
     <color name="menu_item_blue_color">#373A8F</color>
 
-    <color name="gray_color">#939393</color>
+    <color name="grayBlue">#c1c7ce</color>
+    <color name="gray">#939393</color>
     <color name="dark">#686868</color>
 
     <color name="button_color_white_background">#635E83</color>
@@ -62,6 +66,10 @@
     <color name="cardBackground">#f1f4f9</color>
     <color name="cardStrokeColor">#eef1f6</color>
     <color name="cardStrokeColorDeep">#dde3ea</color>
+
+    <color name="colorHigh">#FFEF3F3F</color>
+    <color name="colorMedium">#FFFBAA1A</color>
+    <color name="colorLow">#FFD1CB29</color>
 
 
 </resources>

@@ -9,6 +9,9 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupBurnersBinding
+import com.ome.app.domain.model.state.StoveOrientation
+import com.ome.app.domain.model.state.StoveType
+import com.ome.app.domain.model.state.stoveOrientation
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.onBackPressed

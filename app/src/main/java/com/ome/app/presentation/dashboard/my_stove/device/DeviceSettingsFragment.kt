@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceSettingsBinding
-import com.ome.app.domain.model.network.response.Calibration.Rotation
+import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.base.recycler.ItemModel

@@ -1,7 +1,8 @@
 package com.ome.app.domain.model.network.websocket
 
 import android.os.Parcelable
-import com.ome.app.domain.model.network.response.ConnectionState
+import com.ome.app.domain.model.state.ConnectionState
+import com.ome.app.domain.model.state.MountingSurface
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -18,12 +19,4 @@ data class KnobState(
 ): Parcelable
 
 typealias MacAddress = String
-
-enum class MountingSurface(val key: String) {
-    VERTICAL("vertical"),
-    HORIZONTAL("horizontal")
-}
-
-val String?.mountingSurface: MountingSurface?
-    get() = MountingSurface.entries.find { it.key == this }
 

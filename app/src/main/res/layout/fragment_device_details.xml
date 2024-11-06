@@ -130,15 +130,16 @@
     </com.google.android.material.card.MaterialCardView>
 
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_6sdp"
-        android:orientation="vertical"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="@+id/burnerSelection"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/burnerSelection"
         app:layout_constraintTop_toTopOf="@+id/burnerSelection">
+
 
         <TextView
             android:id="@+id/name"
@@ -146,75 +147,88 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_yellow_circle"
-            app:layout_constraintEnd_toEndOf="@+id/avatarIv"
-            app:layout_constraintStart_toStartOf="@+id/avatarIv"
-            app:layout_constraintTop_toBottomOf="@+id/avatarIv"
-            tools:text="Burner 1" />
+            app:layout_constraintBottom_toTopOf="@+id/tvLevel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Burner #1" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/statusKnob"
+            style="@style/Widget.Material3.Chip.Assist"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:clickable="false"
+            android:text="@string/offline"
+            android:textColor="@drawable/color_text_selector"
+            android:textSize="@dimen/_9ssp"
+            app:chipBackgroundColor="@color/chip_color_state_list"
+            app:chipIconTint="@drawable/color_text_selector"
+            app:layout_constraintBottom_toBottomOf="@+id/name"
+            app:layout_constraintStart_toEndOf="@+id/name"
+            app:layout_constraintTop_toTopOf="@+id/name"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Round" />
+
+        <TextView
+            android:id="@+id/tvLevel"
+            style="@style/Label.Medium"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:gravity="center_vertical">
+            android:src="@drawable/ic_yellow_circle"
+            android:text="@string/level"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name" />
 
-            <TextView
-                android:id="@+id/tv1"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                style="@style/Label.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_yellow_circle"
-                android:text="@string/status"
-                app:layout_constraintStart_toStartOf="parent" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/statusBurner"
+            style="@style/Widget.Material3.Chip.Assist.Elevated"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:clickable="false"
+            android:text="@string/off"
+            android:textColor="@drawable/color_text_selector"
+            android:textSize="@dimen/_9ssp"
+            app:chipBackgroundColor="@color/chip_color_state_list"
+            app:chipIconTint="@drawable/color_text_selector"
+            app:layout_constraintBottom_toBottomOf="@+id/tvLevel"
+            app:layout_constraintStart_toEndOf="@+id/tvLevel"
+            app:layout_constraintTop_toTopOf="@+id/tvLevel"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Round" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/status"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                style="@style/Widget.Material3.Chip.Assist"
-                android:layout_width="wrap_content"
-                app:layout_constraintStart_toEndOf="@+id/tv1"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginHorizontal="@dimen/_5sdp"
-                android:clickable="false"
-                android:text="@string/off"
-                android:textColor="@drawable/color_text_selector"
-                android:textSize="@dimen/_9ssp"
-                app:chipBackgroundColor="@color/chip_color_state_list"
-                app:chipIconTint="@drawable/color_text_selector"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Round" />
+        <TextView
+            android:id="@+id/tvBattery"
+            style="@style/Label.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_1sdp"
+            android:text="@string/battery"
+            app:layout_constraintBottom_toBottomOf="@+id/tvLevel"
+            app:layout_constraintEnd_toStartOf="@+id/batteryIcon"
+            app:layout_constraintTop_toTopOf="@+id/tvLevel" />
 
-            <TextView
-                style="@style/Label.Medium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/battery"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/batteryIcon"
-                app:layout_constraintTop_toTopOf="parent" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/batteryIcon"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:src="@drawable/ic_battery_4"
+            app:layout_constraintBottom_toBottomOf="@+id/tvBattery"
+            app:layout_constraintEnd_toStartOf="@+id/batteryPercentage"
+            app:layout_constraintTop_toTopOf="@+id/tvBattery" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/batteryIcon"
-                android:layout_width="@dimen/_16sdp"
-                android:layout_height="@dimen/_16sdp"
-                android:src="@drawable/ic_battery_4"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/batteryPercentage"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/batteryPercentage"
-                style="@style/Label.Mini"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="@dimen/_12sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="69%" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+        <TextView
+            android:id="@+id/batteryPercentage"
+            style="@style/Label.Mini"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_12sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvBattery"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvBattery"
+            tools:text="69%" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.ome.app.presentation.views.KnobView
         android:id="@+id/knobView"

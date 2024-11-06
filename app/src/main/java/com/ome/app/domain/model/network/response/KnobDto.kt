@@ -2,10 +2,11 @@ package com.ome.app.domain.model.network.response
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.ome.app.domain.model.state.*
 import com.ome.app.domain.model.network.websocket.KnobState
-import com.ome.app.domain.model.network.websocket.mountingSurface
 import com.ome.app.utils.Rssi
 import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
+import com.ome.app.utils.isFalse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -75,6 +76,22 @@ val KnobDto.asKnobState
         firmwareVersion = firmwareVersion,
     )
 
+val KnobDto.asBurnerState
+    get()= buildList{
+        if(calibrated.isFalse()) return@buildList
+        val cal = calibration.toCalibration()
+        if(cal.zones1 != null){
+            add(BurnerState.Low(cal.zones1.lowAngle))
+            if(cal.rotation != Rotation.DUAL)
+                add(BurnerState.Medium(cal.zones1.mediumAngle))
+            add(BurnerState.High(cal.zones1.highAngle))
+        }else if(cal.zones2 != null){
+            add(BurnerState.Low(cal.zones2.lowAngle))
+            add(BurnerState.High(cal.zones2.highAngle))
+        }
+    }
+
+
 @Parcelize
 data class Calibration(
     val offAngle: Int,
@@ -82,27 +99,4 @@ data class Calibration(
     val rotationClockWise: Boolean,
     val zones1: KnobDto.CalibrationDto.ZoneDto?,
     val zones2: KnobDto.CalibrationDto.ZoneDto?
-): Parcelable{
-    enum class Rotation{
-        CLOCKWISE,
-        COUNTER_CLOCKWISE,
-        DUAL
-    }
-}
-
-val Int?.rotation
-    get() = when(this){
-        1 -> Calibration.Rotation.CLOCKWISE
-        -1 -> Calibration.Rotation.COUNTER_CLOCKWISE
-        2 -> Calibration.Rotation.DUAL
-        else -> Calibration.Rotation.CLOCKWISE
-    }
-
-enum class ConnectionState(val type: String){
-    Online("online"),
-    Offline("offline"),
-    Charging("charging")
-}
-
-val String?.connectionState : ConnectionState
-    get() = ConnectionState.entries.find { it.type == this } ?: ConnectionState.Offline
+): Parcelable

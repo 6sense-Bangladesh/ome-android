@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupPhotoBinding
+import com.ome.app.domain.model.state.StoveType
 import com.ome.app.presentation.base.navigation.DeepNavGraph
 import com.ome.app.presentation.base.navigation.DeepNavGraph.encode
 import com.ome.app.utils.*

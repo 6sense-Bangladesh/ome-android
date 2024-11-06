@@ -8,17 +8,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceDetailsBinding
-import com.ome.app.domain.model.network.response.Calibration.Rotation
-import com.ome.app.domain.model.network.response.ConnectionState
 import com.ome.app.domain.model.network.response.KnobDto
+import com.ome.app.domain.model.state.*
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.stove.StoveOrientation
-import com.ome.app.presentation.stove.stoveOrientation
-import com.ome.app.presentation.stove.stoveType
 import com.ome.app.presentation.views.KnobView
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
+import kotlin.math.abs
 
 @AndroidEntryPoint
 class DeviceDetailsFragment :
@@ -27,6 +24,8 @@ class DeviceDetailsFragment :
     override val viewModel: DeviceViewModel by viewModels()
 
     private val args by navArgs<DeviceDetailsFragmentArgs>()
+
+    private val burnerStates by lazy { mainViewModel.getKnobBurnerStatesByMac(args.params.macAddr) }
 
 
     override fun setupUI() {
@@ -156,37 +155,18 @@ class DeviceDetailsFragment :
             }
             mainViewModel.getKnobStateByMac(args.params.macAddr).collectWithLifecycle{knob ->
                 val batteryLevel = knob.battery
-                var isCharging : ConnectionState? = null
                 batteryPercentage.text = batteryLevel?.addPercentage().orEmpty()
-                knob.connectStatus?.let {
-                    changeBatteryStates(it, batteryLevel)
-                    if(it == ConnectionState.Charging)
-                        isCharging = it
-                }
-//                knob.mountingSurface?.let {
-//                    if(mainViewModel.userInfo.value.stoveType?.mounting != knob.mountingSurface.key){
-//                        changeBatteryStates(isCharging ?: ConnectionState.Offline, batteryLevel)
-//                        viewModel.isEnable.value = false
-//                    }
-//                    else{
-//                        changeBatteryStates(isCharging ?: ConnectionState.Online, batteryLevel)
-//                        viewModel.isEnable.value = true
-//                    }
-//                }
-                knob.angle?.toFloat()?.let {
-                    if(it == mainViewModel.getOffAngleByMac(args.params.macAddr) ||
-                        (knob.mountingSurface != null && mainViewModel.userInfo.value.stoveType?.mounting != knob.mountingSurface.key)
-                    ){
-                        changeBatteryStates(isCharging ?: ConnectionState.Offline, batteryLevel)
+                knob.angle?.toInt()?.let {
+                    changeBurnerStatus(it)
+                    if(knob.mountingSurface != null && mainViewModel.userInfo.value.stoveKnobMounting != knob.mountingSurface.type){
                         viewModel.isEnable.value = false
-                    }else {
-                        viewModel.isEnable.value = true
-                        changeBatteryStates(isCharging ?: ConnectionState.Online, batteryLevel)
+                        changeBurnerStatus(it, BurnerState.Off( mainViewModel.getOffAngleByMac(args.params.macAddr).orZero()))
                     }
-                    binding.knobView.setKnobPosition(it)
-                    // TODO : fix needed - separate status knob & burner
+                    binding.knobView.setKnobPosition(it.toFloat())
                 }
-                knob.log("getKnobStateByMac ${viewModel.isEnable.value}")
+                knob.connectStatus?.let {
+                    changeKnobStatus(it, batteryLevel)
+                }
                 knob.wifiStrengthPercentage?.let {
 //                    knobView.changeWiFiState(it)
                 }
@@ -277,56 +257,74 @@ class DeviceDetailsFragment :
         }
     }
 
-    private fun changeBatteryStates(
-        connectionState: ConnectionState,
-        batteryLevel: Int? = null
-    ) {
-        binding.status.text = connectionState.name
+    private fun changeBurnerStatus(currentAngle: Int, vararg states: BurnerState = burnerStates.toTypedArray()) {
+        states.minByOrNull { abs(it.level - currentAngle) }?.apply {
+            binding.statusBurner.applyState()  // Let the state apply its specific styles
+            viewModel.isEnable.value = type != BurnerState.State.Off
+        }
+    }
+
+    private fun changeKnobStatus(connectionState: ConnectionState, batteryLevel: Int?) {
+        binding.statusKnob.text = connectionState.name
+        val context = context ?: return
+        // Define common style values
+        val chipStrokeColor: Int
+        val textColor: Int
+        val batteryIconTintColor: Int
+        val batteryIconResId: Int?
         when (connectionState) {
             ConnectionState.Charging -> {
-                binding.status.chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimaryTransLess)
-                binding.status.chipStrokeWidth = 0F
-                binding.status.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                chipStrokeColor = R.color.colorPrimaryLight
+                textColor = R.color.colorPrimaryDeep
+                batteryIconTintColor = R.color.colorPrimary
+                batteryIconResId = when (batteryLevel) {
+                    in 0..20 -> R.drawable.ic_charging_20
+                    in 21..30 -> R.drawable.ic_charging_30
+                    in 31..50 -> R.drawable.ic_charging_50
+                    in 51..60 -> R.drawable.ic_charging_60
+                    in 61..80 -> R.drawable.ic_charging_80
+                    in 81..94 -> R.drawable.ic_charging_90
+                    in 95..100 -> R.drawable.ic_battery_full
+                    else -> null
+                }
             }
-            ConnectionState.Online -> {
-                binding.status.chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
-                binding.status.chipStrokeWidth = 0F
-                binding.status.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            }
-            ConnectionState.Offline -> {
-                binding.status.chipBackgroundColor = ContextCompat.getColorStateList(requireContext(), R.color.white)
-                binding.status.chipStrokeWidth = 1F
-                binding.status.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            ConnectionState.Online, ConnectionState.Offline -> {
+                chipStrokeColor = R.color.grayBlue
+                textColor = R.color.black
+                batteryIconTintColor = if (batteryLevel in 0..20) R.color.red else R.color.black
+
+                batteryIconResId = when (batteryLevel) {
+                    in 0..9 -> R.drawable.ic_battery_0
+                    in 10..20 -> R.drawable.ic_battery_1
+                    in 21..38 -> R.drawable.ic_battery_2
+                    in 39..50 -> R.drawable.ic_battery_3
+                    in 51..62 -> R.drawable.ic_battery_4
+                    in 63..75 -> R.drawable.ic_battery_5
+                    in 76..94 -> R.drawable.ic_battery_6
+                    in 95..100 -> R.drawable.ic_battery_7
+                    else -> null
+                }
             }
         }
-        if (connectionState == ConnectionState.Charging) {
-            binding.batteryIcon.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
-            when (batteryLevel) {
-                in 0..20 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_20)
-                in 21..30 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_30)
-                in 31..50 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_50)
-                in 51..60 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_60)
-                in 61..80 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_80)
-                in 81..95 -> binding.batteryIcon.setImageResource(R.drawable.ic_charging_90)
-                in 96..100 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_full)
-            }
+        if(connectionState == ConnectionState.Offline)
+            viewModel.isEnable.value = false
+
+        // Apply common style
+        binding.statusKnob.chipStrokeColor = ContextCompat.getColorStateList(context, chipStrokeColor)
+        binding.statusKnob.setTextColor(ContextCompat.getColor(context, textColor))
+
+        // Update battery icon and tint
+        batteryIconResId?.let {
+            binding.batteryIcon.setImageResource(it)
+            binding.batteryIcon.visible()
+            binding.tvBattery.visible()
+            binding.batteryPercentage.visible()
+        } ?: run {
+            binding.tvBattery.gone()
+            binding.batteryIcon.gone()
+            binding.batteryPercentage.gone()
         }
-        else{
-            when (batteryLevel) {
-                in 0..9 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_0)
-                in 10..20 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_1)
-                in 21..38 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_2)
-                in 39..50 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_3)
-                in 51..62 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_4)
-                in 63..75 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_5)
-                in 76..94 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_6)
-                in 95..100 -> binding.batteryIcon.setImageResource(R.drawable.ic_battery_7)
-            }
-            if (batteryLevel in 0..20)
-                binding.batteryIcon.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.red)
-            else
-                binding.batteryIcon.imageTintList = ContextCompat.getColorStateList(requireContext(), R.color.black)
-        }
+        binding.batteryIcon.imageTintList = ContextCompat.getColorStateList(context, batteryIconTintColor)
     }
 
 }

@@ -1,4 +1,4 @@
-package com.ome.app.domain.model.network.websocket
+package com.ome.app.domain.model.state
 
 enum class KnobEntity(val key: String) {
     ANGLE("angle"),
@@ -20,7 +20,3 @@ enum class KnobEntity(val key: String) {
     USER_PATCH("userPatch"),
     USER_DELETE("userDelete")
 }
-
-
-val String?.knobEntity : KnobEntity?
-    get() = KnobEntity.entries.find { it.key == this }

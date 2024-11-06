@@ -1,5 +1,9 @@
 package com.ome.app.presentation.dashboard.settings.stove_info
 
+import com.ome.app.domain.model.state.StoveOrientation
+import com.ome.app.domain.model.state.StoveType
+import com.ome.app.domain.model.state.stoveOrientation
+import com.ome.app.domain.model.state.stoveType
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.SingleLiveEvent

@@ -10,6 +10,7 @@ import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.model.network.request.StoveRequest
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.network.response.UserResponse
+import com.ome.app.domain.model.network.response.asBurnerState
 import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.network.websocket.MacAddress
 import com.ome.app.domain.repo.StoveRepository
@@ -82,7 +83,8 @@ class MainVM @Inject constructor(
 
     fun getKnobStateByMac(macAddress: MacAddress) = knobState.map { it[macAddress] }
     fun getStovePositionByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.stovePosition.orMinusOne()
-    fun getOffAngleByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.calibration?.offAngle?.toFloat()
+    fun getOffAngleByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.calibration?.offAngle
+    fun getKnobBurnerStatesByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.asBurnerState.orEmpty()
 
     fun initStartDestination() {
         if (startDestination.value != null) return
