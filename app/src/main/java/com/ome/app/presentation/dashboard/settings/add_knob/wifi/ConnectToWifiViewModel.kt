@@ -9,6 +9,7 @@ import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
 import com.ome.app.utils.WifiHandler
+import com.ome.app.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -43,6 +44,7 @@ class ConnectToWifiViewModel @Inject constructor(
     init {
         launch(ioContext) {
             socketManager.networksFlow.collect { list ->
+                list.log("wifiNetworksList")
                 if (list.isNotEmpty()) {
                     savedStateHandle["wifiNetworksList"] = list
                 }

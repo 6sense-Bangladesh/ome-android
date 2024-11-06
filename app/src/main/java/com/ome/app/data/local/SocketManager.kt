@@ -5,8 +5,7 @@ import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.N
 import com.ome.app.utils.log
 import com.ome.app.utils.logi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -61,10 +60,7 @@ class SocketManager(
 
     private var mRun = false
 
-    val networksFlow: MutableSharedFlow<List<NetworkItemModel>> = MutableSharedFlow(
-        replay = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    )
+    val networksFlow = MutableStateFlow<List<NetworkItemModel>>(listOf())
 
     var socket: Socket = Socket()
 
@@ -118,7 +114,7 @@ class SocketManager(
         decryptedMessage.let {
             logi("ResponseFrom: ${lastMessageSent.path} , Message: $it")
             if (lastMessageSent == KnobSocketMessage.GET_NETWORKS) {
-                networksFlow.emit(parseNetworkList(it))
+                networksFlow.value = parseNetworkList(it)
             }
             messageReceived(lastMessageSent, it)
         }
@@ -128,7 +124,6 @@ class SocketManager(
 
     private fun parseNetworkList(message: String): List<NetworkItemModel> {
         val networksList = arrayListOf<NetworkItemModel>()
-        val list = message.split("#")
         val regex = Regex("""\d+\s+\d+\s+-\d+\s+([A-F0-9:]{17})\s+\d+\s+([\w\s]+)""")
         regex.findAll(message).forEach { matchResult ->
             networksList.add(
@@ -138,6 +133,8 @@ class SocketManager(
                 )
             )
         }
+        networksList.log("wifiNetworksList")
+//        val list = message.split("#")
 //        list.forEach { item ->
 //            item.log("scanForNetworks2")
 //            if (item.isNotEmpty()) {
