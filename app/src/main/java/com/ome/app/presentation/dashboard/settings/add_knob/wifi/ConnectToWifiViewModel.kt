@@ -60,6 +60,7 @@ class ConnectToWifiViewModel @Inject constructor(
     private fun connectToSocket() {
         launch(ioContext) {
             socketManager.connect()
+            wifiConnectedLiveData.postValue(Pair(true, null))
         }
     }
 

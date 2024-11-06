@@ -81,14 +81,7 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
 
     override fun setupObserver() {
         super.setupObserver()
-        subscribe(viewModel.loadingLiveData) {
-            if (it) {
-                binding.connectBtn.startAnimation()
-            } else {
-                binding.connectBtn.revertAnimation()
-            }
-        }
-        viewModel.wifiNetworksList.collectWithLifecycle{
+        subscribe(viewModel.wifiConnectedLiveData) {
             findNavController().navigate(
                 ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToWifiListFragment(
                     WifiListFragmentParams(
@@ -97,6 +90,17 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
                     )
                 )
             )
+        }
+        subscribe(viewModel.loadingLiveData) {
+            if (it) {
+                binding.connectBtn.startAnimation()
+            } else {
+                binding.connectBtn.revertAnimation()
+            }
+        }
+
+        viewModel.wifiNetworksList.collectWithLifecycle{
+
         }
     }
 }
