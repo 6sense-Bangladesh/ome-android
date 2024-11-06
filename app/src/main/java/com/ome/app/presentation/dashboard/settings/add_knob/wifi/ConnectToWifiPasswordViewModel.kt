@@ -1,14 +1,14 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import com.ome.app.R
-import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.presentation.base.SingleLiveEvent
+import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.local.ResourceProvider
-import com.ome.app.data.remote.websocket.WebSocketManager
-import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.data.local.SocketManager
+import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.repo.StoveRepository
+import com.ome.app.presentation.base.BaseViewModel
+import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.withDelay
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -79,7 +79,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
 
     private fun handleWifiStatusMessage(message: String) {
         when (message) {
-            "0", "3" -> {
+            "0", "3", "2", "5" -> {
                 sendMessage(
                     KnobSocketMessage.SET_WIFI,
                     ssid = ssid,
@@ -90,11 +90,11 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
             "4", "6" -> {
                 defaultErrorLiveData.postValue(resourceProvider.getString(R.string.incorrect_network_name_and_password))
             }
-            "2" -> {
-                withDelay(delay = 4000) {
-                    sendMessage(KnobSocketMessage.WIFI_STATUS)
-                }
-            }
+//            "2" -> {
+//                withDelay(delay = 4000) {
+//                    sendMessage(KnobSocketMessage.WIFI_STATUS)
+//                }
+//            }
             "1" -> {
                 sendMessage(
                     KnobSocketMessage.TEST_WIFI,
@@ -103,14 +103,14 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                     securityType = securityType
                 )
             }
-            "5" -> {
-                sendMessage(
-                    KnobSocketMessage.SET_WIFI,
-                    ssid = ssid,
-                    password = password,
-                    securityType = securityType
-                )
-            }
+//            "5" -> {
+//                sendMessage(
+//                    KnobSocketMessage.SET_WIFI,
+//                    ssid = ssid,
+//                    password = password,
+//                    securityType = securityType
+//                )
+//            }
         }
 
     }
