@@ -74,6 +74,10 @@ class SocketManager(
         message: KnobSocketMessage,
         vararg params: String = arrayOf()
     ) = withContext(Dispatchers.IO) {
+        if (lastMessageSent == KnobSocketMessage.GET_NETWORKS) {
+            scanForNetworks()
+            return@withContext
+        }
         var finalMessage = message.path
 
 
@@ -97,10 +101,6 @@ class SocketManager(
     }
 
     private suspend fun read() {
-        if (lastMessageSent == KnobSocketMessage.GET_NETWORKS) {
-            scanForNetworks()
-            return
-        }
         val buffer = ByteArrayOutputStream()
 
         val data = ByteArray(16384)
