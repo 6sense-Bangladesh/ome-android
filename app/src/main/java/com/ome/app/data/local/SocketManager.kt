@@ -117,7 +117,7 @@ class SocketManager(
         val decryptedMessage = String(buffer.toByteArray().removePadding(), StandardCharsets.UTF_8)
         decryptedMessage.let {
             logi("ResponseFrom: ${lastMessageSent.path} , Message: $it")
-            if (lastMessageSent == KnobSocketMessage.GET_NETWORKS2) {
+            if (lastMessageSent == KnobSocketMessage.GET_NETWORKS) {
                 networksFlow.emit(parseNetworkList(it))
             }
             messageReceived(lastMessageSent, it)
@@ -129,22 +129,32 @@ class SocketManager(
     private fun parseNetworkList(message: String): List<NetworkItemModel> {
         val networksList = arrayListOf<NetworkItemModel>()
         val list = message.split("#")
-        list.forEach { item ->
-            item.log("scanForNetworks2")
-            if (item.isNotEmpty()) {
-                val network =
-                    item.substring(33, item.length).replace("\\r", "").replace("\\n", "").trim()
-                if (networksList.firstOrNull { networkItem -> networkItem.ssid == network } != null) {
-                    return@forEach
-                }
-                networksList.add(
-                    NetworkItemModel(
-                        ssid = network,
-                        securityType = "WPA2"
-                    )
+        val regex = Regex("""\d+\s+\d+\s+-\d+\s+([A-F0-9:]{17})\s+\d+\s+([\w\s]+)""")
+        regex.findAll(message).forEach { matchResult ->
+            networksList.add(
+                NetworkItemModel(
+                    ssid = matchResult.groupValues.getOrNull(2) ?: "No Name Found",
+                    securityType = "WPA2"
                 )
-            }
+            )
         }
+//        list.forEach { item ->
+//            item.log("scanForNetworks2")
+//            if (item.isNotEmpty()) {
+//
+//                val network =
+//                    item.substring(33, item.length).replace("\\r", "").replace("\\n", "").trim()
+//                if (networksList.firstOrNull { networkItem -> networkItem.ssid == network } != null) {
+//                    return@forEach
+//                }
+//                networksList.add(
+//                    NetworkItemModel(
+//                        ssid = network,
+//                        securityType = "WPA2"
+//                    )
+//                )
+//            }
+//        }
         return networksList
     }
 
