@@ -9,8 +9,6 @@ import android.net.wifi.ScanResult
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.ome.app.R
@@ -39,7 +37,7 @@ class WifiHandler(val context: Context) {
         currentSSID = omeKnobSSID
     }
 
-    private var failCount = 0
+    private var omeFail = false
 
     companion object {
         private const val PASSWORD = "password"
@@ -53,7 +51,7 @@ class WifiHandler(val context: Context) {
             }
     }
 
-    val handler = Handler(Looper.getMainLooper())
+//    val handler = Handler(Looper.getMainLooper())
 
     val networkList: MutableStateFlow<List<ScanResult>?> = MutableStateFlow(null)
 
@@ -74,14 +72,15 @@ class WifiHandler(val context: Context) {
                 WifiUtils.withContext(context).connectWith(currentSSID, PASSWORD)
                     .onConnectionResult(object : ConnectionSuccessListener {
                         override fun success() {
-                            handler.removeCallbacksAndMessages(null)
+//                            handler.removeCallbacksAndMessages(null)
                             continuation.resume(true to null)
                         }
 
                         override fun failed(errorCode: ConnectionErrorCode) {
-                            handler.removeCallbacksAndMessages(null)
-                            if(failCount==1) {
+//                            handler.removeCallbacksAndMessages(null)
+                            if(!omeFail) {
                                 continuation.resume(false to null)
+                                omeFail = true
                             }else{
                                 continuation.resume(
                                     false to context.getString(
@@ -91,7 +90,6 @@ class WifiHandler(val context: Context) {
                                 )
                             }
                             switchToOtherNetwork()
-                            failCount++
                         }
                     })
                     .start()
