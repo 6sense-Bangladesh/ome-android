@@ -6,7 +6,9 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.ome.app.BuildConfig
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.network.response.asKnobState
-import com.ome.app.domain.model.network.websocket.*
+import com.ome.app.domain.model.network.websocket.KnobAngle
+import com.ome.app.domain.model.network.websocket.KnobState
+import com.ome.app.domain.model.network.websocket.MacAddress
 import com.ome.app.domain.model.state.KnobEntity
 import com.ome.app.domain.model.state.connectionState
 import com.ome.app.domain.model.state.knobEntity
@@ -27,23 +29,23 @@ class WebSocketManager(
 ) {
     private var scarlet: Scarlet? = null
 
-    val knobState= MutableStateFlow(mutableMapOf<MacAddress, KnobState>())
+    val knobState= MutableStateFlow(mapOf<MacAddress, KnobState>())
 
     val knobAngleFlow: MutableStateFlow<KnobAngle?> = MutableStateFlow(null)
 
-    val knobBatteryFlow: MutableStateFlow<KnobBattery?> = MutableStateFlow(null)
-    val knobConnectStatusFlow: MutableStateFlow<KnobConnectStatus?> = MutableStateFlow(null)
-    val knobConnectIpAddrFlow: MutableStateFlow<KnobConnectIpAddr?> = MutableStateFlow(null)
-    val knobFirmwareVersionFlow: MutableStateFlow<KnobFirmwareVersion?> = MutableStateFlow(null)
-    val knobMountingSurfaceFlow: MutableStateFlow<KnobMountingSurface?> = MutableStateFlow(null)
-    val knobReportedScheduleStopFlow: MutableStateFlow<KnobReportedScheduleStop?> = MutableStateFlow(null)
-    val knobRssiFlow: MutableStateFlow<KnobRssi?> = MutableStateFlow(null)
-    val knobTemperatureFlow: MutableStateFlow<KnobTemperature?> = MutableStateFlow(null)
+//    private val knobBatteryFlow: MutableStateFlow<KnobBattery?> = MutableStateFlow(null)
+//    private val knobConnectStatusFlow: MutableStateFlow<KnobConnectStatus?> = MutableStateFlow(null)
+//    private val knobConnectIpAddrFlow: MutableStateFlow<KnobConnectIpAddr?> = MutableStateFlow(null)
+//    private val knobFirmwareVersionFlow: MutableStateFlow<KnobFirmwareVersion?> = MutableStateFlow(null)
+//    private val knobMountingSurfaceFlow: MutableStateFlow<KnobMountingSurface?> = MutableStateFlow(null)
+//    private val knobReportedScheduleStopFlow: MutableStateFlow<KnobReportedScheduleStop?> = MutableStateFlow(null)
+//    private val knobRssiFlow: MutableStateFlow<KnobRssi?> = MutableStateFlow(null)
+//    private val knobTemperatureFlow: MutableStateFlow<KnobTemperature?> = MutableStateFlow(null)
 
     suspend fun initWebSocket(knobs: List<KnobDto>, userId: String) {
         val url = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=${knobs.map { knob -> knob.macAddr }.joinToString(separator = ",") { it }}&inirvUid=$userId"
         val knobStates= knobs.associateBy { it.macAddr }.mapValues { it.value.asKnobState }
-        knobState.value = knobStates.toMutableMap()
+        knobState.value = knobStates
 
         scarlet = Scarlet.Builder()
             .webSocketFactory(
@@ -87,116 +89,123 @@ class WebSocketManager(
                             it.value as Double
                         ))
                         if(it.macAddr == null) return@collect
-                        if(knobState.value.containsKey(it.macAddr))
-                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(angle = it.value)
-                        else
-                            knobState.value[it.macAddr] = KnobState(angle = it.value)
+                        knobState.value = knobState.value.toMutableMap().apply {
+                            val currentKnobState = this[it.macAddr]
+                            this[it.macAddr] = currentKnobState?.copy(angle = it.value) ?: KnobState(angle = it.value)
+                        }.toMap()
                     }
                     KnobEntity.MOUNTING_SURFACE -> {
-                        knobMountingSurfaceFlow.emit(KnobMountingSurface(
-                            it.macAddr.orEmpty(),
-                            knobEntity.key,
-                            it.value as String
-                        ))
+//                        knobMountingSurfaceFlow.emit(KnobMountingSurface(
+//                            it.macAddr.orEmpty(),
+//                            knobEntity.key,
+//                            it.value as String
+//                        ))
                         if(it.macAddr == null) return@collect
-                        if(knobState.value.containsKey(it.macAddr))
-                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(mountingSurface = it.value.mountingSurface)
-                        else
-                            knobState.value[it.macAddr] = KnobState(mountingSurface = it.value.mountingSurface)
+                        knobState.value = knobState.value.toMutableMap().apply {
+                            val currentKnobState = this[it.macAddr]
+                            val value = it.value.toString().mountingSurface
+                            this[it.macAddr] = currentKnobState?.copy(mountingSurface = value) ?: KnobState(mountingSurface = value)
+                        }.toMap()
                     }
                     KnobEntity.BATTERY -> {
-                        val value = it.value.toString().toIntOrNull().orMinusOne()
-                        knobBatteryFlow.emit(KnobBattery(
-                            it.macAddr.orEmpty(),
-                            knobEntity.key,
-                            value
-                        ))
+//                        knobBatteryFlow.emit(KnobBattery(
+//                            it.macAddr.orEmpty(),
+//                            knobEntity.key,
+//                            value
+//                        ))
                         if(it.macAddr == null) return@collect
-                        if(knobState.value.containsKey(it.macAddr))
-                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(battery = value)
-                        else
-                            knobState.value[it.macAddr] = KnobState(battery = value)
+                        knobState.value = knobState.value.toMutableMap().apply {
+                            val currentKnobState = this[it.macAddr]
+                            val value = it.value.toString().toIntOrNull().orMinusOne()
+                            this[it.macAddr] = currentKnobState?.copy(battery = value) ?: KnobState(battery = value)
+                        }.toMap()
                     }
                     KnobEntity.TEMPERATURE -> {
-                        knobTemperatureFlow.emit(KnobTemperature(
-                            it.macAddr.orEmpty(),
-                            knobEntity.key,
-                            it.value as Double
-                        ))
+//                        knobTemperatureFlow.emit(KnobTemperature(
+//                            it.macAddr.orEmpty(),
+//                            knobEntity.key,
+//                            it.value as Double
+//                        ))
                         if(it.macAddr == null) return@collect
-                        if(knobState.value.containsKey(it.macAddr))
-                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(temperature = it.value)
-                        else
-                            knobState.value[it.macAddr] = KnobState(temperature = it.value)
+                        knobState.value = knobState.value.toMutableMap().apply {
+                            val currentKnobState = this[it.macAddr]
+                            val value = it.value.toString().toDoubleOrNull()
+                            this[it.macAddr] = currentKnobState?.copy(temperature = value) ?: KnobState(temperature = value)
+                        }.toMap()
                     }
                     KnobEntity.RSSI -> {
-                        knobRssiFlow.emit(KnobRssi(
-                            it.macAddr.orEmpty(),
-                            knobEntity.key,
-                            it.value as Double
-                        ))
+//                        knobRssiFlow.emit(KnobRssi(
+//                            it.macAddr.orEmpty(),
+//                            knobEntity.key,
+//                            it.value as Double
+//                        ))
                         if(it.macAddr == null) return@collect
-                        if(knobState.value.containsKey(it.macAddr))
-                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(wifiStrengthPercentage = it.value.toInt().wifiStrengthPercentage)
-                        else
-                            knobState.value[it.macAddr] = KnobState(wifiStrengthPercentage = it.value.toInt().wifiStrengthPercentage)
+                        knobState.value = knobState.value.toMutableMap().apply {
+                            val currentKnobState = this[it.macAddr]
+                            val value = it.value.toString().toDoubleOrNull()?.toInt()?.wifiStrengthPercentage
+                            this[it.macAddr] = currentKnobState?.copy(wifiStrengthPercentage = value) ?: KnobState(wifiStrengthPercentage = value)
+                        }.toMap()
 
                     }
                     KnobEntity.CONNECT_STATUS -> {
-                        knobConnectStatusFlow.emit(
-                            KnobConnectStatus(
-                                it.macAddr.orEmpty(),
-                                knobEntity.key,
-                                it.value as String
-                            )
-                        )
+//                        knobConnectStatusFlow.emit(
+//                            KnobConnectStatus(
+//                                it.macAddr.orEmpty(),
+//                                knobEntity.key,
+//                                it.value as String
+//                            )
+//                        )
                         if(it.macAddr == null) return@collect
-                        if(knobState.value.containsKey(it.macAddr))
-                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(connectStatus = it.value.connectionState)
-                        else
-                            knobState.value[it.macAddr] = KnobState(connectStatus = it.value.connectionState)
+                        knobState.value = knobState.value.toMutableMap().apply {
+                            val currentKnobState = this[it.macAddr]
+                            val value = it.value.toString().connectionState
+                            this[it.macAddr] = currentKnobState?.copy(connectStatus = value) ?: KnobState(connectStatus = value)
+                        }.toMap()
                     }
                     KnobEntity.CONNECT_IP_ADD -> {
-                        knobConnectIpAddrFlow.emit(
-                            KnobConnectIpAddr(
-                                it.macAddr.orEmpty(),
-                                knobEntity.key,
-                                it.value as String
-                            )
-                        )
+//                        knobConnectIpAddrFlow.emit(
+//                            KnobConnectIpAddr(
+//                                it.macAddr.orEmpty(),
+//                                knobEntity.key,
+//                                it.value as String
+//                            )
+//                        )
                         if(it.macAddr == null) return@collect
-                        if(knobState.value.containsKey(it.macAddr))
-                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(connectIpAddr = it.value)
-                        else
-                            knobState.value[it.macAddr] = KnobState(connectIpAddr = it.value)
+                        knobState.value = knobState.value.toMutableMap().apply {
+                            val currentKnobState = this[it.macAddr]
+                            val value = it.value.toString()
+                            this[it.macAddr] = currentKnobState?.copy(connectIpAddr = value) ?: KnobState(connectIpAddr = value)
+                        }.toMap()
                     }
                     KnobEntity.FIRMWARE_VERSION -> {
-                        knobFirmwareVersionFlow.emit(
-                            KnobFirmwareVersion(
-                                it.macAddr.orEmpty(),
-                                knobEntity.key,
-                                it.value as String
-                            )
-                        )
+//                        knobFirmwareVersionFlow.emit(
+//                            KnobFirmwareVersion(
+//                                it.macAddr.orEmpty(),
+//                                knobEntity.key,
+//                                it.value as String
+//                            )
+//                        )
                         if(it.macAddr == null) return@collect
-                        if(knobState.value.containsKey(it.macAddr))
-                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(firmwareVersion = it.value)
-                        else
-                            knobState.value[it.macAddr] = KnobState(firmwareVersion = it.value)
+                        knobState.value = knobState.value.toMutableMap().apply {
+                            val currentKnobState = this[it.macAddr]
+                            val value = it.value.toString()
+                            this[it.macAddr] = currentKnobState?.copy(firmwareVersion = value) ?: KnobState(firmwareVersion = value)
+                        }.toMap()
                     }
                     KnobEntity.KNOB_REPORTED_SCHEDULE_STOP -> {
-                        knobReportedScheduleStopFlow.emit(
-                            KnobReportedScheduleStop(
-                                it.macAddr.orEmpty(),
-                                knobEntity.key,
-                                it.value as Int
-                            )
-                        )
+//                        knobReportedScheduleStopFlow.emit(
+//                            KnobReportedScheduleStop(
+//                                it.macAddr.orEmpty(),
+//                                knobEntity.key,
+//                                it.value as Int
+//                            )
+//                        )
                         if(it.macAddr == null) return@collect
-                        if(knobState.value.containsKey(it.macAddr))
-                            knobState.value[it.macAddr] = knobState.value[it.macAddr]!!.copy(knobReportedScheduleStop = it.value)
-                        else
-                            knobState.value[it.macAddr] = KnobState(knobReportedScheduleStop = it.value)
+                        knobState.value = knobState.value.toMutableMap().apply {
+                            val currentKnobState = this[it.macAddr]
+                            val value = it.value.toString().toIntOrNull()
+                            this[it.macAddr] = currentKnobState?.copy(knobReportedScheduleStop = value) ?: KnobState(knobReportedScheduleStop = value)
+                        }.toMap()
                     }
                     KnobEntity.KNOB_POST, KnobEntity.KNOB_PATCH, KnobEntity.KNOB_SET_CALIBRATION, KnobEntity.KNOB_DELETE -> {
 //                        stoveRepository.getAllKnobs()

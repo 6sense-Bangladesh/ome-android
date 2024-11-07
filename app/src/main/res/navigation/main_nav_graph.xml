@@ -414,26 +414,15 @@
             android:id="@+id/action_knobWakeUpFragment_to_metalPlateInstallationFragment"
             app:destination="@id/metalPlateInstallationFragment"
             />
-        <action
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            android:id="@+id/action_knobWakeUpFragment_to_selectBurnerFragment"
-            app:destination="@id/selectBurnerFragment" />
-        <action
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            android:id="@+id/action_knobWakeUpFragment_to_qrCodeScannerFragment"
-            app:destination="@id/qrCodeScannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/metalPlateInstallationFragment"
         android:name="com.ome.app.presentation.dashboard.settings.add_knob.metal_plate.MetalPlateInstallationFragment"
         android:label="MetalPlateInstallationFragment"
         tools:layout="@layout/fragment_metal_plate">
+        <argument
+            android:name="params"
+            app:argType="com.ome.app.presentation.dashboard.settings.add_knob.metal_plate.MetalPlateInstallationParams" />
         <action
             android:id="@+id/action_metalPlateInstallationFragment_to_selectBurnerFragment"
             app:destination="@id/selectBurnerFragment"
@@ -441,6 +430,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_metalPlateInstallationFragment_to_qrCodeScannerFragment"
+            app:destination="@id/qrCodeScannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/selectBurnerFragment"
@@ -508,24 +500,8 @@
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiPasswordParams" />
         <action
-            android:id="@+id/action_connectToWifiPasswordFragment_to_knobInstallationManual1Fragment"
-            app:destination="@id/knobInstallationManual1Fragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-    </fragment>
-    <fragment
-        android:id="@+id/knobInstallationManual2Fragment"
-        android:name="com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManual2Fragment"
-        android:label="KnobInstallationManual2Fragment"
-        tools:layout="@layout/fragment_knob_installation_manual2">
-        <argument
-            android:name="params"
-            app:argType="com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManual2FragmentParams" />
-        <action
-            android:id="@+id/action_knobInstallationManual2Fragment_to_zoneSelectionFragment"
-            app:destination="@id/zoneSelectionFragment"
+            android:id="@+id/action_connectToWifiPasswordFragment_to_knobInstallationManualFragment"
+            app:destination="@id/knobInstallationManualFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -591,20 +567,16 @@
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
-        android:id="@+id/knobInstallationManual1Fragment"
-        android:name="com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManual1Fragment"
-        android:label="KnobInstallationManual1Fragment"
-        tools:layout="@layout/fragment_knob_installation_manual1">
+        android:id="@+id/knobInstallationManualFragment"
+        android:name="com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragment"
+        android:label="KnobInstallationManualFragment"
+        tools:layout="@layout/fragment_knob_installation_manual">
         <argument
             android:name="params"
-            app:argType="com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManual1FragmentParams" />
+            app:argType="com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragmentParams" />
         <action
-            android:id="@+id/action_knobInstallationManual1Fragment_to_knobInstallationManual2Fragment"
-            app:destination="@id/knobInstallationManual2Fragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            android:id="@+id/action_knobInstallationManualFragment_to_zoneSelectionFragment"
+            app:destination="@id/zoneSelectionFragment" />
     </fragment>
 
     <fragment

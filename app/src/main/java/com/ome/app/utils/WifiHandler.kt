@@ -28,11 +28,19 @@ typealias Rssi = Int
 
 class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) {
 
-    var inirvKnobSSID = ""
     var omeKnobSSID = ""
+    var inirvKnobSSID = ""
 
 
     var currentSSID = ""
+
+    fun setup(macAddr: String) {
+        omeKnobSSID = "Ome_Knob_${macAddr.takeLast(4)}"
+        inirvKnobSSID = "Inirv_Knob_${macAddr.takeLast(4)}"
+        currentSSID = omeKnobSSID
+    }
+
+    private var failCount = 0
 
     companion object {
         private const val PASSWORD = "password"
@@ -53,7 +61,7 @@ class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) 
     suspend fun connectToWifi(): Pair<Boolean, String?>{
         val currentWifiSSID = getCurrentWifiSsid()
         return suspendCoroutine { continuation ->
-            if (currentWifiSSID == inirvKnobSSID || currentWifiSSID == omeKnobSSID) {
+            if (currentWifiSSID == omeKnobSSID || currentWifiSSID == inirvKnobSSID) {
                 continuation.resume(true to null)
             } else {
 //                handler.postDelayed({
@@ -67,19 +75,24 @@ class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) 
                 WifiUtils.withContext(context).connectWith(currentSSID, PASSWORD)
                     .onConnectionResult(object : ConnectionSuccessListener {
                         override fun success() {
-//                            handler.removeCallbacksAndMessages(null)
+                            handler.removeCallbacksAndMessages(null)
                             continuation.resume(true to null)
                         }
 
                         override fun failed(errorCode: ConnectionErrorCode) {
-//                            handler.removeCallbacksAndMessages(null)
-                            continuation.resume(
-                                false to resourceProvider.getString(
-                                    R.string.unable_to_join_the_network,
-                                    currentSSID
+                            handler.removeCallbacksAndMessages(null)
+                            if(failCount==1) {
+                                continuation.resume(false to null)
+                            }else{
+                                continuation.resume(
+                                    false to resourceProvider.getString(
+                                        R.string.unable_to_join_the_network,
+                                        omeKnobSSID, inirvKnobSSID
+                                    )
                                 )
-                            )
+                            }
                             switchToOtherNetwork()
+                            failCount++
                         }
                     })
                     .start()
@@ -159,11 +172,5 @@ class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) 
                 Log.i(TAG, "GOT SCAN RESULTS $results")
             }
         }.start()
-    }
-
-    fun setup(macAddr: String) {
-        inirvKnobSSID = "Inirv_Knob_${macAddr.takeLast(4)}"
-        omeKnobSSID = "Ome_Knob_${macAddr.takeLast(4)}"
-        currentSSID = inirvKnobSSID
     }
 }

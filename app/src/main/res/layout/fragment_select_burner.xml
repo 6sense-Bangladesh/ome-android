@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="true"
-    tools:context=".presentation.dashboard.settings.add_knob.scanner.QrCodeScannerFragment">
+    tools:context=".presentation.dashboard.settings.add_knob.burner.SelectBurnerFragment">
 
 
     <com.google.android.material.appbar.MaterialToolbar

@@ -9,8 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentKnobWakeUpBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
-import com.ome.app.presentation.dashboard.settings.add_knob.scanner.QrCodeScannerParams
+import com.ome.app.presentation.dashboard.settings.add_knob.metal_plate.MetalPlateInstallationParams
 import com.ome.app.utils.onBackPressed
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
@@ -23,33 +22,21 @@ class KnobWakeUpFragment : BaseFragment<KnobWakeUpViewModel, FragmentKnobWakeUpB
     private val args by navArgs<KnobWakeUpFragmentArgs>()
 
     override fun setupUI() {
-        binding.label2Tv.movementMethod = LinkMovementMethod.getInstance()
-        binding.label2Tv.setLinkTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+        binding.labelTv.movementMethod = LinkMovementMethod.getInstance()
+        binding.labelTv.setLinkTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
     }
 
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.continueBtn.setOnClickListener {
-//            Screens.SelectBurnerPosition.navigate(SelectBurnerFragmentParams())
-            if(args.params.selectedKnobPosition == -1) {
-                findNavController().navigate(
-                    KnobWakeUpFragmentDirections.actionKnobWakeUpFragmentToSelectBurnerFragment(SelectBurnerFragmentParams())
+            findNavController().navigate(
+                KnobWakeUpFragmentDirections.actionKnobWakeUpFragmentToMetalPlateInstallationFragment(
+                    MetalPlateInstallationParams(selectedKnobPosition = args.params.selectedKnobPosition)
                 )
-            }
-            else{
-                findNavController().navigate(
-                    KnobWakeUpFragmentDirections.actionKnobWakeUpFragmentToQrCodeScannerFragment(
-                        QrCodeScannerParams(selectedKnobPosition = args.params.selectedKnobPosition)
-                    )
-                )
-            }
+            )
         }
     }
 
-    override fun setupObserver() {
-        super.setupObserver()
-
-    }
 }
 
 @Parcelize

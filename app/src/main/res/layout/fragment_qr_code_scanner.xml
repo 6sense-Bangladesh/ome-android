@@ -21,9 +21,9 @@
         style="@style/Label.Medium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:justificationMode="inter_word"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginTop="@dimen/_20sdp"
+        android:justificationMode="inter_word"
         android:text="@string/scan_qr_code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,18 +50,17 @@
             android:layout_height="match_parent"
             android:scaleX="1.4"
             android:scaleY="1.4"
-            app:strokeColor="@color/blackTrans"
             app:cardBackgroundColor="@android:color/transparent"
             app:cardCornerRadius="@dimen/_125sdp"
-            app:strokeWidth="@dimen/_110sdp"/>
+            app:strokeColor="@color/blackTrans"
+            app:strokeWidth="@dimen/_110sdp" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="match_parent"
-            android:layout_margin="@dimen/_70sdp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_qr_frame"
-            />
-<!--        app:contentPadding="@dimen/_109sdp"-->
+            android:layout_margin="@dimen/_70sdp"
+            android:src="@drawable/ic_qr_frame" />
+        <!--        app:contentPadding="@dimen/_109sdp"-->
 
     </FrameLayout>
 

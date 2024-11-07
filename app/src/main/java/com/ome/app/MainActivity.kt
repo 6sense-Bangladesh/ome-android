@@ -9,6 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.utils.InAppUpdate
 import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.isTrue
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 

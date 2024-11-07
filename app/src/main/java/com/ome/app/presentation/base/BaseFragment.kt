@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ome.app.MainVM
+import com.ome.app.R
 import com.ome.app.presentation.dashboard.members.MembersFragment
 import com.ome.app.presentation.dashboard.my_stove.MyStoveFragment
 import com.ome.app.presentation.dashboard.profile.ProfileFragment
@@ -116,7 +117,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(
-                "Okay"
+                getString(R.string.continue_btn)
             ) { dialog, _ ->
                 onDismissSuccessDialog()
                 onDismiss()

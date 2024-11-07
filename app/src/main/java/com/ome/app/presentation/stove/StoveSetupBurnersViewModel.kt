@@ -1,6 +1,7 @@
 package com.ome.app.presentation.stove
 
 import com.ome.app.domain.model.base.ResponseWrapper
+import com.ome.app.domain.model.network.request.StoveRequest
 import com.ome.app.domain.model.state.StoveOrientation
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
@@ -25,7 +26,7 @@ class StoveSetupBurnersViewModel @Inject constructor(
     fun updateStoveOrientation(stoveId: String, onEnd :() ->Unit) = launch(ioContext) {
         stoveOrientation?.let {
             val result = stoveRepository.updateStove(
-                com.ome.app.domain.model.network.request.StoveRequest(
+                StoveRequest(
                     stoveOrientation = it.number
                 ), stoveId = stoveId)
             if(result is ResponseWrapper.Error)

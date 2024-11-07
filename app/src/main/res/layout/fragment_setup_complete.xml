@@ -1,91 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:fitsSystemWindows="true"
+    tools:context=".presentation.dashboard.settings.add_knob.calibration.SetupCompleteFragment">
 
 
-    <TextView
-        android:id="@+id/titleTv"
-        style="@style/Title.16sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_margin="16dp"
-        android:gravity="center"
-        android:text="@string/setup_completed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/Widget.App.Toolbar"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/setup_completed" />
 
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imageView2"
         android:layout_width="@dimen/_36sdp"
         android:layout_height="@dimen/_36sdp"
         android:background="@color/green"
-        android:layout_marginTop="128dp"
         android:layout_marginBottom="@dimen/_100sdp"
         android:src="@drawable/ic_done_small"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Round.18"
+        app:layout_constraintBottom_toTopOf="@+id/setupAnotherKnobBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTv" />
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Round.18" />
+
 
     <TextView
-        android:id="@+id/textView8"
-        style="@style/Label.18sp"
+        android:id="@+id/textView3"
+        style="@style/Title.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:text="@string/you_re_all_set"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <TextView
-        android:id="@+id/subLabelTv"
-        style="@style/Label.18sp"
-        android:layout_width="0dp"
+        android:id="@+id/textView4"
+        style="@style/Label.Medium"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="64dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center"
         android:text="@string/would_you_like_to_add_other_knobs_now"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/setupAnotherKnobBtn"
-        style="@style/OmeButton.Blue"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginBottom="12dp"
-        android:gravity="center"
+        style="@style/OmeButton.Blue.Outline"
         android:text="@string/setup_another_knob"
-        android:textAllCaps="true"
         app:layout_constraintBottom_toTopOf="@+id/imDoneBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subLabelTv"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/imDoneBtn"
-        style="@style/OmeButton.Blue.Outline"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:visibility="visible"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginBottom="24dp"
-        android:gravity="center"
+        style="@style/OmeButton.Blue"
         android:text="@string/i_m_done"
-        android:textAllCaps="true"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

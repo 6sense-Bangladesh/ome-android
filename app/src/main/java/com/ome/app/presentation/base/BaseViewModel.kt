@@ -7,15 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDestination
 import com.amplifyframework.auth.AuthException
-import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.remote.error
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
-abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel: ViewModel() {
+
     val defaultErrorLiveData: SingleLiveEvent<String?> = SingleLiveEvent()
     val successMessageLiveData: SingleLiveEvent<String?> = SingleLiveEvent()
     val loadingFlow = MutableSharedFlow<Boolean>()
@@ -25,9 +24,6 @@ abstract class BaseViewModel : ViewModel() {
 
     protected val mainContext: CoroutineContext = Dispatchers.Main
     protected val ioContext: CoroutineContext = Dispatchers.IO
-
-    @Inject
-    lateinit var connectionStatusListener: ConnectionStatusListener
 
     protected open var defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
         loadingLiveData.postValue(false)
@@ -62,10 +58,6 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-
-    fun registerConnectionListener() {
-        connectionStatusListener.registerListener()
-    }
     @MainThread
     protected fun <T : Any?> LiveData<T>.setNewValue(newValue: T) {
         when (this) {

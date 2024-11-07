@@ -1,56 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:fitsSystemWindows="true"
+    tools:context=".presentation.dashboard.settings.add_knob.metal_plate.MetalPlateInstallationFragment">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/backIv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_arrow_left"
-        android:tint="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/Widget.App.Toolbar"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="@string/physical_knob_installation" />
 
 
     <TextView
-        android:id="@+id/textView6"
-        style="@style/Title.16sp"
-        android:layout_width="wrap_content"
+        android:id="@+id/labelTv"
+        style="@style/Label.Medium"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:gravity="center"
-        android:text="@string/part_1_knob_installation"
-        app:layout_constraintBottom_toBottomOf="@+id/backIv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/backIv" />
-
-
-    <TextView
-        android:id="@+id/label1Tv"
-        style="@style/Label.16sp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:gravity="center"
-        android:text="@string/confirm_that_you_have_completed_part_1_the_adapter_metal_plate_and_metal_plate_cover_should_now_be_installed"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="@dimen/margin_top_bar"
+        android:justificationMode="inter_word"
+        android:text="@string/remove_the_Knob"
         app:layout_constraintEnd_toEndOf="@+id/appCompatImageView"
         app:layout_constraintStart_toStartOf="@+id/appCompatImageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar"
+        tools:targetApi="26" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/appCompatImageView"
-        android:layout_width="280dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="86dp"
-        android:src="@drawable/ic_metal_plate"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/shaftIv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_200sdp"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label1Tv" />
+        app:layout_constraintTop_toBottomOf="@+id/labelTv"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.RectRound"
+        tools:src="@tools:sample/backgrounds/scenic" />
 
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
@@ -68,8 +59,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appCompatImageView"
         app:layout_constraintVertical_bias="1.0" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

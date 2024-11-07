@@ -14,9 +14,7 @@ import com.ome.app.R
 import com.ome.app.databinding.FragmentConnectToWifiBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.isNotEmpty
 import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -82,25 +80,16 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
 
     override fun setupObserver() {
         super.setupObserver()
-        subscribe(viewModel.loadingLiveData) {
-            if (it) {
-                binding.connectBtn.startAnimation()
-            } else {
-                binding.connectBtn.revertAnimation()
-            }
-        }
-
-        viewModel.wifiNetworksList.collectWithLifecycle{
-            it.isNotEmpty {
-                findNavController().navigate(
-                    ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToWifiListFragment(
-                        WifiListFragmentParams(
-                            macAddrs = viewModel.macAddrs,
-                            isEditMode = viewModel.isChangeWifiMode,
-                        )
+        viewModel.wifiConnectedFlow.collectWithLifecycle{
+            binding.connectBtn.revertAnimation()
+            findNavController().navigate(
+                ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToWifiListFragment(
+                    WifiListFragmentParams(
+                        macAddrs = viewModel.macAddrs,
+                        isEditMode = viewModel.isChangeWifiMode,
                     )
                 )
-            }
+            )
         }
     }
 }

@@ -7,7 +7,7 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.databinding.FragmentWifiListBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemAdapter
+import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.NetworkItemAdapter
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener

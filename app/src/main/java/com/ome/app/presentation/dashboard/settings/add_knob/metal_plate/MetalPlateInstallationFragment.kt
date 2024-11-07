@@ -1,14 +1,18 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.metal_plate
 
-import android.os.Bundle
-import android.view.View
+import android.os.Parcelable
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.ome.app.R
 import com.ome.app.databinding.FragmentMetalPlateBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
+import com.ome.app.presentation.dashboard.settings.add_knob.scanner.QrCodeScannerParams
+import com.ome.app.utils.loadDrawable
+import com.ome.app.utils.onBackPressed
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
+import kotlinx.parcelize.Parcelize
 
 
 @AndroidEntryPoint
@@ -18,40 +22,37 @@ class MetalPlateInstallationFragment :
     ) {
     override val viewModel: MetalPlateInstallationViewModel by viewModels()
 
-//    private val args by navArgs<MetalPlateInstallationFragmentArgs>()
+    private val args by navArgs<MetalPlateInstallationFragmentArgs>()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.backIv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-        binding.continueBtn.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                margin(bottom = true)
-            }
-        }
-        binding.continueBtn.setOnClickListener {
-//            Screens.SelectBurnerPosition.navigate(
-//                SelectBurnerFragmentParams(
-//                    isComeFromSettings = false,
-//                    isEditMode = false
-//                )
-//            )
-            findNavController().navigate(
-                MetalPlateInstallationFragmentDirections.actionMetalPlateInstallationFragmentToSelectBurnerFragment(
-                    SelectBurnerFragmentParams()
-                )
-            )
-        }
-        binding.backIv.setOnClickListener { findNavController().popBackStack() }
-
+    override fun setupUI() {
+        binding.shaftIv.loadDrawable(R.drawable.knob_unplug)
     }
 
-    override fun setupObserver() {
-        super.setupObserver()
 
+    override fun setupListener() {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
+
+        binding.continueBtn.setOnClickListener {
+            if(args.params.selectedKnobPosition == -1) {
+                findNavController().navigate(
+                    MetalPlateInstallationFragmentDirections.actionMetalPlateInstallationFragmentToSelectBurnerFragment(
+                        SelectBurnerFragmentParams()
+                    )
+                )
+            }
+            else{
+                findNavController().navigate(
+                    MetalPlateInstallationFragmentDirections.actionMetalPlateInstallationFragmentToQrCodeScannerFragment(
+                        QrCodeScannerParams(selectedKnobPosition = args.params.selectedKnobPosition)
+                    )
+                )
+            }
+
+        }
     }
 }
+
+@Parcelize
+data class MetalPlateInstallationParams(
+    val selectedKnobPosition: Int = -1
+) : Parcelable

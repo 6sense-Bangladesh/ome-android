@@ -14,7 +14,6 @@ import com.ome.app.utils.makeGone
 import com.ome.app.utils.makeVisible
 import com.ome.app.utils.onBackPressed
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
@@ -29,18 +28,10 @@ class DirectionSelectionFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.macAddress = args.params.macAddress
-            binding.backIv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-        binding.continueBtn.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                margin(bottom = true)
-            }
-        }
-        binding.backIv.setOnClickListener { findNavController().popBackStack() }
+    }
+
+    override fun setupListener() {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
         binding.continueBtn.setOnClickListener {
             if(args.params.isEditMode){

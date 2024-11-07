@@ -8,6 +8,7 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentManualSetupBinding
 import com.ome.app.presentation.base.BaseFragment
+import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,7 +50,7 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
 
     override fun setupObserver() {
         super.setupObserver()
-        subscribe(viewModel.wifiNetworksListLiveData) {
+        viewModel.wifiConnectedFlow.collectWithLifecycle{
             binding.connectBtn.revertAnimation()
             findNavController().navigate(
                 ManualSetupFragmentDirections.actionManualSetupFragmentToWifiListFragment(

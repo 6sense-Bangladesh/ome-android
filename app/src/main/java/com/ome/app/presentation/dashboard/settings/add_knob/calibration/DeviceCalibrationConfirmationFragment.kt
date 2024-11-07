@@ -2,7 +2,6 @@ package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.text.SpannableStringBuilder
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
@@ -11,11 +10,8 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceCalibrationConfirmationBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.utils.makeGone
-import com.ome.app.utils.makeVisible
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.parcelize.Parcelize
 
 
@@ -30,31 +26,6 @@ class DeviceCalibrationConfirmationFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.backIv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-        binding.noBtn.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                margin(bottom = true)
-            }
-        }
-
-        binding.skipTv.setOnClickListener {
-            showDialog(
-                title = getString(R.string.attention),
-                message = SpannableStringBuilder(getString(R.string.attention_skip_device_calibration_label)),
-                onPositiveButtonClick = {
-                    findNavController().navigate(
-                        DeviceCalibrationConfirmationFragmentDirections.actionDeviceCalibrationConfirmationFragmentToSetupCompleteFragment(
-                            args.params.isComeFromSettings
-                        )
-                    )
-                }
-            )
-        }
 
         binding.noBtn.setOnClickListener {
             if (viewModel.currentCalibrationStateLiveData.value == null) {
@@ -94,7 +65,7 @@ class DeviceCalibrationConfirmationFragment :
         viewModel.lowSingleAngle = args.params.lowSinglePosition
         viewModel.lowDualAngle = args.params.lowDualPosition
 
-        binding.backIv.setOnClickListener {
+        binding.topAppBar.setNavigationOnClickListener{
             viewModel.previousStep()
         }
         viewModel.initSubscriptions()
@@ -134,7 +105,6 @@ class DeviceCalibrationConfirmationFragment :
         }
 
         subscribe(viewModel.firstConfirmationPageLiveData) {
-            binding.subLabelTv.makeGone()
             binding.labelTv.text =
                 getString(R.string.do_the_settings_below_match_your_stove_knob)
 
@@ -144,7 +114,6 @@ class DeviceCalibrationConfirmationFragment :
         }
         subscribe(viewModel.currentCalibrationStateLiveData) { currentStep ->
             currentStep?.let {
-                binding.subLabelTv.makeVisible()
                 binding.noBtn.text = getString(R.string.no_btn)
                 if (viewModel.isDualKnob) {
                     when (currentStep) {

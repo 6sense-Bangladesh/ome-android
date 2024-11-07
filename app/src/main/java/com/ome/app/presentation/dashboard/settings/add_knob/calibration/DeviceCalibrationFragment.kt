@@ -2,7 +2,6 @@ package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.text.SpannableStringBuilder
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
@@ -15,7 +14,6 @@ import com.ome.app.utils.makeGone
 import com.ome.app.utils.makeVisible
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.parcelize.Parcelize
 
 
@@ -31,42 +29,18 @@ class DeviceCalibrationFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.backIv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-        binding.continueBtn.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                margin(bottom = true)
-            }
-        }
         viewModel.clearData()
-        binding.skipTv.setOnClickListener {
-            showDialog(
-                title = getString(R.string.attention),
-                message = SpannableStringBuilder(getString(R.string.attention_skip_device_calibration_label)),
-                onPositiveButtonClick = {
-                    findNavController().navigate(
-                        DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToSetupCompleteFragment(
-                            args.params.isComeFromSettings
-                        )
-                    )
-                }
-            )
-        }
         binding.continueBtn.setOnClickListener {
             viewModel.setLabel()
         }
-        binding.skipTv.makeGone()
         viewModel.currentCalibrationStateLiveData.postValue(CalibrationState.OFF)
         viewModel.macAddress = args.params.macAddr
         viewModel.rotationDir = args.params.rotateDir
         viewModel.isDualKnob = args.params.isDualKnob
 
-        binding.backIv.setOnClickListener {
+        binding.topAppBar.setNavigationOnClickListener{
             viewModel.previousStep()
+
         }
         viewModel.initSubscriptions()
 
@@ -129,12 +103,10 @@ class DeviceCalibrationFragment :
             binding.knobView.hideLabel(currentStep)
             if (currentStep == CalibrationState.OFF) {
                 binding.subLabelTv.makeGone()
-                binding.skipTv.makeGone()
                 binding.labelTv.text =
                     getString(R.string.device_calibration_off_label)
             } else {
                 binding.subLabelTv.makeVisible()
-                binding.skipTv.makeVisible()
                 if (viewModel.isDualKnob) {
                     when (currentStep) {
                         CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE -> {

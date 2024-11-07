@@ -1,19 +1,14 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.zone
 
-import android.os.Bundle
 import android.os.Parcelable
-import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentZoneSelectionBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
-import com.ome.app.utils.makeGone
-import com.ome.app.utils.makeVisible
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
@@ -26,33 +21,22 @@ class ZoneSelectionFragment :
 
     private val args by navArgs<ZoneSelectionFragmentArgs>()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.backIv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-        binding.continueBtn.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                margin(bottom = true)
-            }
-        }
-        binding.backIv.setOnClickListener { findNavController().popBackStack() }
+    override fun setupListener() {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
-        binding.continueBtn.setOnClickListener {
+        binding.continueBtn.setBounceClickListener {
             if (viewModel.zoneNumber == 2) {
-                findNavController().navigate(
-                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
-                        DeviceCalibrationFragmentParams(
-                            isComeFromSettings = args.params.isComeFromSettings,
-                            zoneNumber = viewModel.zoneNumber,
-                            isDualKnob = viewModel.isDualKnob,
-                            macAddr =  args.params.macAddrs
-                        )
-                    )
-                )
+                toast("Under Development")
+//                findNavController().navigate(
+//                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
+//                        DeviceCalibrationFragmentParams(
+//                            isComeFromSettings = args.params.isComeFromSettings,
+//                            zoneNumber = viewModel.zoneNumber,
+//                            isDualKnob = viewModel.isDualKnob,
+//                            macAddr =  args.params.macAddrs
+//                        )
+//                    )
+//                )
             } else {
                 findNavController().navigate(
                     ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(

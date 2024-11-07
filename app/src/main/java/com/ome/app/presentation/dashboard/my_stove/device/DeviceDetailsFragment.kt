@@ -153,7 +153,7 @@ class DeviceDetailsFragment :
                 it.log("currentKnob")
                 knobView.setupKnob(it)
             }
-            mainViewModel.getKnobStateByMac(args.params.macAddr).collectWithLifecycle{knob ->
+            mainViewModel.getKnobStateByMac(args.params.macAddr).collectWithLifecycleStateIn{knob ->
                 val batteryLevel = knob.battery
                 batteryPercentage.text = batteryLevel?.addPercentage().orEmpty()
                 knob.angle?.toInt()?.let {

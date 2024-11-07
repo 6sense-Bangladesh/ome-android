@@ -83,23 +83,23 @@
     <string name="change_wifi">Change Wifi</string>
     <string name="change_knob_orientation">Change Knob Orientation</string>
     <string name="knob_mac_addr_label">MAC ID: %1$s</string>
-    <string name="part_1_knob_installation">Part 1: Knob Installation</string>
-    <string name="turn_on_your_ome_knob_by_plugging_it_into_power">Turn on your Ome knob by plugging it into power.</string>
-    <string name="complete_part_1_of_knob_installation_by_following_these_install_videos">Complete Part 1 of knob installation by following these <a href="https://ome-kitchen.myshopify.com/pages/installation#accord1">install videos</a></string>
-    <string name="confirm_that_you_have_completed_part_1_the_adapter_metal_plate_and_metal_plate_cover_should_now_be_installed">Confirm that you have completed Part 1. The adapter, metal plate and metal plate cover should now be installed.</string>
+    <string name="physical_knob_installation">Physical Knob Installation</string>
+    <string name="confirm_installation">Confirm that the Knob installation is completed correctly. The Knob Bottom should be secured to the stove shaft like this:</string>
+    <string name="install_videos">Please complete the physical installation of your Smart Knob by following these <a href="https://ome-kitchen.myshopify.com/pages/installation#accord1">installation instructions</a>.\n\n\nConfirm that the Knob installation is completed correctly. The Knob Bottom should be secured to the stove shaft like this:</string>
+    <string name="remove_the_Knob">Please remove the Knob Top and locate the QR code located on the backside. Proceed to the next step to scan the QR code and get your Smart Knob online.</string>
     <string name="your_stove">Your Stove</string>
     <string name="which_burner_would_you_like_to_setup_your_smart_knob_on">Which burner would you like to setup your smart knob on?</string>
     <string name="take_a_picture">Take a Picture</string>
     <string name="knob_in_use">Another user owns this knob you\'ll need to select another or the user will need to remove the knob</string>
     <string name="knob_doesnt_exist">The scanned knob QR code does not exist.  Please try scanning again.  If the issue persists, contact support \n855–663–5227 \nsupport@omekitchen.com</string>
     <string name="scan_qr_code">Scan the QR code on the back of the Knob Top. To see the code, detach the Knob Top from the Knob Bottom. After the Wi-Fi connection is complete, you can re-attach.</string>
-    <string name="let_s_connect_to_your_local_wi_fi_network">Let\'s connect to your local Wi-Fi network.</string>
+    <string name="let_s_connect_to_your_local_wi_fi_network">Let\'s connect to your Wi-Fi network.</string>
     <string name="before_we_connect_label">Before we connect your device to your Wi-Fi, let’s make sure your devices are on and ready.</string>
     <string name="are_your_device_on">Are your device on?</string>
     <string name="manual_connect">Manual Connect</string>
-    <string name="yes_let_s_connect">Yes, let\'s connect</string>
+    <string name="yes_let_s_connect">Yes, Let\'s Continue</string>
     <string name="permission_not_granted">Permission not granted</string>
-    <string name="unable_to_join_the_network">Unable to join the network\n"(%1$s)"</string>
+    <string name="unable_to_join_the_network">Unable to join the networks\n&quot;%1$s&quot; and \n&quot;%2$s&quot;</string>
     <string name="connect_to_your_wi_fi">Connect to your Wi-Fi</string>
     <string name="connect_your_phone_to_ome">Connect your phone to Ome</string>
     <string name="manual_setup1">Open Wi-Fi settings on your phone and select the network that says either:</string>
@@ -109,14 +109,15 @@
     <string name="ome_smart_knob_will_be_setup_on">Ome Smart Knob will be setup on</string>
     <string name="connect">Connect</string>
     <string name="incorrect_network_name_and_password">Incorrect network name and password combination. Please try again</string>
-    <string name="something_went_wrong_when_setting_the_knob">Something went wrong when setting the knob\'s wifi, please try again</string>
-    <string name="connection_success">Congratulations! Your knob is now connected to your wifi.</string>
-    <string name="part_2_knob_installation">Part 2: Knob Installation</string>
-    <string name="now_complete_part_2_label">Now complete Part 2 of installation by following  <a href="https://ome-kitchen.myshopify.com/pages/installation#accord2">these videos.</a></string>
+    <string name="something_went_wrong_when_setting_the_knob">Something went wrong when setting the knob\'s Wi-Fi, please try again</string>
+    <string name="connection_success">Congratulations! Your knob is now connected to your Wi-Fi.</string>
+    <string name="replace_knob_top">Replace Knob Top</string>
+    <string name="replace_knob_label">Once, Wi-Fi connection is successful, re-attach the Knob Top to the Knob Bottom and continue.</string>
     <string name="confirm_that_you_have_completed_part_2">Confirm that you have completed Part 2. The knob should now be installed on your stove!</string>
     <string name="configure_knob">Configure Knob</string>
     <string name="direction_label">In what direction does your knob rotate when you turn it on?</string>
-    <string name="device_calibration_label">Manually turn your knob to %1$s and press continue</string>
+    <string name="device_calibration_label">Manually turn your knob to %1$s position and press continue</string>
+    <string name="is_knob_at">Is knob at %1$s?</string>
     <string name="device_calibration_dual_label">Manually turn your knob to %1$s position for the %2$s zone burner and press continue</string>
     <string name="device_calibration_off_label">Make sure your knob is in the OFF position and press continue</string>
     <string name="device_calibration_confirmation_label">Manually turn your knob to %1$s and press continue</string>
@@ -131,9 +132,9 @@
     <string name="issue_with_knob_label">There seems to be an issue with your knob. Please contact customer service so we can help! \n 855–663–5227 \n support@omekitchen.com</string>
     <string name="yes_btn">Yes</string>
     <string name="no_btn">No</string>
-    <string name="no_change_position_btn">No, change position</string>
+    <string name="no_change_position_btn">No, Change Position</string>
     <string name="calibration_labels_error">Labels cannot be placed on top of one another</string>
-    <string name="device_calibration_sub_label">**App may take a few seconds to update position**</string>
+    <string name="device_calibration_sub_label">App may take a few seconds to update position</string>
     <string name="zone_label">What type of burner are you setting up now?</string>
     <string name="counter_clockwise">Counter clockwise</string>
     <string name="clockwise">Clockwise</string>
@@ -146,8 +147,8 @@
     <string name="do_the_settings_below_match_your_stove_knob">Do the settings below match your stove knob?</string>
     <string name="you_re_all_set">You\'re all set!</string>
     <string name="would_you_like_to_add_other_knobs_now">Would you like to add other Knobs now?</string>
-    <string name="setup_another_knob">Setup another knob</string>
-    <string name="i_m_done">I\'m done</string>
+    <string name="setup_another_knob">Setup Another Knob</string>
+    <string name="i_m_done">I\'m Done</string>
     <string name="setup_completed">Setup Completed</string>
     <string name="attention">Attention!</string>
     <string name="attention_skip_device_calibration_label">Are you sure you want to skip this process and use default values based on the off position?</string>
@@ -188,6 +189,8 @@
     <string name="knob_">Knob #%1$d</string>
     <string name="burner_">Burner #%1$d</string>
     <string name="manually_turn_the_knob_on">Please manually turn the knob on if you want to control it from the app.</string>
+    <string name="single_zone_knob">Single Zone Knob</string>
+    <string name="warning_can_t_change">Warning: Can’t change stove layout with knob installed.</string>
 
 
 </resources>

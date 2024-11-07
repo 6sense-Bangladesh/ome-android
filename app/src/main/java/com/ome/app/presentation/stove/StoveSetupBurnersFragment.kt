@@ -3,6 +3,7 @@ package com.ome.app.presentation.stove
 import android.os.Parcelable
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,10 +14,7 @@ import com.ome.app.domain.model.state.StoveOrientation
 import com.ome.app.domain.model.state.StoveType
 import com.ome.app.domain.model.state.stoveOrientation
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.subscribe
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -32,6 +30,10 @@ class StoveSetupBurnersFragment :
     private val args by navArgs<StoveSetupBurnersFragmentArgs>()
 
     override fun setupUI() {
+        mainViewModel.knobs.value.isNotEmpty {
+            binding.textWarn.visible()
+            binding.continueBtn.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.gray)
+        }
         args.let {
             viewModel.brand = it.params.brand
             it.params.type?.apply {
@@ -54,6 +56,7 @@ class StoveSetupBurnersFragment :
 
 
     override fun setupListener() {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.fourBurnersIv.setBounceClickListener {
             handleButtonClick(it)
             viewModel.stoveOrientation = StoveOrientation.FOUR_BURNERS
@@ -78,13 +81,13 @@ class StoveSetupBurnersFragment :
             handleButtonClick(it)
             viewModel.stoveOrientation = StoveOrientation.TWO_BURNERS_VERTICAL
         }
-        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         if(BuildConfig.DEBUG){
             binding.titleTv.setBounceClickListener {
                 findNavController().navigate(R.id.action_stoveSetupBurnersFragment_to_stoveSetupCompletedFragment)
             }
         }
         binding.continueBtn.setBounceClickListener  {
+            if(mainViewModel.knobs.value.isNotEmpty()) return@setBounceClickListener
             if (args.params.isEditMode) {
                 binding.continueBtn.startAnimation()
                 mainViewModel.stoveData.stoveOrientation = viewModel.stoveOrientation?.number

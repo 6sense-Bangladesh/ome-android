@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".presentation.dashboard.settings.add_knob.wake_up.KnobWakeUpFragment">
+    tools:context=".presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragment">
 
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -14,20 +14,20 @@
         android:layout_width="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_back"
-        app:title="@string/physical_knob_installation" />
+        app:title="@string/replace_knob_top" />
+
 
     <TextView
         android:id="@+id/labelTv"
-        style="@style/Label.Medium"
+        style="@style/Title.Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginTop="@dimen/margin_top_bar"
-        android:text="@string/install_videos"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:text="@string/replace_knob_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
-
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/shaftIv"
@@ -36,28 +36,19 @@
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginTop="@dimen/_25sdp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_stove_shaft"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelTv"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.RectRound" />
-
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.RectRound"
+        tools:src="@tools:sample/backgrounds/scenic" />
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/continueBtn"
         style="@style/OmeButton.Blue"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginBottom="64dp"
-        android:gravity="center"
         android:text="@string/continue_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label2Tv"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

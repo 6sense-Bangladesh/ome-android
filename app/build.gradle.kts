@@ -218,7 +218,10 @@ dependencies {
 
     implementation("com.github.chesire:lifecyklelog:3.1.1")
 
-    implementation("io.coil-kt:coil:2.7.0")
+    implementation("io.coil-kt.coil3:coil:3.0.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.0")
+    implementation("io.coil-kt.coil3:coil-gif:3.0.0")
+
     implementation("com.google.android.flexbox:flexbox:3.0.0")
 
     implementation("com.airbnb.android:lottie:6.6.0")

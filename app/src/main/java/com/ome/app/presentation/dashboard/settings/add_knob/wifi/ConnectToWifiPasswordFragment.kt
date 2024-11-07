@@ -8,8 +8,9 @@ import com.ome.app.R
 import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.databinding.FragmentConnectToWifiPasswordBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManual1FragmentParams
+import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragmentParams
 import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
@@ -24,8 +25,7 @@ class ConnectToWifiPasswordFragment :
     private val args by navArgs<ConnectToWifiPasswordFragmentArgs>()
 
     override fun setupUI() {
-        val ssid = "\"${args.params.ssid}\""
-        binding.ssidTv.text = ssid
+        binding.ssidTv.text = args.params.ssid
 
         viewModel.macAddr = args.params.macAddr
         viewModel.ssid = args.params.ssid
@@ -35,7 +35,7 @@ class ConnectToWifiPasswordFragment :
     override fun setupListener() {
         viewModel.initListeners()
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
-        binding.connectBtn.setOnClickListener {
+        binding.connectBtn.setBounceClickListener {
             binding.connectBtn.startAnimation()
             viewModel.password = binding.password.text.toString()
             viewModel.sendMessage(
@@ -51,8 +51,8 @@ class ConnectToWifiPasswordFragment :
                 findNavController().popBackStack(R.id.deviceSettingsFragment, false)
             } else {
                 findNavController().navigate(
-                    ConnectToWifiPasswordFragmentDirections.actionConnectToWifiPasswordFragmentToKnobInstallationManual1Fragment(
-                        KnobInstallationManual1FragmentParams(macAddr = args.params.macAddr)
+                    ConnectToWifiPasswordFragmentDirections.actionConnectToWifiPasswordFragmentToKnobInstallationManualFragment(
+                        KnobInstallationManualFragmentParams(macAddr = args.params.macAddr)
                     )
                 )
             }

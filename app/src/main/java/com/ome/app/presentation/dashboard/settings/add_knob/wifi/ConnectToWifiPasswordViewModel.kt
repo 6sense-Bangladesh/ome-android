@@ -1,6 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import com.ome.app.R
+import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.local.ResourceProvider
@@ -21,7 +22,8 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     val webSocketManager: WebSocketManager,
     val preferencesProvider: PreferencesProvider,
     val resourceProvider: ResourceProvider,
-    val stoveRepository: StoveRepository
+    val stoveRepository: StoveRepository,
+    private val connectionStatusListener: ConnectionStatusListener
 ) : BaseViewModel() {
 
     var macAddr = ""
@@ -29,7 +31,6 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     var securityType = ""
     var password = ""
 
-    val wifiConnectedLiveData: SingleLiveEvent<Pair<Boolean, String?>> = SingleLiveEvent()
     val networkDisconnectStatusLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
 

@@ -1,7 +1,5 @@
 package com.ome.app.presentation.internet_error
 
-import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.ome.app.data.ConnectionStatusListener
@@ -18,11 +16,6 @@ class NoInternetConnectionFragment :
     ) {
 
     override val viewModel: NoInternetConnectionViewModel by viewModels()
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
 
     override fun handleBackPressEvent() {
 

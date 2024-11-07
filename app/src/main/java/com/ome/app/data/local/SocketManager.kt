@@ -60,7 +60,7 @@ class SocketManager(
 
     private var mRun = false
 
-    val networksFlow = MutableStateFlow<List<NetworkItemModel>>(listOf())
+    val networksFlow = MutableStateFlow<List<NetworkItemModel>?>(null)
 
     var socket: Socket = Socket()
 
@@ -126,12 +126,7 @@ class SocketManager(
         val regex = Regex("""\d+\s+\d+\s+-\d+\s+([A-F0-9:]{17})\s+\d+\s+([\w\s]+)""")
         regex.findAll(message).forEach { matchResult ->
             matchResult.groupValues.getOrNull(2)?.trim()?.let {
-                networksList.add(
-                    NetworkItemModel(
-                        ssid = it,
-                        securityType = "WPA2"
-                    )
-                )
+                networksList.add(NetworkItemModel(ssid = it, securityType = "WPA2"))
             }
         }
         networksList.log("wifiNetworksList")
@@ -167,7 +162,6 @@ class SocketManager(
         return filteredArray.map { it.toByte() }.toByteArray()
     }
 
-    // TODO: need test
     private suspend fun scanForNetworks(): List<NetworkItemModel> {
         val networksList = mutableListOf<NetworkItemModel>()
         try {
@@ -190,10 +184,9 @@ class SocketManager(
                     }
                     networksFlow.emit(networksList.toList())
                 }
-                //else TODO: Handle error
             }
         }catch (e: Exception){
-            //TODO: Handle error
+            e.printStackTrace()
         }
         return networksList
     }

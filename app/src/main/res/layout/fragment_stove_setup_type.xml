@@ -22,7 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/margin_top_bar"
         android:text="@string/select_your_appliance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,18 +33,18 @@
         android:id="@+id/stoveShipGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginStart="@dimen/margin_horizontal"
         app:chipStrokeColor="@color/gray"
+        android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@+id/titleTv"
         app:selectionRequired="true"
-        app:singleSelection="true"
-        tools:layout_editor_absoluteX="0dp">
+        app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/gasTop"
             style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_height="@dimen/_65sdp"
             android:text="@string/gas_stove"
             android:textColor="@drawable/color_text_selector"
             app:checkedIconEnabled="false"
@@ -52,16 +52,16 @@
             app:chipIcon="@drawable/ic_gas"
             app:chipIconEnabled="true"
             app:chipIconTint="@drawable/color_text_selector"
-            app:iconStartPadding="@dimen/_10sdp"
+            app:iconStartPadding="@dimen/_8sdp"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Round"
-            app:textEndPadding="@dimen/_10sdp" />
+            app:textEndPadding="@dimen/_8sdp"  />
 
 
         <com.google.android.material.chip.Chip
             android:id="@+id/electricTop"
             style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_height="@dimen/_65sdp"
             android:text="@string/electric_stove"
             android:textColor="@drawable/color_text_selector"
             app:checkedIconEnabled="false"
@@ -69,15 +69,15 @@
             app:chipIcon="@drawable/ic_electric"
             app:chipIconEnabled="true"
             app:chipIconTint="@drawable/color_text_selector"
-            app:iconStartPadding="@dimen/_10sdp"
+            app:iconStartPadding="@dimen/_7sdp"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Round"
-            app:textEndPadding="@dimen/_10sdp" />
+            app:textEndPadding="@dimen/_7sdp" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/gasRange"
             style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_height="@dimen/_65sdp"
             android:text="@string/gas_range"
             android:textColor="@drawable/color_text_selector"
             app:checkedIconEnabled="false"
@@ -85,15 +85,15 @@
             app:chipIcon="@drawable/ic_gas"
             app:chipIconEnabled="true"
             app:chipIconTint="@drawable/color_text_selector"
-            app:iconStartPadding="@dimen/_10sdp"
+            app:iconStartPadding="@dimen/_8sdp"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Round"
-            app:textEndPadding="@dimen/_10sdp" />
+            app:textEndPadding="@dimen/_8sdp" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/electricRange"
             style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_height="@dimen/_65sdp"
             android:text="@string/electric_range"
             android:textColor="@drawable/color_text_selector"
             app:checkedIconEnabled="false"
@@ -101,9 +101,9 @@
             app:chipIcon="@drawable/ic_electric"
             app:chipIconEnabled="true"
             app:chipIconTint="@drawable/color_text_selector"
-            app:iconStartPadding="@dimen/_10sdp"
+            app:iconStartPadding="@dimen/_8sdp"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Round"
-            app:textEndPadding="@dimen/_10sdp" />
+            app:textEndPadding="@dimen/_8sdp" />
 
 
     </com.google.android.material.chip.ChipGroup>

@@ -1,32 +1,43 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
+import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.data.local.SocketManager
 import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.presentation.base.SingleLiveEvent
-import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
 import com.ome.app.utils.WifiHandler
+import com.ome.app.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
 
 @HiltViewModel
 class ManualSetupViewModel @Inject constructor(
     val wifiHandler: WifiHandler,
-    val socketManager: SocketManager
+    val socketManager: SocketManager,
+    private val connectionStatusListener: ConnectionStatusListener
 ) : BaseViewModel() {
 
     suspend fun isConnectedToKnobHotspot(): Boolean = wifiHandler.isConnectedToKnobHotspot()
 
-    val wifiNetworksListLiveData: SingleLiveEvent<List<NetworkItemModel>> = SingleLiveEvent()
-
     var macAddr = ""
+
+    val wifiConnectedFlow = MutableSharedFlow<Unit>()
+
+    private var getListTryCount = 0
 
     init {
         connectionStatusListener.shouldReactOnChanges = false
         launch(ioContext) {
-            socketManager.networksFlow.collect { list->
-                if(list.isNotEmpty()){
-                    wifiNetworksListLiveData.postValue(list)
+            socketManager.networksFlow.filterNotNull().collect { list ->
+                list.log("wifiNetworksList")
+                if (list.isNotEmpty() || getListTryCount > 0) {
+                    wifiConnectedFlow.emit(Unit)
+                }else{
+                    getListTryCount++
+                    delay(500)
+                    getNetworks()
                 }
             }
         }

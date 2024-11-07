@@ -20,8 +20,10 @@ import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.exifinterface.media.ExifInterface
-import coil.imageLoader
-import coil.request.ImageRequest
+import coil3.imageLoader
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import coil3.request.target
 import kotlinx.coroutines.*
 import okhttp3.HttpUrl
 import java.io.File
@@ -90,7 +92,7 @@ fun ImageView.loadDrawable(data: Any?, @DrawableRes defaultSrc: Int? = null) {
 //        .placeholder(defaultSrc ?: R.drawable.ic_profile_small)
 //        .error(defaultSrc ?: R.drawable.ic_profile_small)
         .crossfade(true)
-        .setHeader("Cache-Control", "max-age=31536000")
+//        .httpHeaders(NetworkHeaders.Builder().add("Cache-Control", "max-age=31536000")
         .data(data)
         .target(this)
         .build()
@@ -112,7 +114,7 @@ fun ImageView.loadWithFallback(
 //        .placeholder(defaultSrc ?: R.drawable.ic_profile_small)
         .target(
             onSuccess = { drawable ->
-                this.setImageDrawable(drawable) // Set the first image if successful
+                this.setImageDrawable(drawable as Drawable) // Set the first image if successful
             },
             onError = {
                 // If the first image fails, load the fallback image
@@ -181,7 +183,7 @@ suspend fun Any.toBitmap(context: Context): Bitmap {
         val request = ImageRequest.Builder(context)
             .data(this@toBitmap)
             .build()
-        val drawable = context.imageLoader.execute(request).drawable
+        val drawable = context.imageLoader.execute(request).image
         (drawable as BitmapDrawable).bitmap
     }
 }

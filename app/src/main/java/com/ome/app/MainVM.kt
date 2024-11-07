@@ -3,6 +3,7 @@ package com.ome.app
 import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
+import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.websocket.WebSocketManager
@@ -19,9 +20,12 @@ import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -33,7 +37,8 @@ class MainVM @Inject constructor(
     private val stoveRepository: StoveRepository,
     private val wifiHandler: WifiHandler,
     private val webSocketManager: WebSocketManager,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    val connectionStatusListener: ConnectionStatusListener
 ) : BaseViewModel() {
     var userInfo = savedStateHandle.getStateFlow("userInfo", preferencesProvider.getUserData())
     private var knobState = savedStateHandle.getStateFlow("knobState", mutableMapOf<MacAddress, KnobState>())
@@ -136,26 +141,8 @@ class MainVM @Inject constructor(
                                                 R.id.welcomeFragment
                                             return@launch
                                         }
-                                        savedStateHandle["startDestination"] =
-                                            R.id.dashboardFragment
-                                        val knobs = mutableListOf<KnobDto>()
-
-
-                                        try {
-                                            knobs.addAll(stoveRepository.getAllKnobs())
-                                            savedStateHandle["knobs"] = knobs.apply {
-                                                if (BuildConfig.IS_INTERNAL_TESTING) addAll(dummyKnobs)
-                                            }.toList()
-                                        } catch (ex: Exception) {
-                                            knobs.clear()
-                                        }
-                                        preferencesProvider.getUserId()?.let { userId ->
-                                            launch(ioContext) {
-                                                knobs.isNotEmpty { macs ->
-                                                    webSocketManager.initWebSocket(macs, userId)
-                                                }
-                                            }
-                                        }
+                                        savedStateHandle["startDestination"] = R.id.dashboardFragment
+                                        connectToSocket()
                                     }
                                 }
                             } else {
@@ -195,6 +182,10 @@ class MainVM @Inject constructor(
                 onEnd()
             }
         }
+    }
+
+    fun registerConnectionListener() {
+        connectionStatusListener.registerListener()
     }
 }
 

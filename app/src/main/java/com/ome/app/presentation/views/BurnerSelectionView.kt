@@ -22,7 +22,7 @@ class BurnerSelectionView @JvmOverloads constructor(
     private val binding = inflate<BurnerSelectionViewBinding>()
     private val selectedBurners: ArrayList<Int> = arrayListOf()
 
-    private var lastSelected : MaterialButton? = null
+    private var lastSelected : Pair<MaterialButton, TextView>? = null
     private val colorSecondary = ContextCompat.getColor(context, R.color.colorSecondary)
     private val colorTertiary = ContextCompat.getColor(context, R.color.colorTertiary)
     private val cardBackground = ContextCompat.getColor(context, R.color.cardBackground)
@@ -36,71 +36,76 @@ class BurnerSelectionView @JvmOverloads constructor(
         this.editModeIndex = editModeIndex
         this.selectedBurners.addAll(selectedBurners)
         editModeIndex.log("editModeIndex")
-        if(editModeIndex != -1){
-            val allButtons = listOf(binding.button1, binding.button2, binding.button3, binding.button4, binding.button5, binding.button6)
-            lastSelected = allButtons[editModeIndex]
-        }
         binding.apply {
+//            val allButtons = listOf(binding.button1, binding.button2, binding.button3, binding.button4, binding.button5, binding.button6)
+            var allButtons = listOf<Pair<MaterialButton, TextView>>()
             when (stoveOrientation) {
                 StoveOrientation.FOUR_BURNERS -> {
                     visible(knob1 , knob2 , knob3 , knob4)
                     changeFlexBasisPercent(.5F, knob1 , knob2 , knob3 , knob4)
                     gone(knob5 , knob6)
-                    initListeners(button1 to status1 , button2 to status2 , button3 to status3 , button4 to status4)
+                    allButtons = listOf(button1 to status1 , button2 to status2 , button3 to status3 , button4 to status4)
                 }
                 StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
                     visible(knob1 , knob2 , knob3 , knob4 , knob5)
                     changeFlexBasisPercent(.5F, knob1 , knob2 , knob4 , knob5)
                     changeFlexBasisPercent(1F,  knob3)
                     gone(knob6)
-                    initListeners(button1 to status1 , button2 to status2 , button4 to status4 , button5 to status5 , button3 to status3)
+                    allButtons = listOf(button1 to status1 , button2 to status2 , button4 to status4 , button5 to status5, button3 to status3)
                 }
                 StoveOrientation.SIX_BURNERS -> {
                     visible(knob1 , knob2 , knob3 , knob4 , knob5 , knob6)
                     changeFlexBasisPercent(.33F, knob1 , knob2 , knob3 , knob4 , knob5 , knob6)
-                    initListeners(button1 to status1 , button2 to status2 , button3 to status3 , button4 to status4 , button5 to status5, button6 to status6)
+                    allButtons = listOf(button1 to status1 , button2 to status2 , button3 to status3 , button4 to status4 , button5 to status5 , button6 to status6)
                 }
                 StoveOrientation.TWO_BURNERS_VERTICAL -> {
                     visible(knob1 , knob2)
                     changeFlexBasisPercent(1F, knob1 , knob2)
                     gone(knob3 , knob4 , knob5 , knob6)
-                    initListeners(button1 to status1 , button2 to status2)
+                    allButtons = listOf(button1 to status1 , button2 to status2)
                 }
                 StoveOrientation.TWO_BURNERS_HORIZONTAL -> {
                     visible(knob1 , knob2)
                     changeFlexBasisPercent(.5F, knob1 , knob2)
                     gone(knob3 , knob4 , knob5 , knob6)
-                    initListeners(button1 to status1 , button2 to status2)
+                    allButtons = listOf(button1 to status1 , button2 to status2)
                 }
             }
+            initListeners(allButtons)
+            if(editModeIndex != -1)
+                lastSelected = allButtons.getOrNull(editModeIndex)
             flexbox.requestLayout()
         }
 
     }
 
-    private fun MaterialButton.changeButtonState(isSelected: Boolean, textView: TextView){
-        if(isSelected){
-            setIconResource(R.drawable.ic_done)
-            iconTint = ColorStateList.valueOf(colorTertiary)
-            setBackgroundColor(colorSecondary)
-            strokeWidth = 0
-            textView.text = context.getString(R.string.selected)
+    private fun Pair<MaterialButton,TextView>.changeButtonState(isSelected: Boolean){
+        val textView = second
+        this.first.apply {
+            if(isSelected){
+                setIconResource(R.drawable.ic_done)
+                iconTint = ColorStateList.valueOf(colorTertiary)
+                setBackgroundColor(colorSecondary)
+                strokeWidth = 0
+                textView.text = context.getString(R.string.selected)
+            }
+            else{
+                setIconResource(R.drawable.ic_add)
+                iconTint = ColorStateList.valueOf(colorSecondary)
+                setBackgroundColor(cardBackground)
+                strokeWidth = 1.dp
+                textView.text = context.getString(R.string.choose)
+            }
         }
-        else{
-            setIconResource(R.drawable.ic_add)
-            iconTint = ColorStateList.valueOf(colorSecondary)
-            setBackgroundColor(cardBackground)
-            strokeWidth = 1.dp
-            textView.text = context.getString(R.string.choose)
-        }
+
     }
 
-    private fun initListeners(vararg pairs: Pair<MaterialButton, TextView>) {
+    private fun initListeners(pairs: List<Pair<MaterialButton, TextView>>) {
         pairs.forEachIndexed { index, pair ->
             if (selectedBurners.contains(index + 1)) {
-                pair.first.changeButtonState(true, pair.second)
+                pair.changeButtonState(true)
             }else{
-                pair.first.changeButtonState(false, pair.second)
+                pair.changeButtonState(false)
                 pair.first.setBounceClickListener{
                     selectButton(pair, index + 1)
                 }
@@ -117,9 +122,9 @@ class BurnerSelectionView @JvmOverloads constructor(
         pair: Pair<MaterialButton, TextView>,
         position: Int
     ) {
-        lastSelected?.changeButtonState(false, pair.second)
-        lastSelected = pair.first
-        lastSelected?.changeButtonState(true, pair.second)
+        lastSelected?.changeButtonState(false)
+        lastSelected = pair
+        lastSelected?.changeButtonState(true)
         onBurnerSelect(position)
     }
 

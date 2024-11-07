@@ -9,10 +9,7 @@ import com.ome.app.R
 import com.ome.app.databinding.FragmentSelectBurnerBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.scanner.QrCodeScannerParams
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.log
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.subscribe
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -40,7 +37,7 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
         binding.burnerSelectionView.onBurnerSelect = { index ->
             viewModel.selectedBurnerIndex = index
         }
-        binding.continueBtn.setOnClickListener {
+        binding.continueBtn.setBounceClickListener {
             viewModel.selectedBurnerIndex?.let {
                 if (args.params.isEditMode) {
                     showDialog(
@@ -86,6 +83,7 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
         subscribe(viewModel.knobPositionResponseLiveData) {
             binding.continueBtn.revertAnimation()
             showSuccessDialog(message = getString(R.string.change_burner_position_success_body), onDismiss = {
+                mainViewModel.selectedBurnerIndex = null
                 findNavController().popBackStack()
             })
         }
