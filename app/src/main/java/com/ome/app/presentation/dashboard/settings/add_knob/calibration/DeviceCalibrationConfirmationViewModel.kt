@@ -35,7 +35,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
 
 
     override fun handleDualKnobUpdated(value: Float) {
-        knobAngleLiveData.postValue(value)
+        knobAngleFlow.postValue(value)
     }
 
     fun triggerCurrentStepAgain() = launch(ioContext) {

@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceCalibrationConfirmationBinding
 import com.ome.app.presentation.base.BaseFragment
+import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
@@ -104,7 +105,7 @@ class DeviceCalibrationConfirmationFragment :
                 )
             )
         }
-        subscribe(viewModel.knobAngleLiveData) {
+        viewModel.knobAngleFlow.collectWithLifecycle{
             binding.knobView.setKnobPosition(it)
         }
 

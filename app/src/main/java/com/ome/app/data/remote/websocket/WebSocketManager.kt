@@ -83,11 +83,11 @@ class WebSocketManager(
                 var needRefresh = true
                 when (knobEntity) {
                     KnobEntity.ANGLE -> {
-                        knobAngleFlow.tryEmit(KnobAngle(
+                        knobAngleFlow.value = KnobAngle(
                             it.macAddr.orEmpty(),
                             knobEntity.key,
                             it.value as Double
-                        ))
+                        )
                         if(it.macAddr == null) return@collect
                         knobState.value = knobState.value.toMutableMap().apply {
                             val currentKnobState = this[it.macAddr]

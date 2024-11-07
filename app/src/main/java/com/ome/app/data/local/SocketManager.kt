@@ -2,6 +2,7 @@ package com.ome.app.data.local
 
 import android.content.Context
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
+import com.ome.app.utils.isNotEmpty
 import com.ome.app.utils.log
 import com.ome.app.utils.logi
 import kotlinx.coroutines.Dispatchers
@@ -126,7 +127,9 @@ class SocketManager(
         val regex = Regex("""\d+\s+\d+\s+-\d+\s+([A-F0-9:]{17})\s+\d+\s+([\w\s]+)""")
         regex.findAll(message).forEach { matchResult ->
             matchResult.groupValues.getOrNull(2)?.trim()?.let {
-                networksList.add(NetworkItemModel(ssid = it, securityType = "WPA2"))
+                it.isNotEmpty { ssid ->
+                    networksList.add(NetworkItemModel(ssid = ssid, securityType = "WPA2"))
+                }
             }
         }
         networksList.log("wifiNetworksList")

@@ -65,10 +65,16 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
         }
     }
 
-    private fun disconnectFromNetwork() = launch(ioContext) {
-        val response = wifiHandler.disconnectFromNetwork()
-        connectionStatusListener.shouldReactOnChanges = true
-        networkDisconnectStatusLiveData.postValue(response)
+    private fun disconnectFromNetwork(){
+        try {
+            launch(ioContext) {
+                val response = wifiHandler.disconnectFromNetwork()
+                connectionStatusListener.shouldReactOnChanges = true
+                networkDisconnectStatusLiveData.postValue(response)
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
     private fun handleWifiStatusMessage(message: String) {

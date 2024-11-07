@@ -7,6 +7,7 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 
@@ -16,7 +17,7 @@ abstract class BaseCalibrationViewModel(
     private val resourceProvider: ResourceProvider
 ) : BaseViewModel() {
 
-    val knobAngleLiveData = SingleLiveEvent<Float>()
+    val knobAngleFlow = MutableStateFlow<Float?>(null)
     val zoneLiveData = SingleLiveEvent<Int>()
 
     var labelLiveData = SingleLiveEvent<Pair<CalibrationState, Float>>()
@@ -72,7 +73,7 @@ abstract class BaseCalibrationViewModel(
             highSingleAngle = highSingleAngle,
             angleDualOffset = angleDualOffset
         )
-        knobAngleLiveData.postValue(result)
+        knobAngleFlow.value =(result)
 
     }
 
@@ -82,12 +83,12 @@ abstract class BaseCalibrationViewModel(
                 it?.let {
                     val angle = it.value.toFloat()
                     if (!isDualKnob) {
-                        knobAngleLiveData.postValue(angle)
+                        knobAngleFlow.value =(angle)
                     } else {
                         if (offAngle != null) {
                             handleDualKnobUpdated(angle)
                         } else {
-                            knobAngleLiveData.postValue(angle)
+                            knobAngleFlow.value =(angle)
                         }
                     }
 
@@ -97,7 +98,7 @@ abstract class BaseCalibrationViewModel(
         launch(ioContext) {
             stoveRepository.knobsFlow.mapNotNull { dto -> dto.find { it.macAddr == macAddress } }.stateIn(viewModelScope).collect { foundKnob ->
                 if (webSocketManager.knobAngleFlow.value == null) {
-                    knobAngleLiveData.postValue(foundKnob.angle.toFloat())
+                    knobAngleFlow.value =(foundKnob.angle.toFloat())
                 }
                 zoneLiveData.postValue(foundKnob.stovePosition)
             }

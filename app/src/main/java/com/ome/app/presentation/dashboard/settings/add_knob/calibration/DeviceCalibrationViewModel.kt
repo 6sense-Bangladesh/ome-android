@@ -26,7 +26,7 @@ class DeviceCalibrationViewModel @Inject constructor(
     val previousScreenTriggered = SingleLiveEvent<Boolean>()
 
     fun setLabel() {
-        val angle = knobAngleLiveData.value
+        val angle = knobAngleFlow.value
         angle?.let {
             if (isDualKnob) {
                 if (KnobAngleManager.validateDualKnobAngle(
