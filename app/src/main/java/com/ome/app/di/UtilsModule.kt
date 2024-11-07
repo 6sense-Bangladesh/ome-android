@@ -24,9 +24,7 @@ object UtilsModule {
     @Provides
     @Singleton
     fun provideWifiManager(
-        @ApplicationContext context: Context,
-        resourceProvider: ResourceProvider
-    ): WifiHandler =
-        WifiHandler(context, resourceProvider)
+        @ApplicationContext context: Context
+    ): WifiHandler = WifiHandler(context)
 
 }

@@ -14,7 +14,6 @@ import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.ome.app.R
-import com.ome.app.data.local.ResourceProvider
 import com.thanosfisherman.wifiutils.WifiUtils
 import com.thanosfisherman.wifiutils.wifiConnect.ConnectionErrorCode
 import com.thanosfisherman.wifiutils.wifiConnect.ConnectionSuccessListener
@@ -26,7 +25,7 @@ import kotlin.coroutines.suspendCoroutine
 
 typealias Rssi = Int
 
-class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) {
+class WifiHandler(val context: Context) {
 
     var omeKnobSSID = ""
     var inirvKnobSSID = ""
@@ -85,7 +84,7 @@ class WifiHandler(val context: Context, val resourceProvider: ResourceProvider) 
                                 continuation.resume(false to null)
                             }else{
                                 continuation.resume(
-                                    false to resourceProvider.getString(
+                                    false to context.getString(
                                         R.string.unable_to_join_the_network,
                                         omeKnobSSID, inirvKnobSSID
                                     )
