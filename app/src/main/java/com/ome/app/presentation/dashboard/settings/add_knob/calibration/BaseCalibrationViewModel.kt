@@ -1,5 +1,6 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 
+import androidx.lifecycle.viewModelScope
 import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.repo.StoveRepository
@@ -7,6 +8,7 @@ import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.stateIn
 
 abstract class BaseCalibrationViewModel constructor(
     private val webSocketManager: WebSocketManager,
@@ -93,7 +95,7 @@ abstract class BaseCalibrationViewModel constructor(
             }
         }
         launch(ioContext) {
-            stoveRepository.knobsFlow.mapNotNull { dto -> dto.find { it.macAddr == macAddress } }.collect { foundKnob ->
+            stoveRepository.knobsFlow.mapNotNull { dto -> dto.find { it.macAddr == macAddress } }.stateIn(viewModelScope).collect { foundKnob ->
                 if (webSocketManager.knobAngleFlow.value == null) {
                     knobAngleLiveData.postValue(foundKnob.angle.toFloat())
                 }

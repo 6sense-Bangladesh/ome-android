@@ -12,6 +12,7 @@ import com.ome.app.databinding.FragmentDeviceCalibrationBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.makeGone
 import com.ome.app.utils.makeVisible
+import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
@@ -30,7 +31,7 @@ class DeviceCalibrationFragment :
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.clearData()
-        binding.continueBtn.setOnClickListener {
+        binding.continueBtn.setBounceClickListener {
             viewModel.setLabel()
         }
         viewModel.currentCalibrationStateLiveData.postValue(CalibrationState.OFF)
