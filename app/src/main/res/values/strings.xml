@@ -117,7 +117,6 @@
     <string name="configure_knob">Configure Knob</string>
     <string name="direction_label">In what direction does your knob rotate when you turn it on?</string>
     <string name="device_calibration_label">Manually turn your knob to %1$s position and press continue</string>
-    <string name="is_knob_at">Is knob at %1$s?</string>
     <string name="device_calibration_dual_label">Manually turn your knob to %1$s position for the %2$s zone burner and press continue</string>
     <string name="device_calibration_off_label">Make sure your knob is in the OFF position and press continue</string>
     <string name="device_calibration_confirmation_label">Manually turn your knob to %1$s and press continue</string>
@@ -144,7 +143,6 @@
     <string name="high_position">H</string>
     <string name="setup_smart_knob">Setup Smart Knob</string>
     <string name="skip">Skip</string>
-    <string name="do_the_settings_below_match_your_stove_knob">Do the settings below match your stove knob?</string>
     <string name="you_re_all_set">You\'re all set!</string>
     <string name="would_you_like_to_add_other_knobs_now">Would you like to add other Knobs now?</string>
     <string name="setup_another_knob">Setup Another Knob</string>

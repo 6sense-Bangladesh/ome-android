@@ -11,6 +11,7 @@ import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceCalibrationConfirmationBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
@@ -35,7 +36,7 @@ class DeviceCalibrationConfirmationFragment :
                 viewModel.triggerCurrentStepAgain()
             }
         }
-        binding.continueBtn.setOnClickListener {
+        binding.continueBtn.setBounceClickListener {
             if (viewModel.currentCalibrationStateLiveData.value == null) {
                 showSuccessDialog(
                     title = getString(R.string.warning),
@@ -107,8 +108,7 @@ class DeviceCalibrationConfirmationFragment :
 
         subscribe(viewModel.firstConfirmationPageLiveData) {
             binding.labelTv.text =
-                getString(R.string.do_the_settings_below_match_your_stove_knob)
-
+                getString(R.string.calibration_confirmation_label, viewModel.currentCalibrationStateLiveData.value?.name)
         }
         subscribe(viewModel.zoneLiveData) {
             binding.knobView.stovePosition = it

@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginTop="@dimen/_5sdp"
-        android:text="@string/is_knob_at"
+        android:text="@string/calibration_confirmation_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelZone" />
@@ -45,8 +45,8 @@
         android:id="@+id/knobView"
         android:layout_width="@dimen/_220sdp"
         android:layout_height="@dimen/_220sdp"
+        app:layout_constraintBottom_toTopOf="@+id/noBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/subLabelTv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelTv" />
 
