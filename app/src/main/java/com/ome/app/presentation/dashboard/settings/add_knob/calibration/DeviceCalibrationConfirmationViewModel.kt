@@ -1,13 +1,13 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 
 import com.ome.app.R
-import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.data.local.ResourceProvider
-import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.network.request.ChangeKnobAngle
 import com.ome.app.domain.model.network.request.SetCalibrationRequest
 import com.ome.app.domain.model.network.request.Zone
+import com.ome.app.domain.repo.StoveRepository
+import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -35,7 +35,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
 
 
     override fun handleDualKnobUpdated(value: Float) {
-        knobAngleFlow.postValue(value)
+        knobAngleFlow.value = value
     }
 
     fun triggerCurrentStepAgain() = launch(ioContext) {
