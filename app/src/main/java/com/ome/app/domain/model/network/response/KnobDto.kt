@@ -2,8 +2,8 @@ package com.ome.app.domain.model.network.response
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.ome.app.domain.model.state.*
 import com.ome.app.domain.model.network.websocket.KnobState
+import com.ome.app.domain.model.state.*
 import com.ome.app.utils.Rssi
 import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
 import com.ome.app.utils.isFalse
@@ -80,6 +80,7 @@ val KnobDto.asBurnerState
     get()= buildList{
         if(calibrated.isFalse()) return@buildList
         val cal = calibration.toCalibration()
+        add(BurnerState.Off(cal.offAngle))
         if(cal.zones1 != null){
             add(BurnerState.Low(cal.zones1.lowAngle))
             if(cal.rotation != Rotation.DUAL)
