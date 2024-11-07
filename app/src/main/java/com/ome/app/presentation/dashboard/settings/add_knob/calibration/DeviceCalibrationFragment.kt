@@ -24,6 +24,10 @@ class DeviceCalibrationFragment :
 
     private val args by navArgs<DeviceCalibrationFragmentArgs>()
 
+    override fun setupUI() {
+        mainViewModel.connectToSocket()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

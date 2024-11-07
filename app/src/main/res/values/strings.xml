@@ -95,7 +95,7 @@
     <string name="scan_qr_code">Scan the QR code on the back of the Knob Top. To see the code, detach the Knob Top from the Knob Bottom. After the Wi-Fi connection is complete, you can re-attach.</string>
     <string name="let_s_connect_to_your_local_wi_fi_network">Let\'s connect to your Wi-Fi network.</string>
     <string name="before_we_connect_label">Before we connect your device to your Wi-Fi, let’s make sure your devices are on and ready.</string>
-    <string name="are_your_device_on">Are your device on?</string>
+    <string name="are_your_device_on">Is your device on?</string>
     <string name="manual_connect">Manual Connect</string>
     <string name="yes_let_s_connect">Yes, Let\'s Continue</string>
     <string name="permission_not_granted">Permission not granted</string>
