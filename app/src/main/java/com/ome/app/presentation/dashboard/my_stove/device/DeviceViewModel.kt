@@ -70,6 +70,7 @@ class DeviceViewModel @Inject constructor(
     fun deleteKnob(onEnd: () -> Unit) {
         launch {
             stoveRepository.deleteKnob(macAddress)
+            stoveRepository.getAllKnobs()
             onEnd()
         }
     }
