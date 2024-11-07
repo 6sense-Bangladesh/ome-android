@@ -31,7 +31,11 @@ class StoveRepositoryImpl(
     }
 
     override suspend fun getAllKnobs(): List<KnobDto> {
-        val response = stoveService.getAllKnobs()
+        val response = safeApiCall(coroutineContext) {
+            stoveService.getAllKnobs().also {
+                knobsFlow.value = it
+            }
+        }.getOrNull().orEmpty()
         knobsFlow.value = response
         return response
     }
