@@ -11,7 +11,6 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.WifiHandler
-import com.ome.app.utils.withDelay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -48,13 +47,9 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 KnobSocketMessage.SET_WIFI -> {
                     if (message == "ok") {
                         sendMessage(KnobSocketMessage.REBOOT)
-                        withDelay(2000) {
-                            disconnectFromNetwork()
-                        }
-                        withDelay(3000) {
-                            successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
-                            loadingLiveData.postValue(false)
-                        }
+                        disconnectFromNetwork()
+                        successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
+                        loadingLiveData.postValue(false)
                     } else {
                         defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
                     }

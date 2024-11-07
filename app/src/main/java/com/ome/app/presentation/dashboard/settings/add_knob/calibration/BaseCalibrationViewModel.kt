@@ -10,7 +10,7 @@ import com.ome.app.utils.KnobAngleManager
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 
-abstract class BaseCalibrationViewModel constructor(
+abstract class BaseCalibrationViewModel(
     private val webSocketManager: WebSocketManager,
     private val stoveRepository: StoveRepository,
     private val resourceProvider: ResourceProvider
