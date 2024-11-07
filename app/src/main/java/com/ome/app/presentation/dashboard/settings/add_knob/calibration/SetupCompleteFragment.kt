@@ -37,7 +37,7 @@ class SetupCompleteFragment :
             if(!args.isComeFromSettings){
                 findNavController().popBackStack(R.id.knobWakeUpFragment, true)
             } else {
-                findNavController().popBackStack(R.id.knobInstallationManualFragment, true)
+                findNavController().popBackStack(R.id.dashboardFragment, true)
             }
         }
 

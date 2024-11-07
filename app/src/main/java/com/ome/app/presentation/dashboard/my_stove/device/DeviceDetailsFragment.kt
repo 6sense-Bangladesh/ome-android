@@ -154,14 +154,15 @@ class DeviceDetailsFragment :
                 knobView.setupKnob(it)
             }
             mainViewModel.getKnobStateByMac(args.params.macAddr).collectWithLifecycleStateIn{knob ->
+                knob.log("getKnobStateByMac")
                 val batteryLevel = knob.battery
                 batteryPercentage.text = batteryLevel?.addPercentage().orEmpty()
                 knob.angle?.toInt()?.let {
                     changeBurnerStatus(it)
-                    if(knob.mountingSurface != null && mainViewModel.userInfo.value.stoveKnobMounting != knob.mountingSurface.type){
-                        viewModel.isEnable.value = false
-                        changeBurnerStatus(it, BurnerState.Off( mainViewModel.getOffAngleByMac(args.params.macAddr).orZero()))
-                    }
+//                    if(knob.mountingSurface != null && mainViewModel.userInfo.value.stoveKnobMounting != knob.mountingSurface.type){
+//                        viewModel.isEnable.value = false
+//                        changeBurnerStatus(it, BurnerState.Off( mainViewModel.getOffAngleByMac(args.params.macAddr).orZero()))
+//                    }
                     binding.knobView.setKnobPosition(it.toFloat())
                 }
                 knob.connectStatus?.let {
