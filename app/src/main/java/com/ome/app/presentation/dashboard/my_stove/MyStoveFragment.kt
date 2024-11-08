@@ -172,7 +172,28 @@ class MyStoveFragment :
             mainViewModel.knobs.collectWithLifecycle {knobs->
                 knobs.forEach { knob->
                     mainViewModel.getKnobStateByMac(knob.macAddr).collectWithLifecycleStateIn {
-                        it.angle
+                        if(it.angle == null) return@collectWithLifecycleStateIn
+                        when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
+                            StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
+                                when(knob.stovePosition){
+                                    1 -> knob1.setKnobPosition(it.angle.toFloat())
+                                    2 -> knob2.setKnobPosition(it.angle.toFloat())
+                                    3 -> knob4.setKnobPosition(it.angle.toFloat())
+                                    4 -> knob5.setKnobPosition(it.angle.toFloat())
+                                    5 -> knob3.setKnobPosition(it.angle.toFloat())
+                                }
+                            }
+                            else -> {
+                                when(knob.stovePosition){
+                                    1 -> knob1.setKnobPosition(it.angle.toFloat())
+                                    2 -> knob2.setKnobPosition(it.angle.toFloat())
+                                    3 -> knob3.setKnobPosition(it.angle.toFloat())
+                                    4 -> knob4.setKnobPosition(it.angle.toFloat())
+                                    5 -> knob5.setKnobPosition(it.angle.toFloat())
+                                    6 -> knob6.setKnobPosition(it.angle.toFloat())
+                                }
+                            }
+                        }
                     }
                     when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
                         StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
