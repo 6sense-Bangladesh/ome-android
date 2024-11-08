@@ -2,7 +2,7 @@ package com.ome.app.utils
 
 import android.view.View
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -38,7 +38,7 @@ fun View.makeGone() {
 }
 
 fun withDelay(delayMillis: Long, block: suspend CoroutineScope.() -> Unit) {
-    CoroutineScope(Dispatchers.Main).launch {
+    MainScope().launch {
         delay(delayMillis)
         block()
     }

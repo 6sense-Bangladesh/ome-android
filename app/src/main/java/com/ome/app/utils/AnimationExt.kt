@@ -116,6 +116,7 @@ fun View.animateUp(heightDifference: Int = this.height) {
 fun View.animateVisibility(doOnEnd: (isVisible: Boolean) -> Unit = {}, doOnStart: (isVisible: Boolean) -> Unit = {}) {
     if (height == 0 || !isVisible) {
         doOnStart(true)
+        visible()
         Log.d("animateVisibility:", "if View.VISIBLE")
         visibility = View.VISIBLE
         val valueAnimator = ValueAnimator.ofInt(0, minimumHeight)
@@ -140,7 +141,10 @@ fun View.animateVisibility(doOnEnd: (isVisible: Boolean) -> Unit = {}, doOnStart
             params.height = animatedValue
             this.layoutParams = params
         }
-        valueAnimator.doOnEnd { doOnEnd.invoke(false) }
+        valueAnimator.doOnEnd {
+            doOnEnd.invoke(false)
+            gone()
+        }
         valueAnimator.start()
     }
 }

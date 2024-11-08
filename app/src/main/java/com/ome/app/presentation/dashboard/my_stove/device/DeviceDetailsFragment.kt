@@ -9,13 +9,32 @@ import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceDetailsBinding
 import com.ome.app.domain.model.network.response.KnobDto
-import com.ome.app.domain.model.state.*
+import com.ome.app.domain.model.state.BurnerState
+import com.ome.app.domain.model.state.ConnectionState
+import com.ome.app.domain.model.state.Rotation
+import com.ome.app.domain.model.state.StoveOrientation
+import com.ome.app.domain.model.state.connectionState
+import com.ome.app.domain.model.state.stoveOrientation
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationConfirmationFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragmentParams
 import com.ome.app.presentation.views.KnobView
-import com.ome.app.utils.*
+import com.ome.app.utils.TAG
+import com.ome.app.utils.addPercentage
+import com.ome.app.utils.animateInvisible
+import com.ome.app.utils.animateVisibility
+import com.ome.app.utils.animateVisible
+import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.collectWithLifecycleStateIn
+import com.ome.app.utils.gone
+import com.ome.app.utils.isTrue
+import com.ome.app.utils.log
+import com.ome.app.utils.navigateSafe
+import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.setBounceClickListener
+import com.ome.app.utils.toast
+import com.ome.app.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
@@ -29,7 +48,6 @@ class DeviceDetailsFragment :
     private val args by navArgs<DeviceDetailsFragmentArgs>()
 
     private val burnerStates by lazy { mainViewModel.getKnobBurnerStatesByMac(args.params.macAddr) }
-
 
     override fun setupUI() {
         viewModel.macAddress = args.params.macAddr
@@ -115,7 +133,7 @@ class DeviceDetailsFragment :
             binding.tvLevel.setBounceClickListener {
                 navigateSafe(
                     DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToDeviceCalibrationFragment(
-                        DeviceCalibrationFragmentParams(macAddr = args.params.macAddr, rotateDir = 1)
+                        DeviceCalibrationFragmentParams(macAddr = args.params.macAddr, rotateDir = 1, isComeFromSettings = true)
                     )
                 )
             }
@@ -124,21 +142,25 @@ class DeviceDetailsFragment :
                     DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToDeviceCalibrationConfirmationFragment(
                         DeviceCalibrationConfirmationFragmentParams(
                             macAddr = args.params.macAddr,
-                            isComeFromSettings = false,
+                            isComeFromSettings = true,
                             offPosition = 0f,
                             lowSinglePosition = 170f,
                             medPosition = 200f,
                             highSinglePosition =280f,
-                            rotateDir = 1
+                            rotateDir = 1,
                         )
                     )
                 )
             }
         }
         binding.btnClose.setOnClickListener {
-            binding.warningCard.animateInvisible()
+            binding.warningCard.animateVisibility()
         }
         binding.warningCard.setOnClickListener {
+            if(viewModel.currentKnob.value?.connectStatus.connectionState == ConnectionState.Offline){
+                toast("Make sure Knob is online")
+                return@setOnClickListener
+            }
             binding.warningCard.animateInvisible()
             navigateSafe(
                 DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToKnobInstallationManualFragment(

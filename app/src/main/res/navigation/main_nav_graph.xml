@@ -116,14 +116,14 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_signUpConfirmationFragment_to_welcomeFragment"
-            app:destination="@id/dashboardFragment"
+            app:destination="@id/welcomeFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/welcomeFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"

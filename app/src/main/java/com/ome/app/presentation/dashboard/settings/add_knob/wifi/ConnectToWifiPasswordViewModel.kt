@@ -49,9 +49,12 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 KnobSocketMessage.SET_WIFI -> {
                     if (message == "ok") {
                         sendMessage(KnobSocketMessage.REBOOT)
-                        withDelay(2000) {
-                            disconnectFromNetwork()
-                        }
+//                        withDelay(2000) {
+//                            disconnectFromNetwork()
+//                        }
+//                        successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
+//                        loadingLiveData.postValue(false)
+                        disconnectFromNetwork()
                         withDelay(3000) {
                             successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
                             loadingLiveData.postValue(false)

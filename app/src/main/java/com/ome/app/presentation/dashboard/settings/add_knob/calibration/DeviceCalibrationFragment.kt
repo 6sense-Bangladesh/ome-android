@@ -10,7 +10,11 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceCalibrationBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.utils.*
+import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.navigateSafe
+import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.setBounceClickListener
+import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -100,11 +104,11 @@ class DeviceCalibrationFragment :
         viewModel.currentCalibrationState.collectWithLifecycle{ currentStep ->
             binding.knobView.hideLabel(currentStep)
             if (currentStep == CalibrationState.OFF) {
-                binding.subLabelTv.makeGone()
+//                binding.subLabelTv.makeGone()
                 binding.labelTv.text =
                     getString(R.string.device_calibration_off_label)
             } else {
-                binding.subLabelTv.makeVisible()
+//                binding.subLabelTv.makeVisible()
                 if (viewModel.isDualKnob) {
                     when (currentStep) {
                         CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE -> {

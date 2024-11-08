@@ -10,7 +10,11 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceCalibrationConfirmationBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.utils.*
+import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.navigateSafe
+import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.setBounceClickListener
+import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -35,16 +39,24 @@ class DeviceCalibrationConfirmationFragment :
         viewModel.lowSingleAngle = args.params.lowSinglePosition
         viewModel.lowDualAngle = args.params.lowDualPosition
         binding.knobView.enableFullLabel()
+        initLabels()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        viewModel.firstConfirmationPageLiveData.postValue(true)
         viewModel.initSubscriptions()
-        viewModel.nextStep()
+//        viewModel.nextStep()
+        if (viewModel.currentCalibrationState.value == null) {
+            showSuccessDialog(
+                title = getString(R.string.warning),
+                message = getString(R.string.ome_knob_will_rotate),
+                onDismiss = {
+                    viewModel.nextStep()
+                    binding.continueBtn.startAnimation()
+                })
+        }
 
-
-        initLabels()
     }
 
     override fun setupListener() {
@@ -63,6 +75,7 @@ class DeviceCalibrationConfirmationFragment :
                     message = getString(R.string.ome_knob_will_rotate),
                     onDismiss = {
                         viewModel.nextStep()
+                        binding.continueBtn.startAnimation()
                     })
             } else if (viewModel.currentCalibrationState.value == CalibrationState.OFF && viewModel.offTriggerCount == 1) {
                 showSuccessDialog(
@@ -73,19 +86,25 @@ class DeviceCalibrationConfirmationFragment :
                     })
             } else {
                 viewModel.nextStep()
+                binding.continueBtn.startAnimation()
             }
         }
     }
 
     override fun handleBackPressEvent() {
-        activity?.onBackPressedDispatcher?.addCallback(this){ 
+        activity?.onBackPressedDispatcher?.addCallback(this){
             viewModel.previousStep()
+            binding.continueBtn.revertAnimation()
         }
     }
 
     private fun initLabels() {
-
-
+        viewModel.offAngle?.let { binding.knobView.setOffPosition(it) }
+        viewModel.highSingleAngle?.let { binding.knobView.setHighSinglePosition(it) }
+        viewModel.highDualAngle?.let { binding.knobView.setHighDualPosition(it) }
+        viewModel.mediumAngle?.let { binding.knobView.setMediumPosition(it) }
+        viewModel.lowSingleAngle?.let { binding.knobView.setLowSinglePosition(it) }
+        viewModel.lowDualAngle?.let { binding.knobView.setLowDualPosition(it) }
     }
 
     override fun setupObserver() {
@@ -112,14 +131,15 @@ class DeviceCalibrationConfirmationFragment :
         }
         viewModel.currentCalibrationState.collectWithLifecycle{ currentStep ->
             binding.labelTv.text = getString(R.string.calibration_confirmation_label, currentStep.positionName)
-            when(currentStep){
-                CalibrationState.OFF -> viewModel.offAngle?.let { binding.knobView.setOffPosition(it) }
-                CalibrationState.HIGH_SINGLE -> viewModel.highSingleAngle?.let { binding.knobView.setHighSinglePosition(it) }
-                CalibrationState.HIGH_DUAL -> viewModel.highDualAngle?.let { binding.knobView.setHighDualPosition(it) }
-                CalibrationState.MEDIUM -> viewModel.mediumAngle?.let { binding.knobView.setMediumPosition(it) }
-                CalibrationState.LOW_SINGLE -> viewModel.lowSingleAngle?.let { binding.knobView.setLowSinglePosition(it) }
-                CalibrationState.LOW_DUAL -> viewModel.lowDualAngle?.let { binding.knobView.setLowDualPosition(it) }
-            }
+            binding.continueBtn.revertAnimation()
+//            when(currentStep){
+//                CalibrationState.OFF -> viewModel.offAngle?.let { binding.knobView.setOffPosition(it) }
+//                CalibrationState.HIGH_SINGLE -> viewModel.highSingleAngle?.let { binding.knobView.setHighSinglePosition(it) }
+//                CalibrationState.HIGH_DUAL -> viewModel.highDualAngle?.let { binding.knobView.setHighDualPosition(it) }
+//                CalibrationState.MEDIUM -> viewModel.mediumAngle?.let { binding.knobView.setMediumPosition(it) }
+//                CalibrationState.LOW_SINGLE -> viewModel.lowSingleAngle?.let { binding.knobView.setLowSinglePosition(it) }
+//                CalibrationState.LOW_DUAL -> viewModel.lowDualAngle?.let { binding.knobView.setLowDualPosition(it) }
+//            }
 
 //            currentStep?.let {
 //                if (viewModel.isDualKnob) {
