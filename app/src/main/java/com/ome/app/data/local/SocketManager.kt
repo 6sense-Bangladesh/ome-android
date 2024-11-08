@@ -4,10 +4,13 @@ import android.content.Context
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
 import com.ome.app.utils.isNotEmpty
 import com.ome.app.utils.log
+import com.ome.app.utils.loge
 import com.ome.app.utils.logi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.yield
 import okhttp3.ResponseBody
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import retrofit2.Response
@@ -19,6 +22,7 @@ import java.io.DataOutputStream
 import java.io.InputStream
 import java.net.ConnectException
 import java.net.Socket
+import java.net.SocketException
 import java.nio.charset.StandardCharsets
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
@@ -91,8 +95,13 @@ class SocketManager(
                 }
             }
             lastMessageSent = message
-            mOut?.write(data)
-            mOut?.flush()
+            try {
+                mOut?.write(data)
+                mOut?.flush()
+            } catch (e: SocketException) {
+                loge("Socket connection lost: ${e.message}")
+                reconnectSocket()
+            }
         }
     }
 
@@ -218,6 +227,40 @@ class SocketManager(
         return cipher.doFinal(encrypted)
     }
 
+    private suspend fun reconnectSocket(retryCount: Int = 3, delayMillis: Long = 2000) = withContext(Dispatchers.IO) {
+        var attempts = 0
+        var connected = false
+
+        while (attempts < retryCount && !connected) {
+            try {
+                // Attempt to reconnect
+                socket = Socket(ipAddress, port)
+                mOut = DataOutputStream(socket.getOutputStream())
+                mIn = DataInputStream(socket.getInputStream())
+                onSocketConnect()  // Call this to handle any setup needed on connect
+                mRun = true
+                connected = true
+                logi("Reconnected successfully on attempt ${attempts + 1}")
+
+                // Start reading again
+                while (mRun) {
+                    yield()
+                    read()
+                }
+            } catch (e: ConnectException) {
+                attempts++
+                loge("Reconnect attempt ${attempts} failed: ${e.message}")
+                delay(delayMillis)  // Wait before the next attempt
+            }
+        }
+
+        if (!connected) {
+            loge("Failed to reconnect after $retryCount attempts.")
+            throw ConnectException("Unable to reconnect to socket after multiple attempts.")
+        }
+    }
+
+
 
     suspend fun connect() = withContext(Dispatchers.IO) {
         if (!socket.isConnected) {
@@ -228,6 +271,7 @@ class SocketManager(
                 mIn = DataInputStream(socket.getInputStream())
                 onSocketConnect()
                 while (mRun) {
+                    yield()
                     read()
                 }
             } catch (e: ConnectException) {
