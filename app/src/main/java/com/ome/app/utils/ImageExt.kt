@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
@@ -20,6 +19,7 @@ import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.exifinterface.media.ExifInterface
+import coil3.BitmapImage
 import coil3.imageLoader
 import coil3.request.ImageRequest
 import coil3.request.crossfade
@@ -184,7 +184,7 @@ suspend fun Any.toBitmap(context: Context): Bitmap {
             .data(this@toBitmap)
             .build()
         val drawable = context.imageLoader.execute(request).image
-        (drawable as BitmapDrawable).bitmap
+        (drawable as BitmapImage).bitmap
     }
 }
 fun File.toBitmap(): Bitmap {

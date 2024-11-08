@@ -15,6 +15,8 @@ import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.base.EmptyViewModel
 import com.ome.app.presentation.dashboard.settings.add_knob.zone.ZoneSelectionFragmentParams
 import com.ome.app.utils.loadDrawable
+import com.ome.app.utils.navigateSafe
+import com.ome.app.utils.onBackPressed
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -39,12 +41,10 @@ class KnobInstallationManualFragment :
     }
 
     override fun setupListener() {
-        binding.topAppBar.setNavigationOnClickListener{
-            findNavController().popBackStack(R.id.dashboardFragment, false)
-        }
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
         binding.continueBtn.setOnClickListener {
-            findNavController().navigate(
+            navigateSafe(
                 KnobInstallationManualFragmentDirections.actionKnobInstallationManualFragmentToZoneSelectionFragment(
                     ZoneSelectionFragmentParams(
                         macAddrs = args.params.macAddr,
@@ -55,8 +55,8 @@ class KnobInstallationManualFragment :
         }
     }
     override fun handleBackPressEvent() {
-        requireActivity().onBackPressedDispatcher.addCallback(this){
-            findNavController().popBackStack(R.id.dashboardFragment, false)
+        activity?.onBackPressedDispatcher?.addCallback(this){
+            findNavController().popBackStack(if(args.params.isComeFromSettings) R.id.deviceDetailsFragment else R.id.dashboardFragment, false)
         }
     }
 }

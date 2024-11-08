@@ -1,16 +1,14 @@
 package com.ome.app.presentation.dashboard.my_stove.device
 
-import android.os.Bundle
 import android.os.Parcelable
 import android.text.SpannableStringBuilder
-import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceSettingsBinding
-import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.model.network.response.KnobDto
+import com.ome.app.domain.model.state.Rotation
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.base.recycler.ItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.SettingItemAdapter
@@ -47,47 +45,6 @@ class DeviceSettingsFragment :
             knobTv.text = getString(R.string.knob_, viewModel.stovePosition)
             macAddressTv.text = getString(R.string.knob_mac_addr_label, args.params.macAddr)
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-//        viewModel.knobAngleLiveData.postValue(null)
-//        binding.knobView.setFontSize(14f)
-
-//        binding.changeKnobOrientationCl.setOnClickListener {
-//            findNavController().navigate(
-//                DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToKnobInstallationManual1Fragment(
-//                    KnobInstallationManual1FragmentParams(
-//                        isComeFromSettings = true,
-//                        macAddr = args.params.macAddr
-//                    )
-//
-//                )
-//            )
-//        }
-//        binding.changeWifiCl.setOnClickListener {
-//            findNavController().navigate(
-//                DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToConnectToWifiFragment(
-//                    ConnectToWifiParams(
-//                        isComeFromSettings = false,
-//                        isChangeWifiMode = true,
-//                        macAddrs = args.params.macAddr
-//                    )
-//                )
-//            )
-//        }
-//        binding.changeKnobPositionCl.setOnClickListener {
-//            Screens.StoveLayout.navigate()
-//            findNavController().navigate(
-//                DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToSelectBurnerFragment(
-//                    SelectBurnerFragmentParams(
-//                        isChangeMode = true,
-//                        macAddress = viewModel.macAddress
-//                    )
-//                )
-//            )
-//        }
     }
 
     override fun setupListener() {
@@ -158,21 +115,21 @@ class DeviceSettingsFragment :
             is DeviceSettingsItemModel -> {
                 when (item) {
                     DeviceSettingsItemModel.KnobPosition -> {
-                        findNavController().navigate(
+                        navigateSafe(
                             DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToSelectBurnerFragment(
                                 SelectBurnerFragmentParams(isEditMode = true, macAddress = viewModel.macAddress)
                             )
                         )
                     }
                     DeviceSettingsItemModel.KnobWiFI -> {
-                        findNavController().navigate(
+                        navigateSafe(
                             DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToConnectToWifiFragment(
                                 ConnectToWifiParams(isEditMode = true, macAddrs = viewModel.macAddress)
                             )
                         )
                     }
                     DeviceSettingsItemModel.KnobOrientation -> {
-                        findNavController().navigate(
+                        navigateSafe(
                             DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToDirectionSelectionFragment(
                                 DirectionSelectionFragmentParams(isEditMode = true, macAddress = viewModel.macAddress)
                             )

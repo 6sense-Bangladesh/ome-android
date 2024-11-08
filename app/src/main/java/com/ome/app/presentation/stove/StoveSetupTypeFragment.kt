@@ -1,9 +1,7 @@
 package com.ome.app.presentation.stove
 
 import android.os.Parcelable
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupTypeBinding
@@ -63,22 +61,14 @@ class StoveSetupTypeFragment :
             }
             else{
                 mainViewModel.stoveData.stoveType.isNotNull {
-                    findNavController().navigate(
-                        R.id.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment, bundleOf(
-                            "params" to StoveSetupPhotoArgs(
-                                brand = args.params.brand,
-                                type = it,
-                            )
+                    navigateSafe(
+                        StoveSetupTypeFragmentDirections.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment(
+                            StoveSetupPhotoArgs(args.params.brand, it)
                         )
                     )
                 } ?: onError("Please select stove type")
 
             }
-//                findNavController().navigate(
-//                    StoveSetupTypeFragmentDirections.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment(
-//                        StoveSetupPhotoArgs(args.params.brand, viewModel.stoveType)
-//                    )
-//                )
 
         }
         binding.stoveShipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
@@ -169,8 +159,10 @@ class StoveSetupTypeFragment :
                 binding.continueBtn.startAnimation()
             else {
                 binding.continueBtn.revertAnimation()
-                if (args.params.isEditMode)
+                if (args.params.isEditMode) {
+                    toast(getString(R.string.stove_type_changed))
                     onBackPressed()
+                }
             }
         }
     }

@@ -8,6 +8,7 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentForgotPasswordEmailBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.signup.password.AuthParams
+import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -47,7 +48,7 @@ class ForgotPasswordFragment :
         super.setupObserver()
         subscribe(viewModel.forgotPasswordSuccess) {
             binding.continueBtn.revertAnimation()
-            findNavController().navigate(
+            navigateSafe(
                 ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToSignUpConfirmationFragment(
                     AuthParams(isForgotPassword = true, email = binding.email.getText())
                 )

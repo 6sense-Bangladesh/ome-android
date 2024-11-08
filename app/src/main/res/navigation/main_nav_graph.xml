@@ -31,19 +31,29 @@
         android:name="com.ome.app.presentation.signin.SignInFragment"
         android:label="SignInFragment">
         <action
-            android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
-            app:destination="@id/forgotPasswordFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-        <action
-            android:id="@+id/action_signInFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_signInFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/mainNavGraph" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_signInFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment"
             app:popUpToInclusive="true"
             app:launchSingleTop="true"
             app:popUpTo="@+id/mainNavGraph" />
@@ -358,6 +368,13 @@
             app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_deviceDetailsFragment_to_deviceSettingsFragment"
             app:destination="@id/deviceSettingsFragment" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_deviceDetailsFragment_to_knobInstallationManualFragment"
+            app:destination="@id/knobInstallationManualFragment" />
     </fragment>
 
     <fragment
@@ -552,19 +569,19 @@
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams" />
         <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_deviceCalibrationFragment_to_deviceCalibrationConfirmationFragment"
-            app:destination="@id/deviceCalibrationConfirmationFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/deviceCalibrationConfirmationFragment" />
         <action
-            android:id="@+id/action_deviceCalibrationFragment_to_setupCompleteFragment"
-            app:destination="@id/setupCompleteFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_deviceCalibrationFragment_to_setupCompleteFragment"
+            app:destination="@id/setupCompleteFragment"/>
     </fragment>
     <fragment
         android:id="@+id/knobInstallationManualFragment"
@@ -575,6 +592,10 @@
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragmentParams" />
         <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_knobInstallationManualFragment_to_zoneSelectionFragment"
             app:destination="@id/zoneSelectionFragment" />
     </fragment>

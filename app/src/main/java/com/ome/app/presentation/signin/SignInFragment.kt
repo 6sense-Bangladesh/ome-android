@@ -10,6 +10,7 @@ import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.databinding.FragmentSignInBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.closeKeyboard
+import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -43,7 +44,7 @@ class SignInFragment :
 //        }
 
         binding.forgotPassword.setOnClickListener {
-            findNavController().navigate(R.id.action_signInFragment_to_forgotPasswordFragment)
+            navigateSafe(R.id.action_signInFragment_to_forgotPasswordFragment)
         }
 
     }
@@ -68,7 +69,7 @@ class SignInFragment :
         subscribe(viewModel.destinationAfterSignInLiveData){
             binding.continueBtn.revertAnimation()
             AmplifyManager.kotAuth = Amplify.Auth
-            findNavController().navigate(it.first)
+            navigateSafe(it)
         }
     }
 

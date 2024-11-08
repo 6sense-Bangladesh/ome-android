@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginTop="@dimen/_5sdp"
-        android:text="@string/calibration_confirmation_label"
+        tools:text="@string/calibration_confirmation_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelZone" />
@@ -50,7 +50,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelTv" />
 
-    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+    <TextView
+        android:id="@+id/subLabelTv"
+        style="@style/Label.12sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:text="@string/device_calibration_sub_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/noBtn" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/noBtn"
         style="@style/OmeButton.Blue.Outline"
         android:text="@string/no_change_position_btn"
@@ -65,8 +77,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

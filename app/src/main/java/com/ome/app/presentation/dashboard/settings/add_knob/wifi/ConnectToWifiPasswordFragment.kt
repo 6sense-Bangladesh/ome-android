@@ -9,6 +9,7 @@ import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.databinding.FragmentConnectToWifiPasswordBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragmentParams
+import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
@@ -50,7 +51,7 @@ class ConnectToWifiPasswordFragment :
             if (args.params.isEditMode) {
                 findNavController().popBackStack(R.id.deviceSettingsFragment, false)
             } else {
-                findNavController().navigate(
+                navigateSafe(
                     ConnectToWifiPasswordFragmentDirections.actionConnectToWifiPasswordFragmentToKnobInstallationManualFragment(
                         KnobInstallationManualFragmentParams(macAddr = args.params.macAddr)
                     )

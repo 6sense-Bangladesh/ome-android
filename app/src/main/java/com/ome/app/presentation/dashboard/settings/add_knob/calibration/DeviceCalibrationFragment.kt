@@ -3,7 +3,7 @@ package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
-import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -25,38 +25,34 @@ class DeviceCalibrationFragment :
     private val args by navArgs<DeviceCalibrationFragmentArgs>()
 
     override fun setupUI() {
+        viewModel.macAddress = args.params.macAddr
+        viewModel.rotationDir = args.params.rotateDir
+        viewModel.isDualKnob = args.params.isDualKnob
         mainViewModel.connectToSocket()
+        binding.knobView.enableFullLabel()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.clearData()
-        binding.continueBtn.setBounceClickListener {
-            viewModel.setLabel()
-        }
-        viewModel.currentCalibrationStateLiveData.postValue(CalibrationState.OFF)
-        viewModel.macAddress = args.params.macAddr
-        viewModel.rotationDir = args.params.rotateDir
-        viewModel.isDualKnob = args.params.isDualKnob
 
-        binding.topAppBar.setNavigationOnClickListener{
-            viewModel.previousStep()
-
-        }
         viewModel.initSubscriptions()
 
     }
 
+    override fun setupListener() {
+        binding.continueBtn.setBounceClickListener {
+            viewModel.setLabel()
+        }
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
+    }
+
 
     override fun handleBackPressEvent() {
-        requireActivity().onBackPressedDispatcher.addCallback(object :
-            OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                viewModel.previousStep()
-            }
-        })
-
+        activity?.onBackPressedDispatcher?.addCallback(this){
+            viewModel.previousStep()
+        }
     }
 
     override fun setupObserver() {
@@ -66,7 +62,7 @@ class DeviceCalibrationFragment :
         }
         subscribe(viewModel.calibrationIsDoneLiveData) {
                 if (it) {
-                    findNavController().navigate(
+                    navigateSafe(
                         DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToDeviceCalibrationConfirmationFragment(
                             DeviceCalibrationConfirmationFragmentParams(
                                 isComeFromSettings = args.params.isComeFromSettings,
@@ -101,7 +97,7 @@ class DeviceCalibrationFragment :
         subscribe(viewModel.zoneLiveData) {
             binding.knobView.stovePosition = it
         }
-        subscribe(viewModel.currentCalibrationStateLiveData) { currentStep ->
+        viewModel.currentCalibrationState.collectWithLifecycle{ currentStep ->
             binding.knobView.hideLabel(currentStep)
             if (currentStep == CalibrationState.OFF) {
                 binding.subLabelTv.makeGone()
@@ -144,7 +140,7 @@ class DeviceCalibrationFragment :
 
 @Parcelize
 data class DeviceCalibrationFragmentParams(
-    val isComeFromSettings: Boolean = true,
+    val isComeFromSettings: Boolean = false,
     val zoneNumber: Int = 0,
     val isDualKnob: Boolean = false,
     val rotateDir: Int = 0,

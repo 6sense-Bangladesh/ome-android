@@ -8,6 +8,7 @@ import com.ome.app.data.remote.AmplifyResultValue
 import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.model.network.request.CreateUserRequest
 import com.ome.app.domain.model.network.response.UserResponse
+import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
@@ -19,9 +20,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpConfirmationViewModel @Inject constructor(
-    val amplifyManager: AmplifyManager,
-    val preferencesProvider: PreferencesProvider,
-    val userRepository: UserRepository
+    private val amplifyManager: AmplifyManager,
+    private val preferencesProvider: PreferencesProvider,
+    private val userRepository: UserRepository,
+    private val stoveRepository: StoveRepository
 ) :
     BaseViewModel() {
 
@@ -67,6 +69,8 @@ class SignUpConfirmationViewModel @Inject constructor(
                 }
                 is ResponseWrapper.Success -> {
                     saveUserData(result.value)
+                    stoveRepository.getAllKnobs()
+                    userRepository.getUserData()
                     signUpConfirmationResultLiveData.postValue(true)
                 }
             }

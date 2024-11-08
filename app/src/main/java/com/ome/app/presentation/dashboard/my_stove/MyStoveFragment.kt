@@ -38,26 +38,31 @@ class MyStoveFragment :
 
     override fun setupUI() {
         binding.apply {
-            initKnob(knob1, knob2, knob3, knob4, knob5, knob6, knob1center, knob2center)
+            initKnob(knob1, knob2, knob3, knob4, knob5, knob6)
         }
     }
 
     override fun setupListener() {
         binding.apply {
-            listOf(knob1, knob2, knob3, knob4, knob5, knob6, knob1center, knob2center).forEach { knobView->
+            listOf(knob1, knob2, knob3, knob4, knob5, knob6).forEach { knobView->
                 knobView.setBounceClickListener{
                     if(knobView.isKnobInAddState){
-                        navController?.navigate(
-                            DashboardFragmentDirections.actionDashboardFragmentToKnobWakeUpFragment(
-                                KnobWakeUpParams(selectedKnobPosition = knobView.stovePosition)
+                        if(mainViewModel.userInfo.value.stoveSetupComplete.isTrue()) {
+                            navController?.navigateSafe(
+                                DashboardFragmentDirections.actionDashboardFragmentToKnobWakeUpFragment(
+                                    KnobWakeUpParams(selectedKnobPosition = knobView.stovePosition)
+                                )
                             )
-                        )
+                        }else toast("Complete stove setup first.")
                     }
-//                        navController?.navigate(R.id.action_dashboardFragment_to_addKnobNavGraph)
-//                        navController?.navigate(DashboardFragmentDirections.actionDashboardFragmentToAddKnobNavGraph())
+//                        navController?.navigateSafe(R.id.action_dashboardFragment_to_addKnobNavGraph)
+//                        navController?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToAddKnobNavGraph())
                 }
             }
         }
+    }
+    private fun KnobView.setupKnob(knob: KnobView.KnobState) {
+
     }
     private fun KnobView.setupKnob(knob: KnobDto, navController: NavController?) {
         navController?.apply {
@@ -99,53 +104,84 @@ class MyStoveFragment :
         binding.apply {
             mainViewModel.userInfo.collectWithLifecycle {userInfo->
                 userInfo.log("userInfo")
-                when(userInfo.stoveOrientation.stoveOrientation){
+                when (userInfo.stoveOrientation.stoveOrientation) {
                     StoveOrientation.FOUR_BURNERS -> {
                         listOf(knob1, knob2, knob3, knob4).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
-                        visible(knob1, knob2, knob3, knob4)
-                        gone(knob5, knob6, knob1centerView, knob2centerView)
+                        visible(knob1 , knob2 , knob3 , knob4)
+                        changeFlexBasisPercent(.5F, knob1 , knob2 , knob3 , knob4)
+                        gone(knob5 , knob6)
                     }
                     StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
-                        listOf(knob1, knob2, knob3, knob4, knob1center).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
-                        visible(knob1, knob2, knob3, knob4, knob1centerView)
-                        gone(knob5, knob6, knob2centerView)
+                        listOf(knob1 , knob2 , knob3 , knob4 , knob5).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
+                        visible(knob1 , knob2 , knob3 , knob4 , knob5)
+                        changeFlexBasisPercent(.5F, knob1 , knob2 , knob4 , knob5)
+                        changeFlexBasisPercent(1F,  knob3)
+                        gone(knob6)
                     }
                     StoveOrientation.SIX_BURNERS -> {
-                        visible(knob1, knob2, knob3, knob4, knob5, knob6)
-                        listOf(knob1, knob2, knob3, knob4, knob5, knob6).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
-                        gone(knob1centerView, knob2centerView)
+                        listOf(knob1 , knob2 , knob3 , knob4 , knob5 , knob6).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
+                        visible(knob1 , knob2 , knob3 , knob4 , knob5 , knob6)
+                        changeFlexBasisPercent(.33F, knob1 , knob2 , knob3 , knob4 , knob5 , knob6)
                     }
                     StoveOrientation.TWO_BURNERS_VERTICAL -> {
-                        visible(knob1centerView, knob2centerView)
-                        listOf(knob1center, knob2center).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
-                        gone(knob1, knob2, knob3, knob4, knob5, knob6)
+                        listOf(knob1 , knob2).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
+                        visible(knob1 , knob2)
+                        changeFlexBasisPercent(1F, knob1 , knob2)
+                        gone(knob3 , knob4 , knob5 , knob6)
                     }
                     StoveOrientation.TWO_BURNERS_HORIZONTAL -> {
-                        visible(knob1, knob2)
-                        listOf(knob1, knob2).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
-                        gone(knob3, knob4, knob5, knob6, knob1centerView, knob2centerView)
+                        listOf(knob1 , knob2).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
+                        visible(knob1 , knob2)
+                        changeFlexBasisPercent(.5F, knob1 , knob2)
+                        gone(knob3 , knob4 , knob5 , knob6)
                     }
-                    null -> {
-                        gone(knob1, knob2, knob3, knob4, knob5, knob6, knob1centerView, knob2centerView)
-                    }
+                    null -> Unit
                 }
+
+//                when(userInfo.stoveOrientation.stoveOrientation){
+//                    StoveOrientation.FOUR_BURNERS -> {
+//                        listOf(knob1, knob2, knob3, knob4).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
+//                        visible(knob1, knob2, knob3, knob4)
+//                        gone(knob5, knob6, knob1centerView, knob2centerView)
+//                    }
+//                    StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
+//                        listOf(knob1, knob2, knob3, knob4, knob1center).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
+//                        visible(knob1, knob2, knob3, knob4, knob1centerView)
+//                        gone(knob5, knob6, knob2centerView)
+//                    }
+//                    StoveOrientation.SIX_BURNERS -> {
+//                        visible(knob1, knob2, knob3, knob4, knob5, knob6)
+//                        listOf(knob1, knob2, knob3, knob4, knob5, knob6).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
+//                        gone(knob1centerView, knob2centerView)
+//                    }
+//                    StoveOrientation.TWO_BURNERS_VERTICAL -> {
+//                        visible(knob1centerView, knob2centerView)
+//                        listOf(knob1center, knob2center).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
+//                        gone(knob1, knob2, knob3, knob4, knob5, knob6)
+//                    }
+//                    StoveOrientation.TWO_BURNERS_HORIZONTAL -> {
+//                        visible(knob1, knob2)
+//                        listOf(knob1, knob2).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
+//                        gone(knob3, knob4, knob5, knob6, knob1centerView, knob2centerView)
+//                    }
+//                    null -> {
+//                        gone(knob1, knob2, knob3, knob4, knob5, knob6, knob1centerView, knob2centerView)
+//                    }
+//                }
             }
             mainViewModel.knobs.collectWithLifecycle {knobs->
                 knobs.forEach { knob->
+                    mainViewModel.getKnobStateByMac(knob.macAddr).collectWithLifecycleStateIn {
+                        it.angle
+                    }
                     when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
                         StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
                             when(knob.stovePosition){
                                 1 -> knob1.setupKnob(knob, navController)
                                 2 -> knob2.setupKnob(knob, navController)
-                                3 -> knob3.setupKnob(knob, navController)
-                                4 -> knob4.setupKnob(knob, navController)
-                                5 -> knob1center.setupKnob(knob, navController)
-                            }
-                        }
-                        StoveOrientation.TWO_BURNERS_VERTICAL -> {
-                            when(knob.stovePosition){
-                                1 -> knob1center.setupKnob(knob, navController)
-                                2 -> knob2center.setupKnob(knob, navController)
+                                3 -> knob4.setupKnob(knob, navController)
+                                4 -> knob5.setupKnob(knob, navController)
+                                5 -> knob3.setupKnob(knob, navController)
                             }
                         }
                         else -> {
@@ -161,9 +197,6 @@ class MyStoveFragment :
                     }
                 }
             }
-//            viewModel.webSocketManager.knobAngleFlow.collectWithLifecycle {
-//
-//            }
         }
     }
 

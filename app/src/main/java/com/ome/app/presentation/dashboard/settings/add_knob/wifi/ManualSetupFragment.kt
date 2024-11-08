@@ -3,12 +3,12 @@ package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 import android.os.Parcelable
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentManualSetupBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +52,7 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
         super.setupObserver()
         viewModel.wifiConnectedFlow.collectWithLifecycle{
             binding.connectBtn.revertAnimation()
-            findNavController().navigate(
+            navigateSafe(
                 ManualSetupFragmentDirections.actionManualSetupFragmentToWifiListFragment(
                     WifiListFragmentParams(
                         isEditMode = args.params.isEditMode,

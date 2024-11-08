@@ -2,18 +2,12 @@ package com.ome.app.presentation.stove
 
 import android.os.Parcelable
 import android.widget.AdapterView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupBrandBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.base.navigation.DeepNavGraph
-import com.ome.app.presentation.base.navigation.DeepNavGraph.encode
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.setBounceClickListener
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -52,13 +46,9 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
             else if(args.params.isEditMode)
                 viewModel.updateSelectedBrand(mainViewModel.userInfo.value.stoveId, onEnd= mainViewModel::getUserInfo)
             else{
-                findNavController().navigate(
-                    R.id.action_stoveSetupBrandFragment_to_stoveSetupTypeFragment,
-                    bundleOf(DeepNavGraph.NAV_ARG to StoveSetupTypeArgs(brand = viewModel.selectedBrand).encode())
-//                    StoveSetupBrandFragmentDirections.actionStoveSetupBrandFragmentToStoveSetupTypeFragment(
-//                        StoveSetupTypeArgs(brand = mainViewModel.stoveData.stoveMakeModel.orEmpty())
-//                    )
-                )
+                navigateSafe(StoveSetupBrandFragmentDirections.actionStoveSetupBrandFragmentToStoveSetupTypeFragment(
+                    StoveSetupTypeArgs(brand = viewModel.selectedBrand)
+                ))
             }
         }
     }
@@ -70,8 +60,10 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
                 binding.continueBtn.startAnimation()
             else {
                 binding.continueBtn.revertAnimation()
-                if (args.params.isEditMode)
+                if (args.params.isEditMode) {
+                    toast(getString(R.string.stove_brand_changed))
                     onBackPressed()
+                }
             }
         }
     }

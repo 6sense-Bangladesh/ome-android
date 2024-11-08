@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/knobCircleCl"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/statusText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="100px"
             android:adjustViewBounds="true"
+            app:layout_constraintDimensionRatio="H,1:1"
             android:contentDescription="@string/configure_knob"
             android:src="@drawable/ic_knob_circle"
             android:tag="@drawable/ic_knob_circle"
@@ -31,21 +32,6 @@
             tools:ignore="PxUsage" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <!--    <com.google.android.material.progressindicator.CircularProgressIndicator-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:progress="86"-->
-    <!--        android:rotation="25"-->
-    <!--        app:trackColor="@android:color/transparent"-->
-    <!--        app:indicatorSize="@dimen/_200sdp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="@+id/knobCircleCl"-->
-    <!--        app:layout_constraintEnd_toEndOf="@+id/knobCircleCl"-->
-    <!--        app:layout_constraintStart_toStartOf="@+id/knobCircleCl"-->
-    <!--        app:layout_constraintTop_toTopOf="@+id/knobCircleCl"-->
-    <!--        app:trackCornerRadius="@dimen/_10sdp"-->
-    <!--        app:trackThickness="@dimen/_10sdp" />-->
 
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -99,7 +85,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lowSingleCl"
         android:layout_width="0dp"
@@ -147,7 +132,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mediumCl"
@@ -197,7 +181,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/highDualCl"
         android:layout_width="0dp"
@@ -227,45 +210,49 @@
         android:id="@+id/statusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-37dp"
+        android:translationY="-25dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/knobCircleCl">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/connectionStatus"
-            style="@style/Label.Medium"
+            style="@style/Label.Mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_wifi_off"
             android:drawablePadding="@dimen/_3sdp"
             android:gravity="center"
             android:text="@string/no_wifi"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/noBattery"
-            style="@style/Label.Medium"
+            style="@style/Label.Mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_low_battery"
             android:drawablePadding="@dimen/_3sdp"
             android:gravity="center"
             android:text="@string/no_battery"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/notConfigured"
-            style="@style/Label.Medium"
+            style="@style/Label.Mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_settings_small"
             android:drawablePadding="@dimen/_3sdp"
             android:gravity="center"
             android:text="@string/configure"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="visible" />
     </LinearLayout>
 
 

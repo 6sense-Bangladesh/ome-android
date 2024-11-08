@@ -34,14 +34,14 @@ class StoveInfoFragment :
         binding.backIv.setOnClickListener { findNavController().popBackStack() }
 
         binding.stoveOrientationCl.setOnClickListener {
-//            findNavController().navigate(
+//            navigateSafe(
 //                StoveInfoFragmentDirections.actionStoveInfoFragmentToStoveSetupBurnersFragment(
 //                    StoveSetupBurnersArgs(isEditMode = true, stoveId = args.params)
 //                )
 //            )
         }
         binding.stoveTypeCl.setOnClickListener {
-//            findNavController().navigate(
+//            navigateSafe(
 //                StoveInfoFragmentDirections.actionStoveInfoFragmentToStoveSetupTypeFragment(
 //                    StoveSetupTypeArgs(isEditMode = true, stoveId = args.params)
 //                )

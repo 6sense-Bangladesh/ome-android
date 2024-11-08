@@ -62,8 +62,14 @@ class MainVM @Inject constructor(
 
     init {
         launch(ioContext) {
+            val oldKnobListSize = userRepository.userFlow.value?.knobMacAddrs?.size.orMinusOne()
             userRepository.userFlow.filterNotNull().collect {
                 savedStateHandle["userInfo"] = it
+                if(oldKnobListSize != it.knobMacAddrs.size){
+                    savedStateHandle["knobs"] = emptyList<KnobDto>()
+                    stoveRepository.knobsFlow.value = emptyList()
+                    stoveRepository.getAllKnobs()
+                }
             }
         }
         launch(ioContext) {
@@ -86,6 +92,7 @@ class MainVM @Inject constructor(
         }
     }
 
+    fun getKnobByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }
     fun getKnobStateByMac(macAddress: MacAddress) = knobState.map { it[macAddress] }
     fun getStovePositionByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.stovePosition.orMinusOne()
     fun getOffAngleByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.calibration?.offAngle
@@ -123,22 +130,15 @@ class MainVM @Inject constructor(
                                         if (result.message.contains("Not found")) {
                                             amplifyManager.deleteUser()
                                             preferencesProvider.clearData()
-                                            savedStateHandle["startDestination"] =
-                                                R.id.launchFragment
+                                            savedStateHandle["startDestination"] = R.id.launchFragment
                                         } else {
-                                            savedStateHandle["startDestination"] =
-                                                R.id.dashboardFragment
+                                            savedStateHandle["startDestination"] = R.id.dashboardFragment
                                         }
                                     }
 
                                     is ResponseWrapper.Success -> {
-//                                        initDone = true
-//                                        withContext(mainContext){
-//                                            savedStateHandle["userInfo"] = result.value
-//                                        }
                                         if (result.value.stoveSetupComplete.isFalse()) {
-                                            savedStateHandle["startDestination"] =
-                                                R.id.welcomeFragment
+                                            savedStateHandle["startDestination"] = R.id.welcomeFragment
                                             return@launch
                                         }
                                         savedStateHandle["startDestination"] = R.id.dashboardFragment

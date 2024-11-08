@@ -42,14 +42,9 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
                 if (args.params.isEditMode) {
                     showDialog(
                         title = getString(R.string.confirm_position),
-                        positiveButtonText = getString(R.string.yes_btn),
+                        positiveButtonText = getString(R.string.yes_continue),
                         negativeButtonText = getString(R.string.no_btn),
-                        message = SpannableStringBuilder(
-                            getString(
-                                R.string.confirm_position_body,
-                                it.toString()
-                            )
-                        ),
+                        message = SpannableStringBuilder(getString(R.string.confirm_position_body, it.toString())),
                         onPositiveButtonClick = {
                             binding.continueBtn.startAnimation()
                             viewModel.changeKnobPosition(stovePosition = it)
@@ -57,13 +52,13 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
                     )
                 } else {
                     mainViewModel.selectedBurnerIndex = viewModel.selectedBurnerIndex
-                    findNavController().navigate(
+                    navigateSafe(
                         SelectBurnerFragmentDirections.actionSelectBurnerFragmentToQrCodeScannerFragment(
                             QrCodeScannerParams(selectedKnobPosition = it)
                         )
                     )
                 }
-            } ?: onError(if(args.params.isEditMode) "Already in this position" else "Please select burner position")
+            } ?: onError(if(args.params.isEditMode) getString(R.string.knob_is_already_in_this_position) else getString(R.string.please_select_burner_position))
         }
     }
 
@@ -80,12 +75,10 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
                 binding.burnerSelectionView.selectBurnerManually(viewModel.selectedBurnerIndex!!, viewModel.stoveOrientation!!)
             }
         }
-        subscribe(viewModel.knobPositionResponseLiveData) {
+        viewModel.loadingFlow.collectWithLifecycle{
             binding.continueBtn.revertAnimation()
-            showSuccessDialog(message = getString(R.string.change_burner_position_success_body), onDismiss = {
-                mainViewModel.selectedBurnerIndex = null
-                findNavController().popBackStack()
-            })
+            toast(getString(R.string.knob_position_changed))
+            findNavController().popBackStack()
         }
 
     }

@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.ome.app.databinding.FragmentSignUpNameBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.signup.email.NameParams
+import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.subscribe
 import dev.chrisbanes.insetter.applyInsetter
 
@@ -35,7 +36,7 @@ class SignUpNameFragment :
     override fun setupObserver() {
         super.setupObserver()
         subscribe(viewModel.firstAndLastNameValidationLiveData){
-            findNavController().navigate(
+            navigateSafe(
                 SignUpNameFragmentDirections.actionSignUpNameFragmentToSignUpEmailAndPasswordFragment(
                     NameParams(binding.firstName.getText(), binding.lastName.getText())
                 )

@@ -9,7 +9,6 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
-import javax.annotation.Nullable
 
 
 /**
@@ -18,7 +17,11 @@ import javax.annotation.Nullable
  * GitHub     : https://github.com/YaminMahdi
  */
 
-class ImageViewZoom : AppCompatImageView, View.OnTouchListener,
+class ImageViewZoom @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : AppCompatImageView(context, attrs, defStyle), View.OnTouchListener,
     GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
     //shared constructing
     private var mContext: Context? = null
@@ -41,19 +44,9 @@ class ImageViewZoom : AppCompatImageView, View.OnTouchListener,
     private var mLast = PointF()
     private var mStart = PointF()
 
-    constructor(context: Context) : super(context) {
+    init {
         sharedConstructing(context)
     }
-
-    constructor(context: Context, @Nullable attrs: AttributeSet?) : super(context, attrs) {
-        sharedConstructing(context)
-    }
-
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context!!,
-        attrs,
-        defStyleAttr
-    )
 
     private fun sharedConstructing(context: Context) {
         super.setClickable(true)

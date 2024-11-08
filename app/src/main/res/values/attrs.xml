@@ -25,5 +25,9 @@
         <attr name="size" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="KnobView">
+        <attr name="knobSize" format="dimension"/>
+    </declare-styleable>
+
 
 </resources>

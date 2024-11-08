@@ -2,7 +2,6 @@ package com.ome.app.presentation.dashboard.settings.add_knob.metal_plate
 
 import android.os.Parcelable
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentMetalPlateBinding
@@ -10,6 +9,7 @@ import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.scanner.QrCodeScannerParams
 import com.ome.app.utils.loadDrawable
+import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
@@ -34,14 +34,14 @@ class MetalPlateInstallationFragment :
 
         binding.continueBtn.setOnClickListener {
             if(args.params.selectedKnobPosition == -1) {
-                findNavController().navigate(
+                navigateSafe(
                     MetalPlateInstallationFragmentDirections.actionMetalPlateInstallationFragmentToSelectBurnerFragment(
                         SelectBurnerFragmentParams()
                     )
                 )
             }
             else{
-                findNavController().navigate(
+                navigateSafe(
                     MetalPlateInstallationFragmentDirections.actionMetalPlateInstallationFragmentToQrCodeScannerFragment(
                         QrCodeScannerParams(selectedKnobPosition = args.params.selectedKnobPosition)
                     )

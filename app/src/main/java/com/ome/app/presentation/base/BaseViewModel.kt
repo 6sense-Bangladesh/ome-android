@@ -17,6 +17,7 @@ abstract class BaseViewModel: ViewModel() {
 
     val defaultErrorLiveData: SingleLiveEvent<String?> = SingleLiveEvent()
     val successMessageLiveData: SingleLiveEvent<String?> = SingleLiveEvent()
+    val successToastFlow= MutableSharedFlow<String?>()
     val loadingFlow = MutableSharedFlow<Boolean>()
 
     val loadingLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
@@ -34,18 +35,19 @@ abstract class BaseViewModel: ViewModel() {
 
     protected fun launch(
         dispatcher: CoroutineContext = mainContext,
+        showLoading: Boolean = true,
         coroutineExceptionHandler: CoroutineExceptionHandler = defaultErrorHandler,
         block: suspend CoroutineScope.() -> Unit
     ): Job {
         return viewModelScope.launch(dispatcher + coroutineExceptionHandler) {
             try {
                 withContext(mainContext) {
-                    loadingFlow.emit(true)
+                    if(showLoading) loadingFlow.emit(true)
                 }
                 this.block()
             } finally {
                 withContext(mainContext) {
-                    loadingFlow.emit(false)
+                    if(showLoading) loadingFlow.emit(false)
                 }
             }
         }

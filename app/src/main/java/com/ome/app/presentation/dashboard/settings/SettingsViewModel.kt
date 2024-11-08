@@ -30,7 +30,7 @@ class SettingsViewModel @Inject constructor(
         stoveRepository.knobsFlow.collect { knobs ->
             val settings = defaultSettingOptions.toMutableList()
             settings.addAll(knobs.toMutableList().apply { removeLastOrNull() }.map { it.toItemModel() })
-            settings.add(knobs.last().toItemModel(false))
+            knobs.lastOrNull()?.toItemModel(false)?.let { settings.add(it) }
             savedStateHandle["settingsList"] = settings
         }
     }

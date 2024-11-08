@@ -2,16 +2,12 @@ package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import android.os.Parcelable
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.data.local.KnobSocketMessage
 import com.ome.app.databinding.FragmentWifiListBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.NetworkItemAdapter
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.subscribe
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -25,7 +21,7 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
 
     private val adapter by lazy {
         NetworkItemAdapter(onClick = {
-            findNavController().navigate(
+            navigateSafe(
                 WifiListFragmentDirections.actionWifiListFragmentToConnectToWifiPasswordFragment(
                     ConnectToWifiPasswordParams(
                         ssid = it.ssid, securityType = it.securityType,

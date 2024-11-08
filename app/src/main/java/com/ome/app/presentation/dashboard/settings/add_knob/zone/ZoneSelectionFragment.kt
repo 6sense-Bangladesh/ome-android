@@ -27,7 +27,7 @@ class ZoneSelectionFragment :
         binding.continueBtn.setBounceClickListener {
             if (viewModel.zoneNumber == 2) {
                 toast("Under Development")
-//                findNavController().navigate(
+//                navigateSafe(
 //                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
 //                        DeviceCalibrationFragmentParams(
 //                            isComeFromSettings = args.params.isComeFromSettings,
@@ -38,7 +38,7 @@ class ZoneSelectionFragment :
 //                    )
 //                )
             } else {
-                findNavController().navigate(
+                navigateSafe(
                     ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(
                         DirectionSelectionFragmentParams(
                             isComeFromSettings = args.params.isComeFromSettings,

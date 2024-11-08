@@ -15,11 +15,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.setMargins
 import com.ome.app.R
 import com.ome.app.databinding.KnobViewLayoutBinding
+import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.state.ConnectionState
 import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.model.state.connectionState
 import com.ome.app.domain.model.state.rotation
-import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.CalibrationState
 import com.ome.app.utils.*
 import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlin.math.atan2
 
+@Suppress("MemberVisibilityCanBePrivate")
 class KnobView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -43,6 +44,24 @@ class KnobView @JvmOverloads constructor(
 
     var prevAngle = 0.0F
     private var mCurrAngle = 0.0F
+
+    init {
+        attrs?.let {
+            context.obtainStyledAttributes(it, R.styleable.KnobView).use { typedArray->
+                if (typedArray.hasValue(R.styleable.KnobView_knobSize)) {
+                    val size = typedArray.getDimensionPixelSize(R.styleable.KnobView_knobSize, 0)
+                    setKnobSize(size)
+                }
+            }
+        }
+    }
+
+    fun setKnobSize(size: Int) {
+        val lp = binding.knobCircleCl.layoutParams
+        lp.width = size
+        lp.height = size
+        binding.knobCircleCl.layoutParams = lp
+    }
 
 
     fun setKnobPosition(angle: Float, rotateClockwise: Boolean = true) {
@@ -70,6 +89,14 @@ class KnobView @JvmOverloads constructor(
         (binding.highDualTv.layoutParams as MarginLayoutParams).setMargins(0)
     }
 
+
+    fun enableFullLabel() {
+        binding.offTv.text = context.getString(R.string.off_position_full)
+        binding.lowSingleTv.text = context.getString(R.string.low_position_full)
+        binding.mediumTv.text = context.getString(R.string.medium_position_full)
+        binding.highSingleTv.text = context.getString(R.string.high_position_full)
+        binding.highDualTv.text = context.getString(R.string.high_position_full)
+    }
 
     fun hideLabel(label: CalibrationState? = null) {
         when (label) {

@@ -11,88 +11,96 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:flexWrap="wrap"
-        app:justifyContent="space_around"
+        app:justifyContent="space_evenly"
         app:layout_constraintBottom_toTopOf="@id/continueTurnOff"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.ome.app.presentation.views.KnobView
             android:id="@+id/knob1"
-            android:layout_width="@dimen/_130sdp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/_130sdp"
+            android:layout_gravity="center"
             android:visibility="gone"
+            app:knobSize="@dimen/_90sdp"
             tools:visibility="visible" />
 
         <com.ome.app.presentation.views.KnobView
             android:id="@+id/knob2"
-            android:layout_width="@dimen/_130sdp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/_130sdp"
+            android:layout_gravity="center"
             android:visibility="gone"
+            app:knobSize="@dimen/_90sdp"
             tools:visibility="visible" />
 
-        <FrameLayout
-            android:id="@+id/knob1centerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="visible">
+        <!--        <FrameLayout-->
+        <!--            android:id="@+id/knob1centerView"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:visibility="gone"-->
+        <!--            tools:visibility="visible">-->
 
-            <com.ome.app.presentation.views.KnobView
-                android:id="@+id/knob1center"
-                android:layout_width="@dimen/_130sdp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:minHeight="@dimen/_130sdp" />
-        </FrameLayout>
+        <!--            <com.ome.app.presentation.views.KnobView-->
+        <!--                android:id="@+id/knob1center"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_gravity="center"-->
+        <!--                app:knobSize="@dimen/_90sdp" />-->
+        <!--        </FrameLayout>-->
 
-        <FrameLayout
-            android:id="@+id/knob2centerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:visibility="visible">
+        <!--        <FrameLayout-->
+        <!--            android:id="@+id/knob2centerView"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:visibility="gone"-->
+        <!--            tools:visibility="visible">-->
 
-            <com.ome.app.presentation.views.KnobView
-                android:id="@+id/knob2center"
-                android:layout_width="@dimen/_130sdp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:minHeight="@dimen/_130sdp" />
-        </FrameLayout>
+        <!--            <com.ome.app.presentation.views.KnobView-->
+        <!--                android:id="@+id/knob2center"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                app:knobSize="@dimen/_90sdp"-->
+        <!--                android:layout_gravity="center"-->
+        <!--                android:minHeight="@dimen/_90sdp" />-->
+        <!--        </FrameLayout>-->
 
         <com.ome.app.presentation.views.KnobView
             android:id="@+id/knob3"
-            android:layout_width="@dimen/_130sdp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/_130sdp"
+            android:layout_gravity="center"
             android:visibility="gone"
+            app:knobSize="@dimen/_90sdp"
             tools:visibility="visible" />
 
         <com.ome.app.presentation.views.KnobView
             android:id="@+id/knob4"
-            android:layout_width="@dimen/_130sdp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/_130sdp"
+            android:layout_gravity="center"
             android:visibility="gone"
+            app:knobSize="@dimen/_90sdp"
             tools:visibility="visible" />
 
         <com.ome.app.presentation.views.KnobView
             android:id="@+id/knob5"
-            android:layout_width="@dimen/_130sdp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/_130sdp"
+            android:layout_gravity="center"
             android:visibility="gone"
+            app:knobSize="@dimen/_90sdp"
             tools:visibility="visible" />
 
         <com.ome.app.presentation.views.KnobView
             android:id="@+id/knob6"
-            android:layout_width="@dimen/_130sdp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/_130sdp"
+            android:layout_gravity="center"
             android:visibility="gone"
+            app:knobSize="@dimen/_90sdp"
             tools:visibility="visible" />
 
 

@@ -33,10 +33,10 @@ object KnobAngleManager {
             }
             else -> {}
         }
-        offAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        lowSingleAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        mediumAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        highSingleAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
+        offAngle?.let { if (abs(angle - it) < angleOffset) return false }
+        lowSingleAngle?.let { if (abs(angle - it) < angleOffset) return false }
+        mediumAngle?.let { if (abs(angle - it) < angleOffset) return false }
+        highSingleAngle?.let { if (abs(angle - it) < angleOffset) return false }
         return true
     }
 
@@ -48,16 +48,14 @@ object KnobAngleManager {
         lowSingleAngle: Float?,
         angleOffset: Int
     ): Boolean {
-        offAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        lowSingleAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        mediumAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
-        highSingleAngle?.let { if (Math.abs(angle - it) < angleOffset) return false }
+        offAngle?.let { if (abs(angle - it) < angleOffset) return false }
+        lowSingleAngle?.let { if (abs(angle - it) < angleOffset) return false }
+        mediumAngle?.let { if (abs(angle - it) < angleOffset) return false }
+        highSingleAngle?.let { if (abs(angle - it) < angleOffset) return false }
         return true
     }
 
     fun generateMediumAngle(highAngle: Int, lowAngle: Int): Int {
-        var mediumAngle: Int = -1
-
         var hAngle = highAngle
         var lAngle = lowAngle
 
@@ -68,7 +66,7 @@ object KnobAngleManager {
                 lAngle += 360
             }
         }
-        mediumAngle = ((hAngle + lAngle) / 2) % 360
+        val mediumAngle = ((hAngle + lAngle) / 2) % 360
 
         logi("highAngle: $highAngle, lowAngle: $lowAngle, result: $mediumAngle")
 
@@ -91,8 +89,8 @@ object KnobAngleManager {
         angleDualOffset: Int
     ): Float {
         var angle = angleValue
-        var firstBorder = firstDiv
-        var secBorder = secondDiv
+        var firstBorder: Int
+        var secBorder: Int
 
 
         if (currSetting % 2 == 0 && currentStepAngle != null) {
@@ -111,7 +109,7 @@ object KnobAngleManager {
                 secBorder = normalizeAngle(angle = secondDiv - angleDualOffset)
             }
 
-            if ((isAngleBetween(
+            if (!(isAngleBetween(
                     angleAlpha = currentStepAngle,
                     angleBeta = firstBorder,
                     angleTheta = angle.toInt()
@@ -120,14 +118,12 @@ object KnobAngleManager {
                     angleAlpha = currentStepAngle,
                     angleBeta = secBorder,
                     angleTheta = angle.toInt()
-                ))
-                && !isAngleBetween(
+                )) || isAngleBetween(
                     angleAlpha = currentStepAngle + 10,
                     angleBeta = currentStepAngle - 10,
                     angleTheta = angle.toInt()
                 )
             ) {
-            } else {
                 if (isAngleBetween(
                         angleAlpha = currentStepAngle + 10,
                         angleBeta = currentStepAngle,
@@ -205,11 +201,10 @@ object KnobAngleManager {
                         angleTheta = firstBorder
                     )
                 ) {
-                    if (firstBorder == normalizeAngle(angle = firstDiv + angleDualOffset)) {
-                        firstBorder = normalizeAngle(angle = firstDiv - angleDualOffset)
-                    } else {
-                        firstBorder = normalizeAngle(angle = firstDiv + angleDualOffset)
-                    }
+                    firstBorder = if (firstBorder == normalizeAngle(angle = firstDiv + angleDualOffset))
+                        normalizeAngle(angle = firstDiv - angleDualOffset)
+                    else
+                        normalizeAngle(angle = firstDiv + angleDualOffset)
                     angle = firstBorder.toFloat()
                 } else if (isAngleBetween(
                         angleAlpha = highSingleAngle.toInt(),

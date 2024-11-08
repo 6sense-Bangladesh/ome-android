@@ -4,15 +4,11 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentDirectionSelectionBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.makeGone
-import com.ome.app.utils.makeVisible
-import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -37,9 +33,10 @@ class DirectionSelectionFragment :
             if(args.params.isEditMode){
                 viewModel.updateDirection()
             }else {
-                findNavController().navigate(
+                navigateSafe(
                     DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
                         DeviceCalibrationFragmentParams(
+                            isComeFromSettings = args.params.isComeFromSettings,
                             zoneNumber = args.params.zoneNumber,
                             isDualKnob = args.params.isDualKnob,
                             rotateDir = viewModel.clockwiseDir,
@@ -84,7 +81,7 @@ class DirectionSelectionFragment :
 
 @Parcelize
 data class DirectionSelectionFragmentParams(
-    val isComeFromSettings: Boolean = true,
+    val isComeFromSettings: Boolean = false,
     val zoneNumber: Int = 0,
     val isDualKnob: Boolean = false,
     val macAddress: String = "",

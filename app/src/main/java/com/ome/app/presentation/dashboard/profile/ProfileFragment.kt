@@ -18,10 +18,8 @@ import com.ome.app.R
 import com.ome.app.databinding.FragmentProfileBinding
 import com.ome.app.domain.model.base.Validation
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.utils.closeKeyboard
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.makeVisible
-import com.ome.app.utils.setBounceClickListener
+import com.ome.app.presentation.dashboard.DashboardFragmentDirections
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -57,7 +55,7 @@ class ProfileFragment :
 //                onPositiveButtonClick = {
 //                    binding.signOut.startAnimation()
 //                    viewModel.signOut{
-//                        navController?.navigate(R.id.action_dashboardFragment_to_launchFragment)
+//                        navController?.navigateSafe(R.id.action_dashboardFragment_to_launchFragment)
 //                    }
 //                })
 //        }
@@ -71,14 +69,14 @@ class ProfileFragment :
                     isRedPositiveButton = true,
                     onPositiveButtonClick = {
                         viewModel.deleteUser{
-                            navController?.navigate(R.id.action_dashboardFragment_to_launchFragment)
+                            navController?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToLaunchFragment())
                         }
                     })
             }
         }
 
         binding.btnChangePassword.setBounceClickListener {
-            navController?.navigate(R.id.action_dashboardFragment_to_changePasswordFragment)
+            navController?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToChangePasswordFragment())
         }
         binding.btnSave.setBounceClickListener {
             viewModel.updateUserName(

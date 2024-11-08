@@ -8,18 +8,19 @@ import com.ome.app.domain.model.network.request.InitCalibrationRequest
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
+import com.ome.app.utils.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class DeviceCalibrationViewModel @Inject constructor(
-    private val webSocketManager: WebSocketManager,
+    webSocketManager: WebSocketManager,
     private val stoveRepository: StoveRepository,
     private val resourceProvider: ResourceProvider
-) : BaseCalibrationViewModel(webSocketManager, stoveRepository, resourceProvider) {
+) : BaseCalibrationViewModel(webSocketManager, stoveRepository) {
 
-
-    var currentCalibrationStateLiveData = SingleLiveEvent<CalibrationState>()
+    var currentCalibrationState = MutableStateFlow<CalibrationState?>(CalibrationState.OFF)
 
     val calibrationIsDoneLiveData = SingleLiveEvent<Boolean>()
 
@@ -38,7 +39,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                         angleOffset = angleOffset
                     )
                 ) {
-                    currentCalibrationStateLiveData.value?.let { step ->
+                    currentCalibrationState.value?.let { step ->
                         when (step) {
                             CalibrationState.OFF -> {
                                 offAngle = angle
@@ -77,7 +78,7 @@ class DeviceCalibrationViewModel @Inject constructor(
             } else {
                 if (KnobAngleManager.validateSingleKnobAngle(
                         angle = angle,
-                        calibrationState = currentCalibrationStateLiveData.value!!,
+                        calibrationState = currentCalibrationState.value!!,
                         highSingleAngle = highSingleAngle,
                         mediumAngle = mediumAngle,
                         offAngle = offAngle,
@@ -85,7 +86,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                         angleOffset = angleOffset
                     )
                 ) {
-                    currentCalibrationStateLiveData.value?.let { step ->
+                    currentCalibrationState.value?.let { step ->
                         when (step) {
                             CalibrationState.OFF -> {
                                 offAngle = angle
@@ -102,10 +103,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                             }
                             CalibrationState.LOW_SINGLE -> {
                                 lowSingleAngle = angle
-                                Log.i(
-                                    DeviceCalibrationViewModel::class.simpleName,
-                                    "setLabel: calibarion is done"
-                                )
+                                Log.i(TAG, "setLabel: calibration is done")
                                 calibrationIsDoneLiveData.postValue(true)
                             }
                             CalibrationState.MEDIUM -> mediumAngle = angle
@@ -120,6 +118,10 @@ class DeviceCalibrationViewModel @Inject constructor(
                 } else {
                     defaultErrorLiveData.postValue(resourceProvider.getString(R.string.calibration_labels_error))
                 }
+            }
+        } ?: run {
+            launch {
+                stoveRepository.getAllKnobs()
             }
         }
 
@@ -153,28 +155,28 @@ class DeviceCalibrationViewModel @Inject constructor(
     private fun nextStep() {
         if (!isDualKnob) {
             val currentIndex =
-                calibrationStatesSequenceSingleZone.indexOf(currentCalibrationStateLiveData.value)
+                calibrationStatesSequenceSingleZone.indexOf(currentCalibrationState.value)
             if (currentIndex == calibrationStatesSequenceSingleZone.size - 1) {
                 calibrationIsDoneLiveData.postValue(true)
             } else {
-                currentCalibrationStateLiveData.postValue(calibrationStatesSequenceSingleZone[currentIndex + 1])
+                currentCalibrationState.value =(calibrationStatesSequenceSingleZone[currentIndex + 1])
             }
         } else {
             val currentIndex =
-                calibrationStatesSequenceDualZone.indexOf(currentCalibrationStateLiveData.value)
+                calibrationStatesSequenceDualZone.indexOf(currentCalibrationState.value)
             if (currentIndex == calibrationStatesSequenceDualZone.size - 1) {
                 calibrationIsDoneLiveData.postValue(true)
             } else {
-                currentCalibrationStateLiveData.postValue(calibrationStatesSequenceDualZone[currentIndex + 1])
+                currentCalibrationState.value =(calibrationStatesSequenceDualZone[currentIndex + 1])
             }
         }
     }
 
     fun previousStep() {
         val currentIndex = if (!isDualKnob) {
-            calibrationStatesSequenceSingleZone.indexOf(currentCalibrationStateLiveData.value)
+            calibrationStatesSequenceSingleZone.indexOf(currentCalibrationState.value)
         } else {
-            calibrationStatesSequenceDualZone.indexOf(currentCalibrationStateLiveData.value)
+            calibrationStatesSequenceDualZone.indexOf(currentCalibrationState.value)
         }
         if (currentIndex == 0) {
             previousScreenTriggered.postValue(true)
@@ -193,7 +195,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                 CalibrationState.HIGH_DUAL -> highDualAngle = null
                 CalibrationState.LOW_DUAL -> lowDualAngle = null
             }
-            currentCalibrationStateLiveData.postValue(step)
+            currentCalibrationState.value = step
             currSetting--
         }
     }

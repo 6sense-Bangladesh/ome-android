@@ -8,12 +8,12 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentConnectToWifiBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
@@ -46,7 +46,7 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
 
         binding.connectBtn.setOnClickListener { checkPermission() }
         binding.btnManual.setOnClickListener {
-            findNavController().navigate(
+            navigateSafe(
                 ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToManualSetupFragment(
                     ManualSetupFragmentParams(
                         macAddrs = viewModel.macAddrs,
@@ -76,13 +76,17 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
 
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
+
+        onDismissErrorDialog = {
+            binding.connectBtn.revertAnimation()
+        }
     }
 
     override fun setupObserver() {
         super.setupObserver()
         viewModel.wifiConnectedFlow.collectWithLifecycle{
             binding.connectBtn.revertAnimation()
-            findNavController().navigate(
+            navigateSafe(
                 ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToWifiListFragment(
                     WifiListFragmentParams(
                         macAddrs = viewModel.macAddrs,

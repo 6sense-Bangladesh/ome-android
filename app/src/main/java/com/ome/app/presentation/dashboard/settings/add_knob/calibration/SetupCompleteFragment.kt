@@ -34,8 +34,8 @@ class SetupCompleteFragment :
 
         binding.imDoneBtn.setOnClickListener {
             mainViewModel.selectedBurnerIndex = null
-            if(!args.isComeFromSettings){
-                findNavController().popBackStack(R.id.knobWakeUpFragment, true)
+            if(args.isComeFromSettings){
+                findNavController().popBackStack(R.id.deviceDetailsFragment, true)
             } else {
                 findNavController().popBackStack(R.id.dashboardFragment, true)
             }

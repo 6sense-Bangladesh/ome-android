@@ -128,7 +128,6 @@
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/continueBtn"
         style="@style/OmeButton.Blue"
-        android:backgroundTint="@color/gray"
         android:text="@string/continue_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

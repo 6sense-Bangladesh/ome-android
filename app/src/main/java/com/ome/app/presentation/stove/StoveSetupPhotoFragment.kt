@@ -4,15 +4,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupPhotoBinding
 import com.ome.app.domain.model.state.StoveType
-import com.ome.app.presentation.base.navigation.DeepNavGraph
-import com.ome.app.presentation.base.navigation.DeepNavGraph.encode
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
@@ -64,12 +60,10 @@ class StoveSetupPhotoFragment :
         super.setupObserver()
         subscribe(viewModel.imageUploadedLiveData) {
             binding.takePhoto.revertAnimation()
-            findNavController().navigate(
-                R.id.action_stoveSetupPhotoFragment_to_stoveSetupBurnersFragment,
-                bundleOf(DeepNavGraph.NAV_ARG to StoveSetupBurnersArgs(brand = args.params.brand, type = args.params.type).encode())
-//                StoveSetupPhotoFragmentDirections.actionStoveSetupPhotoFragmentToStoveSetupBurnersFragment(
-//                    StoveSetupBurnersArgs(brand = args.params.brand, type = args.params.type), ""
-//                )
+            navigateSafe(
+                StoveSetupPhotoFragmentDirections.actionStoveSetupPhotoFragmentToStoveSetupBurnersFragment(
+                    StoveSetupBurnersArgs(brand = args.params.brand, type = args.params.type)
+                )
             )
         }
         subscribe(viewModel.loadingLiveData) {

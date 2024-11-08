@@ -1,11 +1,11 @@
 package com.ome.app.presentation.signin
 
-import android.os.Bundle
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.ome.app.R
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.domain.model.base.ResponseWrapper
+import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
@@ -19,15 +19,16 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val amplifyManager: AmplifyManager,
-    val preferencesProvider: PreferencesProvider,
-    val userRepository: UserRepository
+    private val preferencesProvider: PreferencesProvider,
+    private val userRepository: UserRepository,
+    private val stoveRepository: StoveRepository
 ) : BaseViewModel() {
 
     val signInStatus: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     val deleteStatus: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
-    val destinationAfterSignInLiveData = SingleLiveEvent<Pair<Int, Bundle?>>()
+    val destinationAfterSignInLiveData = SingleLiveEvent<Int>()
 
     fun deleteUser() = launch(ioContext) {
         val result = amplifyManager.deleteUser()
@@ -73,22 +74,16 @@ class SignInViewModel @Inject constructor(
                 }
             }
             when (val result = userRepository.getUserData()) {
-                is ResponseWrapper.Error -> {
-                    loadingLiveData.postValue(false)
-                    if (result.message.contains("Not found")) {
-
-                    } else {
-                        loadingLiveData.postValue(false)
-                    }
-                }
+                is ResponseWrapper.Error -> loadingLiveData.postValue(false)
                 is ResponseWrapper.Success -> {
                     loadingLiveData.postValue(false)
+                    stoveRepository.getAllKnobs()
                     if (result.value.stoveSetupComplete.isFalse()){
-                        destinationAfterSignInLiveData.postValue(R.id.welcomeFragment to null)
+                        destinationAfterSignInLiveData.postValue(R.id.action_signInFragment_to_welcomeFragment)
                         return@launch
                     }
                     else
-                        destinationAfterSignInLiveData.postValue(R.id.action_signInFragment_to_dashboardFragment to null)
+                        destinationAfterSignInLiveData.postValue(R.id.action_signInFragment_to_dashboardFragment)
                 }
             }
         }

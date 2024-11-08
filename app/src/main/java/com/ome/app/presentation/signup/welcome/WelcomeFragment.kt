@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.FragmentWelcomeBinding
 import com.ome.app.presentation.base.BaseFragment
+import com.ome.app.presentation.stove.StoveSetupBrandArgs
+import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressedIgnoreCallback
 import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
@@ -38,12 +39,11 @@ class WelcomeFragment :
         setStatusBarAppearance(true)
         if(BuildConfig.DEBUG){
             binding.textView.setBounceClickListener {
-                findNavController().navigate(R.id.stoveSetupCompletedFragment)
+                navigateSafe(R.id.stoveSetupCompletedFragment)
             }
         }
         binding.continueBtn.setBounceClickListener {
-
-            findNavController().navigate(R.id.action_welcomeFragment_to_stoveSetupBrandFragment)
+            navigateSafe(WelcomeFragmentDirections.actionWelcomeFragmentToStoveSetupBrandFragment(StoveSetupBrandArgs()))
 //            binding.continueBtn.startAnimation()
             viewModel.setup()
         }
@@ -57,7 +57,7 @@ class WelcomeFragment :
             binding.continueBtn.revertAnimation()
         }
         subscribe(viewModel.fetchUserDataStatus) {
-//            findNavController().navigate(R.id.action_welcomeFragment_to_stoveSetupBrandFragment)
+//            navigateSafe(R.id.action_welcomeFragment_to_stoveSetupBrandFragment)
         }
     }
 

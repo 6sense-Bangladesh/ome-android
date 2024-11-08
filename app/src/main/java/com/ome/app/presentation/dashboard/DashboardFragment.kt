@@ -113,13 +113,13 @@ class DashboardFragment :
                         isRedPositiveButton = true,
                         onPositiveButtonClick = {
                             mainViewModel.signOut(onEnd = {
-                                navigateSafe(R.id.action_dashboardFragment_to_launchFragment) ?: activity?.finish()
+                                navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToLaunchFragment()) ?: activity?.finish()
                             })
                         })
                     true
                 }
                 R.id.menuFeedback ->{
-                    navigateSafe(R.id.action_dashboardFragment_to_supportFragment)
+                    navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToSupportFragment())
                     true
                 }
                 else -> false
@@ -178,7 +178,7 @@ class DashboardFragment :
 //            binding.bottomNavigation.isVisible = it
 //        }
 //        subscribe(viewModel.signOutLiveData) {
-//            findNavController().navigate(R.id.action_dashboardFragment_to_launchFragment)
+//            navigateSafe(R.id.action_dashboardFragment_to_launchFragment)
 //        }
 //        subscribe(viewModel.stoveExistLiveData) {
 //            if (it) {

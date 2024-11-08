@@ -1,20 +1,19 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 
 import androidx.lifecycle.viewModelScope
-import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 
 abstract class BaseCalibrationViewModel(
     private val webSocketManager: WebSocketManager,
-    private val stoveRepository: StoveRepository,
-    private val resourceProvider: ResourceProvider
+    private val stoveRepository: StoveRepository
 ) : BaseViewModel() {
 
     val knobAngleFlow = MutableStateFlow<Float?>(null)
@@ -79,16 +78,16 @@ abstract class BaseCalibrationViewModel(
 
     fun initSubscriptions() {
         launch(ioContext) {
-            webSocketManager.knobAngleFlow.collect {
+            webSocketManager.knobAngleFlow.filter { it?.macAddr == macAddress }.collect {
                 it?.let {
                     val angle = it.value.toFloat()
                     if (!isDualKnob) {
-                        knobAngleFlow.value =(angle)
+                        knobAngleFlow.value = angle
                     } else {
                         if (offAngle != null) {
                             handleDualKnobUpdated(angle)
                         } else {
-                            knobAngleFlow.value =(angle)
+                            knobAngleFlow.value = angle
                         }
                     }
 

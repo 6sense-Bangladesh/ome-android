@@ -10,6 +10,7 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,11 +18,11 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
     private val webSocketManager: WebSocketManager,
     private val stoveRepository: StoveRepository,
     private val resourceProvider: ResourceProvider
-) : BaseCalibrationViewModel(webSocketManager, stoveRepository, resourceProvider) {
+) : BaseCalibrationViewModel(webSocketManager, stoveRepository) {
 
 
-    var currentCalibrationStateLiveData =
-        SingleLiveEvent<CalibrationState?>().apply { postValue(null) }
+//    var currentCalibrationStateLiveData = SingleLiveEvent<CalibrationState?>().apply { postValue(null) }
+    var currentCalibrationState = MutableStateFlow<CalibrationState?>(CalibrationState.OFF)
 
     var firstConfirmationPageLiveData = SingleLiveEvent<Boolean>()
 
@@ -40,7 +41,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
 
     fun triggerCurrentStepAgain() = launch(ioContext) {
         if (currentStepTriggerCount < 1) {
-            when (currentCalibrationStateLiveData.value) {
+            when (currentCalibrationState.value) {
                 CalibrationState.OFF -> {
                     offAngle?.let {
                         stoveRepository.changeKnobAngle(
@@ -103,7 +104,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
     }
 
     fun nextStep() = launch(ioContext) {
-        when (currentCalibrationStateLiveData.value) {
+        when (currentCalibrationState.value) {
             CalibrationState.OFF -> {
                 if (!isDualKnob) {
                     setCalibration()
@@ -119,7 +120,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                                 macAddress
                             )
                         }
-                        currentCalibrationStateLiveData.postValue(CalibrationState.HIGH_SINGLE)
+                        currentCalibrationState.value =(CalibrationState.HIGH_SINGLE)
                     }
                 }
             }
@@ -131,7 +132,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                             macAddress
                         )
                     }
-                    currentCalibrationStateLiveData.postValue(CalibrationState.MEDIUM)
+                    currentCalibrationState.value =(CalibrationState.MEDIUM)
                 } else {
                     offAngle?.let {
                         stoveRepository.changeKnobAngle(
@@ -140,7 +141,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                         )
                     }
                     offTriggerCount++
-                    currentCalibrationStateLiveData.postValue(CalibrationState.OFF)
+                    currentCalibrationState.value =(CalibrationState.OFF)
                 }
 
             }
@@ -152,7 +153,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                         macAddress
                     )
                 }
-                currentCalibrationStateLiveData.postValue(CalibrationState.LOW_DUAL)
+                currentCalibrationState.value =(CalibrationState.LOW_DUAL)
             }
 
             CalibrationState.LOW_DUAL -> {
@@ -163,7 +164,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                     )
                 }
                 offTriggerCount++
-                currentCalibrationStateLiveData.postValue(CalibrationState.OFF)
+                currentCalibrationState.value =(CalibrationState.OFF)
             }
             CalibrationState.MEDIUM -> {
                 lowSingleAngle?.let {
@@ -172,7 +173,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                         macAddress
                     )
                 }
-                currentCalibrationStateLiveData.postValue(CalibrationState.LOW_SINGLE)
+                currentCalibrationState.value =(CalibrationState.LOW_SINGLE)
             }
             CalibrationState.LOW_SINGLE -> {
                 if (!isDualKnob) {
@@ -182,7 +183,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                             macAddress
                         )
                     }
-                    currentCalibrationStateLiveData.postValue(CalibrationState.OFF)
+                    currentCalibrationState.value =(CalibrationState.OFF)
                 } else {
                     highSingleAngle?.let {
                         stoveRepository.changeKnobAngle(
@@ -190,7 +191,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                             macAddress
                         )
                     }
-                    currentCalibrationStateLiveData.postValue(CalibrationState.HIGH_SINGLE)
+                    currentCalibrationState.value =(CalibrationState.HIGH_SINGLE)
                 }
             }
             else -> {
@@ -201,7 +202,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                             macAddress
                         )
                     }
-                    currentCalibrationStateLiveData.postValue(CalibrationState.HIGH_SINGLE)
+                    currentCalibrationState.value =(CalibrationState.HIGH_SINGLE)
                 } else {
                     highDualAngle?.let {
                         stoveRepository.changeKnobAngle(
@@ -209,7 +210,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                             macAddress
                         )
                     }
-                    currentCalibrationStateLiveData.postValue(CalibrationState.HIGH_DUAL)
+                    currentCalibrationState.value =(CalibrationState.HIGH_DUAL)
                 }
             }
         }
@@ -280,7 +281,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
     }
 
     fun previousStep() = launch(ioContext) {
-        when (currentCalibrationStateLiveData.value) {
+        when (currentCalibrationState.value) {
             CalibrationState.OFF -> {
                 if (!isDualKnob) {
                     lowSingleAngle?.let {
@@ -289,18 +290,18 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                             macAddress
                         )
                     }
-                    currentCalibrationStateLiveData.postValue(CalibrationState.LOW_SINGLE)
+                    currentCalibrationState.value =(CalibrationState.LOW_SINGLE)
                 } else {
-                    currentCalibrationStateLiveData.postValue(null)
+                    currentCalibrationState.value =(null)
                     firstConfirmationPageLiveData.postValue(true)
                 }
             }
             CalibrationState.HIGH_SINGLE -> {
                 if (!isDualKnob) {
-                    currentCalibrationStateLiveData.postValue(null)
+                    currentCalibrationState.value =(null)
                     firstConfirmationPageLiveData.postValue(true)
                 } else {
-                    currentCalibrationStateLiveData.postValue(null)
+                    currentCalibrationState.value =(null)
                     firstConfirmationPageLiveData.postValue(true)
                 }
             }
@@ -311,15 +312,15 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                         macAddress
                     )
                 }
-                currentCalibrationStateLiveData.postValue(CalibrationState.HIGH_SINGLE)
+                currentCalibrationState.value =(CalibrationState.HIGH_SINGLE)
             }
             CalibrationState.LOW_DUAL -> {
-                currentCalibrationStateLiveData.postValue(null)
+                currentCalibrationState.value =(null)
                 firstConfirmationPageLiveData.postValue(true)
 
             }
             CalibrationState.HIGH_DUAL -> {
-                currentCalibrationStateLiveData.postValue(null)
+                currentCalibrationState.value =(null)
                 firstConfirmationPageLiveData.postValue(true)
             }
             CalibrationState.LOW_SINGLE -> {
@@ -330,9 +331,9 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                             macAddress
                         )
                     }
-                    currentCalibrationStateLiveData.postValue(CalibrationState.MEDIUM)
+                    currentCalibrationState.value =(CalibrationState.MEDIUM)
                 } else {
-                    currentCalibrationStateLiveData.postValue(null)
+                    currentCalibrationState.value =(null)
                     firstConfirmationPageLiveData.postValue(true)
 
                 }

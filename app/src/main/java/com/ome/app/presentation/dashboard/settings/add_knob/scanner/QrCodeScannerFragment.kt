@@ -9,17 +9,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentQrCodeScannerBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiParams
 import com.ome.app.presentation.views.code_scanner.startQrScanner
-import com.ome.app.utils.changeVisibility
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.subscribe
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -130,7 +126,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
         subscribe(viewModel.isKnobAddedLiveData) {
             if (it) {
                 viewModel.macAddress?.let { mac ->
-                    findNavController().navigate(
+                    navigateSafe(
                         QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
                             ConnectToWifiParams(macAddrs = mac)
                         )
@@ -143,7 +139,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
         subscribe(viewModel.knobCreatedLiveData) {
             mainViewModel.getUserInfo()
             viewModel.macAddress?.let { mac ->
-                findNavController().navigate(
+                navigateSafe(
                     QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
                         ConnectToWifiParams(macAddrs = mac)
                     )

@@ -5,7 +5,6 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.BuildConfig
 import com.ome.app.R
@@ -83,7 +82,7 @@ class StoveSetupBurnersFragment :
         }
         if(BuildConfig.DEBUG){
             binding.titleTv.setBounceClickListener {
-                findNavController().navigate(R.id.action_stoveSetupBurnersFragment_to_stoveSetupCompletedFragment)
+                navigateSafe(StoveSetupBurnersFragmentDirections.actionStoveSetupBurnersFragmentToStoveSetupCompletedFragment())
             }
         }
         binding.continueBtn.setBounceClickListener  {
@@ -127,7 +126,7 @@ class StoveSetupBurnersFragment :
         super.setupObserver()
         subscribe(viewModel.createStoveLiveData) {
             mainViewModel.getUserInfo()
-            findNavController().navigate(R.id.action_stoveSetupBurnersFragment_to_stoveSetupCompletedFragment)
+            navigateSafe(R.id.action_stoveSetupBurnersFragment_to_stoveSetupCompletedFragment)
         }
 
         viewModel.loadingFlow.collectWithLifecycle{
@@ -135,8 +134,10 @@ class StoveSetupBurnersFragment :
                 binding.continueBtn.startAnimation()
             else {
                 binding.continueBtn.revertAnimation()
-                if (args.params.isEditMode)
+                if (args.params.isEditMode) {
+                    toast(getString(R.string.stove_layout_changed))
                     onBackPressed()
+                }
             }
         }
     }

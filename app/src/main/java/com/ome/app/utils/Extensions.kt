@@ -42,6 +42,8 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -330,10 +332,40 @@ fun Fragment.navigateSafe(@IdRes resId: Int, args: Bundle? = null, navOption: Na
         if (lifecycle.currentState == Lifecycle.State.RESUMED)
             findNavController().navigate(resId, args, navOption)
         else null
-    } catch (e: IllegalArgumentException) {
-        toast(e.message)
+    } catch (e: Exception) {
         e.printStackTrace()
         null
+    }
+}
+fun Fragment.navigateSafe(directions: NavDirections): Unit? {
+    return try {
+        if (lifecycle.currentState == Lifecycle.State.RESUMED)
+            findNavController().navigate(directions)
+        else null
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}
+context(Fragment)
+fun NavController?.navigateSafe(@IdRes resId: Int, args: Bundle? = null, navOption: NavOptions? = null): Unit? {
+    if(this == null) return null
+    return try {
+        if (lifecycle.currentState == Lifecycle.State.RESUMED)
+            navigate(resId, args, navOption)
+        else null
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}
+context(Fragment)
+fun NavController?.navigateSafe(directions: NavDirections): Unit? {
+    if(this == null) return null
+    return try {
+        if (lifecycle.currentState == Lifecycle.State.RESUMED)
+            navigate(directions)
+        else null
     } catch (e: Exception) {
         e.printStackTrace()
         null

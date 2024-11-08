@@ -22,7 +22,7 @@
         android:id="@+id/burnerSelection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginStart="@dimen/margin_horizontal"
         android:layout_marginTop="@dimen/_30sdp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/_14sdp"
@@ -43,8 +43,8 @@
 
                 <View
                     android:id="@+id/knob1"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
                     android:visibility="gone"
@@ -52,8 +52,8 @@
 
                 <View
                     android:id="@+id/knob2"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
@@ -62,8 +62,8 @@
 
                 <View
                     android:id="@+id/knob3"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
@@ -97,8 +97,8 @@
 
                 <View
                     android:id="@+id/knob4"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
                     android:visibility="gone"
@@ -106,8 +106,8 @@
 
                 <View
                     android:id="@+id/knob5"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
@@ -116,8 +116,8 @@
 
                 <View
                     android:id="@+id/knob6"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="@dimen/_14sdp"
+                    android:layout_height="@dimen/_14sdp"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
@@ -223,12 +223,80 @@
             style="@style/Label.Mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_marginEnd="@dimen/margin_horizontal"
             app:layout_constraintBottom_toBottomOf="@+id/tvBattery"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvBattery"
             tools:text="69%" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/warningCard"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:minHeight="@dimen/_60sdp"
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_14sdp"
+        app:contentPadding="@dimen/_7sdp"
+        app:cardBackgroundColor="@color/colorPrimaryTrans"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/burnerSelection">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon1"
+                android:layout_width="@dimen/_22sdp"
+                android:layout_height="@dimen/_22sdp"
+                android:src="@drawable/ic_warning"
+                android:tint="@color/colorPrimaryDeep"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnClose"
+                android:theme="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_close_small"
+                android:tint="@color/dark"
+                android:background="@drawable/btn_special_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv1"
+                style="@style/Title.Mini"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:src="@drawable/ic_yellow_circle"
+                app:layout_constraintStart_toEndOf="@id/icon1"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/knob_not_configured"
+                />
+
+            <TextView
+                android:id="@+id/tv2"
+                style="@style/Label.Small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:src="@drawable/ic_yellow_circle"
+                android:text="@string/to_use_the_knob_you_have_to_configure_it_first_configure_knob"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnClose"
+                app:layout_constraintStart_toEndOf="@id/icon1"
+                app:layout_constraintTop_toBottomOf="@id/tv1" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <com.ome.app.presentation.views.KnobView
         android:id="@+id/knobView"

@@ -20,6 +20,9 @@ import com.ome.app.presentation.stove.StoveSetupBrandArgs
 import com.ome.app.presentation.stove.StoveSetupBurnersArgs
 import com.ome.app.presentation.stove.StoveSetupTypeArgs
 import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.isTrue
+import com.ome.app.utils.navigateSafe
+import com.ome.app.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -49,7 +52,7 @@ class SettingsFragment :
 //            }
 //        }
 //        binding.supportIv.setOnClickListener {
-//            navController?.navigate(R.id.action_dashboardFragment_to_supportFragment)
+//            navController?.navigateSafe(R.id.action_dashboardFragment_to_supportFragment)
 //        }
 
 //        binding.stoveSubtitleCl.setOnClickListener { showStoves() }
@@ -105,7 +108,7 @@ class SettingsFragment :
 //                                }
 //                                Settings.STOVE_INFO_SETTINGS -> {
 //                                    navController.navigate(Screens.StoveInfo)
-//                                    navController?.navigate(
+//                                    navController?.navigateSafe(
 //                                        SettingsFragmentDirections.actionSettingsFragmentToStoveInfoFragment(
 //                                            viewModel.userRepository.userFlow.value?.stoveId ?: ""
 //                                        )
@@ -114,26 +117,28 @@ class SettingsFragment :
 //                                Settings.STOVE_HISTORY -> {
 //
 //                                }
-                        Settings.ADD_NEW_KNOB ->
-                            navController?.navigate(DashboardFragmentDirections.actionDashboardFragmentToKnobWakeUpFragment(KnobWakeUpParams()))
+                        Settings.ADD_NEW_KNOB ->{
+                            if(mainViewModel.userInfo.value.stoveSetupComplete.isTrue())
+                                navController?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToKnobWakeUpFragment(KnobWakeUpParams()))
+                            else 
+                                toast("Complete stove setup first.")
+                        }
                         Settings.STOVE_BRAND ->
-                            navController?.navigate(DashboardFragmentDirections.actionDashboardFragmentToStoveSetupBrandFragment(StoveSetupBrandArgs(isEditMode = true)))
+                            navController?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToStoveSetupBrandFragment(StoveSetupBrandArgs(isEditMode = true)))
                         Settings.STOVE_TYPE ->
-                            navController?.navigate(DashboardFragmentDirections.actionDashboardFragmentToStoveSetupTypeFragment(StoveSetupTypeArgs(isEditMode = true)))
+                            navController?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToStoveSetupTypeFragment(StoveSetupTypeArgs(isEditMode = true)))
                         Settings.STOVE_LAYOUT ->
-                            navController?.navigate(DashboardFragmentDirections.actionDashboardFragmentToStoveSetupBurnersFragment(StoveSetupBurnersArgs(isEditMode = true)))
+                            navController?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToStoveSetupBurnersFragment(StoveSetupBurnersArgs(isEditMode = true)))
                         Settings.STOVE_AUTO_SHUT_OFF ->
-                            navController?.navigate(DashboardFragmentDirections.actionDashboardFragmentToAutoShutOffSettingsFragment())
+                            navController?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToAutoShutOffSettingsFragment())
                     }
                 }
             }
 
             is SettingsKnobItemModel -> {
-                navController?.navigate(
+                navController?.navigateSafe(
                     DashboardFragmentDirections.actionDashboardFragmentToDeviceSettingsFragment(
-                        DeviceSettingsFragmentParams(
-                            macAddr = item.macAddr
-                        )
+                        DeviceSettingsFragmentParams(macAddr = item.macAddr)
                     )
                 )
             }

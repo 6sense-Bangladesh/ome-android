@@ -12,6 +12,7 @@ import com.ome.app.R
 import com.ome.app.databinding.FragmentSignUpPasswordBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.applyMaskToEmail
+import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -67,7 +68,7 @@ class SignUpPasswordFragment :
         }
         subscribe(viewModel.signUpResultLiveData) {
             showSuccessDialog(message = getString(R.string.confirmation_label_dialog, viewModel.email.applyMaskToEmail()), onDismiss = {
-                findNavController().navigate(
+                navigateSafe(
                     SignUpPasswordFragmentDirections.actionSignUpPasswordFragmentToSignUpConfirmationFragment(
                         AuthParams(
                             firstName = viewModel.firstName,

@@ -3,7 +3,6 @@ package com.ome.app.presentation.signup.confirmation
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.amplifyframework.kotlin.core.Amplify
 import com.ome.app.R
@@ -11,6 +10,7 @@ import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.databinding.FragmentSignUpConfirmationBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.applyMaskToEmail
+import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -59,7 +59,7 @@ class SignUpConfirmationFragment :
             binding.continueBtn.revertAnimation()
             if (it) {
                 AmplifyManager.kotAuth = Amplify.Auth
-                findNavController().navigate(
+                navigateSafe(
                     SignUpConfirmationFragmentDirections.actionSignUpConfirmationFragmentToWelcomeFragment()
                 )
             }
@@ -81,7 +81,7 @@ class SignUpConfirmationFragment :
 
         subscribe(viewModel.codeValidationLiveData) {
             if (viewModel.isForgotPassword) {
-                findNavController().navigate(
+                navigateSafe(
                     SignUpConfirmationFragmentDirections.actionSignUpConfirmationFragmentToSignUpPasswordFragment(
                         args.params.apply { code = viewModel.code }
                     )
