@@ -22,7 +22,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
 
 
 //    var currentCalibrationStateLiveData = SingleLiveEvent<CalibrationState?>().apply { postValue(null) }
-    var currentCalibrationState = MutableStateFlow<CalibrationState?>(CalibrationState.HIGH_SINGLE)
+    var currentCalibrationState = MutableStateFlow<CalibrationState?>(null)
 
     var firstConfirmationPageLiveData = SingleLiveEvent<Boolean>()
 
@@ -194,7 +194,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                     currentCalibrationState.value =(CalibrationState.HIGH_SINGLE)
                 }
             }
-            else -> {
+            null -> {
                 if (!isDualKnob) {
                     highSingleAngle?.let {
                         stoveRepository.changeKnobAngle(
