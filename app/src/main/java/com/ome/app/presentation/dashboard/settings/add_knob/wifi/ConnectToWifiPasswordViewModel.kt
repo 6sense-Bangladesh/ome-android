@@ -11,7 +11,9 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.WifiHandler
+import com.ome.app.utils.withDelay
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.yield
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,9 +49,13 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 KnobSocketMessage.SET_WIFI -> {
                     if (message == "ok") {
                         sendMessage(KnobSocketMessage.REBOOT)
-                        disconnectFromNetwork()
-                        successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
-                        loadingLiveData.postValue(false)
+                        withDelay(2000) {
+                            disconnectFromNetwork()
+                        }
+                        withDelay(3000) {
+                            successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
+                            loadingLiveData.postValue(false)
+                        }
                     } else {
                         defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
                     }
@@ -65,15 +71,12 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
         }
     }
 
-    private fun disconnectFromNetwork(){
-        try {
-            launch(ioContext) {
-                val response = wifiHandler.disconnectFromNetwork()
-                connectionStatusListener.shouldReactOnChanges = true
-                networkDisconnectStatusLiveData.postValue(response)
-            }
-        }catch (e: Exception){
-            e.printStackTrace()
+    private fun disconnectFromNetwork() = launch(ioContext) {
+        val response = wifiHandler.disconnectFromNetwork()
+        yield()
+        withDelay(3000) {
+            connectionStatusListener.shouldReactOnChanges = true
+            networkDisconnectStatusLiveData.postValue(response)
         }
     }
 

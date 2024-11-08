@@ -112,8 +112,8 @@ class MyStoveFragment :
                         gone(knob5 , knob6)
                     }
                     StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
-                        listOf(knob1 , knob2 , knob3 , knob4 , knob5).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
-                        visible(knob1 , knob2 , knob3 , knob4 , knob5)
+                        listOf(knob1 , knob2 , knob4 , knob5 , knob3).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
+                        visible(knob1 , knob2 , knob4 , knob5 , knob3)
                         changeFlexBasisPercent(.5F, knob1 , knob2 , knob4 , knob5)
                         changeFlexBasisPercent(1F,  knob3)
                         gone(knob6)
