@@ -9,12 +9,16 @@ sealed class BurnerState(val level: Int, val type: State) {
     enum class State(@ColorRes val background: Int, @ColorRes val text: Int){
         Off(R.color.off_white , R.color.gray),
         High(R.color.colorHigh , R.color.black),
+        HighMid(R.color.colorHigh , R.color.black),
         Medium(R.color.colorMedium , R.color.black),
-        Low(R.color.colorLow , R.color.black)
+        Low(R.color.colorLow , R.color.black),
+        LowMid(R.color.colorLow , R.color.black)
     }
 
+    val State.nm get() = name.replace(Regex("([a-z])([A-Z])"), "$1 $2")
+
     fun Chip.applyState(){
-        text = type.name
+        text = type.nm
         context?.let {
             chipBackgroundColor = ContextCompat.getColorStateList(it, type.background)
             setTextColor(ContextCompat.getColor(it, type.text))
@@ -23,6 +27,8 @@ sealed class BurnerState(val level: Int, val type: State) {
 
     class Off(level: Int) : BurnerState(level, State.Off)
     class High(level: Int) : BurnerState(level, State.High)
+    class HighMid(level: Int) : BurnerState(level, State.HighMid)
     class Medium(level: Int) : BurnerState(level, State.Medium)
     class Low(level: Int) : BurnerState(level, State.Low)
+    class LowMid(level: Int) : BurnerState(level, State.LowMid)
 }

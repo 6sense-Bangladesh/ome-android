@@ -86,6 +86,7 @@ class DashboardFragment :
     }
 
     override fun setupUI() {
+//        setStatusBarAppearance(true)
         when(binding.dashboardViewPager.currentItem){
             0 -> binding.topAppBar.title = getString(R.string.menu_settings)
             1 -> binding.topAppBar.title = getString(R.string.app_name)

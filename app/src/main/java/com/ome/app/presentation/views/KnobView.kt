@@ -17,9 +17,7 @@ import com.ome.app.R
 import com.ome.app.databinding.KnobViewLayoutBinding
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.state.ConnectionState
-import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.model.state.connectionState
-import com.ome.app.domain.model.state.rotation
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.CalibrationState
 import com.ome.app.utils.*
 import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
@@ -80,6 +78,7 @@ class KnobView @JvmOverloads constructor(
         binding.mediumTv.textSize = size
         binding.highSingleTv.textSize = size
         binding.highDualTv.textSize = size
+        binding.stovePositionTv.textSize = size - 2
 
         (binding.offTv.layoutParams as MarginLayoutParams).setMargins(0)
         (binding.lowSingleTv.layoutParams as MarginLayoutParams).setMargins(0)
@@ -201,11 +200,11 @@ class KnobView @JvmOverloads constructor(
             else -> {
                 changeKnobState(KnobState.NORMAL)
                 changeKnobProgressVisibility(true)
-                when(knob.calibration.rotationDir.rotation){
-                    Rotation.CLOCKWISE -> binding.knobProgress.scaleX = 1F
-                    Rotation.COUNTER_CLOCKWISE -> binding.knobProgress.scaleX = -1F
-                    else -> Unit
-                }
+                val zone1 =knob.calibration.toCalibration().zones1
+                if(zone1 != null && zone1.lowAngle < zone1.highAngle)
+                    binding.knobProgress.scaleX = 1F
+                else
+                    binding.knobProgress.scaleX = -1F
                 true
             }
         }
@@ -222,11 +221,11 @@ class KnobView @JvmOverloads constructor(
                 }
             else -> {
                 changeKnobState(KnobState.NORMAL)
-                when(knob.calibration.rotationDir.rotation){
-                    Rotation.CLOCKWISE -> binding.knobProgress.scaleX = 1F
-                    Rotation.COUNTER_CLOCKWISE -> binding.knobProgress.scaleX = -1F
-                    else -> Unit
-                }
+                val zone1 =knob.calibration.toCalibration().zones1
+                if(zone1 != null && zone1.lowAngle < zone1.highAngle)
+                    binding.knobProgress.scaleX = 1F
+                else
+                    binding.knobProgress.scaleX = -1F
                 true
             }
         }

@@ -5,11 +5,14 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceDetailsBinding
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.state.*
 import com.ome.app.presentation.base.BaseFragment
+import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationConfirmationFragmentParams
+import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragmentParams
 import com.ome.app.presentation.views.KnobView
 import com.ome.app.utils.*
@@ -31,6 +34,7 @@ class DeviceDetailsFragment :
     override fun setupUI() {
         viewModel.macAddress = args.params.macAddr
         viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
+        binding.knobView.setFontSize(18F)
         viewModel.initSubscriptions()
         val selectedColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
         binding.apply {
@@ -107,6 +111,30 @@ class DeviceDetailsFragment :
     }
 
     override fun setupListener() {
+        if(BuildConfig.DEBUG){
+            binding.tvLevel.setBounceClickListener {
+                navigateSafe(
+                    DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToDeviceCalibrationFragment(
+                        DeviceCalibrationFragmentParams(macAddr = args.params.macAddr, rotateDir = 1)
+                    )
+                )
+            }
+            binding.tvBattery.setBounceClickListener {
+                navigateSafe(
+                    DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToDeviceCalibrationConfirmationFragment(
+                        DeviceCalibrationConfirmationFragmentParams(
+                            macAddr = args.params.macAddr,
+                            isComeFromSettings = false,
+                            offPosition = 0f,
+                            lowSinglePosition = 170f,
+                            medPosition = 200f,
+                            highSinglePosition =280f,
+                            rotateDir = 1
+                        )
+                    )
+                )
+            }
+        }
         binding.btnClose.setOnClickListener {
             binding.warningCard.animateInvisible()
         }

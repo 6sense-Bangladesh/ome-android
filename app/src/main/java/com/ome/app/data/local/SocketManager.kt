@@ -74,36 +74,42 @@ class SocketManager(
     suspend fun sendMessage(
         message: KnobSocketMessage,
         vararg params: String = arrayOf()
-    ) = withContext(Dispatchers.IO) {
+    ){
+        withContext(Dispatchers.IO) {
 //        if (lastMessageSent == KnobSocketMessage.GET_NETWORKS2) {
 //            scanForNetworks()
 //            return@withContext
 //        }
-        var finalMessage = message.path
-
-        if (message == KnobSocketMessage.TEST_WIFI || message == KnobSocketMessage.SET_WIFI) {
-            finalMessage += " \"${params[0]}\" \"${params[1]}\" ${params[2]}"
-        }
-
-        if (mOut != null) {
-            logi("Sending: $finalMessage")
-            var data = encrypt(finalMessage)
-
-            if (message == KnobSocketMessage.TEST_WIFI || message == KnobSocketMessage.SET_WIFI) {
-                repeat(128 - data.size){
-                    data += 0.toByte()
-                }
-            }
-            lastMessageSent = message
             try {
-                mOut?.write(data)
-                mOut?.flush()
+                // Prepare the message
+                var finalMessage = message.path
+                if (message == KnobSocketMessage.TEST_WIFI || message == KnobSocketMessage.SET_WIFI) {
+                    finalMessage += " \"${params[0]}\" \"${params[1]}\" ${params[2]}"
+                }
+
+                // Send the message
+                if (mOut != null) {
+                    logi("Sending: $finalMessage")
+                    var data = encrypt(finalMessage)
+
+                    // Pad data if needed
+                    if (message == KnobSocketMessage.TEST_WIFI || message == KnobSocketMessage.SET_WIFI) {
+                        repeat(128 - data.size) {
+                            data += 0.toByte()
+                        }
+                    }
+                    mOut?.write(data)
+                    mOut?.flush()
+                    lastMessageSent = message
+                }
             } catch (e: SocketException) {
-                loge("Socket connection lost: ${e.message}")
-                reconnectSocket()
+                loge("SocketException encountered: ${e.message}. Attempting to reconnect...")
+                reconnectSocket()  // Attempt to reconnect
+                sendMessage(message, *params)  // Retry sending the message after reconnecting
             }
         }
     }
+
 
     private fun read() {
         val buffer = ByteArrayOutputStream()
@@ -249,7 +255,7 @@ class SocketManager(
                 }
             } catch (e: ConnectException) {
                 attempts++
-                loge("Reconnect attempt ${attempts} failed: ${e.message}")
+                loge("Reconnect attempt $attempts failed: ${e.message}")
                 delay(delayMillis)  // Wait before the next attempt
             }
         }

@@ -83,11 +83,15 @@ val KnobDto.asBurnerState
         add(BurnerState.Off(cal.offAngle))
         if(cal.zones1 != null){
             add(BurnerState.Low(cal.zones1.lowAngle))
-            if(cal.rotation != Rotation.DUAL)
+            if(cal.rotation != Rotation.DUAL) {
+                add(BurnerState.HighMid((cal.zones1.highAngle + cal.zones1.mediumAngle)/2))
                 add(BurnerState.Medium(cal.zones1.mediumAngle))
+                add(BurnerState.LowMid((cal.zones1.lowAngle + cal.zones1.mediumAngle)/2))
+            }
             add(BurnerState.High(cal.zones1.highAngle))
         }else if(cal.zones2 != null){
             add(BurnerState.Low(cal.zones2.lowAngle))
+            add(BurnerState.Medium((cal.zones2.lowAngle + cal.zones2.highAngle)/2))
             add(BurnerState.High(cal.zones2.highAngle))
         }
     }

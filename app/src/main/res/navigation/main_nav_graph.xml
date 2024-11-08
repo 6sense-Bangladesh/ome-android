@@ -375,6 +375,20 @@
             app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_deviceDetailsFragment_to_knobInstallationManualFragment"
             app:destination="@id/knobInstallationManualFragment" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_deviceDetailsFragment_to_deviceCalibrationFragment"
+            app:destination="@id/deviceCalibrationFragment" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_deviceDetailsFragment_to_deviceCalibrationConfirmationFragment"
+            app:destination="@id/deviceCalibrationConfirmationFragment" />
     </fragment>
 
     <fragment

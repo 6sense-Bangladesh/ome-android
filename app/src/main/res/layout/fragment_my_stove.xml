@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            app:knobSize="@dimen/_90sdp"
+            app:knobSize="@dimen/_105sdp"
             tools:visibility="visible" />
 
         <com.ome.app.presentation.views.KnobView
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            app:knobSize="@dimen/_90sdp"
+            app:knobSize="@dimen/_105sdp"
             tools:visibility="visible" />
 
         <!--        <FrameLayout-->
@@ -48,7 +48,7 @@
         <!--                android:layout_width="wrap_content"-->
         <!--                android:layout_height="wrap_content"-->
         <!--                android:layout_gravity="center"-->
-        <!--                app:knobSize="@dimen/_90sdp" />-->
+        <!--                app:knobSize="@dimen/_105sdp" />-->
         <!--        </FrameLayout>-->
 
         <!--        <FrameLayout-->
@@ -62,9 +62,9 @@
         <!--                android:id="@+id/knob2center"-->
         <!--                android:layout_width="wrap_content"-->
         <!--                android:layout_height="wrap_content"-->
-        <!--                app:knobSize="@dimen/_90sdp"-->
+        <!--                app:knobSize="@dimen/_105sdp"-->
         <!--                android:layout_gravity="center"-->
-        <!--                android:minHeight="@dimen/_90sdp" />-->
+        <!--                android:minHeight="@dimen/_105sdp" />-->
         <!--        </FrameLayout>-->
 
         <com.ome.app.presentation.views.KnobView
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            app:knobSize="@dimen/_90sdp"
+            app:knobSize="@dimen/_105sdp"
             tools:visibility="visible" />
 
         <com.ome.app.presentation.views.KnobView
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            app:knobSize="@dimen/_90sdp"
+            app:knobSize="@dimen/_105sdp"
             tools:visibility="visible" />
 
         <com.ome.app.presentation.views.KnobView
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            app:knobSize="@dimen/_90sdp"
+            app:knobSize="@dimen/_105sdp"
             tools:visibility="visible" />
 
         <com.ome.app.presentation.views.KnobView
@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
-            app:knobSize="@dimen/_90sdp"
+            app:knobSize="@dimen/_105sdp"
             tools:visibility="visible" />
 
 

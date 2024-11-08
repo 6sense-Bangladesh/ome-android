@@ -71,10 +71,10 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
         }
     }
 
-    private fun disconnectFromNetwork() = launch(ioContext) {
+    private fun disconnectFromNetwork() = launch {
         val response = wifiHandler.disconnectFromNetwork()
-        yield()
         withDelay(3000) {
+            yield()
             connectionStatusListener.shouldReactOnChanges = true
             networkDisconnectStatusLiveData.postValue(response)
         }

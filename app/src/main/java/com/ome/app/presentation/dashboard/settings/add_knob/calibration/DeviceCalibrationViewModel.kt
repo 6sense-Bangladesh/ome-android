@@ -202,10 +202,10 @@ class DeviceCalibrationViewModel @Inject constructor(
 }
 
 enum class CalibrationState(val positionName: String) {
-    OFF("OFF"),
-    HIGH_SINGLE("HIGH"),
-    MEDIUM("MEDIUM"),
-    LOW_SINGLE("LOW"),
-    HIGH_DUAL("HIGH"),
-    LOW_DUAL("LOW")
+    OFF("Off"),
+    HIGH_SINGLE("High"),
+    MEDIUM("Medium"),
+    LOW_SINGLE("Low"),
+    HIGH_DUAL("High"),
+    LOW_DUAL("Low")
 }

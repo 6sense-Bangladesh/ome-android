@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDestination
 import com.amplifyframework.auth.AuthException
 import com.ome.app.data.remote.error
+import com.ome.app.utils.isTrue
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,9 +54,10 @@ abstract class BaseViewModel: ViewModel() {
         }
     }
 
-    protected fun sendError(throwable: Throwable) {
+    private fun sendError(throwable: Throwable) {
         launch(mainContext) {
             throwable.printStackTrace()
+            if(throwable.message?.contains("handler", true).isTrue()) return@launch
             defaultErrorLiveData.setNewValue(throwable.message)
         }
     }

@@ -1,8 +1,10 @@
 package com.ome.app.utils
 
-import android.os.Handler
-import android.os.Looper
 import android.view.View
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 fun View.makeGoneIf(predicate: Boolean) {
@@ -35,6 +37,10 @@ fun View.makeGone() {
     visibility = View.GONE
 }
 
-fun withDelay(delay : Long, block : () -> Unit) {
-    Handler(Looper.getMainLooper()).postDelayed(Runnable(block), delay)
+fun withDelay(delayMillis: Long, block: suspend CoroutineScope.() -> Unit) {
+    CoroutineScope(Dispatchers.Main).launch {
+        delay(delayMillis)
+        block()
+    }
 }
+

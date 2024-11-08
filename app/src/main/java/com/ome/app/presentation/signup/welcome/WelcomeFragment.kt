@@ -43,6 +43,7 @@ class WelcomeFragment :
             }
         }
         binding.continueBtn.setBounceClickListener {
+            setStatusBarAppearance(true)
             navigateSafe(WelcomeFragmentDirections.actionWelcomeFragmentToStoveSetupBrandFragment(StoveSetupBrandArgs()))
 //            binding.continueBtn.startAnimation()
             viewModel.setup()

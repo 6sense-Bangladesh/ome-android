@@ -108,9 +108,8 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
 
 
     fun setStatusBarAppearance(isLight: Boolean = true) {
-        view?.let {
-            WindowInsetsControllerCompat(requireActivity().window, it).isAppearanceLightStatusBars =
-                isLight
+        activity?.let {
+            WindowInsetsControllerCompat(it.window, it.window.decorView).isAppearanceLightStatusBars = isLight
         }
     }
 

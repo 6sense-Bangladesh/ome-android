@@ -112,6 +112,14 @@ class DeviceCalibrationConfirmationFragment :
         }
         viewModel.currentCalibrationState.collectWithLifecycle{ currentStep ->
             binding.labelTv.text = getString(R.string.calibration_confirmation_label, currentStep.positionName)
+            when(currentStep){
+                CalibrationState.OFF -> viewModel.offAngle?.let { binding.knobView.setOffPosition(it) }
+                CalibrationState.HIGH_SINGLE -> viewModel.highSingleAngle?.let { binding.knobView.setHighSinglePosition(it) }
+                CalibrationState.HIGH_DUAL -> viewModel.highDualAngle?.let { binding.knobView.setHighDualPosition(it) }
+                CalibrationState.MEDIUM -> viewModel.mediumAngle?.let { binding.knobView.setMediumPosition(it) }
+                CalibrationState.LOW_SINGLE -> viewModel.lowSingleAngle?.let { binding.knobView.setLowSinglePosition(it) }
+                CalibrationState.LOW_DUAL -> viewModel.lowDualAngle?.let { binding.knobView.setLowDualPosition(it) }
+            }
 
 //            currentStep?.let {
 //                if (viewModel.isDualKnob) {

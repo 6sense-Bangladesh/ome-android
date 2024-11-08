@@ -38,6 +38,10 @@ class SignInFragment :
             closeKeyboard()
         }
 
+        onDismissErrorDialog = {
+            binding.continueBtn.revertAnimation()
+        }
+
 //        binding.deleteBtn.setOnClickListener {
 //            binding.deleteBtn.startAnimation()
 //            viewModel.deleteUser()
@@ -69,6 +73,8 @@ class SignInFragment :
         subscribe(viewModel.destinationAfterSignInLiveData){
             binding.continueBtn.revertAnimation()
             AmplifyManager.kotAuth = Amplify.Auth
+            if(it == R.id.action_signInFragment_to_dashboardFragment)
+                setStatusBarAppearance(true)
             navigateSafe(it)
         }
     }
