@@ -22,7 +22,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
 
 
 //    var currentCalibrationStateLiveData = SingleLiveEvent<CalibrationState?>().apply { postValue(null) }
-    var currentCalibrationState = MutableStateFlow<CalibrationState?>(CalibrationState.OFF)
+    var currentCalibrationState = MutableStateFlow<CalibrationState?>(CalibrationState.HIGH_SINGLE)
 
     var firstConfirmationPageLiveData = SingleLiveEvent<Boolean>()
 
