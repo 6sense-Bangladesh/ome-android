@@ -46,7 +46,6 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
                         negativeButtonText = getString(R.string.no_btn),
                         message = SpannableStringBuilder(getString(R.string.confirm_position_body, it.toString())),
                         onPositiveButtonClick = {
-                            binding.continueBtn.startAnimation()
                             viewModel.changeKnobPosition(stovePosition = it)
                         }
                     )
@@ -76,9 +75,13 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
             }
         }
         viewModel.loadingFlow.collectWithLifecycle{
-            binding.continueBtn.revertAnimation()
-            toast(getString(R.string.knob_position_changed))
-            findNavController().popBackStack()
+            if (it)
+                binding.continueBtn.startAnimation()
+            else{
+                binding.continueBtn.revertAnimation()
+                toast(getString(R.string.knob_position_changed))
+                findNavController().popBackStack()
+            }
         }
 
     }
