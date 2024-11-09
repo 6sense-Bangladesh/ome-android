@@ -5,11 +5,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
-import com.ome.app.data.local.KnobSocketMessage
+import com.ome.app.data.local.KnobSocketMessageType
 import com.ome.app.databinding.FragmentConnectToWifiPasswordBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragmentParams
-import com.ome.app.utils.*
+import com.ome.app.utils.closeKeyboard
+import com.ome.app.utils.navigateSafe
+import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.setBounceClickListener
+import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -37,8 +41,8 @@ class ConnectToWifiPasswordFragment :
             closeKeyboard()
             binding.connectBtn.startAnimation()
             viewModel.password = binding.password.text.toString()
-            viewModel.sendMessage(
-                message = KnobSocketMessage.TEST_WIFI,
+            viewModel.sendMessageInVM(
+                type = KnobSocketMessageType.TEST_WIFI,
                 ssid = viewModel.ssid,
                 password = viewModel.password,
                 securityType = viewModel.securityType

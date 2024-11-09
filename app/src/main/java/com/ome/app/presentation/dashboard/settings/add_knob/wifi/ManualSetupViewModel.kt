@@ -1,7 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import com.ome.app.data.ConnectionStatusListener
-import com.ome.app.data.local.KnobSocketMessage
+import com.ome.app.data.local.KnobSocketMessageType
 import com.ome.app.data.local.SocketManager
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.utils.WifiHandler
@@ -57,6 +57,6 @@ class ManualSetupViewModel @Inject constructor(
     }
 
     private fun getNetworks() = launch(ioContext) {
-        socketManager.sendMessage(KnobSocketMessage.GET_NETWORKS)
+        socketManager.sendMessage(KnobSocketMessageType.GET_NETWORKS)
     }
 }

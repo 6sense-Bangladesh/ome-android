@@ -68,8 +68,8 @@
     <color name="cardStrokeColorDeep">#dde3ea</color>
 
     <color name="colorHigh">#FFEF3F3F</color>
-    <color name="colorMedium">#FFFBAA1A</color>
-    <color name="colorLow">#FFD1CB29</color>
+    <color name="colorMedium">#FFB639</color>
+    <color name="colorLow">#DED72B</color>
 
 
 </resources>

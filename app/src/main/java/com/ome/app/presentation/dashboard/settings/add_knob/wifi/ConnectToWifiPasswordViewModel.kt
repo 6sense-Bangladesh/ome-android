@@ -2,19 +2,19 @@ package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import com.ome.app.R
 import com.ome.app.data.ConnectionStatusListener
-import com.ome.app.data.local.KnobSocketMessage
+import com.ome.app.data.local.KnobSocketMessageType
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.local.SocketManager
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.presentation.base.SingleLiveEvent
+import com.ome.app.utils.MAIN
 import com.ome.app.utils.WifiHandler
-import com.ome.app.utils.withDelay
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.yield
+import kotlinx.coroutines.delay
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class ConnectToWifiPasswordViewModel @Inject constructor(
@@ -32,33 +32,31 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     var securityType = ""
     var password = ""
 
-    val networkDisconnectStatusLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
 
     fun initListeners() {
         socketManager.messageReceived = { type, message ->
             when (type) {
-                KnobSocketMessage.TEST_WIFI -> {
+                KnobSocketMessageType.TEST_WIFI -> {
                     if (message == "ok") {
-                        sendMessage(KnobSocketMessage.WIFI_STATUS)
+                        sendMessage(KnobSocketMessageType.WIFI_STATUS)
                     }
                 }
-                KnobSocketMessage.WIFI_STATUS -> {
+                KnobSocketMessageType.WIFI_STATUS -> {
                     handleWifiStatusMessage(message)
                 }
-                KnobSocketMessage.SET_WIFI -> {
+                KnobSocketMessageType.SET_WIFI -> {
                     if (message == "ok") {
-                        sendMessage(KnobSocketMessage.REBOOT)
+                        sendMessage(KnobSocketMessageType.REBOOT)
 //                        withDelay(2000) {
 //                            disconnectFromNetwork()
 //                        }
 //                        successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
 //                        loadingLiveData.postValue(false)
                         disconnectFromNetwork()
-                        withDelay(3000) {
-                            successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
-                            loadingLiveData.postValue(false)
-                        }
+//                        delay(1.seconds)
+                        successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
+                        loadingLiveData.postValue(false)
                     } else {
                         defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
                     }
@@ -68,26 +66,22 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 }
             }
         }
-
-
-        socketManager.onSocketConnect = {
-        }
+//
+//        socketManager.onSocketConnect = {
+//        }
     }
 
-    private fun disconnectFromNetwork() = launch {
-        val response = wifiHandler.disconnectFromNetwork()
-        withDelay(3000) {
-            yield()
-            connectionStatusListener.shouldReactOnChanges = true
-            networkDisconnectStatusLiveData.postValue(response)
-        }
+    private suspend fun disconnectFromNetwork(){
+        delay(2.seconds)
+        MAIN { wifiHandler.disconnectFromNetwork() }
+        connectionStatusListener.shouldReactOnChanges = true
     }
 
-    private fun handleWifiStatusMessage(message: String) {
+    private suspend fun handleWifiStatusMessage(message: String) {
         when (message) {
             "0", "3", "2", "5" -> {
                 sendMessage(
-                    KnobSocketMessage.SET_WIFI,
+                    KnobSocketMessageType.SET_WIFI,
                     ssid = ssid,
                     password = password,
                     securityType = securityType
@@ -103,7 +97,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
 //            }
             "1" -> {
                 sendMessage(
-                    KnobSocketMessage.TEST_WIFI,
+                    KnobSocketMessageType.TEST_WIFI,
                     ssid = ssid,
                     password = password,
                     securityType = securityType
@@ -121,13 +115,20 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
 
     }
 
-    fun sendMessage(
-        message: KnobSocketMessage,
+    fun sendMessageInVM(
+        type: KnobSocketMessageType,
         ssid: String = "",
         password: String = "",
         securityType: String = ""
     ) = launch(ioContext) {
-        socketManager.sendMessage(message, ssid, password, securityType)
+        socketManager.sendMessage(type, ssid, password, securityType)
     }
+
+    private suspend fun sendMessage(
+        type: KnobSocketMessageType,
+        ssid: String = "",
+        password: String = "",
+        securityType: String = ""
+    ) = socketManager.sendMessage(type, ssid, password, securityType)
 
 }

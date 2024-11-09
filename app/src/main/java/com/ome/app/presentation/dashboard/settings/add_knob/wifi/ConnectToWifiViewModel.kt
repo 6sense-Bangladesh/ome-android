@@ -1,19 +1,19 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import com.ome.app.data.ConnectionStatusListener
-import com.ome.app.data.local.KnobSocketMessage
+import com.ome.app.data.local.KnobSocketMessageType
 import com.ome.app.data.local.SocketManager
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
+import com.ome.app.utils.IO
 import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 
 @HiltViewModel
@@ -40,7 +40,7 @@ class ConnectToWifiViewModel @Inject constructor(
                 }else{
                     getListTryCount++
                     delay(500)
-                    sendMessage(KnobSocketMessage.GET_NETWORKS)
+                    sendMessage(KnobSocketMessageType.GET_NETWORKS)
                 }
             }
         }
@@ -61,18 +61,18 @@ class ConnectToWifiViewModel @Inject constructor(
 
     fun initListeners() = launch(ioContext) {
         socketManager.messageReceived = { type, message ->
-            if (type == KnobSocketMessage.GET_MAC) {
+            if (type == KnobSocketMessageType.GET_MAC) {
                 if (message == macAddrs) {
-                    sendMessage(KnobSocketMessage.GET_NETWORKS)
+                    sendMessage(KnobSocketMessageType.GET_NETWORKS)
                 }
             }
         }
         socketManager.onSocketConnect = {
-            sendMessage(KnobSocketMessage.GET_MAC)
+            sendMessage(KnobSocketMessageType.GET_MAC)
         }
     }
 
-    private fun sendMessage(message: KnobSocketMessage) = launch(ioContext) {
+    private fun sendMessage(message: KnobSocketMessageType) = launch(ioContext) {
         socketManager.sendMessage(message)
     }
 
@@ -80,8 +80,8 @@ class ConnectToWifiViewModel @Inject constructor(
     fun connectToWifi(){
         launch {
             if(isChangeWifiMode){
-                withContext(Dispatchers.IO){ stoveRepository.clearWifi(macAddrs) }
-//            delay(6000)
+                IO{ stoveRepository.clearWifi(macAddrs) }
+                delay(6.seconds)
             }
             connectionStatusListener.shouldReactOnChanges = false
             val result = wifiHandler.connectToWifi()

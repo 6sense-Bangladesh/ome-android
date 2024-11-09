@@ -17,9 +17,12 @@ import com.thanosfisherman.wifiutils.wifiConnect.ConnectionErrorCode
 import com.thanosfisherman.wifiutils.wifiConnect.ConnectionSuccessListener
 import com.thanosfisherman.wifiutils.wifiDisconnect.DisconnectionErrorCode
 import com.thanosfisherman.wifiutils.wifiDisconnect.DisconnectionSuccessListener
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlin.time.Duration.Companion.seconds
 
 typealias Rssi = Int
 
@@ -57,44 +60,40 @@ class WifiHandler(val context: Context) {
 
     suspend fun connectToWifi(): Pair<Boolean, String?>{
         val currentWifiSSID = getCurrentWifiSsid()
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             if (currentWifiSSID == omeKnobSSID || currentWifiSSID == inirvKnobSSID) {
                 continuation.resume(true to null)
             } else {
-//                handler.postDelayed({
-//                    continuation.resume(
-//                        false to resourceProvider.getString(
-//                            R.string.unable_to_join_the_network,
-//                            currentSSID
-//                        )
-//                    )
-//                }, 15000)
+                tryInMain {
+                    delay(15.seconds)
+                    if (continuation.isActive) {
+                        omeFail = false
+                        continuation.resume(false to
+                                context.getString(R.string.unable_to_join_the_network, omeKnobSSID, inirvKnobSSID)
+                        )
+                    }
+                }
                 WifiUtils.withContext(context).connectWith(currentSSID, PASSWORD)
                     .onConnectionResult(object : ConnectionSuccessListener {
                         override fun success() {
-//                            handler.removeCallbacksAndMessages(null)
+                            omeFail = false
                             continuation.resume(true to null)
                         }
 
                         override fun failed(errorCode: ConnectionErrorCode) {
-//                            handler.removeCallbacksAndMessages(null)
                             if(!omeFail) {
                                 continuation.resume(false to null)
                                 omeFail = true
                             }else{
-                                continuation.resume(
-                                    false to context.getString(
-                                        R.string.unable_to_join_the_network,
-                                        omeKnobSSID, inirvKnobSSID
-                                    )
+                                omeFail = false
+                                continuation.resume(false to
+                                        context.getString(R.string.unable_to_join_the_network, omeKnobSSID, inirvKnobSSID)
                                 )
                             }
                             switchToOtherNetwork()
                         }
                     })
                     .start()
-                // }
-
             }
         }
     }
@@ -107,7 +106,7 @@ class WifiHandler(val context: Context) {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private suspend fun getCurrentWifiSsidNew() = suspendCoroutine{ continuation->
+    private suspend fun getCurrentWifiSsidNew() = suspendCancellableCoroutine{ continuation ->
         val connectivityManager = context.applicationContext.getSystemService(ConnectivityManager::class.java)
         val request =
             NetworkRequest.Builder()
@@ -117,8 +116,10 @@ class WifiHandler(val context: Context) {
             override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
                 val wifiInfo = networkCapabilities.transportInfo as WifiInfo
                 // Use wifiInfo as needed
-                continuation.resume(wifiInfo.ssid.replace("\"", ""))
-                connectivityManager?.unregisterNetworkCallback(this) // Unregister the callback
+                if(continuation.isActive) {
+                    continuation.resume(wifiInfo.ssid.replace("\"", ""))
+                    connectivityManager?.unregisterNetworkCallback(this) // Unregister the callback
+                }
             }
         }
         connectivityManager?.requestNetwork(request, networkCallback)

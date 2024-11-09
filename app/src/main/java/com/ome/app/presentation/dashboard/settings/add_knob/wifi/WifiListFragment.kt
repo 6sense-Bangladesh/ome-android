@@ -3,7 +3,7 @@ package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 import android.os.Parcelable
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.ome.app.data.local.KnobSocketMessage
+import com.ome.app.data.local.KnobSocketMessageType
 import com.ome.app.databinding.FragmentWifiListBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.NetworkItemAdapter
@@ -42,7 +42,7 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.scanAgainBtn.setBounceClickListener {
             binding.scanAgainBtn.startAnimation()
-            viewModel.sendMessage(KnobSocketMessage.GET_NETWORKS)
+            viewModel.sendMessage(KnobSocketMessageType.GET_NETWORKS)
         }
     }
 

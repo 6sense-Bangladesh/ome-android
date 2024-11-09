@@ -58,7 +58,7 @@ class SocketManager(
     //testWifi
 
 
-    var messageReceived: (messageType: KnobSocketMessage, message: String) -> Unit =
+    var messageReceived: suspend (messageType: KnobSocketMessageType, message: String) -> Unit =
         { type, message -> }
 
     var onSocketConnect: () -> Unit = {}
@@ -69,10 +69,10 @@ class SocketManager(
 
     var socket: Socket = Socket()
 
-    var lastMessageSent: KnobSocketMessage = KnobSocketMessage.GET_MAC
+    var lastMessageSent: KnobSocketMessageType = KnobSocketMessageType.GET_MAC
 
     suspend fun sendMessage(
-        message: KnobSocketMessage,
+        message: KnobSocketMessageType,
         vararg params: String = arrayOf()
     ){
         withContext(Dispatchers.IO) {
@@ -83,7 +83,7 @@ class SocketManager(
             try {
                 // Prepare the message
                 var finalMessage = message.path
-                if (message == KnobSocketMessage.TEST_WIFI || message == KnobSocketMessage.SET_WIFI) {
+                if (message == KnobSocketMessageType.TEST_WIFI || message == KnobSocketMessageType.SET_WIFI) {
                     finalMessage += " \"${params[0]}\" \"${params[1]}\" ${params[2]}"
                 }
 
@@ -93,7 +93,7 @@ class SocketManager(
                     var data = encrypt(finalMessage)
 
                     // Pad data if needed
-                    if (message == KnobSocketMessage.TEST_WIFI || message == KnobSocketMessage.SET_WIFI) {
+                    if (message == KnobSocketMessageType.TEST_WIFI || message == KnobSocketMessageType.SET_WIFI) {
                         repeat(128 - data.size) {
                             data += 0.toByte()
                         }
@@ -111,7 +111,7 @@ class SocketManager(
     }
 
 
-    private fun read() {
+    private suspend fun read() {
         val buffer = ByteArrayOutputStream()
 
         val data = ByteArray(16384)
@@ -128,7 +128,7 @@ class SocketManager(
         val decryptedMessage = String(buffer.toByteArray().removePadding(), StandardCharsets.UTF_8)
         decryptedMessage.let {
             logi("ResponseFrom: ${lastMessageSent.path} , Message: $it")
-            if (lastMessageSent == KnobSocketMessage.GET_NETWORKS) {
+            if (lastMessageSent == KnobSocketMessageType.GET_NETWORKS) {
                 networksFlow.value = parseNetworkList(it)
             }
             messageReceived(lastMessageSent, it)
@@ -298,7 +298,7 @@ class SocketManager(
 
 }
 
-enum class KnobSocketMessage(val path: String) {
+enum class KnobSocketMessageType(val path: String) {
     GET_MAC("getmac"),
     WIFI_STATUS("getwifistatus"),
     TEST_WIFI("testwifi"),

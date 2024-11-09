@@ -2,7 +2,7 @@ package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import androidx.lifecycle.SavedStateHandle
 import com.ome.app.BuildConfig
-import com.ome.app.data.local.KnobSocketMessage
+import com.ome.app.data.local.KnobSocketMessageType
 import com.ome.app.data.local.SocketManager
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
@@ -44,7 +44,7 @@ class WifiListViewModel @Inject constructor(
         }
     }
 
-    fun sendMessage(message: KnobSocketMessage) = launch(ioContext) {
+    fun sendMessage(message: KnobSocketMessageType) = launch(ioContext) {
         socketManager.sendMessage(message)
     }
 }

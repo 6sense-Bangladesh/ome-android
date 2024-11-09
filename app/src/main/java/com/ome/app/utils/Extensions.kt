@@ -926,13 +926,12 @@ inline fun <T> tryGet(data: () -> T): T? =
         null
     }
 
-suspend inline fun <T> tryInMain(crossinline data: () -> T): T? =
-    withContext(Dispatchers.Main) {
+inline fun <T> tryInMain(crossinline data: suspend () -> T) =
+    CoroutineScope(Dispatchers.Main).launch {
         try {
             data()
         } catch (e: Exception) {
             e.printStackTrace()
-            null
         }
     }
 
