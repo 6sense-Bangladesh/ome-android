@@ -29,66 +29,68 @@
         app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
 
 
+    <com.ome.app.presentation.views.MaterialButtonToggleGroupWithRadius
+        android:id="@+id/toggleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:dividerPadding="@dimen/_15sdp"
+        android:gravity="center"
+        android:theme="@style/Widget.Material3.CompoundButton.RadioButton"
+        app:checkedButton="@+id/singleZone"
+        app:layout_constraintTop_toBottomOf="@+id/labelTv"
+        app:selectionRequired="true"
+        app:singleSelection="true"
+        tools:layout_editor_absoluteX="19dp">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/singleZone"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_14sdp"
+            android:text="@string/single_zone"
+            app:icon="@drawable/ic_single_zone"
+            app:iconGravity="top"
+            app:iconPadding="@dimen/_10sdp"
+            app:iconSize="@dimen/_90sdp"
+            app:iconTint="@null"
+            app:strokeWidth="0dp" />
+
+        <Button
+            android:id="@+id/hiddenSpace"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dualZone"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_14sdp"
+            android:text="@string/double_zone"
+            app:icon="@drawable/ic_dual_zone"
+            app:iconGravity="top"
+            app:iconPadding="@dimen/_10sdp"
+            app:iconSize="@dimen/_90sdp"
+            app:iconTint="@null"
+            app:strokeWidth="0dp" />
+
+    </com.ome.app.presentation.views.MaterialButtonToggleGroupWithRadius>
+
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/continueBtn"
         style="@style/OmeButton.Blue"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginBottom="64dp"
-        android:gravity="center"
         android:text="@string/continue_btn"
-        android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
-    <RelativeLayout
-        android:id="@+id/singleZoneRl"
-        android:layout_width="148dp"
-        android:layout_height="148dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toStartOf="@+id/dualZoneRl"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelTv">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_single_zone" />
-
-        <ImageView
-            android:id="@+id/singleZoneCoverIv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_zone_cover_layer" />
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/dualZoneRl"
-        android:layout_width="148dp"
-        android:layout_height="148dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/singleZoneRl"
-        app:layout_constraintTop_toBottomOf="@+id/labelTv">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_dual_zone" />
-
-        <ImageView
-            android:id="@+id/dualZoneCoverIv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_zone_cover_layer" />
-    </RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

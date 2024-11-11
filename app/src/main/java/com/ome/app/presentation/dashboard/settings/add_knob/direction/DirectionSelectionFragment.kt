@@ -8,7 +8,9 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentDirectionSelectionBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
-import com.ome.app.utils.*
+import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.navigateSafe
+import com.ome.app.utils.onBackPressed
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -37,7 +39,6 @@ class DirectionSelectionFragment :
                     DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
                         DeviceCalibrationFragmentParams(
                             isComeFromSettings = args.params.isComeFromSettings,
-                            zoneNumber = args.params.zoneNumber,
                             isDualKnob = args.params.isDualKnob,
                             rotateDir = viewModel.clockwiseDir,
                             macAddr = args.params.macAddress
@@ -46,28 +47,27 @@ class DirectionSelectionFragment :
                 )
             }
         }
-        binding.counterClockWiseRl.setOnClickListener {
-            binding.clockWiseCoverIv.makeVisible()
-            binding.counterClockWiseCoverIv.makeGone()
-            viewModel.clockwiseDir = -1
-            enableContinueButton()
+        binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if(isChecked) {
+                when (checkedId) {
+                    binding.counterClockWise.id -> viewModel.clockwiseDir = -1
+                    binding.clockWise.id -> viewModel.clockwiseDir = 1
+                }
+            }
         }
-        binding.clockWiseRl.setOnClickListener {
-            binding.counterClockWiseCoverIv.makeVisible()
-            binding.clockWiseCoverIv.makeGone()
-            viewModel.clockwiseDir = 1
-            enableContinueButton()
-        }
+//        binding.counterClockWiseRl.setOnClickListener {
+//            binding.clockWiseCoverIv.makeVisible()
+//            binding.counterClockWiseCoverIv.makeGone()
+//            viewModel.clockwiseDir = -1
+//            enableContinueButton()
+//        }
+//        binding.clockWiseRl.setOnClickListener {
+//            binding.counterClockWiseCoverIv.makeVisible()
+//            binding.clockWiseCoverIv.makeGone()
+//            viewModel.clockwiseDir = 1
+//            enableContinueButton()
+//        }
 
-    }
-
-    private fun enableContinueButton() {
-        binding.continueBtn.isEnabled = true
-//        ContextCompat.getDrawable(requireContext(), R.drawable.ome_gradient_button_unpressed_color)
-//            ?.let {
-//                binding.continueBtn.drawableBackground = it
-//            }
-//        binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_unpressed_color)
     }
 
 
@@ -82,7 +82,6 @@ class DirectionSelectionFragment :
 @Parcelize
 data class DirectionSelectionFragmentParams(
     val isComeFromSettings: Boolean = false,
-    val zoneNumber: Int = 0,
     val isDualKnob: Boolean = false,
     val macAddress: String = "",
     val isEditMode: Boolean = false

@@ -10,11 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceCalibrationBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.subscribe
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -145,7 +141,6 @@ class DeviceCalibrationFragment :
 @Parcelize
 data class DeviceCalibrationFragmentParams(
     val isComeFromSettings: Boolean = false,
-    val zoneNumber: Int = 0,
     val isDualKnob: Boolean = false,
     val rotateDir: Int = 0,
     val macAddr: String = ""

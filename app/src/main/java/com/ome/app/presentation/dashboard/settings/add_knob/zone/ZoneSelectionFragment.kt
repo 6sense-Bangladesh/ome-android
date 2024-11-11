@@ -2,12 +2,14 @@ package com.ome.app.presentation.dashboard.settings.add_knob.zone
 
 import android.os.Parcelable
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentZoneSelectionBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
-import com.ome.app.utils.*
+import com.ome.app.utils.navigateSafe
+import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.setBounceClickListener
+import com.ome.app.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -25,7 +27,7 @@ class ZoneSelectionFragment :
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
         binding.continueBtn.setBounceClickListener {
-            if (viewModel.zoneNumber == 2) {
+            if (viewModel.isDualKnob) {
                 toast("Under Development")
 //                navigateSafe(
 //                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
@@ -42,7 +44,6 @@ class ZoneSelectionFragment :
                     ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(
                         DirectionSelectionFragmentParams(
                             isComeFromSettings = args.params.isComeFromSettings,
-                            zoneNumber = viewModel.zoneNumber,
                             isDualKnob = viewModel.isDualKnob,
                             macAddress = args.params.macAddrs
                         )
@@ -51,18 +52,26 @@ class ZoneSelectionFragment :
             }
 
         }
-        binding.singleZoneRl.setOnClickListener {
-            binding.dualZoneCoverIv.makeVisible()
-            binding.singleZoneCoverIv.makeGone()
-            viewModel.zoneNumber = 1
-            viewModel.isDualKnob = false
+        binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if(isChecked) {
+                when (checkedId) {
+                    binding.singleZone.id -> viewModel.isDualKnob = false
+                    binding.dualZone.id -> viewModel.isDualKnob = true
+                }
+            }
         }
-        binding.dualZoneCoverIv.setOnClickListener {
-            binding.singleZoneCoverIv.makeVisible()
-            binding.dualZoneCoverIv.makeGone()
-            viewModel.zoneNumber = 2
-            viewModel.isDualKnob = true
-        }
+//        binding.singleZoneRl.setOnClickListener {
+//            binding.dualZoneCoverIv.makeVisible()
+//            binding.singleZoneCoverIv.makeGone()
+//            viewModel.zoneNumber = 1
+//            viewModel.isDualKnob = false
+//        }
+//        binding.dualZoneCoverIv.setOnClickListener {
+//            binding.singleZoneCoverIv.makeVisible()
+//            binding.dualZoneCoverIv.makeGone()
+//            viewModel.zoneNumber = 2
+//            viewModel.isDualKnob = true
+//        }
     }
 
 }

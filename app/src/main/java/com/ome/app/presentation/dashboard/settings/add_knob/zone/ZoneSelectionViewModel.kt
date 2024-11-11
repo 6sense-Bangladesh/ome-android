@@ -7,6 +7,5 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ZoneSelectionViewModel @Inject constructor(): BaseViewModel() {
-    var zoneNumber = 0
     var isDualKnob = false
 }

@@ -29,6 +29,61 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
 
+    <com.ome.app.presentation.views.MaterialButtonToggleGroupWithRadius
+        android:id="@+id/toggleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:dividerPadding="@dimen/_15sdp"
+        android:gravity="center"
+        android:theme="@style/Widget.Material3.CompoundButton.RadioButton"
+        app:checkedButton="@+id/counterClockWise"
+        app:layout_constraintTop_toBottomOf="@+id/labelTv"
+        app:selectionRequired="true"
+        app:singleSelection="true"
+        tools:layout_editor_absoluteX="19dp">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/counterClockWise"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_14sdp"
+            android:text="@string/counter_clockwise"
+            android:textSize="@dimen/_10ssp"
+            app:icon="@drawable/ic_counter_clock"
+            app:iconGravity="top"
+            app:iconSize="@dimen/_90sdp"
+            app:iconTint="@null"
+            app:strokeWidth="0dp" />
+
+        <Button
+            android:id="@+id/hiddenSpace"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/clockWise"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_14sdp"
+            android:text="@string/clockwise"
+            android:textSize="@dimen/_10ssp"
+            app:icon="@drawable/ic_clockwise"
+            app:iconGravity="top"
+            app:iconSize="@dimen/_90sdp"
+            app:iconTint="@null"
+            app:strokeWidth="0dp" />
+
+    </com.ome.app.presentation.views.MaterialButtonToggleGroupWithRadius>
+
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/continueBtn"
@@ -38,79 +93,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
-    <RelativeLayout
-        android:id="@+id/counterClockWiseRl"
-        android:layout_width="148dp"
-        android:layout_height="148dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toStartOf="@+id/clockWiseRl"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelTv">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_counter_clock" />
-
-        <ImageView
-            android:id="@+id/counterClockWiseCoverIv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_zone_cover_layer" />
-    </RelativeLayout>
-
-
-    <TextView
-        android:id="@+id/counterClockwiseTv"
-        style="@style/Label.16sp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="12dp"
-        android:text="@string/counter_clockwise"
-        app:layout_constraintEnd_toEndOf="@+id/counterClockWiseRl"
-        app:layout_constraintStart_toStartOf="@+id/counterClockWiseRl"
-        app:layout_constraintTop_toBottomOf="@+id/counterClockWiseRl" />
-
-
-    <RelativeLayout
-        android:id="@+id/clockWiseRl"
-        android:layout_width="148dp"
-        android:layout_height="148dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/counterClockWiseRl"
-        app:layout_constraintTop_toBottomOf="@+id/labelTv">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_clockwise" />
-
-        <ImageView
-            android:id="@+id/clockWiseCoverIv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_zone_cover_layer" />
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/clockwiseTv"
-        style="@style/Label.16sp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:gravity="center"
-        android:text="@string/clockwise"
-        app:layout_constraintEnd_toEndOf="@+id/clockWiseRl"
-        app:layout_constraintStart_toEndOf="@+id/counterClockWiseRl"
-        app:layout_constraintTop_toBottomOf="@+id/counterClockWiseRl" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
