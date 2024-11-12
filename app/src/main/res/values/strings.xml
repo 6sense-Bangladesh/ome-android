@@ -205,6 +205,7 @@
     <string name="knob_not_configured">Knob Not Configured</string>
     <string name="to_use_the_knob_you_have_to_configure_it_first_configure_knob">To be able control the knob from phone, you have to configure it first. <b><font color='#236488'>Configure Knob</font></b></string>
     <string name="no_network_found_try_scanning_again">No network found, try scanning again</string>
+    <string name="configure_the_knob_to_use_it_on_your_phone">Configure the knob to use it on your phone.</string>
 
 
 </resources>

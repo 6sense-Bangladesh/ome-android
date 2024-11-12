@@ -189,9 +189,9 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:clickable="false"
             android:text="@string/off"
-            android:textColor="@drawable/color_text_selector"
+            android:textColor="@color/gray"
             android:textSize="@dimen/_9ssp"
-            app:chipBackgroundColor="@color/chip_color_state_list"
+            app:chipBackgroundColor="@color/off_white"
             app:chipIconTint="@drawable/color_text_selector"
             app:layout_constraintBottom_toBottomOf="@+id/tvLevel"
             app:layout_constraintStart_toEndOf="@+id/tvLevel"
@@ -229,6 +229,59 @@
             app:layout_constraintTop_toTopOf="@+id/tvBattery"
             tools:text="69%" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/warningCard2"
+        android:visibility="gone"
+        tools:visibility="gone"
+        android:minHeight="@dimen/_50sdp"
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_14sdp"
+        app:contentPadding="@dimen/_7sdp"
+        app:cardBackgroundColor="@color/cardBackground"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/burnerSelection">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_height="match_parent">
+
+            <TextView
+                style="@style/Label.Medium"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_7sdp"
+                android:text="@string/configure_the_knob_to_use_it_on_your_phone"
+                android:textColor="@color/black" />
+
+            <TextView
+                style="@style/Title.Mini"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintStart_toEndOf="@id/icon1"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/configure"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnClose2"
+                android:theme="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:src="@drawable/ic_close"
+                android:layout_marginHorizontal="@dimen/_3sdp"
+                android:tint="@color/dark"
+                android:background="@drawable/btn_special_bg"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/warningCard"
@@ -275,7 +328,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:src="@drawable/ic_yellow_circle"
                 app:layout_constraintStart_toEndOf="@id/icon1"
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="@string/knob_not_configured"
@@ -288,7 +340,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:src="@drawable/ic_yellow_circle"
                 android:text="@string/to_use_the_knob_you_have_to_configure_it_first_configure_knob"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -6,5 +6,6 @@ data class CreateKnobRequest(
     val mediumAngle: Int? = null,
     val offAngle: Int? = null,
     val macID: String? = null,
-    val stovePosition: Int? = null
+    val stovePosition: Int? = null,
+    val calibrated: Boolean = true,
 )
