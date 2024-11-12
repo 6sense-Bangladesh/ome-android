@@ -140,7 +140,7 @@
     <string name="calibration_labels_error">Labels cannot be placed on top of one another.</string>
     <string name="device_calibration_sub_label">App may take a few seconds to update position.</string>
     <string name="zone_label">What type of burner are you setting up now?</string>
-    <string name="counter_clockwise">Counter clockwise</string>
+    <string name="counter_clockwise">Counter Clockwise</string>
     <string name="clockwise">Clockwise</string>
     <string name="off_position">O</string>
     <string name="low_position">L</string>
@@ -198,7 +198,7 @@
     <string name="manually_turn_the_knob_on">Please manually turn the knob on if you want to control it from the app.</string>
     <string name="single_zone_knob">Single Zone Knob</string>
     <string name="single_zone">Single Zone</string>
-    <string name="double_zone">Double Zone</string>
+    <string name="double_zone">Dual Zone</string>
     <string name="warning_can_t_change">Warning: Can’t change stove layout with knob installed.</string>
     <string name="knob_is_already_in_this_position">Knob is already in this position</string>
     <string name="please_select_burner_position">Please select burner position</string>
