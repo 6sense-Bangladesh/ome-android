@@ -71,7 +71,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     }
 
     private suspend fun disconnectFromNetwork(){
-        delay(3.seconds)
+        delay(5.seconds)
         MAIN { wifiHandler.disconnectFromNetwork() }
         connectionStatusListener.shouldReactOnChanges = true
     }
