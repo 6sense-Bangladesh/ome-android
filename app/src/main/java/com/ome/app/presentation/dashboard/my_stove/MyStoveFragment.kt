@@ -85,11 +85,11 @@ class MyStoveFragment :
                 setMediumPosition(zone.mediumAngle.toFloat())
                 setLowSinglePosition(zone.lowAngle.toFloat())
             }
-            calibration.zones2?.let { zone ->
-                setHighDualPosition(zone.highAngle.toFloat())
-//            setMediumDualPosition(zone.mediumAngle.toFloat())
-                setLowDualPosition(zone.lowAngle.toFloat())
-            }
+//            calibration.zones2?.let { zone ->
+//                setHighDualPosition(zone.highAngle.toFloat())
+////            setMediumDualPosition(zone.mediumAngle.toFloat())
+//                setLowDualPosition(zone.lowAngle.toFloat())
+//            }
             setOffPosition(calibration.offAngle.toFloat())
             setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
         }
@@ -140,37 +140,6 @@ class MyStoveFragment :
                     }
                     null -> Unit
                 }
-
-//                when(userInfo.stoveOrientation.stoveOrientation){
-//                    StoveOrientation.FOUR_BURNERS -> {
-//                        listOf(knob1, knob2, knob3, knob4).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
-//                        visible(knob1, knob2, knob3, knob4)
-//                        gone(knob5, knob6, knob1centerView, knob2centerView)
-//                    }
-//                    StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
-//                        listOf(knob1, knob2, knob3, knob4, knob1center).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
-//                        visible(knob1, knob2, knob3, knob4, knob1centerView)
-//                        gone(knob5, knob6, knob2centerView)
-//                    }
-//                    StoveOrientation.SIX_BURNERS -> {
-//                        visible(knob1, knob2, knob3, knob4, knob5, knob6)
-//                        listOf(knob1, knob2, knob3, knob4, knob5, knob6).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
-//                        gone(knob1centerView, knob2centerView)
-//                    }
-//                    StoveOrientation.TWO_BURNERS_VERTICAL -> {
-//                        visible(knob1centerView, knob2centerView)
-//                        listOf(knob1center, knob2center).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
-//                        gone(knob1, knob2, knob3, knob4, knob5, knob6)
-//                    }
-//                    StoveOrientation.TWO_BURNERS_HORIZONTAL -> {
-//                        visible(knob1, knob2)
-//                        listOf(knob1, knob2).forEachIndexed { index, knobView -> knobView.stovePosition = index + 1 }
-//                        gone(knob3, knob4, knob5, knob6, knob1centerView, knob2centerView)
-//                    }
-//                    null -> {
-//                        gone(knob1, knob2, knob3, knob4, knob5, knob6, knob1centerView, knob2centerView)
-//                    }
-//                }
             }
             var getKnobStateScope : CoroutineScope? = null
             mainViewModel.knobs.collectWithLifecycle {knobs->
