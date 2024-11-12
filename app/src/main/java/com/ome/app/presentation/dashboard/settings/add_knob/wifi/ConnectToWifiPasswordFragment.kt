@@ -9,11 +9,7 @@ import com.ome.app.data.local.KnobSocketMessageType
 import com.ome.app.databinding.FragmentConnectToWifiPasswordBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragmentParams
-import com.ome.app.utils.closeKeyboard
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.subscribe
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -51,6 +47,7 @@ class ConnectToWifiPasswordFragment :
 
         onDismissSuccessDialog = {
             if (args.params.isEditMode) {
+                mainViewModel.getUserInfo()
                 findNavController().popBackStack(R.id.deviceSettingsFragment, false)
             } else {
                 navigateSafe(

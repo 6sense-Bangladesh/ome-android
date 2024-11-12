@@ -217,7 +217,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
         currentStepTriggerCount = 0
     }
 
-    private fun setCalibration() = launch(ioContext) {
+    private suspend fun setCalibration(){
         if (!isDualKnob) {
             if (offAngle != null && lowSingleAngle != null && mediumAngle != null && highSingleAngle != null && rotationDir != null) {
                 stoveRepository.setCalibration(

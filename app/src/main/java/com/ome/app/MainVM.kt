@@ -91,6 +91,11 @@ class MainVM @Inject constructor(
             userRepository.getUserData()
         }
     }
+    fun getAllKnobs() {
+        launch(ioContext) {
+            stoveRepository.getAllKnobs()
+        }
+    }
 
     fun getKnobByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }
     fun getKnobStateByMac(macAddress: MacAddress) = knobState.map { it[macAddress] }
