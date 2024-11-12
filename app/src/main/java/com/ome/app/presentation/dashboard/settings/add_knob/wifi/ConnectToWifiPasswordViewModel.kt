@@ -37,6 +37,10 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     fun initListeners() {
         socketManager.messageReceived = { type, message ->
             when (type) {
+                KnobSocketMessageType.REBOOT -> {
+                    successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
+                    loadingLiveData.postValue(false)
+                }
                 KnobSocketMessageType.TEST_WIFI -> {
                     if (message == "ok") {
                         sendMessage(KnobSocketMessageType.WIFI_STATUS)
@@ -71,7 +75,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     }
 
     private suspend fun disconnectFromNetwork(){
-        delay(5.seconds)
+        delay(7.seconds)
         MAIN { wifiHandler.disconnectFromNetwork() }
         connectionStatusListener.shouldReactOnChanges = true
     }
