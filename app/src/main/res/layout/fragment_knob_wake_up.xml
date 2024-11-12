@@ -17,7 +17,7 @@
         app:title="@string/physical_knob_installation" />
 
     <TextView
-        android:id="@+id/labelTv"
+        android:id="@+id/labelInstruction"
         style="@style/Label.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,11 +39,11 @@
         android:src="@drawable/ic_stove_shaft"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/labelTv"
+        app:layout_constraintTop_toBottomOf="@+id/labelInstruction"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.RectRound" />
 
 
-    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/continueBtn"
         style="@style/OmeButton.Blue"
         android:layout_width="0dp"
@@ -51,13 +51,11 @@
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="64dp"
         android:layout_marginBottom="64dp"
-        android:gravity="center"
         android:text="@string/continue_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label2Tv"
-        app:layout_constraintVertical_bias="1.0" />
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

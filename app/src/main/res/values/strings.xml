@@ -85,7 +85,7 @@
     <string name="knob_mac_addr_label">MAC ID: %1$s</string>
     <string name="physical_knob_installation">Physical Knob Installation</string>
     <string name="confirm_installation">Confirm that the Knob installation is completed correctly. The Knob Bottom should be secured to the stove shaft like this:</string>
-    <string name="install_videos">Please complete the physical installation of your Smart Knob by following these <a href="https://ome-kitchen.myshopify.com/pages/installation#accord1">installation instructions</a>.\n\n\nConfirm that the Knob installation is completed correctly. The Knob Bottom should be secured to the stove shaft like this:</string>
+    <string name="install_videos">Please complete the physical installation of your Smart Knob by following these installation instructions.\n\n\nConfirm that the Knob installation is completed correctly. The Knob Bottom should be secured to the stove shaft like this:</string>
     <string name="remove_the_Knob">Please remove the Knob Top and locate the QR code located on the backside. Proceed to the next step to scan the QR code and get your Smart Knob online.</string>
     <string name="your_stove">Your Stove</string>
     <string name="knob_position">Select Knob Position</string>
