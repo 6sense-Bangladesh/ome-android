@@ -348,7 +348,7 @@ class KnobView @JvmOverloads constructor(
     @SuppressLint("ClickableViewAccessibility")
     fun doOnRotationChange(doRotate: StateFlow<Boolean>) = callbackFlow{
 
-        binding.knobProgress.setOnTouchListener { v, event ->
+        binding.knobProgressRotation.setOnTouchListener { v, event ->
             when(event.action){
                 MotionEvent.ACTION_UP -> trySend(mCurrAngle)
             }
