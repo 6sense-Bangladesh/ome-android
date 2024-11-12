@@ -239,6 +239,7 @@ class SocketManager(
 
         while (attempts < retryCount && !connected) {
             try {
+                stopClient()
                 // Attempt to reconnect
                 socket = Socket(ipAddress, port)
                 mOut = DataOutputStream(socket.getOutputStream())
@@ -262,6 +263,8 @@ class SocketManager(
 
         if (!connected) {
             loge("Failed to reconnect after $retryCount attempts.")
+            logi("ResponseFrom: ${lastMessageSent.path} , Message: failed")
+            messageReceived(lastMessageSent, "failed")
             throw ConnectException("Unable to reconnect to socket after multiple attempts.")
         }
     }

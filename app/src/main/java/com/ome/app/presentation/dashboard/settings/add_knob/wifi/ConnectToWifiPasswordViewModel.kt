@@ -11,6 +11,7 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.utils.MAIN
 import com.ome.app.utils.WifiHandler
+import com.ome.app.utils.withDelay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -32,14 +33,20 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     var securityType = ""
     var password = ""
 
+    private var rebootRetries = 0
 
 
     fun initListeners() {
         socketManager.messageReceived = { type, message ->
             when (type) {
                 KnobSocketMessageType.REBOOT -> {
-                    successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
-                    loadingLiveData.postValue(false)
+                    rebootRetries++
+                    if (rebootRetries < 3)
+                        sendMessage(KnobSocketMessageType.REBOOT)
+                    else
+                        defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
+//                    successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
+//                    loadingLiveData.postValue(false)
                 }
                 KnobSocketMessageType.TEST_WIFI -> {
                     if (message == "ok") {
@@ -57,16 +64,15 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
 //                        }
 //                        successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
 //                        loadingLiveData.postValue(false)
-                        disconnectFromNetwork()
+//                        disconnectFromNetwork()
+                        delay(2.seconds)
                         successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
                         loadingLiveData.postValue(false)
                     } else {
                         defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
                     }
                 }
-                else -> {
-
-                }
+                else -> Unit
             }
         }
 //
@@ -75,14 +81,16 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     }
 
     private suspend fun disconnectFromNetwork(){
-        delay(7.seconds)
+        delay(3.seconds)
         MAIN { wifiHandler.disconnectFromNetwork() }
         connectionStatusListener.shouldReactOnChanges = true
     }
 
+
     private suspend fun handleWifiStatusMessage(message: String) {
         when (message) {
-            "0", "3", "2", "5" -> {
+            "0", "3" -> {
+                // The credentials worked so now we can set the password and network name for the knob
                 sendMessage(
                     KnobSocketMessageType.SET_WIFI,
                     ssid = ssid,
@@ -91,13 +99,15 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 )
             }
             "4", "6" -> {
+                // Something went wrong and we'll need to try again with new credentials or something
+                // We need to reset the process
                 defaultErrorLiveData.postValue(resourceProvider.getString(R.string.incorrect_network_name_and_password))
             }
-//            "2" -> {
-//                withDelay(delay = 4000) {
-//                    sendMessage(KnobSocketMessage.WIFI_STATUS)
-//                }
-//            }
+            "2" -> {
+                withDelay(4000) {
+                    sendMessage(KnobSocketMessageType.WIFI_STATUS)
+                }
+            }
             "1" -> {
                 sendMessage(
                     KnobSocketMessageType.TEST_WIFI,
@@ -106,14 +116,18 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                     securityType = securityType
                 )
             }
-//            "5" -> {
-//                sendMessage(
-//                    KnobSocketMessage.SET_WIFI,
-//                    ssid = ssid,
-//                    password = password,
-//                    securityType = securityType
-//                )
-//            }
+            "5" -> {
+                // Something went wrong and we'll need to try again with new credentials or something
+                // We need to reset the process
+
+                // MARK: For now just treat this like a successful 0 or 3.  But still send up the message so we can know when a 5 was received
+                sendMessage(
+                    KnobSocketMessageType.SET_WIFI,
+                    ssid = ssid,
+                    password = password,
+                    securityType = securityType
+                )
+            }
         }
 
     }
