@@ -12,6 +12,7 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.ParcelCompat
 import androidx.core.view.setMargins
 import com.ome.app.R
 import com.ome.app.databinding.KnobViewLayoutBinding
@@ -360,22 +361,27 @@ class KnobView @JvmOverloads constructor(
         awaitClose()
     }
 
-    public override fun onSaveInstanceState(): Parcelable {
+    public override fun onSaveInstanceState(): Parcelable? {
         val superState = super.onSaveInstanceState()
-        val ss = SavedState(superState)
-        ss.childrenStates = SparseArray()
-        for (i in 0 until childCount) {
-            getChildAt(i).saveHierarchyState(ss.childrenStates)
+        return superState?.let {
+            val ss = SavedState(superState)
+            ss.childrenStates = SparseArray()
+            for (i in 0 until childCount) {
+                getChildAt(i).saveHierarchyState(ss.childrenStates)
+            }
+            ss
         }
-        return ss
     }
 
     public override fun onRestoreInstanceState(state: Parcelable) {
-        val ss = state as SavedState
-        super.onRestoreInstanceState(ss.superState)
-        for (i in 0 until childCount) {
-            getChildAt(i).restoreHierarchyState(ss.childrenStates)
-        }
+        if (state is SavedState) {
+            super.onRestoreInstanceState(state.superState)
+            state.childrenStates?.let { childrenStates ->
+                for (i in 0 until childCount) {
+                    getChildAt(i).restoreHierarchyState(childrenStates)
+                }
+            } ?: super.onRestoreInstanceState(state)
+        } else super.onRestoreInstanceState(state)
     }
 
     override fun dispatchSaveInstanceState(container: SparseArray<Parcelable>) {
@@ -386,7 +392,7 @@ class KnobView @JvmOverloads constructor(
         dispatchThawSelfOnly(container)
     }
 
-    class SavedState(superState: Parcelable?) : BaseSavedState(superState) {
+    class SavedState(superState: Parcelable) : BaseSavedState(superState) {
         var childrenStates: SparseArray<Parcelable>? = null
 
         override fun writeToParcel(out: Parcel, flags: Int) {
@@ -394,6 +400,20 @@ class KnobView @JvmOverloads constructor(
             childrenStates?.let {
                 out.writeSparseArray(it)
             }
+        }
+
+        private constructor(parcel: Parcel, parent: SavedState) : this(parent) {
+            childrenStates = ParcelCompat.readSparseArray(parcel, SavedState::class.java.classLoader, SavedState::class.java)
+        }
+
+        override fun describeContents() = 0
+
+        companion object CREATOR : Parcelable.Creator<SavedState?> {
+            override fun createFromParcel(parcel: Parcel): SavedState? =
+                ParcelCompat.readParcelable(parcel, SavedState::class.java.classLoader, SavedState::class.java)
+                    ?.let { SavedState(parcel, it) }
+
+            override fun newArray(size: Int): Array<SavedState?> = arrayOfNulls(size)
         }
     }
 
