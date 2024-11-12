@@ -106,8 +106,8 @@
     <string name="manual_setup1">Open Wi-Fi settings on your phone and select the network that says either:</string>
     <string name="manual_setup2"><b>Ome_Knob_1234"\n"Inirv_Knob_1234"\n\n</b>It may take a moment to appear. If asked for a password, type <b>password</b>. Once you are connected, come back to this screen.</string>
     <string name="manual_connection_to_hotspot_error">The network you connected to is not the knob\'s network (%1$s) or (%2$s). Please make sure you connect to the correct hotspot before continuing.</string>
-    <string name="please_select_a_network_for_your_knob_to_connect_with">Please select a network for your knob to connect with</string>
-    <string name="ome_smart_knob_will_be_setup_on">Ome Smart Knob will be setup on</string>
+    <string name="select_a_network_for_to_connect">Select a network to connect your knob.</string>
+    <string name="ome_smart_knob_will_be_setup_on">Ome smart knob will be setup on</string>
     <string name="connect">Connect</string>
     <string name="incorrect_network_name_and_password">Incorrect network name and password combination. Please try again</string>
     <string name="something_went_wrong_when_setting_the_knob">Something went wrong when setting the knob\'s Wi-Fi, please try again</string>
@@ -204,6 +204,7 @@
     <string name="please_select_burner_position">Please select burner position</string>
     <string name="knob_not_configured">Knob Not Configured</string>
     <string name="to_use_the_knob_you_have_to_configure_it_first_configure_knob">To be able control the knob from phone, you have to configure it first. <b><font color='#236488'>Configure Knob</font></b></string>
+    <string name="no_network_found_try_scanning_again">No network found, try scanning again</string>
 
 
 </resources>

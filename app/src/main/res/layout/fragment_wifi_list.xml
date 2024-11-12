@@ -21,9 +21,9 @@
         style="@style/Title.Small"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_bar"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:text="@string/please_select_a_network_for_your_knob_to_connect_with"
+        android:layout_marginTop="@dimen/margin_top_bar"
+        android:text="@string/select_a_network_for_to_connect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
@@ -34,12 +34,44 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginVertical="@dimen/_12sdp"
-        tools:listitem="@layout/network_item"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/scanAgainBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        tools:listitem="@layout/network_item" />
+
+    <LinearLayout
+        android:id="@+id/notFoundLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/_100sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/scanAgainBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        tools:visibility="visible">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            app:srcCompat="@drawable/ic_wifi_find" />
+
+        <TextView
+            style="@style/Label.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/no_network_found_try_scanning_again"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/notFoundIv" />
+    </LinearLayout>
+
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/scanAgainBtn"

@@ -8,7 +8,6 @@ import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
 import com.ome.app.utils.WifiHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
 
 
@@ -36,10 +35,9 @@ class WifiListViewModel @Inject constructor(
 
     init {
         launch(ioContext) {
-            socketManager.networksFlow.filterNotNull().collect { list ->
-                if (list.isNotEmpty()) {
-                    savedStateHandle["wifiNetworksList"] = list
-                }
+            socketManager.networksFlow.collect { list ->
+                savedStateHandle["wifiNetworksList"] = list.orEmpty()
+
             }
         }
     }

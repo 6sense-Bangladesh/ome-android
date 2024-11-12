@@ -50,15 +50,15 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
     override fun setupObserver() {
         super.setupObserver()
         viewModel.wifiNetworksList.collectWithLifecycle {
-            binding.scanAgainBtn.revertAnimation()
             adapter.submitList(it)
+            binding.scanAgainBtn.revertAnimation()
+            binding.notFoundLayout.changeVisibility(it.isEmpty(), true)
         }
-        subscribe(viewModel.loadingLiveData) {
-            if (it) {
+        viewModel.loadingFlow.collectWithLifecycle {
+            if (it)
                 binding.scanAgainBtn.startAnimation()
-            } else {
+            else
                 binding.scanAgainBtn.revertAnimation()
-            }
         }
 
     }
