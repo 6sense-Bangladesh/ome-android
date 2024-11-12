@@ -54,7 +54,6 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
 //                        successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
 //                        loadingLiveData.postValue(false)
                         disconnectFromNetwork()
-//                        delay(1.seconds)
                         successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
                         loadingLiveData.postValue(false)
                     } else {
@@ -72,7 +71,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     }
 
     private suspend fun disconnectFromNetwork(){
-        delay(2.seconds)
+        delay(3.seconds)
         MAIN { wifiHandler.disconnectFromNetwork() }
         connectionStatusListener.shouldReactOnChanges = true
     }
