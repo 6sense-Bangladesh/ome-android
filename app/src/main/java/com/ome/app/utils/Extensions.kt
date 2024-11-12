@@ -15,7 +15,10 @@ import android.location.Location
 import android.net.Uri
 import android.os.*
 import android.provider.Settings
+import android.text.SpannableString
+import android.text.Spanned
 import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.util.Patterns
 import android.view.*
@@ -1552,3 +1555,17 @@ fun RecyclerView.setFullHeight() {
     layoutParams.height = totalHeight
     this.layoutParams = layoutParams
 }
+
+fun TextView.enableCustomTabClick(url: String, urlText: String, fullText: String? = null) {
+    val clickableSpan = object : ClickableSpan() {
+        override fun onClick(widget: View) =
+            CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(url))
+    }
+    val spannableString = SpannableString(fullText ?: text).apply {
+        val startIndex = indexOf(urlText)
+        setSpan(clickableSpan, startIndex, startIndex + urlText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
+    text = spannableString
+    movementMethod = LinkMovementMethod.getInstance()
+}
+

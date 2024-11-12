@@ -5,7 +5,6 @@ import android.os.Parcelable
 import android.text.method.LinkMovementMethod
 import android.view.View
 import androidx.activity.addCallback
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -37,7 +36,7 @@ class KnobInstallationManualFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.labelTv.movementMethod = LinkMovementMethod.getInstance()
-        binding.labelTv.setLinkTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+//        binding.labelTv.setLinkTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
     }
 
     override fun setupListener() {

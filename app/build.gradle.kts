@@ -223,6 +223,7 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-gif:3.0.0")
 
     implementation("com.google.android.flexbox:flexbox:3.0.0")
+    implementation("androidx.browser:browser:1.8.0")
 
     implementation("com.airbnb.android:lottie:6.6.0")
 

@@ -1,10 +1,10 @@
 package com.ome.app.presentation.signin.forgotpassword
 
-import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.presentation.base.SingleLiveEvent
+import android.util.Patterns
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
-import com.ome.app.utils.Constants
+import com.ome.app.presentation.base.BaseViewModel
+import com.ome.app.presentation.base.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -27,7 +27,7 @@ class ForgotPasswordViewModel @Inject constructor(val amplifyManager: AmplifyMan
             loadingLiveData.postValue(false)
             return
         }
-        if (!Constants.EMAIL_ADDRESS_PATTERN.matcher(email.trim()).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()) {
             defaultErrorLiveData.postValue("Please make sure you're using a valid email")
             loadingLiveData.postValue(false)
             return

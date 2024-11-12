@@ -1,20 +1,10 @@
 package com.ome.app.utils
 
+import android.util.Patterns
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import java.util.regex.Pattern
 
 object FieldsValidator {
-
-    private val EMAIL_ADDRESS_PATTERN = Pattern.compile(
-        "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
-                "\\@" +
-                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
-                "(" +
-                "\\." +
-                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
-                ")+"
-    )
 
     fun validateEmail(email: String): Pair<Boolean, String> {
         if (email.trim().isEmpty()) {
@@ -116,14 +106,14 @@ object FieldsValidator {
 
     private fun containsSpecialCharacter(sequence: String): Boolean {
 
-        val pattern = Regex("^\\$\\*\\.\\[\\]\\{\\}\\(\\)\\?\"!@#%&/\\,<>':;|_~=+-`")
+        val pattern = Regex("^\\$\\*\\.\\[]\\{\\}\\(\\)\\?\"!@#%&/,<>':;|_~=+-`")
 
         return pattern.containsMatchIn(sequence)
     }
 
 
     private fun isValidEmailString(email: String): Boolean {
-        return EMAIL_ADDRESS_PATTERN.matcher(email).matches()
+        return Patterns.EMAIL_ADDRESS.matcher(email.trim()).matches()
     }
 }
 

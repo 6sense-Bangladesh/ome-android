@@ -3,10 +3,8 @@ package com.ome.app.presentation.dashboard.profile.change_password
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import com.ome.app.R
 import com.ome.app.databinding.FragmentChangePasswordBinding
 import com.ome.app.domain.model.base.Validation
 import com.ome.app.domain.model.base.errorPassword
@@ -51,7 +49,7 @@ class ChangePasswordFragment:  BaseFragment<ChangePasswordViewModel, FragmentCha
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
         binding.termsAndConditions.movementMethod = LinkMovementMethod.getInstance()
-        binding.termsAndConditions.setLinkTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+//        binding.termsAndConditions.setLinkTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
     }
 
     override fun setupObserver() {

@@ -207,8 +207,9 @@ class DeviceDetailsFragment :
                 setLowDualPosition(zone.lowAngle.toFloat())
             }
             setOffPosition(calibration.offAngle.toFloat())
-        }else
+        }else if(viewModel.currentKnob.value?.connectStatus.connectionState != ConnectionState.Offline){
             binding.warningCard.animateVisible()
+        }
     }
 
     private fun changeBurnerStatus(currentAngle: Int, vararg states: BurnerState = burnerStates.toTypedArray()) {
