@@ -29,7 +29,7 @@ class KnobWakeUpFragment : BaseFragment<KnobWakeUpViewModel, FragmentKnobWakeUpB
 
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
-        binding.continueBtn.setOnClickListener {
+        binding.continueBtn.setOnClickListener{
             navigateSafe(
                 KnobWakeUpFragmentDirections.actionKnobWakeUpFragmentToMetalPlateInstallationFragment(
                     MetalPlateInstallationParams(selectedKnobPosition = args.params.selectedKnobPosition)

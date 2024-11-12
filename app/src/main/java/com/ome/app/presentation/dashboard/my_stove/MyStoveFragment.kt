@@ -8,6 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.ome.app.R
 import com.ome.app.databinding.FragmentMyStoveBinding
 import com.ome.app.domain.model.network.response.KnobDto
+import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.state.StoveOrientation
 import com.ome.app.domain.model.state.stoveOrientation
 import com.ome.app.presentation.base.BaseFragment
@@ -18,6 +19,8 @@ import com.ome.app.presentation.dashboard.settings.add_knob.wake_up.KnobWakeUpPa
 import com.ome.app.presentation.views.KnobView
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 
 
 @AndroidEntryPoint
@@ -61,7 +64,7 @@ class MyStoveFragment :
             }
         }
     }
-    private fun KnobView.setupKnob(knob: KnobView.KnobState) {
+    private fun KnobView.setupKnob(knob: KnobState) {
 
     }
     private fun KnobView.setupKnob(knob: KnobDto, navController: NavController?) {
@@ -95,7 +98,7 @@ class MyStoveFragment :
 
     private fun initKnob(vararg know : KnobView) {
         know.forEach {
-            it.changeKnobState(KnobView.KnobState.ADD)
+            it.changeKnobState(KnobView.KnobImageState.ADD)
         }
     }
 
@@ -169,51 +172,26 @@ class MyStoveFragment :
 //                    }
 //                }
             }
+            var getKnobStateScope : CoroutineScope? = null
             mainViewModel.knobs.collectWithLifecycle {knobs->
+                getKnobStateScope?.cancel()
+                val listOfFiveBurners = listOf(knob1, knob2, knob4, knob5, knob3)
+                val listOfSixBurners = listOf(knob1, knob2, knob3, knob4, knob5, knob6)
                 knobs.forEach { knob->
-                    mainViewModel.getKnobStateByMac(knob.macAddr).collectWithLifecycleStateIn {
-                        if(it.angle == null) return@collectWithLifecycleStateIn
-                        when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
-                            StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
-                                when(knob.stovePosition){
-                                    1 -> knob1.setKnobPosition(it.angle.toFloat())
-                                    2 -> knob2.setKnobPosition(it.angle.toFloat())
-                                    3 -> knob4.setKnobPosition(it.angle.toFloat())
-                                    4 -> knob5.setKnobPosition(it.angle.toFloat())
-                                    5 -> knob3.setKnobPosition(it.angle.toFloat())
-                                }
-                            }
-                            else -> {
-                                when(knob.stovePosition){
-                                    1 -> knob1.setKnobPosition(it.angle.toFloat())
-                                    2 -> knob2.setKnobPosition(it.angle.toFloat())
-                                    3 -> knob3.setKnobPosition(it.angle.toFloat())
-                                    4 -> knob4.setKnobPosition(it.angle.toFloat())
-                                    5 -> knob5.setKnobPosition(it.angle.toFloat())
-                                    6 -> knob6.setKnobPosition(it.angle.toFloat())
-                                }
-                            }
-                        }
-                    }
                     when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
-                        StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
-                            when(knob.stovePosition){
-                                1 -> knob1.setupKnob(knob, navController)
-                                2 -> knob2.setupKnob(knob, navController)
-                                3 -> knob4.setupKnob(knob, navController)
-                                4 -> knob5.setupKnob(knob, navController)
-                                5 -> knob3.setupKnob(knob, navController)
-                            }
-                        }
-                        else -> {
-                            when(knob.stovePosition){
-                                1 -> knob1.setupKnob(knob, navController)
-                                2 -> knob2.setupKnob(knob, navController)
-                                3 -> knob3.setupKnob(knob, navController)
-                                4 -> knob4.setupKnob(knob, navController)
-                                5 -> knob5.setupKnob(knob, navController)
-                                6 -> knob6.setupKnob(knob, navController)
-                            }
+                        StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS ->
+                            listOfFiveBurners.getOrNull(knob.stovePosition-1)?.setupKnob(knob, navController)
+                        else ->
+                            listOfSixBurners.getOrNull(knob.stovePosition-1)?.setupKnob(knob, navController)
+                    }
+                    mainViewModel.getKnobStateByMac(knob.macAddr).collectWithLifecycleStateIn {knobState ->
+                        getKnobStateScope = this
+                        if(knobState.angle == null) return@collectWithLifecycleStateIn
+                        when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
+                            StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS ->
+                                listOfFiveBurners.getOrNull(knob.stovePosition-1)?.changeKnobState(knobState)
+                            else ->
+                                listOfSixBurners.getOrNull(knob.stovePosition-1)?.changeKnobState(knobState)
                         }
                     }
                 }

@@ -17,6 +17,7 @@ import androidx.core.view.setMargins
 import com.ome.app.R
 import com.ome.app.databinding.KnobViewLayoutBinding
 import com.ome.app.domain.model.network.response.KnobDto
+import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.state.ConnectionState
 import com.ome.app.domain.model.state.connectionState
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.CalibrationState
@@ -176,30 +177,48 @@ class KnobView @JvmOverloads constructor(
             animateCircle(mCurrAngle, angle)
     }
 
-    fun changeKnobState(knobState: KnobState) {
-        knobSrc.animate().alpha(knobState.alpha).start()
-        knobSrc.tag = knobState.icon
-        knobSrc.setImageResource(knobState.icon)
-        binding.stovePositionTv.changeVisibility(knobState != KnobState.ADD)
+    fun changeKnobState(knobImageState: KnobImageState) {
+        knobSrc.animate().alpha(knobImageState.alpha).start()
+        knobSrc.tag = knobImageState.icon
+        knobSrc.setImageResource(knobImageState.icon)
+        binding.stovePositionTv.changeVisibility(knobImageState != KnobImageState.ADD)
+    }
+
+    fun changeKnobState(knob: KnobState): Boolean {
+        knob.angle?.toFloat()?.let { setKnobPosition(it) }
+        knob.battery?.let {
+            changeBatteryState(batteryLevel = it)
+            if(knob.connectStatus!= null && knob.wifiStrengthPercentage != null)
+                changeConnectionState(knob.connectStatus, knob.wifiStrengthPercentage, knob.battery)
+        }
+        return when{ (knob.battery != null && knob.battery <= 15) || knob.connectStatus == ConnectionState.Offline ||
+                ( knob.connectStatus == ConnectionState.Online && knob.wifiStrengthPercentage in 0..35)
+            -> {
+                hideLabel()
+            changeKnobState(KnobImageState.TRANSPARENT)
+                changeKnobProgressVisibility(false)
+                false
+            }else -> {
+            changeKnobState(KnobImageState.NORMAL)
+                changeKnobProgressVisibility(true)
+                true
+            }
+        }
     }
 
     fun changeKnobStatus(knob: KnobDto): Boolean {
         changeBatteryState(batteryLevel = knob.battery)
-        changeConfigurationState(isCalibrated = knob.calibrated)
-        changeConnectionState(
-            connectionStatus = knob.connectStatus,
-            wifiRSSI = knob.rssi,
-            batteryLevel = knob.battery
-        )
+        if(changeConnectionState(knob.connectStatus.connectionState, knob.rssi.wifiStrengthPercentage, knob.battery))
+            changeConfigurationState(isCalibrated = knob.calibrated)
         return when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.Offline ||
             ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) -> {
                 hideLabel()
-                changeKnobState(KnobState.TRANSPARENT)
+            changeKnobState(KnobImageState.TRANSPARENT)
                 changeKnobProgressVisibility(false)
                 false
             }
             else -> {
-                changeKnobState(KnobState.NORMAL)
+                changeKnobState(KnobImageState.NORMAL)
                 changeKnobProgressVisibility(true)
                 val zone1 =knob.calibration.toCalibration().zones1
                 if(zone1 != null && zone1.lowAngle < zone1.highAngle)
@@ -217,11 +236,11 @@ class KnobView @JvmOverloads constructor(
         stovePosition = knob.stovePosition
         return when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.Offline ||
                 ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) -> {
-                    changeKnobState(KnobState.TRANSPARENT)
+            changeKnobState(KnobImageState.TRANSPARENT)
                     false
                 }
             else -> {
-                changeKnobState(KnobState.NORMAL)
+                changeKnobState(KnobImageState.NORMAL)
                 val zone1 =knob.calibration.toCalibration().zones1
                 if(zone1 != null && zone1.lowAngle < zone1.highAngle)
                     binding.knobProgress.scaleX = 1F
@@ -258,16 +277,18 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
-    fun changeConnectionState(connectionStatus: String, wifiRSSI: Rssi, batteryLevel: Int) {
-        when (connectionStatus.connectionState) {
+    fun changeConnectionState(connectionState: ConnectionState, wifiStrengthPercentage: Int, batteryLevel: Int): Boolean {
+        return when (connectionState) {
             ConnectionState.Online -> {
                 binding.connectionStatus.gone()
-                changeWiFiState(wifiRSSI.wifiStrengthPercentage)
+                changeWiFiState(wifiStrengthPercentage)
+                true
             }
             ConnectionState.Offline -> {
                 binding.connectionStatus.visible()
                 binding.connectionStatus.text = context.getString(R.string.no_wifi)
                 binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wifi_off, 0, 0, 0)
+                false
             }
             ConnectionState.Charging -> {
                 binding.connectionStatus.visible()
@@ -286,6 +307,7 @@ class KnobView @JvmOverloads constructor(
                     in 96..100 ->
                         binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_battery_full, 0, 0, 0)
                 }
+                true
             }
         }
     }
@@ -294,14 +316,14 @@ class KnobView @JvmOverloads constructor(
         binding.knobProgress.changeVisibility(isVisible)
     }
 
-    val knobState : KnobState
-        get() = KnobState.entries.find { it.icon == knobSrc.tag } ?: KnobState.NORMAL
+    val knobImageState : KnobImageState
+        get() = KnobImageState.entries.find { it.icon == knobSrc.tag } ?: KnobImageState.NORMAL
 
 
     val isKnobInAddState
-        get() = knobState == KnobState.ADD
+        get() = knobImageState == KnobImageState.ADD
 
-    enum class KnobState(@DrawableRes val icon: Int, val alpha : Float){
+    enum class KnobImageState(@DrawableRes val icon: Int, val alpha : Float){
         ADD(R.drawable.ic_knob_circle_add, 1F),
         NORMAL(R.drawable.ic_knob_circle, 1F),
         TRANSPARENT(R.drawable.ic_knob_circle, .6F)
