@@ -2,9 +2,6 @@ package com.ome.app.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
@@ -36,10 +33,11 @@ class WifiHandler(val context: Context) {
 
     var currentSSID = ""
 
-    fun setup(macAddr: String) {
+    fun setup(macAddr: String): Pair<String, String> {
         omeKnobSSID = "Ome_Knob_${macAddr.takeLast(4)}"
         inirvKnobSSID = "Inirv_Knob_${macAddr.takeLast(4)}"
         currentSSID = omeKnobSSID
+        return omeKnobSSID to inirvKnobSSID
     }
 
     private var omeFail = false
@@ -102,7 +100,7 @@ class WifiHandler(val context: Context) {
         }
     }
 
-    private suspend fun getCurrentWifiSsid(): String {
+    private fun getCurrentWifiSsid(): String {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
             getCurrentWifiSsidNew()
         else
@@ -110,23 +108,12 @@ class WifiHandler(val context: Context) {
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private suspend fun getCurrentWifiSsidNew() = suspendCancellableCoroutine{ continuation ->
+    private fun getCurrentWifiSsidNew(): String {
         val connectivityManager = context.applicationContext.getSystemService(ConnectivityManager::class.java)
-        val request =
-            NetworkRequest.Builder()
-                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-                .build()
-        val networkCallback = object : ConnectivityManager.NetworkCallback() {
-            override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
-                val wifiInfo = networkCapabilities.transportInfo as WifiInfo
-                // Use wifiInfo as needed
-                if(continuation.isActive) {
-                    continuation.resume(wifiInfo.ssid.replace("\"", ""))
-                    connectivityManager?.unregisterNetworkCallback(this) // Unregister the callback
-                }
-            }
-        }
-        connectivityManager?.requestNetwork(request, networkCallback)
+        val wifiInfo = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)?.transportInfo as? WifiInfo
+        return if(wifiInfo?.ssid == null || wifiInfo.ssid == WifiManager.UNKNOWN_SSID)
+            getCurrentWifiSsidOld()
+        else wifiInfo.ssid
     }
 
     @Suppress("DEPRECATION")
@@ -140,6 +127,7 @@ class WifiHandler(val context: Context) {
     suspend fun isConnectedToKnobHotspot(): Boolean {
         return withContext(Dispatchers.IO) {
             val currentWifiSSID = getCurrentWifiSsid()
+            currentWifiSSID.log("isConnectedToKnobHotspot")
             currentWifiSSID == omeKnobSSID || currentWifiSSID == inirvKnobSSID
         }
     }

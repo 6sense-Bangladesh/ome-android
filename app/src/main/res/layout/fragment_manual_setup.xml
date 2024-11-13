@@ -17,91 +17,109 @@
         app:title="@string/connect_to_your_wi_fi" />
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/white"
-        android:fitsSystemWindows="false"
-        android:fillViewport="true"
+    <TextView
+        android:id="@+id/textView7"
+        style="@style/Label.Large"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="@dimen/margin_top_bar"
+        android:text="@string/connect_your_phone_to_ome"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/manualLabelTv1"
+        style="@style/Label.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="16dp"
+        android:text="@string/manual_setup1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:src="@drawable/ic_setup_manual"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
+
+    <TextView
+        android:id="@+id/mac1"
+        style="@style/Label.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/manualLabelTv"
+        app:layout_constraintEnd_toStartOf="@+id/manualLabelTv"
+        app:layout_constraintTop_toTopOf="@+id/manualLabelTv"
+        tools:text="Ome123" />
+
+    <TextView
+        android:id="@+id/manualLabelTv"
+        style="@style/Label.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_horizontal"
+        android:gravity="center"
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualLabelTv1"
+        android:text="@string/or" />
+
+    <TextView
+        android:id="@+id/mac2"
+        style="@style/Label.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/manualLabelTv"
+        app:layout_constraintStart_toEndOf="@+id/manualLabelTv"
+        app:layout_constraintTop_toTopOf="@+id/manualLabelTv"
+        tools:text="Ome456" />
+
+    <TextView
+        android:id="@+id/manualLabelTv2"
+        style="@style/Label.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_horizontal"
+        android:justificationMode="inter_word"
+        android:text="@string/manual_setup3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/manualLabelTv"
+        tools:targetApi="26" />
+
+
+    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+        android:id="@+id/connectBtn"
+        style="@style/OmeButton.Blue"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="64dp"
+        android:gravity="center"
+        android:text="@string/continue_btn"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topAppBar">
+        app:layout_constraintTop_toBottomOf="@+id/manualLabelTv"
+        app:layout_constraintVertical_bias="1.0" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textView7"
-                style="@style/Label.Large"
-                android:layout_width="0dp"
-                android:layout_marginTop="@dimen/margin_top_bar"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_horizontal"
-                android:text="@string/connect_your_phone_to_ome"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/manualLabelTv1"
-                style="@style/Label.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_horizontal"
-                android:layout_marginTop="16dp"
-                android:text="@string/manual_setup1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imageView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:src="@drawable/ic_setup_manual"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/manualLabelTv1" />
-
-            <TextView
-                android:id="@+id/manualLabelTv"
-                style="@style/Label.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_horizontal"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:gravity="center"
-                android:text="@string/manual_setup2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView7" />
-
-
-            <com.apachat.loadingbutton.core.customViews.CircularProgressButton
-                android:id="@+id/connectBtn"
-                style="@style/OmeButton.Blue"
-                android:layout_width="0dp"
-                android:layout_height="44dp"
-                android:layout_marginHorizontal="32dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="64dp"
-                android:gravity="center"
-                android:text="@string/continue_btn"
-                android:textAllCaps="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/manualLabelTv"
-                app:layout_constraintVertical_bias="1.0" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

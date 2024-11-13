@@ -104,8 +104,9 @@
     <string name="connect_to_your_wi_fi">Connect to your Wi-Fi</string>
     <string name="connect_your_phone_to_ome">Connect your phone to Ome</string>
     <string name="manual_setup1">Open Wi-Fi settings on your phone and select the network that says either:</string>
-    <string name="manual_setup2"><b>Ome_Knob_1234"\n"Inirv_Knob_1234"\n\n</b>It may take a moment to appear. If asked for a password, type <b>password</b>. Once you are connected, come back to this screen.</string>
-    <string name="manual_connection_to_hotspot_error">The network you connected to is not the knob\'s network (%1$s) or (%2$s). Please make sure you connect to the correct hotspot before continuing.</string>
+    <string name="or">or</string>
+    <string name="manual_setup3">It might take a moment to show up. If asked for a password, enter <font color='#0099d7'>\"password\"</font>. Once connected, return to this screen.</string>
+    <string name="manual_connection_to_hotspot_error">The network you connected to is not the knob\'s network \"%1$s\" or \"%2$s\".</string>
     <string name="select_a_network_for_to_connect">Select a network to connect your knob.</string>
     <string name="ome_smart_knob_will_be_setup_on">Ome smart knob will be setup on</string>
     <string name="connect">Connect</string>

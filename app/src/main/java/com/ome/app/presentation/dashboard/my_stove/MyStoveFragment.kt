@@ -8,6 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.ome.app.R
 import com.ome.app.databinding.FragmentMyStoveBinding
 import com.ome.app.domain.model.network.response.KnobDto
+import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.model.state.StoveOrientation
 import com.ome.app.domain.model.state.stoveOrientation
 import com.ome.app.presentation.base.BaseFragment
@@ -79,14 +80,14 @@ class MyStoveFragment :
             val calibration = knob.calibration.toCalibration()
             calibration.zones1?.let { zone ->
                 setHighSinglePosition(zone.highAngle.toFloat())
-                setMediumPosition(zone.mediumAngle.toFloat())
+                if(calibration.rotation != Rotation.DUAL)
+                    setMediumPosition(zone.mediumAngle.toFloat())
                 setLowSinglePosition(zone.lowAngle.toFloat())
             }
-//            calibration.zones2?.let { zone ->
-//                setHighDualPosition(zone.highAngle.toFloat())
-////            setMediumDualPosition(zone.mediumAngle.toFloat())
-//                setLowDualPosition(zone.lowAngle.toFloat())
-//            }
+            calibration.zones2?.let { zone ->
+                setHighDualPosition(zone.highAngle.toFloat())
+                setLowDualPosition(zone.lowAngle.toFloat())
+            }
             setOffPosition(calibration.offAngle.toFloat())
             setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
         }

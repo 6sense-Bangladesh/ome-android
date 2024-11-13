@@ -19,7 +19,6 @@ import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
-import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class DeviceDetailsFragment :
@@ -203,7 +202,7 @@ class DeviceDetailsFragment :
             }
             setOffPosition(calibration.offAngle.toFloat())
         }else if(viewModel.currentKnob.value?.connectStatus.connectionState != ConnectionState.Offline){
-            withDelay(1.seconds){
+            withDelay(700L){
                 binding.warningCard.animateVisible()
             }
         }

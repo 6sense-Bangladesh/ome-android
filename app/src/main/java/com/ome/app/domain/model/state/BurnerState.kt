@@ -15,7 +15,7 @@ sealed class BurnerState(val level: Int, val type: State) {
         LowMid(R.color.colorLow , R.color.black)
     }
 
-    private val State.nm get() = name.replace(Regex("([a-z])([A-Z])"), "$1 $2")
+    private val State.nm get() = name.replace(Regex("([a-z])([A-Z])"), "$1-$2")
 
     fun Chip.applyState(){
         text = type.nm

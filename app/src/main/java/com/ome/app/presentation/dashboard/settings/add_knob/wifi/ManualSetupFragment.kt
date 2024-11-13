@@ -26,6 +26,10 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
 
     override fun setupUI() {
         viewModel.macAddr = args.params.macAddrs
+        viewModel.wifiHandler.setup(viewModel.macAddr).let {
+            binding.mac1.text = it.first
+            binding.mac2.text = it.second
+        }
     }
 
     override fun setupListener() {
