@@ -29,7 +29,6 @@ abstract class BaseViewModel: ViewModel() {
 
     protected open var defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
         loadingLiveData.postValue(false)
-        loadingLiveData.postValue(false)
         if (throwable is AuthException) sendError(Throwable(throwable.error.replace("username or ", "")))
         else sendError(throwable)
     }

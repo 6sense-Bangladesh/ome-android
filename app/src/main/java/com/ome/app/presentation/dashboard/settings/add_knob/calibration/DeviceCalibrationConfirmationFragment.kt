@@ -10,11 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceCalibrationConfirmationBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.subscribe
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -120,6 +116,7 @@ class DeviceCalibrationConfirmationFragment :
             )
         }
         viewModel.knobAngleFlow.collectWithLifecycle{
+            binding.continueBtn.revertAnimation()
             binding.knobView.setKnobPosition(it)
         }
 
@@ -131,7 +128,6 @@ class DeviceCalibrationConfirmationFragment :
         }
         viewModel.currentCalibrationState.collectWithLifecycle{ currentStep ->
             binding.labelTv.text = getString(R.string.calibration_confirmation_label, currentStep.positionName)
-            binding.continueBtn.revertAnimation()
 //            when(currentStep){
 //                CalibrationState.OFF -> viewModel.offAngle?.let { binding.knobView.setOffPosition(it) }
 //                CalibrationState.HIGH_SINGLE -> viewModel.highSingleAngle?.let { binding.knobView.setHighSinglePosition(it) }

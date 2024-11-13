@@ -7,8 +7,8 @@ import com.ome.app.domain.model.state.KnobStatus
 import com.ome.app.domain.model.state.knobStatus
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.presentation.base.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 
@@ -21,48 +21,39 @@ class QrCodeScannerViewModel @Inject constructor(
     var stovePosition: Int? = null
     var macAddress: String? = null
 
-    val isKnobAddedLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
-    val knobCreatedLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    val isKnobAddedFlow = MutableStateFlow<Unit?>(Unit)
 
-    fun checkStoveOwnership(macAddress: String) = launch(ioContext) {
-       // val filteredMacID = macAddress.filter { macIDFilter.contains(it) }
+    fun checkKnobOwnership(macAddress: String) = launch(ioContext) {
         val response = stoveRepository.getKnobOwnership(macAddress)
         when (response.status.knobStatus) {
             KnobStatus.InUsedByAnotherUser -> {
-                loadingLiveData.postValue(false)
-                defaultErrorLiveData.postValue(resourceProvider.getString(R.string.knob_in_use))
+                loadingLiveData.value = false
+                defaultErrorLiveData.value = resourceProvider.getString(R.string.knob_in_use)
             }
             KnobStatus.NotInUse -> {
-                isKnobAddedLiveData.postValue(false)
+                addNewKnob()
                 this@QrCodeScannerViewModel.macAddress = macAddress
             }
             KnobStatus.InUseByYou -> {
-                isKnobAddedLiveData.postValue(true)
+                isKnobAddedFlow.value = Unit
                 this@QrCodeScannerViewModel.macAddress = macAddress
             }
             KnobStatus.DoesNotExists -> {
-                loadingLiveData.postValue(false)
-                defaultErrorLiveData.postValue(resourceProvider.getString(R.string.knob_doesnt_exist))
+                loadingLiveData.value = false
+                defaultErrorLiveData.value = resourceProvider.getString(R.string.knob_doesnt_exist)
             }
         }
 
     }
 
 
-    fun addNewKnob() = launch(ioContext) {
+    private suspend fun addNewKnob(){
         if (macAddress != null && stovePosition != null) {
             stoveRepository.createKnob(
-                params = CreateKnobRequest(
-                    highAngle = -1,
-                    lowAngle = -1,
-                    mediumAngle = -1,
-                    offAngle = -1,
-                    macID = macAddress!!,
-                    stovePosition = stovePosition!!
-                ),
+                params = CreateKnobRequest(stovePosition = stovePosition!!, calibrated = false),
                 macAddress = macAddress!!
             )
-            knobCreatedLiveData.postValue(true)
+            isKnobAddedFlow.value = Unit
         }
     }
 }

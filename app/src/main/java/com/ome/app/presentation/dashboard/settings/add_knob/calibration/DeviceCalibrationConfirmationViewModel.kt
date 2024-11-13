@@ -257,7 +257,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                                     lowSingleAngle!!.toInt()
                                 ),
                                 lowAngle = lowSingleAngle!!.toInt(),
-                                zoneName = "Single",
+                                zoneName = "First",
                                 zoneNumber = 1
                             ),
                             Zone(
@@ -267,7 +267,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                                     lowDualAngle!!.toInt()
                                 ),
                                 lowAngle = lowDualAngle!!.toInt(),
-                                zoneName = "Dual",
+                                zoneName = "Second",
                                 zoneNumber = 2
                             )
                         )

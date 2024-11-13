@@ -2,11 +2,7 @@
 
 package com.ome.app.utils
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
+import android.animation.*
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.MotionEvent
@@ -14,6 +10,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.findViewTreeLifecycleOwner
@@ -166,15 +163,17 @@ fun View.animateInvisible() {
 
 fun View.animateVisible() {
     if (height == 0 || !isVisible) {
+        alpha = 0f
         Log.d("animateVisibility:", "if View.VISIBLE")
-        visibility = View.VISIBLE
         val valueAnimator = ValueAnimator.ofInt(0, minimumHeight)
         valueAnimator.duration = 500L
         valueAnimator.addUpdateListener {
             val animatedValue = valueAnimator.animatedValue as Int
-            val params = this.layoutParams
-            params.height = animatedValue
-            this.layoutParams = params
+            layoutParams = layoutParams.apply { height = animatedValue }
+        }
+        visibility = View.VISIBLE
+        valueAnimator.doOnStart {
+            animate().alpha(1f).start()
         }
         valueAnimator.start()
     }

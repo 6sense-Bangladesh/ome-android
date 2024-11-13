@@ -1,16 +1,17 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.direction
 
-import android.os.Bundle
 import android.os.Parcelable
-import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentDirectionSelectionBinding
+import com.ome.app.domain.model.state.Rotation
+import com.ome.app.domain.model.state.rotation
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.orFalse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -23,9 +24,19 @@ class DirectionSelectionFragment :
 
     private val args by navArgs<DirectionSelectionFragmentArgs>()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
+    override fun setupUI() {
         viewModel.macAddress = args.params.macAddress
+        mainViewModel.getKnobByMac(viewModel.macAddress)?.let {
+            viewModel.calRequest = it.calibration.toSetCalibrationRequest()
+            viewModel.calibrated = it.calibrated.orFalse()
+            viewModel.clockwiseDir = it.calibration.rotationDir
+            when(it.calibration.rotationDir.rotation){
+                Rotation.CLOCKWISE -> binding.clockWise.isChecked = true
+                Rotation.COUNTER_CLOCKWISE -> binding.counterClockWise.isChecked = true
+                else -> Unit
+            }
+        }
     }
 
     override fun setupListener() {
@@ -33,7 +44,7 @@ class DirectionSelectionFragment :
 
         binding.continueBtn.setOnClickListener {
             if(args.params.isEditMode){
-                viewModel.updateDirection()
+                viewModel.updateDirection(onEnd = mainViewModel::getAllKnobs)
             }else {
                 navigateSafe(
                     DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
@@ -74,7 +85,12 @@ class DirectionSelectionFragment :
     override fun setupObserver() {
         super.setupObserver()
         viewModel.loadingFlow.collectWithLifecycle {
-            if (!it) onBackPressed()
+            if(it)
+                binding.continueBtn.startAnimation()
+            else {
+                binding.continueBtn.revertAnimation()
+                onBackPressed()
+            }
         }
     }
 }

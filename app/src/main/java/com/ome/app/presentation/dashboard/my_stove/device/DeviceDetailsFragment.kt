@@ -19,6 +19,7 @@ import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
+import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class DeviceDetailsFragment :
@@ -28,7 +29,8 @@ class DeviceDetailsFragment :
 
     private val args by navArgs<DeviceDetailsFragmentArgs>()
 
-    private val burnerStates by lazy { mainViewModel.getKnobBurnerStatesByMac(args.params.macAddr) }
+    private val burnerStates
+        get() = mainViewModel.getKnobBurnerStatesByMac(args.params.macAddr)
 
     override fun setupUI() {
         viewModel.macAddress = args.params.macAddr
@@ -134,15 +136,8 @@ class DeviceDetailsFragment :
                 )
             }
         }
-        binding.btnClose.setBounceClickListener {
-            binding.warningCard.animateVisibility()
-        }
+
         binding.warningCard.setBounceClickListener {
-//            if(viewModel.currentKnob.value?.connectStatus.connectionState == ConnectionState.Offline){
-//                toast("Make sure Knob is online")
-//                return@setOnClickListener
-//            }
-            binding.warningCard.animateInvisible()
             navigateSafe(
                 DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToKnobInstallationManualFragment(
                     KnobInstallationManualFragmentParams(macAddr = args.params.macAddr, isComeFromSettings = true)
@@ -208,7 +203,9 @@ class DeviceDetailsFragment :
             }
             setOffPosition(calibration.offAngle.toFloat())
         }else if(viewModel.currentKnob.value?.connectStatus.connectionState != ConnectionState.Offline){
-            binding.warningCard.animateVisible()
+            withDelay(1.seconds){
+                binding.warningCard.animateVisible()
+            }
         }
     }
 

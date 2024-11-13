@@ -30,13 +30,19 @@ class DeviceViewModel @Inject constructor(
 
     val knobAngle = MutableStateFlow<Float?>(null)
     var macAddress = ""
+    var isDualZone = false
 
-    val deviceSettingsList = savedStateHandle.getStateFlow("deviceSettingsList",
-        buildList {
-            add(SettingsTitleItemModel(title = "Settings"))
-            addAll(DeviceSettingsItemModel.entries.toList())
-        }
-    )
+    val deviceSettingsList by lazy {
+        savedStateHandle.getStateFlow("deviceSettingsList",
+            buildList {
+                add(SettingsTitleItemModel(title = "Settings"))
+                if(!isDualZone)
+                    addAll(DeviceSettingsItemModel.entries.toList())
+                else
+                    addAll(DeviceSettingsItemModel.entries.toMutableList().apply { remove(DeviceSettingsItemModel.KnobOrientation) })
+            }
+        )
+    }
 
 
     fun initSubscriptions() {

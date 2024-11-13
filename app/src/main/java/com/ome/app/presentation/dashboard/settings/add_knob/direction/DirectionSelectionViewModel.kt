@@ -1,6 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.direction
 
 import androidx.lifecycle.SavedStateHandle
+import com.ome.app.domain.model.network.request.CreateKnobRequest
 import com.ome.app.domain.model.network.request.SetCalibrationRequest
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
@@ -13,18 +14,28 @@ class DirectionSelectionViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val stoveRepository: StoveRepository
     ): BaseViewModel() {
-    fun updateDirection() {
-        launch {
-            if(macAddress.isEmpty()) error("Something went wrong.")
-            stoveRepository.setCalibration(
-                SetCalibrationRequest(
-                    rotationDir = clockwiseDir,
-                ),
-                macAddress = macAddress
-            )
-        }
-    }
 
     var clockwiseDir = -1
     var macAddress = ""
+    var calibrated = false
+    var calRequest: SetCalibrationRequest? = null
+
+    fun updateDirection(onEnd: () -> Unit) {
+        launch {
+            if(macAddress.isEmpty()) error("Something went wrong.")
+            calRequest?.let {
+                if(!calRequest?.zones.isNullOrEmpty()) {
+                    stoveRepository.setCalibration(
+                        it.copy(rotationDir = clockwiseDir),
+                        macAddress = macAddress
+                    )
+                    if (!calibrated)
+                        stoveRepository.updateKnobInfo(CreateKnobRequest(calibrated = false), macAddress)
+                    onEnd()
+                    successToastFlow.emit("Orientation updated successfully")
+                } else error("Knob not configured.")
+            } ?: error("Something went wrong.")
+        }
+    }
+
 }

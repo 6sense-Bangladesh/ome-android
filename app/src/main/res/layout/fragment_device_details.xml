@@ -231,16 +231,16 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/warningCard2"
+        android:id="@+id/warningCard"
         android:visibility="gone"
-        tools:visibility="gone"
-        android:minHeight="@dimen/_50sdp"
+        tools:visibility="visible"
+        android:minHeight="@dimen/_45sdp"
         style="@style/Widget.Material3.CardView.Filled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_14sdp"
-        app:contentPadding="@dimen/_7sdp"
-        app:cardBackgroundColor="@color/cardBackground"
+        app:contentPadding="@dimen/_12sdp"
+        app:cardBackgroundColor="@color/redLight"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         app:layout_constraintTop_toBottomOf="@+id/burnerSelection">
 
@@ -251,103 +251,27 @@
             android:layout_height="match_parent">
 
             <TextView
-                style="@style/Label.Medium"
+                style="@style/Label.Large"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_7sdp"
-                android:text="@string/configure_the_knob_to_use_it_on_your_phone"
+                android:text="@string/configure_the_knob_to_use_it"
                 android:textColor="@color/black" />
 
             <TextView
-                style="@style/Title.Mini"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                style="@style/Title.Small"
+                android:layout_marginHorizontal="@dimen/_5sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintStart_toEndOf="@id/icon1"
+                android:textColor="@color/red"
+                app:layout_constraintStart_toEndOf="@id/icon"
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="@string/configure"
                 />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btnClose2"
-                android:theme="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/ic_close"
-                android:layout_marginHorizontal="@dimen/_3sdp"
-                android:tint="@color/dark"
-                android:background="@drawable/btn_special_bg"/>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/warningCard"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:minHeight="@dimen/_60sdp"
-        style="@style/Widget.Material3.CardView.Filled"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_14sdp"
-        app:contentPadding="@dimen/_7sdp"
-        app:cardBackgroundColor="@color/colorPrimaryTrans"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/burnerSelection">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/icon1"
-                android:layout_width="@dimen/_22sdp"
-                android:layout_height="@dimen/_22sdp"
-                android:src="@drawable/ic_warning"
-                android:tint="@color/colorPrimaryDeep"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btnClose"
-                android:theme="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
-                android:src="@drawable/ic_close_small"
-                android:tint="@color/dark"
-                android:background="@drawable/btn_special_bg"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <TextView
-                android:id="@+id/tv1"
-                style="@style/Title.Mini"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@id/icon1"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/knob_not_configured"
-                />
-
-            <TextView
-                android:id="@+id/tv2"
-                style="@style/Label.Small"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:text="@string/to_use_the_knob_you_have_to_configure_it_first_configure_knob"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btnClose"
-                app:layout_constraintStart_toEndOf="@id/icon1"
-                app:layout_constraintTop_toBottomOf="@id/tv1" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
 
     <com.ome.app.presentation.views.KnobView
         android:id="@+id/knobView"

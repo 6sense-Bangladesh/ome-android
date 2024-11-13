@@ -8,7 +8,6 @@ import androidx.navigation.fragment.NavHostFragment
 import com.ome.app.R
 import com.ome.app.databinding.FragmentMyStoveBinding
 import com.ome.app.domain.model.network.response.KnobDto
-import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.state.StoveOrientation
 import com.ome.app.domain.model.state.stoveOrientation
 import com.ome.app.presentation.base.BaseFragment
@@ -64,9 +63,7 @@ class MyStoveFragment :
             }
         }
     }
-    private fun KnobView.setupKnob(knob: KnobState) {
 
-    }
     private fun KnobView.setupKnob(knob: KnobDto, navController: NavController?) {
         navController?.apply {
             setBounceClickListener{

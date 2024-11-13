@@ -195,12 +195,10 @@ class KnobView @JvmOverloads constructor(
                 ( knob.connectStatus == ConnectionState.Online && knob.wifiStrengthPercentage in 0..35)
             -> {
                 hideLabel()
-            changeKnobState(KnobImageState.TRANSPARENT)
-                changeKnobProgressVisibility(false)
+                changeKnobState(KnobImageState.TRANSPARENT)
                 false
             }else -> {
-            changeKnobState(KnobImageState.NORMAL)
-                changeKnobProgressVisibility(true)
+//                changeKnobState(KnobImageState.NORMAL)
                 true
             }
         }

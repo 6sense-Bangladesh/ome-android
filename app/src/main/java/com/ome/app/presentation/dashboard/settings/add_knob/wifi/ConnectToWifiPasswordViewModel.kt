@@ -130,13 +130,14 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
 
     }
 
-    fun sendMessageInVM(
-        type: KnobSocketMessageType,
-        ssid: String = "",
-        password: String = "",
-        securityType: String = ""
-    ) = launch(ioContext) {
-        socketManager.sendMessage(type, ssid, password, securityType)
+    fun testWifi(pass: String) = launch(ioContext) {
+        password = pass
+        sendMessage(
+            type = KnobSocketMessageType.TEST_WIFI,
+            ssid = ssid,
+            password = pass,
+            securityType = securityType
+        )
     }
 
     private suspend fun sendMessage(

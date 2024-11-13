@@ -43,6 +43,6 @@ class SetupCompleteFragment :
     }
 
     override fun handleBackPressEvent() {
-        requireActivity().onBackPressedDispatcher.addCallback(this){}
+        activity?.onBackPressedDispatcher?.addCallback(this){}
     }
 }

@@ -84,7 +84,8 @@ class DeviceSettingsFragment :
             binding.knobView.setKnobPosition(angle)
         }
 
-        viewModel.deviceSettingsList.collectWithLifecycle {
+        viewModel.isDualZone = mainViewModel.getKnobByMac(args.params.macAddr)?.calibration?.rotationDir == 2
+        viewModel.deviceSettingsList.collectWithLifecycle{
             adapter.submitList(it)
         }
 

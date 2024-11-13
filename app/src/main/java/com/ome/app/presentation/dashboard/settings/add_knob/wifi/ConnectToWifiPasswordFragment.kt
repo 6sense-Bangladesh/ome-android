@@ -1,12 +1,14 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import android.os.Parcelable
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
-import com.ome.app.data.local.KnobSocketMessageType
 import com.ome.app.databinding.FragmentConnectToWifiPasswordBinding
+import com.ome.app.domain.model.base.DefaultValidation
+import com.ome.app.domain.model.base.errorPassword
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragmentParams
 import com.ome.app.utils.*
@@ -33,16 +35,18 @@ class ConnectToWifiPasswordFragment :
     override fun setupListener() {
         viewModel.initListeners()
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
+        binding.password.doAfterTextChanged {
+            binding.passwordLayout.error = null
+        }
         binding.connectBtn.setBounceClickListener {
             closeKeyboard()
             binding.connectBtn.startAnimation()
-            viewModel.password = binding.password.text.toString()
-            viewModel.sendMessageInVM(
-                type = KnobSocketMessageType.TEST_WIFI,
-                ssid = viewModel.ssid,
-                password = viewModel.password,
-                securityType = viewModel.securityType
-            )
+            binding.password.text.toString().let {
+                if(it.isBlank())
+                    binding.passwordLayout.errorPassword = DefaultValidation.REQUIRED
+                else
+                    viewModel.testWifi(it)
+            }
         }
 
         onDismissSuccessDialog = {

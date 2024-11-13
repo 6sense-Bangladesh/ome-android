@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration
 
 
 fun View.makeGoneIf(predicate: Boolean) {
@@ -37,9 +38,9 @@ fun View.makeGone() {
     visibility = View.GONE
 }
 
-fun withDelay(delayMillis: Long, block: suspend CoroutineScope.() -> Unit) {
+fun withDelay(duration: Duration, block: suspend CoroutineScope.() -> Unit) {
     MainScope().launch {
-        delay(delayMillis)
+        delay(duration)
         block()
     }
 }

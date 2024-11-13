@@ -2,6 +2,8 @@ package com.ome.app.domain.model.network.response
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.ome.app.domain.model.network.request.SetCalibrationRequest
+import com.ome.app.domain.model.network.request.Zone
 import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.state.*
 import com.ome.app.utils.Rssi
@@ -48,7 +50,16 @@ data class KnobDto(
             @SerializedName("mediumAngle") val mediumAngle: Int = 0,
             @SerializedName("zoneName") val zoneName: String = "",
             @SerializedName("zoneNumber") val zoneNumber: Int = 0
-        ) : Parcelable
+        ) : Parcelable{
+            fun toZone() = Zone(
+                highAngle = highAngle,
+                lowAngle = lowAngle,
+                mediumAngle = mediumAngle,
+                zoneName = zoneName,
+                zoneNumber = zoneNumber
+            )
+        }
+
         fun toCalibration() =
             Calibration(
                 offAngle = offAngle,
@@ -60,6 +71,11 @@ data class KnobDto(
                 zones1 = zones.find { it.zoneNumber == 1 },
                 zones2 = zones.find { it.zoneNumber == 2 }
             )
+        fun toSetCalibrationRequest() = SetCalibrationRequest(
+            offAngle = offAngle,
+            rotationDir = rotationDir,
+            zones = zones.map { it.toZone() }
+        )
     }
 }
 

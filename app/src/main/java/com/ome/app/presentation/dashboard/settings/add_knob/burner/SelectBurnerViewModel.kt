@@ -40,7 +40,6 @@ class SelectBurnerViewModel @Inject constructor(
         stoveRepository.updateKnobInfo(
             params = CreateKnobRequest(
                 stovePosition = stovePosition,
-                macID = macAddress
             ),
             macAddress = macAddress
         )
