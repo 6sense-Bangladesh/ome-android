@@ -41,7 +41,7 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
                             R.string.manual_connection_to_hotspot_error,
                             viewModel.wifiHandler.omeKnobSSID,
                             viewModel.wifiHandler.inirvKnobSSID
-                        ))
+                    ))
                 }
             }
         }

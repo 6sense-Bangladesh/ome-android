@@ -22,7 +22,6 @@ import java.io.DataOutputStream
 import java.io.InputStream
 import java.net.ConnectException
 import java.net.Socket
-import java.net.SocketException
 import java.nio.charset.StandardCharsets
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
@@ -41,8 +40,8 @@ class SocketManager(
     private val socketService: SocketService = retrofit.create(SocketService::class.java)
 
     companion object {
-        const val ipAddress = "10.10.0.1"
-        const val port = 8
+        private const val KNOB_IP_ADDRESS = "10.10.0.1"
+        private const val KNOB_PORT = 8
     }
 
     private var mOut: DataOutputStream? = null
@@ -55,11 +54,8 @@ class SocketManager(
     private val ivHexToBytesArray =
         intArrayOf(210, 237, 136, 104, 145, 182, 212, 203, 4, 80, 198, 119, 194, 201, 38, 250)
 
-    //testWifi
 
-
-    var messageReceived: suspend (messageType: KnobSocketMessageType, message: String) -> Unit =
-        { type, message -> }
+    var messageReceived: suspend (messageType: KnobSocketMessageType, message: String) -> Unit = { _, _ -> }
 
     var onSocketConnect: () -> Unit = {}
 
@@ -67,9 +63,9 @@ class SocketManager(
 
     val networksFlow = MutableStateFlow<List<NetworkItemModel>?>(null)
 
-    var socket: Socket = Socket()
+    private var socket: Socket = Socket()
 
-    var lastMessageSent: KnobSocketMessageType = KnobSocketMessageType.GET_MAC
+    private var lastMessageSent: KnobSocketMessageType = KnobSocketMessageType.GET_MAC
 
     suspend fun sendMessage(
         message: KnobSocketMessageType,
@@ -102,7 +98,7 @@ class SocketManager(
                     mOut?.flush()
                     lastMessageSent = message
                 }
-            } catch (e: SocketException) {
+            } catch (e: Exception) {
                 loge("SocketException encountered: ${e.message}. Attempting to reconnect...")
                 reconnectSocket()  // Attempt to reconnect
                 sendMessage(message, *params)  // Retry sending the message after reconnecting
@@ -111,26 +107,30 @@ class SocketManager(
     }
 
 
-    private suspend fun read() {
+    private suspend fun read() = withContext(Dispatchers.IO){
         val buffer = ByteArrayOutputStream()
 
         val data = ByteArray(16384)
 
         var totalBytesRead = 0
         while (totalBytesRead < 2048) {
-            mIn?.let {
-                val bytesRead = it.read(data, 0, data.size)
-                totalBytesRead += bytesRead
-                buffer.write(decrypt(data), 0, bytesRead)
+            yield()
+            val bytesRead = mIn?.read(data, 0, data.size) ?: break  // Break if mIn is null
+            if (bytesRead == -1) {
+                loge("End of stream reached. Attempting to reconnect...")
+                reconnectSocket()  // Attempt to reconnect if the stream ends
+                return@withContext
             }
+            totalBytesRead += bytesRead
+            yield()
+            buffer.write(decrypt(data.copyOfRange(0, bytesRead)))
         }
 
         val decryptedMessage = String(buffer.toByteArray().removePadding(), StandardCharsets.UTF_8)
         decryptedMessage.let {
             logi("ResponseFrom: ${lastMessageSent.path} , Message: $it")
-            if (lastMessageSent == KnobSocketMessageType.GET_NETWORKS) {
+            if (lastMessageSent == KnobSocketMessageType.GET_NETWORKS)
                 networksFlow.value = parseNetworkList(it)
-            }
             messageReceived(lastMessageSent, it)
         }
         logi("BytesRead: $totalBytesRead")
@@ -233,15 +233,16 @@ class SocketManager(
         return cipher.doFinal(encrypted)
     }
 
-    private suspend fun reconnectSocket(retryCount: Int = 3, delayMillis: Long = 2000) = withContext(Dispatchers.IO) {
+    private suspend fun reconnectSocket(retryCount: Int = 3, delayMillis: Long = 2000): Unit = withContext(Dispatchers.IO) {
         var attempts = 0
         var connected = false
 
         while (attempts < retryCount && !connected) {
+            stopClient()
             try {
-                stopClient()
                 // Attempt to reconnect
-                socket = Socket(ipAddress, port)
+                socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
+                socket.soTimeout = 5000  // Read timeout
                 mOut = DataOutputStream(socket.getOutputStream())
                 mIn = DataInputStream(socket.getInputStream())
                 onSocketConnect()  // Call this to handle any setup needed on connect
@@ -254,7 +255,7 @@ class SocketManager(
                     yield()
                     read()
                 }
-            } catch (e: ConnectException) {
+            } catch (e: Exception) {
                 attempts++
                 loge("Reconnect attempt $attempts failed: ${e.message}")
                 delay(delayMillis)  // Wait before the next attempt
@@ -264,7 +265,6 @@ class SocketManager(
         if (!connected) {
             loge("Failed to reconnect after $retryCount attempts.")
             logi("ResponseFrom: ${lastMessageSent.path} , Message: failed")
-            messageReceived(lastMessageSent, "failed")
             throw ConnectException("Unable to reconnect to socket after multiple attempts.")
         }
     }
@@ -272,31 +272,37 @@ class SocketManager(
 
 
     suspend fun connect() = withContext(Dispatchers.IO) {
-        if (!socket.isConnected) {
-            try {
-                socket = Socket(ipAddress, port)
-                mRun = true
-                mOut = DataOutputStream(socket.getOutputStream())
-                mIn = DataInputStream(socket.getInputStream())
-                onSocketConnect()
-                while (mRun) {
-                    yield()
-                    read()
-                }
-            } catch (e: ConnectException) {
-                // Handle the connection error
-                throw ConnectException("Error with socket connection.")
+        stopClient()
+        try {
+            socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
+            socket.soTimeout = 5000  // Read timeout
+            mRun = true
+            mOut = DataOutputStream(socket.getOutputStream())
+            mIn = DataInputStream(socket.getInputStream())
+            onSocketConnect()
+            while (mRun) {
+                yield()
+                read()
             }
+        } catch (e: Exception) {
+            // Handle the connection error
+            reconnectSocket()  // Attempt to reconnect
+//            throw ConnectException("Error with socket connection.")
         }
     }
 
-    fun stopClient() {
+    private fun stopClient() {
         mRun = false
-        mOut?.flush()
-        mIn?.close()
-        mIn = null
-        mOut = null
-        socket.close()
+        networksFlow.value = null
+        try {
+            mOut?.flush()
+            mOut?.close()
+            mIn?.close()
+            socket.close()
+        }finally {
+            mIn = null
+            mOut = null
+        }
     }
 
 }
@@ -307,7 +313,5 @@ enum class KnobSocketMessageType(val path: String) {
     TEST_WIFI("testwifi"),
     SET_WIFI("setwifi"),
     REBOOT("reboot"),
-    GET_NETWORKS("getap \"\""),
-    RESEND_SET_WIFI(""),
-    RESEND_REBOOT(""),
+    GET_NETWORKS("getap \"\"")
 }

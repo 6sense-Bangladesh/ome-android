@@ -11,7 +11,6 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.utils.MAIN
 import com.ome.app.utils.WifiHandler
-import com.ome.app.utils.withDelay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -104,9 +103,8 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 defaultErrorLiveData.postValue(resourceProvider.getString(R.string.incorrect_network_name_and_password))
             }
             "2" -> {
-                withDelay(4000) {
-                    sendMessage(KnobSocketMessageType.WIFI_STATUS)
-                }
+                delay(4.seconds)
+                sendMessage(KnobSocketMessageType.WIFI_STATUS)
             }
             "1" -> {
                 sendMessage(

@@ -17,9 +17,11 @@ import com.thanosfisherman.wifiutils.wifiConnect.ConnectionErrorCode
 import com.thanosfisherman.wifiutils.wifiConnect.ConnectionSuccessListener
 import com.thanosfisherman.wifiutils.wifiDisconnect.DisconnectionErrorCode
 import com.thanosfisherman.wifiutils.wifiDisconnect.DisconnectionSuccessListener
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.time.Duration.Companion.seconds
@@ -60,40 +62,42 @@ class WifiHandler(val context: Context) {
 
     suspend fun connectToWifi(): Pair<Boolean, String?>{
         val currentWifiSSID = getCurrentWifiSsid()
-        return suspendCancellableCoroutine { continuation ->
-            if (currentWifiSSID == omeKnobSSID || currentWifiSSID == inirvKnobSSID) {
-                continuation.resume(true to null)
-            } else {
-                tryInMain {
-                    delay(15.seconds)
-                    if (continuation.isActive) {
-                        omeFail = false
-                        continuation.resume(false to
-                                context.getString(R.string.unable_to_join_the_network, omeKnobSSID, inirvKnobSSID)
-                        )
-                    }
-                }
-                WifiUtils.withContext(context).connectWith(currentSSID, PASSWORD)
-                    .onConnectionResult(object : ConnectionSuccessListener {
-                        override fun success() {
+        return withContext(Dispatchers.Main.immediate){
+            suspendCancellableCoroutine { continuation ->
+                if (currentWifiSSID == omeKnobSSID || currentWifiSSID == inirvKnobSSID) {
+                    continuation.resume(true to null)
+                } else {
+                    tryInMain {
+                        delay(15.seconds)
+                        if (continuation.isActive) {
                             omeFail = false
-                            continuation.resume(true to null)
+                            continuation.resume(false to
+                                    context.getString(R.string.unable_to_join_the_network, omeKnobSSID, inirvKnobSSID)
+                            )
                         }
-
-                        override fun failed(errorCode: ConnectionErrorCode) {
-                            if(!omeFail) {
-                                continuation.resume(false to null)
-                                omeFail = true
-                            }else{
+                    }
+                    WifiUtils.withContext(context).connectWith(currentSSID, PASSWORD)
+                        .onConnectionResult(object : ConnectionSuccessListener {
+                            override fun success() {
                                 omeFail = false
-                                continuation.resume(false to
-                                        context.getString(R.string.unable_to_join_the_network, omeKnobSSID, inirvKnobSSID)
-                                )
+                                continuation.resume(true to null)
                             }
-                            switchToOtherNetwork()
-                        }
-                    })
-                    .start()
+
+                            override fun failed(errorCode: ConnectionErrorCode) {
+                                if(!omeFail) {
+                                    continuation.resume(false to null)
+                                    omeFail = true
+                                }else{
+                                    omeFail = false
+                                    continuation.resume(false to
+                                            context.getString(R.string.unable_to_join_the_network, omeKnobSSID, inirvKnobSSID)
+                                    )
+                                }
+                                switchToOtherNetwork()
+                            }
+                        })
+                        .start()
+                }
             }
         }
     }
@@ -134,8 +138,10 @@ class WifiHandler(val context: Context) {
 
 
     suspend fun isConnectedToKnobHotspot(): Boolean {
-        val currentWifiSSID = getCurrentWifiSsid()
-        return currentWifiSSID == inirvKnobSSID || currentWifiSSID == omeKnobSSID
+        return withContext(Dispatchers.IO) {
+            val currentWifiSSID = getCurrentWifiSsid()
+            currentWifiSSID == omeKnobSSID || currentWifiSSID == inirvKnobSSID
+        }
     }
 
     private fun switchToOtherNetwork() {
@@ -146,17 +152,19 @@ class WifiHandler(val context: Context) {
         }
     }
 
-    suspend fun disconnectFromNetwork(): Boolean = suspendCoroutine { continuation ->
-        WifiUtils.withContext(context)
-            .disconnect(object : DisconnectionSuccessListener {
-                override fun success() {
-                    continuation.resume(true)
-                }
+    suspend fun disconnectFromNetwork(): Boolean = withContext(Dispatchers.Main){
+        suspendCoroutine { continuation ->
+            WifiUtils.withContext(context)
+                .disconnect(object : DisconnectionSuccessListener {
+                    override fun success() {
+                        continuation.resume(true)
+                    }
 
-                override fun failed(errorCode: DisconnectionErrorCode) {
-                    continuation.resume(false)
-                }
-            })
+                    override fun failed(errorCode: DisconnectionErrorCode) {
+                        continuation.resume(false)
+                    }
+                })
+        }
     }
 
 

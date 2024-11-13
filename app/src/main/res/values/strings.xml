@@ -109,7 +109,7 @@
     <string name="select_a_network_for_to_connect">Select a network to connect your knob.</string>
     <string name="ome_smart_knob_will_be_setup_on">Ome smart knob will be setup on</string>
     <string name="connect">Connect</string>
-    <string name="incorrect_network_name_and_password">Incorrect network name and password combination. Please try again</string>
+    <string name="incorrect_network_name_and_password">Incorrect network name or password combination. Please try again</string>
     <string name="something_went_wrong_when_setting_the_knob">Something went wrong when setting the knob\'s Wi-Fi, please try again</string>
     <string name="connection_success">Congratulations! Your knob is now connected to your Wi-Fi.</string>
     <string name="replace_knob_top">Replace Knob Top</string>

@@ -5,7 +5,6 @@ import com.ome.app.data.local.KnobSocketMessageType
 import com.ome.app.data.local.SocketManager
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.utils.IO
 import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,12 +52,6 @@ class ConnectToWifiViewModel @Inject constructor(
         }
     }
 
-    private fun connectToSocket() {
-        launch(ioContext) {
-            socketManager.connect()
-        }
-    }
-
     fun initListeners() = launch(ioContext) {
         socketManager.messageReceived = { type, message ->
             if (type == KnobSocketMessageType.GET_MAC) {
@@ -78,9 +71,9 @@ class ConnectToWifiViewModel @Inject constructor(
 
 
     fun connectToWifi(){
-        launch {
+        launch(ioContext){
             if(isChangeWifiMode){
-                IO{ stoveRepository.clearWifi(macAddrs) }
+                stoveRepository.clearWifi(macAddrs)
                 delay(6.seconds)
             }
             connectionStatusListener.shouldReactOnChanges = false
@@ -88,14 +81,12 @@ class ConnectToWifiViewModel @Inject constructor(
 
             //Check whether device connected to wifi or not
             if (result.first) {
-                connectToSocket()
+                socketManager.connect()
             } else {
                 result.second?.let { message ->
                     loadingLiveData.postValue(false)
                     defaultErrorLiveData.postValue(message)
-                } ?: run {
-                    connectToWifi()
-                }
+                } ?: connectToWifi()
             }
         }
     }
