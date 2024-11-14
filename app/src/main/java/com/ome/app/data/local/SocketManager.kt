@@ -6,10 +6,8 @@ import com.ome.app.utils.isNotEmpty
 import com.ome.app.utils.log
 import com.ome.app.utils.loge
 import com.ome.app.utils.logi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import retrofit2.Response
@@ -228,7 +226,7 @@ class SocketManager(
         return cipher.doFinal(encrypted)
     }
 
-    private suspend fun reconnectSocket(retryCount: Int = 3, delayMillis: Long = 2000): Unit = withContext(Dispatchers.IO) {
+    private fun reconnectSocket(retryCount: Int = 3, delayMillis: Long = 2000) = CoroutineScope(Dispatchers.IO).launch {
         var attempts = 0
         var connected = false
 
@@ -265,7 +263,7 @@ class SocketManager(
 
 
 
-    suspend fun connect() = withContext(Dispatchers.IO) {
+    fun connect() = CoroutineScope(Dispatchers.IO).launch {
         stopClient()
         try {
             socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
