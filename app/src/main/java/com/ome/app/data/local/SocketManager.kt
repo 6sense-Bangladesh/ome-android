@@ -10,7 +10,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.yield
 import okhttp3.ResponseBody
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import retrofit2.Response
@@ -114,15 +113,8 @@ class SocketManager(
 
         var totalBytesRead = 0
         while (totalBytesRead < 2048) {
-            yield()
             val bytesRead = mIn?.read(data, 0, data.size) ?: break  // Break if mIn is null
-            if (bytesRead == -1) {
-                loge("End of stream reached. Attempting to reconnect...")
-                reconnectSocket()  // Attempt to reconnect if the stream ends
-                return@withContext
-            }
             totalBytesRead += bytesRead
-            yield()
             buffer.write(decrypt(data.copyOfRange(0, bytesRead)))
         }
 
@@ -252,7 +244,6 @@ class SocketManager(
 
                 // Start reading again
                 while (mRun) {
-                    yield()
                     read()
                 }
             } catch (e: Exception) {
@@ -281,7 +272,6 @@ class SocketManager(
             mIn = DataInputStream(socket.getInputStream())
             onSocketConnect()
             while (mRun) {
-                yield()
                 read()
             }
         } catch (e: Exception) {
