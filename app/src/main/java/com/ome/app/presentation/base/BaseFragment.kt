@@ -68,6 +68,8 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
     @CallSuper
     open fun setupObserver() {
         subscribe(viewModel.defaultErrorLiveData) { message ->
+            viewModel.loadingFlow.tryEmit(false)
+            viewModel.loadingLiveData.postValue(false)
             message?.let {
                 onError(it)
             }
