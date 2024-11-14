@@ -62,7 +62,7 @@ class WifiHandler(val context: Context) {
     val networkList: MutableStateFlow<List<ScanResult>?> = MutableStateFlow(null)
 
     suspend fun connectToWifi(): Pair<Boolean, String?>{
-        val currentWifiSSID = getCurrentWifiSsid()
+        val currentWifiSSID = getCurrentWifiSsidOld()
         return withContext(Dispatchers.Main.immediate){
             suspendCancellableCoroutine { continuation ->
                 if (currentWifiSSID == omeKnobSSID || currentWifiSSID == inirvKnobSSID) {

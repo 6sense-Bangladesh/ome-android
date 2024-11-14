@@ -106,23 +106,26 @@ class SocketManager(
     }
 
 
-    private suspend fun read() = withContext(Dispatchers.IO){
+    private suspend fun read() {
         val buffer = ByteArrayOutputStream()
 
         val data = ByteArray(16384)
 
         var totalBytesRead = 0
         while (totalBytesRead < 2048) {
-            val bytesRead = mIn?.read(data, 0, data.size) ?: break  // Break if mIn is null
-            totalBytesRead += bytesRead
-            buffer.write(decrypt(data.copyOfRange(0, bytesRead)))
+            mIn?.let {
+                val bytesRead = it.read(data, 0, data.size)
+                totalBytesRead += bytesRead
+                buffer.write(decrypt(data), 0, bytesRead)
+            }
         }
 
         val decryptedMessage = String(buffer.toByteArray().removePadding(), StandardCharsets.UTF_8)
         decryptedMessage.let {
             logi("ResponseFrom: ${lastMessageSent.path} , Message: $it")
-            if (lastMessageSent == KnobSocketMessageType.GET_NETWORKS)
+            if (lastMessageSent == KnobSocketMessageType.GET_NETWORKS) {
                 networksFlow.value = parseNetworkList(it)
+            }
             messageReceived(lastMessageSent, it)
         }
         logi("BytesRead: $totalBytesRead")
