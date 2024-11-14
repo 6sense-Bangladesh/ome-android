@@ -63,7 +63,6 @@ class ConnectToWifiViewModel @Inject constructor(
         socketManager.onSocketConnect = {
             sendMessage(KnobSocketMessageType.GET_MAC)
         }
-
     }
 
     private fun sendMessage(message: KnobSocketMessageType) = launch(ioContext) {

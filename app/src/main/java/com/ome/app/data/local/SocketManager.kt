@@ -100,8 +100,8 @@ class SocketManager(
                 }
             } catch (e: Exception) {
                 loge("SocketException encountered: ${e.message}. Attempting to reconnect...")
-                reconnectSocket()  // Attempt to reconnect
-                sendMessage(message, *params)  // Retry sending the message after reconnecting
+//                reconnectSocket()  // Attempt to reconnect
+//                sendMessage(message, *params)  // Retry sending the message after reconnecting
             }
         }
     }
