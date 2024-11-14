@@ -37,7 +37,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
 
     fun initListeners() {
         socketManager.messageReceived = { type, message ->
-            launch {
+            launch(ioContext){
                 when (type) {
                     KnobSocketMessageType.REBOOT -> {
                         rebootRetries++

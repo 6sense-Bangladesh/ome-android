@@ -235,7 +235,6 @@ class SocketManager(
             try {
                 // Attempt to reconnect
                 socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
-                socket.soTimeout = 5000  // Read timeout
                 mOut = DataOutputStream(socket.getOutputStream())
                 mIn = DataInputStream(socket.getInputStream())
                 onSocketConnect()  // Call this to handle any setup needed on connect
@@ -267,7 +266,6 @@ class SocketManager(
         stopClient()
         try {
             socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
-            socket.soTimeout = 5000  // Read timeout
             mRun = true
             mOut = DataOutputStream(socket.getOutputStream())
             mIn = DataInputStream(socket.getInputStream())
