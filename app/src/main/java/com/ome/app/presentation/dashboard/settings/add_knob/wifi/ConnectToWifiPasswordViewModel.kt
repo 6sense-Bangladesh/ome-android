@@ -108,8 +108,8 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
             }
             "2" -> {
                 credentialFail++
-                if(credentialFail < 10) {
-                    delay(3.seconds)
+                if(credentialFail < 15) {
+                    delay(4.seconds)
                     sendMessage(KnobSocketMessageType.WIFI_STATUS)
                 }else
                     defaultErrorLiveData.postValue(resourceProvider.getString(R.string.incorrect_network_name_and_password))
