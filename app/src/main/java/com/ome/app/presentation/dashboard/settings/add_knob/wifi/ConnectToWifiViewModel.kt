@@ -52,7 +52,7 @@ class ConnectToWifiViewModel @Inject constructor(
         }
     }
 
-    fun initListeners() = launch(ioContext) {
+    fun initListeners(){
         socketManager.messageReceived = { type, message ->
             if (type == KnobSocketMessageType.GET_MAC) {
                 if (message == macAddrs) {
@@ -63,6 +63,7 @@ class ConnectToWifiViewModel @Inject constructor(
         socketManager.onSocketConnect = {
             sendMessage(KnobSocketMessageType.GET_MAC)
         }
+
     }
 
     private fun sendMessage(message: KnobSocketMessageType) = launch(ioContext) {
