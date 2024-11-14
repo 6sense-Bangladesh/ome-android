@@ -37,41 +37,43 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
 
     fun initListeners() {
         socketManager.messageReceived = { type, message ->
-            when (type) {
-                KnobSocketMessageType.REBOOT -> {
-                    rebootRetries++
-                    if (rebootRetries < 3)
-                        sendMessage(KnobSocketMessageType.REBOOT)
-                    else
-                        defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
+            launch {
+                when (type) {
+                    KnobSocketMessageType.REBOOT -> {
+                        rebootRetries++
+                        if (rebootRetries < 3)
+                            sendMessage(KnobSocketMessageType.REBOOT)
+                        else
+                            defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
 //                    successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
 //                    loadingLiveData.postValue(false)
-                }
-                KnobSocketMessageType.TEST_WIFI -> {
-                    if (message == "ok") {
-                        sendMessage(KnobSocketMessageType.WIFI_STATUS)
                     }
-                }
-                KnobSocketMessageType.WIFI_STATUS -> {
-                    handleWifiStatusMessage(message)
-                }
-                KnobSocketMessageType.SET_WIFI -> {
-                    if (message == "ok") {
-                        sendMessage(KnobSocketMessageType.REBOOT)
+                    KnobSocketMessageType.TEST_WIFI -> {
+                        if (message == "ok") {
+                            sendMessage(KnobSocketMessageType.WIFI_STATUS)
+                        }
+                    }
+                    KnobSocketMessageType.WIFI_STATUS -> {
+                        handleWifiStatusMessage(message)
+                    }
+                    KnobSocketMessageType.SET_WIFI -> {
+                        if (message == "ok") {
+                            sendMessage(KnobSocketMessageType.REBOOT)
 //                        withDelay(2000) {
 //                            disconnectFromNetwork()
 //                        }
 //                        successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
 //                        loadingLiveData.postValue(false)
 //                        disconnectFromNetwork()
-                        delay(2.seconds)
-                        successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
-                        loadingLiveData.postValue(false)
-                    } else {
-                        defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
+                            delay(2.seconds)
+                            successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
+                            loadingLiveData.postValue(false)
+                        } else {
+                            defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
+                        }
                     }
+                    else -> Unit
                 }
-                else -> Unit
             }
         }
 //

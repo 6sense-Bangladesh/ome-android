@@ -52,7 +52,7 @@ class SocketManager(
         intArrayOf(210, 237, 136, 104, 145, 182, 212, 203, 4, 80, 198, 119, 194, 201, 38, 250)
 
 
-    var messageReceived: suspend (messageType: KnobSocketMessageType, message: String) -> Unit = { _, _ -> }
+    var messageReceived: (messageType: KnobSocketMessageType, message: String) -> Unit = { _, _ -> }
 
     var onSocketConnect: () -> Unit = {}
 
@@ -104,7 +104,7 @@ class SocketManager(
     }
 
 
-    private suspend fun read() {
+    private fun read() {
         val buffer = ByteArrayOutputStream()
 
         val data = ByteArray(16384)
@@ -263,7 +263,7 @@ class SocketManager(
 
 
 
-    fun connect() = CoroutineScope(Dispatchers.IO).launch {
+    fun connect(){
         stopClient()
         try {
             socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
