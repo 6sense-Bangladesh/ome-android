@@ -17,7 +17,6 @@ import java.io.ByteArrayOutputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.InputStream
-import java.net.ConnectException
 import java.net.Socket
 import java.nio.charset.StandardCharsets
 import javax.crypto.Cipher
@@ -252,12 +251,12 @@ class SocketManager(
                 delay(delayMillis)  // Wait before the next attempt
             }
         }
-
-        if (!connected) {
-            loge("Failed to reconnect after $retryCount attempts.")
-            logi("ResponseFrom: ${lastMessageSent.path} , Message: failed")
-            throw ConnectException("Unable to reconnect to socket after multiple attempts.")
-        }
+//
+//        if (!connected) {
+//            loge("Failed to reconnect after $retryCount attempts.")
+//            logi("ResponseFrom: ${lastMessageSent.path} , Message: failed")
+//            throw ConnectException("Unable to reconnect to socket after multiple attempts.")
+//        }
     }
 
 
