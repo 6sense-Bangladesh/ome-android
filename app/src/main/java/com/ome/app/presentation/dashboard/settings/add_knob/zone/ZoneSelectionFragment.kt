@@ -5,11 +5,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentZoneSelectionBinding
 import com.ome.app.presentation.base.BaseFragment
+import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
 import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -28,17 +28,15 @@ class ZoneSelectionFragment :
 
         binding.continueBtn.setBounceClickListener {
             if (viewModel.isDualKnob) {
-                toast("Under Development")
-//                navigateSafe(
-//                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
-//                        DeviceCalibrationFragmentParams(
-//                            isComeFromSettings = args.params.isComeFromSettings,
-//                            zoneNumber = viewModel.zoneNumber,
-//                            isDualKnob = viewModel.isDualKnob,
-//                            macAddr =  args.params.macAddrs
-//                        )
-//                    )
-//                )
+                navigateSafe(
+                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
+                        DeviceCalibrationFragmentParams(
+                            isComeFromSettings = args.params.isComeFromSettings,
+                            isDualKnob = viewModel.isDualKnob,
+                            macAddress =  args.params.macAddrs
+                        )
+                    )
+                )
             } else {
                 navigateSafe(
                     ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(

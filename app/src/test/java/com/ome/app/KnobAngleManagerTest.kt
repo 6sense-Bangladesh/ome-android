@@ -61,7 +61,7 @@ class KnobAngleManagerTest {
                 firstDiv = 0,
                 secondDiv = 180,
                 currentStepAngle = 0,
-                currSetting = 1,
+                currSetPosition = 1,
                 highSingleAngle = null,
                 angleDualOffset = 31
             ) == 211f
@@ -76,7 +76,7 @@ class KnobAngleManagerTest {
                 firstDiv = 0,
                 secondDiv = 180,
                 currentStepAngle = 140,
-                currSetting = 2,
+                currSetPosition = 2,
                 highSingleAngle = 140f,
                 angleDualOffset = 31
             ) == 149f
@@ -91,7 +91,7 @@ class KnobAngleManagerTest {
                 firstDiv = 0,
                 secondDiv = 180,
                 currentStepAngle = 140,
-                currSetting = 2,
+                currSetPosition = 2,
                 highSingleAngle = 140f,
                 angleDualOffset = 31
             ) == 31f
@@ -107,7 +107,7 @@ class KnobAngleManagerTest {
                 firstDiv = 0,
                 secondDiv = 180,
                 currentStepAngle = 42,
-                currSetting = 3,
+                currSetPosition = 3,
                 highSingleAngle = 140f,
                 angleDualOffset = 31
             ) == 329f

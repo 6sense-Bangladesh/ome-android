@@ -25,7 +25,7 @@ class DeviceCalibrationFragment :
     private val args by navArgs<DeviceCalibrationFragmentArgs>()
 
     override fun setupUI() {
-        viewModel.macAddress = args.params.macAddr
+        viewModel.macAddress = args.params.macAddress
         viewModel.rotationDir = args.params.rotateDir
         viewModel.isDualKnob = args.params.isDualKnob
         mainViewModel.connectToSocket()
@@ -61,23 +61,27 @@ class DeviceCalibrationFragment :
             findNavController().popBackStack()
         }
         subscribe(viewModel.calibrationIsDoneLiveData) {
-                if (it) {
-                    navigateSafe(
-                        DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToDeviceCalibrationConfirmationFragment(
-                            DeviceCalibrationConfirmationFragmentParams(
-                                isComeFromSettings = args.params.isComeFromSettings,
-                                offPosition = viewModel.offAngle ?: 0f,
-                                lowSinglePosition = viewModel.lowSingleAngle ?: 0f,
-                                lowDualPosition = viewModel.lowDualAngle ?: 0f,
-                                medPosition = viewModel.mediumAngle ?: 0f,
-                                highSinglePosition = viewModel.highSingleAngle ?: 0f,
-                                highDualPosition = viewModel.highDualAngle ?: 0f,
-                                macAddr = viewModel.macAddress,
-                                isDualKnob = args.params.isDualKnob,
-                                rotateDir = viewModel.rotationDir ?: -1
-                            )
+            if (it) {
+                if(viewModel.isDualKnob){
+                    navigateSafe(DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToSetupCompleteFragment(false))
+                    return@subscribe
+                }
+                navigateSafe(
+                    DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToDeviceCalibrationConfirmationFragment(
+                        DeviceCalibrationConfirmationFragmentParams(
+                            isComeFromSettings = args.params.isComeFromSettings,
+                            offPosition = viewModel.offAngle ?: 0f,
+                            lowSinglePosition = viewModel.lowSingleAngle ?: 0f,
+                            lowDualPosition = viewModel.lowDualAngle ?: 0f,
+                            medPosition = viewModel.mediumAngle ?: 0f,
+                            highSinglePosition = viewModel.highSingleAngle ?: 0f,
+                            highDualPosition = viewModel.highDualAngle ?: 0f,
+                            macAddr = viewModel.macAddress,
+                            isDualKnob = args.params.isDualKnob,
+                            rotateDir = viewModel.rotationDir ?: -1
                         )
                     )
+                )
             }
         }
         viewModel.knobAngleFlow.collectWithLifecycle{
@@ -142,8 +146,8 @@ class DeviceCalibrationFragment :
 data class DeviceCalibrationFragmentParams(
     val isComeFromSettings: Boolean = false,
     val isDualKnob: Boolean = false,
-    val rotateDir: Int = 0,
-    val macAddr: String = ""
+    val rotateDir: Int? = null,
+    val macAddress: String = ""
 ) : Parcelable
 
 

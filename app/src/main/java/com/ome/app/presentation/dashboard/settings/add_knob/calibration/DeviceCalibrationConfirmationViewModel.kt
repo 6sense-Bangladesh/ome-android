@@ -6,6 +6,7 @@ import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.network.request.ChangeKnobAngle
 import com.ome.app.domain.model.network.request.SetCalibrationRequest
 import com.ome.app.domain.model.network.request.Zone
+import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
@@ -237,18 +238,19 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                     macAddress
                 )
             }
+//            else error("Something went wrong")
         } else {
             if (offAngle != null
                 && lowSingleAngle != null
                 && highSingleAngle != null
                 && lowDualAngle != null
                 && highDualAngle != null
-                && rotationDir != null
+//                && rotationDir != null
             ) {
                 stoveRepository.setCalibration(
                     SetCalibrationRequest(
                         offAngle = offAngle!!.toInt(),
-                        rotationDir = 2,
+                        rotationDir = Rotation.DUAL.value,
                         zones = arrayListOf(
                             Zone(
                                 highAngle = highSingleAngle!!.toInt(),
@@ -275,6 +277,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                     macAddress
                 )
             }
+//            else error("Something went wrong")
         }
 
         stoveRepository.getAllKnobs()

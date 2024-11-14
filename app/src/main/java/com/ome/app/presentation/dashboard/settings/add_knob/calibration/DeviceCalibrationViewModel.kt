@@ -5,6 +5,7 @@ import com.ome.app.R
 import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.network.request.InitCalibrationRequest
+import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
@@ -47,27 +48,19 @@ class DeviceCalibrationViewModel @Inject constructor(
                                     stoveRepository.initCalibration(
                                         InitCalibrationRequest(
                                             offAngle = angle.toInt(),
-                                            rotationDir = 2
+                                            rotationDir = Rotation.DUAL.value
                                         ), macAddress
                                     )
                                 }
                                 divideCircleBasedOnOffPosition()
                             }
-                            CalibrationState.LOW_SINGLE -> {
-                                lowSingleAngle = angle
-                            }
-                            CalibrationState.LOW_DUAL -> {
-                                lowDualAngle = angle
-                            }
-                            CalibrationState.HIGH_SINGLE -> {
-                                highSingleAngle = angle
-                            }
-                            CalibrationState.HIGH_DUAL -> {
-                                highDualAngle = angle
-                            }
-                            else -> {}
+                            CalibrationState.LOW_SINGLE ->  lowSingleAngle = angle
+                            CalibrationState.LOW_DUAL -> lowDualAngle = angle
+                            CalibrationState.HIGH_SINGLE -> highSingleAngle = angle
+                            CalibrationState.HIGH_DUAL -> highDualAngle = angle
+                            else -> Unit
                         }
-                        currSetting++
+                        currSetPosition++
                         labelLiveData.postValue(step to angle)
                         nextStep()
                     }
@@ -98,7 +91,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                                                 rotationDir = dir
                                             ), macAddress
                                         )
-                                    }
+                                    } ?: error("Something went wrong")
                                 }
                             }
                             CalibrationState.LOW_SINGLE -> {
@@ -109,7 +102,6 @@ class DeviceCalibrationViewModel @Inject constructor(
                             CalibrationState.MEDIUM -> mediumAngle = angle
                             CalibrationState.HIGH_SINGLE -> highSingleAngle = angle
                             CalibrationState.HIGH_DUAL -> highDualAngle = angle
-//                            CalibrationState.MEDIUM_DUAL -> mediumDualAngle = angle
                             CalibrationState.LOW_DUAL -> lowDualAngle = angle
                         }
                         labelLiveData.postValue(step to angle)
@@ -132,16 +124,14 @@ class DeviceCalibrationViewModel @Inject constructor(
         offAngle?.let { angle ->
             firstDiv = angle.toInt()
             secondDiv = angle.toInt() - 180
-            if (secondDiv < 0) {
-                secondDiv += 360
-            }
+            if (secondDiv < 0) secondDiv += 360
         }
     }
 
     fun clearData() {
         firstDiv = 0
         secondDiv = 0
-        currSetting = 0
+        currSetPosition = 0
         offAngle = null
         lowSingleAngle = null
         lowDualAngle = null
@@ -196,7 +186,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                 CalibrationState.LOW_DUAL -> lowDualAngle = null
             }
             currentCalibrationState.value = step
-            currSetting--
+            currSetPosition--
         }
     }
 }

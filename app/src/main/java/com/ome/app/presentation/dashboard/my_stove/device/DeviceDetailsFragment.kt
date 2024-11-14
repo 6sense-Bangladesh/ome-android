@@ -115,7 +115,11 @@ class DeviceDetailsFragment :
             binding.tvLevel.setBounceClickListener {
                 navigateSafe(
                     DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToDeviceCalibrationFragment(
-                        DeviceCalibrationFragmentParams(macAddr = args.params.macAddr, rotateDir = 1, isComeFromSettings = true)
+                        DeviceCalibrationFragmentParams(
+                            macAddress = args.params.macAddr,
+                            isDualKnob = true,
+                            isComeFromSettings = true
+                        )
                     )
                 )
             }
@@ -126,10 +130,11 @@ class DeviceDetailsFragment :
                             macAddr = args.params.macAddr,
                             isComeFromSettings = true,
                             offPosition = 0f,
-                            lowSinglePosition = 170f,
-                            medPosition = 200f,
-                            highSinglePosition =280f,
-                            rotateDir = 1,
+                            isDualKnob = true,
+                            lowSinglePosition = 100f,
+                            highSinglePosition =160f,
+                            lowDualPosition = 200f,
+                            highDualPosition = 340f,
                         )
                     )
                 )

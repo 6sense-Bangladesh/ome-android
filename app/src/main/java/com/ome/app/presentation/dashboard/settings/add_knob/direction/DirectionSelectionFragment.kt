@@ -52,7 +52,7 @@ class DirectionSelectionFragment :
                             isComeFromSettings = args.params.isComeFromSettings,
                             isDualKnob = args.params.isDualKnob,
                             rotateDir = viewModel.clockwiseDir,
-                            macAddr = args.params.macAddress
+                            macAddress = args.params.macAddress
                         )
                     )
                 )

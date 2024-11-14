@@ -22,6 +22,7 @@ import com.ome.app.domain.model.state.ConnectionState
 import com.ome.app.domain.model.state.connectionState
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.CalibrationState
 import com.ome.app.utils.*
+import com.ome.app.utils.KnobAngleManager.normalizeAngle
 import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.StateFlow
@@ -370,6 +371,7 @@ class KnobView @JvmOverloads constructor(
             var angle = Math.toDegrees(atan2(deltaY.toDouble(), deltaX.toDouble())).toFloat() + 90
 
             // Adjust angle to be in the 0–360 range
+            angle = normalizeAngle(angle).toFloat()
             if (angle < 0)  angle += 360f
             else if (angle > 360)  angle -= 360f
 

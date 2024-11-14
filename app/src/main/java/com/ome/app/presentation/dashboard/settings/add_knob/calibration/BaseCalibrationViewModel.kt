@@ -35,7 +35,7 @@ abstract class BaseCalibrationViewModel(
     var highDualAngle: Float? = null
 
 
-    var currSetting: Int = 0
+    var currSetPosition: Int = 0
 
     var firstDiv: Int = 0
     var secondDiv: Int = 0
@@ -68,11 +68,11 @@ abstract class BaseCalibrationViewModel(
             firstDiv = firstDiv,
             secondDiv = secondDiv,
             currentStepAngle = labelLiveData.value?.second?.toInt(),
-            currSetting = currSetting,
+            currSetPosition = currSetPosition,
             highSingleAngle = highSingleAngle,
             angleDualOffset = angleDualOffset
         )
-        knobAngleFlow.value =(result)
+        knobAngleFlow.value = result
 
     }
 
@@ -84,11 +84,8 @@ abstract class BaseCalibrationViewModel(
                     if (!isDualKnob) {
                         knobAngleFlow.value = angle
                     } else {
-                        if (offAngle != null) {
-                            handleDualKnobUpdated(angle)
-                        } else {
-                            knobAngleFlow.value = angle
-                        }
+                        if (offAngle != null) handleDualKnobUpdated(angle)
+                        else knobAngleFlow.value = angle
                     }
 
                 }
@@ -97,7 +94,7 @@ abstract class BaseCalibrationViewModel(
         launch(ioContext) {
             stoveRepository.knobsFlow.mapNotNull { dto -> dto.find { it.macAddr == macAddress } }.stateIn(viewModelScope).collect { foundKnob ->
                 if (webSocketManager.knobAngleFlow.value == null) {
-                    knobAngleFlow.value =(foundKnob.angle.toFloat())
+                    knobAngleFlow.value = foundKnob.angle.toFloat()
                 }
                 zoneLiveData.postValue(foundKnob.stovePosition)
             }

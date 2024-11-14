@@ -14,24 +14,18 @@ object KnobAngleManager {
         lowSingleAngle: Float?,
         angleOffset: Int
     ): Boolean {
-        when (calibrationState) {
-            CalibrationState.OFF -> {}
-            CalibrationState.HIGH_SINGLE -> {}
-            CalibrationState.MEDIUM -> {}
-            CalibrationState.LOW_SINGLE -> {
-                if (highSingleAngle != null && mediumAngle != null) {
-                    if (highSingleAngle > mediumAngle) {
-                        if (angle in mediumAngle..highSingleAngle) {
-                            return false
-                        }
-                    } else {
-                        if (angle in highSingleAngle..mediumAngle) {
-                            return false
-                        }
+        if (calibrationState == CalibrationState.LOW_SINGLE) {
+            if (highSingleAngle != null && mediumAngle != null) {
+                if (highSingleAngle > mediumAngle) {
+                    if (angle in mediumAngle..highSingleAngle) {
+                        return false
+                    }
+                } else {
+                    if (angle in highSingleAngle..mediumAngle) {
+                        return false
                     }
                 }
             }
-            else -> {}
         }
         offAngle?.let { if (abs(angle - it) < angleOffset) return false }
         lowSingleAngle?.let { if (abs(angle - it) < angleOffset) return false }
@@ -74,17 +68,38 @@ object KnobAngleManager {
     }
 
 
-    private fun normalizeAngle(angle: Int): Int {
-        return (angle + 360) % 360
+    /**
+     * Normalizes an angle to be within the range of 0 to 359 degrees (inclusive).
+     *
+     * @param angle The angle to normalize.
+     * @return The normalized angle within the range of 0 to 359 degrees.
+     */
+    fun normalizeAngle(angle: Number): Int {
+        return (angle.toInt() + 360) % 360
     }
 
 
+    /**
+     * Processes the result of a dual knob interaction, adjusting the angle value based on various conditions.
+     *
+     * This function handles the logic for adjusting the angle of a dual knob control, ensuring it stays within
+     * defined boundaries and behaves correctly based on the current setting and other parameters.
+     *
+     * @param angleValue The initial angle value from the knob interaction.
+     * @param firstDiv The angle representing the first division start point.
+     * @param secondDiv The angle representing the second division start point.
+     * @param currentStepAngle The current step angle of the knob.
+     * @param currSetPosition The current step position to set.
+     * @param highSingleAngle The angle representing the high point in single knob mode.
+     * @param angleDualOffset The offset angle applied in dual knob mode.
+     * @return The adjusted angle value.
+     */
     fun processDualKnobResult(
         angleValue: Float,
         firstDiv: Int,
         secondDiv: Int,
         currentStepAngle: Int?,
-        currSetting: Int,
+        currSetPosition: Int,
         highSingleAngle: Float?,
         angleDualOffset: Int
     ): Float {
@@ -92,10 +107,9 @@ object KnobAngleManager {
         var firstBorder: Int
         var secBorder: Int
 
-
-        if (currSetting % 2 == 0 && currentStepAngle != null) {
-
-
+        // Handle logic for even set position with a current step angle
+        if (currSetPosition % 2 == 0 && currentStepAngle != null) {
+            // Determine the borders based on the current step angle's position
             if (isAngleBetween(
                     angleAlpha = normalizeAngle(angle = firstDiv - 1),
                     angleBeta = secondDiv,
@@ -109,6 +123,7 @@ object KnobAngleManager {
                 secBorder = normalizeAngle(angle = secondDiv - angleDualOffset)
             }
 
+            // Adjust angle if it's not within the allowed range or near the current step angle
             if (!(isAngleBetween(
                     angleAlpha = currentStepAngle,
                     angleBeta = firstBorder,
@@ -124,6 +139,7 @@ object KnobAngleManager {
                     angleTheta = angle.toInt()
                 )
             ) {
+                // Fine-tune angle if it's close to the current step angle
                 if (isAngleBetween(
                         angleAlpha = currentStepAngle + 10,
                         angleBeta = currentStepAngle,
@@ -141,6 +157,7 @@ object KnobAngleManager {
                 } else if (currentStepAngle == angle.toInt()) {
                     angle = (currentStepAngle - 10).toFloat()
                 } else {
+                    // Snap angle to the nearest border if it's within a certain range
                     if (isAngleBetween(
                             angleAlpha = firstBorder,
                             angleBeta = angle.toInt(),
@@ -167,6 +184,8 @@ object KnobAngleManager {
                 }
             }
         } else {
+            // Handle logic for odd settings or when there's no current step angle
+            // Determine the borders based on the angle's position
             if (isAngleBetween(
                     angleAlpha = normalizeAngle(angle = firstDiv - 1),
                     angleBeta = secondDiv,
@@ -180,7 +199,7 @@ object KnobAngleManager {
                 secBorder = normalizeAngle(angle = secondDiv - angleDualOffset)
             }
 
-
+            // Snap angle to the nearest border if it's within a certain range
             if (isAngleBetween(
                     angleAlpha = firstBorder, angleBeta = firstDiv, angleTheta = angle.toInt()
                 ) || angle.toInt() == firstDiv
@@ -193,8 +212,9 @@ object KnobAngleManager {
                 angle = secBorder.toFloat()
             }
 
-
-            if (currSetting == 3) {
+            // Handle specific logic for setting 3
+            if (currSetPosition == 3) {
+                // Adjust borders and angle based on highSingleAngle
                 if (isAngleBetween(
                         angleAlpha = highSingleAngle!!.toInt(),
                         angleBeta = firstDiv,
@@ -227,6 +247,14 @@ object KnobAngleManager {
         return angle
     }
 
+    /**
+     * Checks if an angle (angleTheta) is between two other angles (angleAlpha and angleBeta).
+     *
+     * @param angleAlpha The starting angle of the range.
+     * @param angleBeta The ending angle of the range.
+     * @param angleTheta The angle to check if it's within the range.
+     * @return True if angleTheta is between angleAlpha and angleBeta, false otherwise.
+     */
     private fun isAngleBetween(angleAlpha: Int, angleBeta: Int, angleTheta: Int): Boolean {
         var alpha = angleAlpha
         var beta = angleBeta
