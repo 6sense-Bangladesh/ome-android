@@ -138,6 +138,11 @@ class WifiHandler(val context: Context) {
 
     @RequiresApi(Build.VERSION_CODES.S)
     private suspend fun getCurrentWifiSsidImpl31() = suspendCancellableCoroutine{ continuation ->
+        tryInMain {
+            delay(3.seconds)
+            if (continuation.isActive)
+                continuation.resume(getCurrentWifiSsidOld())
+        }
         val connectivityManager = context.applicationContext.getSystemService(ConnectivityManager::class.java)
         connectivityManager.activeNetwork
         val request =
