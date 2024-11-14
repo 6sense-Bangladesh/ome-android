@@ -28,19 +28,19 @@ class QrCodeScannerViewModel @Inject constructor(
         when (response.status.knobStatus) {
             KnobStatus.InUsedByAnotherUser -> {
                 loadingLiveData.postValue(false)
-                defaultErrorLiveData.postValue(resourceProvider.getString(R.string.knob_in_use))
+                error(resourceProvider.getString(R.string.knob_in_use))
             }
             KnobStatus.NotInUse -> {
-                addNewKnob()
                 this@QrCodeScannerViewModel.macAddress = macAddress
+                addNewKnob()
             }
             KnobStatus.InUseByYou -> {
-                isKnobAddedFlow.value = Unit
                 this@QrCodeScannerViewModel.macAddress = macAddress
+                isKnobAddedFlow.value = Unit
             }
             KnobStatus.DoesNotExists -> {
                 loadingLiveData.postValue(false)
-                defaultErrorLiveData.postValue(resourceProvider.getString(R.string.knob_doesnt_exist))
+                error(resourceProvider.getString(R.string.knob_doesnt_exist))
             }
         }
     }
@@ -53,6 +53,6 @@ class QrCodeScannerViewModel @Inject constructor(
                 macAddress = macAddress!!
             )
             isKnobAddedFlow.value = Unit
-        }
+        } else error(resourceProvider.getString(R.string.something_went_wrong))
     }
 }

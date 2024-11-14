@@ -4,19 +4,15 @@ import com.ome.app.R
 import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.network.request.ChangeKnobAngle
-import com.ome.app.domain.model.network.request.SetCalibrationRequest
-import com.ome.app.domain.model.network.request.Zone
-import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.SingleLiveEvent
-import com.ome.app.utils.KnobAngleManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class DeviceCalibrationConfirmationViewModel @Inject constructor(
-    private val webSocketManager: WebSocketManager,
+    webSocketManager: WebSocketManager,
     private val stoveRepository: StoveRepository,
     private val resourceProvider: ResourceProvider
 ) : BaseCalibrationViewModel(webSocketManager, stoveRepository) {
@@ -99,7 +95,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
             }
             currentStepTriggerCount++
         } else {
-            defaultErrorLiveData.postValue(resourceProvider.getString(R.string.issue_with_knob_label))
+            error(resourceProvider.getString(R.string.issue_with_knob_label))
         }
 
     }
@@ -218,70 +214,6 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
         currentStepTriggerCount = 0
     }
 
-    private suspend fun setCalibration(){
-        if (!isDualKnob) {
-            if (offAngle != null && lowSingleAngle != null && mediumAngle != null && highSingleAngle != null && rotationDir != null) {
-                stoveRepository.setCalibration(
-                    SetCalibrationRequest(
-                        offAngle = offAngle!!.toInt(),
-                        rotationDir = rotationDir!!,
-                        zones = arrayListOf(
-                            Zone(
-                                highAngle = highSingleAngle!!.toInt(),
-                                mediumAngle = mediumAngle!!.toInt(),
-                                lowAngle = lowSingleAngle!!.toInt(),
-                                zoneName = "Single",
-                                zoneNumber = 1
-                            )
-                        )
-                    ),
-                    macAddress
-                )
-            }
-//            else error("Something went wrong")
-        } else {
-            if (offAngle != null
-                && lowSingleAngle != null
-                && highSingleAngle != null
-                && lowDualAngle != null
-                && highDualAngle != null
-//                && rotationDir != null
-            ) {
-                stoveRepository.setCalibration(
-                    SetCalibrationRequest(
-                        offAngle = offAngle!!.toInt(),
-                        rotationDir = Rotation.DUAL.value,
-                        zones = arrayListOf(
-                            Zone(
-                                highAngle = highSingleAngle!!.toInt(),
-                                mediumAngle = KnobAngleManager.generateMediumAngle(
-                                    highSingleAngle!!.toInt(),
-                                    lowSingleAngle!!.toInt()
-                                ),
-                                lowAngle = lowSingleAngle!!.toInt(),
-                                zoneName = "First",
-                                zoneNumber = 1
-                            ),
-                            Zone(
-                                highAngle = highDualAngle!!.toInt(),
-                                mediumAngle = KnobAngleManager.generateMediumAngle(
-                                    highDualAngle!!.toInt(),
-                                    lowDualAngle!!.toInt()
-                                ),
-                                lowAngle = lowDualAngle!!.toInt(),
-                                zoneName = "Second",
-                                zoneNumber = 2
-                            )
-                        )
-                    ),
-                    macAddress
-                )
-            }
-//            else error("Something went wrong")
-        }
-
-        stoveRepository.getAllKnobs()
-    }
 
     fun previousStep() = launch(ioContext) {
         when (currentCalibrationState.value) {

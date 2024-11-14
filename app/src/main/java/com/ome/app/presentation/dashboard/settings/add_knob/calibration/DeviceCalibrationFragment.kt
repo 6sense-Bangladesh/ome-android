@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.view.View
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
@@ -12,6 +13,7 @@ import com.ome.app.databinding.FragmentDeviceCalibrationBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 
@@ -28,6 +30,10 @@ class DeviceCalibrationFragment :
         viewModel.macAddress = args.params.macAddress
         viewModel.rotationDir = args.params.rotateDir
         viewModel.isDualKnob = args.params.isDualKnob
+        if(viewModel.isDualKnob)
+            binding.labelZone.text = getString(R.string.dual_zone_knob)
+        else
+            binding.labelZone.text = getString(R.string.single_zone_knob)
         mainViewModel.connectToSocket()
         binding.knobView.enableFullLabel()
     }
@@ -63,7 +69,11 @@ class DeviceCalibrationFragment :
         subscribe(viewModel.calibrationIsDoneLiveData) {
             if (it) {
                 if(viewModel.isDualKnob){
-                    navigateSafe(DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToSetupCompleteFragment(false))
+                    lifecycleScope.launch {
+                        binding.continueBtn.startAnimation()
+                        viewModel.setCalibration()
+                        navigateSafe(DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToSetupCompleteFragment(false))
+                    }
                     return@subscribe
                 }
                 navigateSafe(
@@ -104,30 +114,20 @@ class DeviceCalibrationFragment :
         viewModel.currentCalibrationState.collectWithLifecycle{ currentStep ->
             binding.knobView.hideLabel(currentStep)
             if (currentStep == CalibrationState.OFF) {
-//                binding.subLabelTv.makeGone()
                 binding.labelTv.text =
-                    getString(R.string.device_calibration_off_label)
+                    getString(R.string.device_calibration_off_label).asHtml
             } else {
-//                binding.subLabelTv.makeVisible()
                 if (viewModel.isDualKnob) {
                     when (currentStep) {
                         CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE -> {
                             binding.labelTv.text =
-                                getString(
-                                    R.string.device_calibration_dual_label,
-                                    currentStep.positionName,
-                                    "Single"
-                                )
+                                getString(R.string.device_calibration_dual_label, currentStep.positionName, "First").asHtml
                         }
                         CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> {
                             binding.labelTv.text =
-                                getString(
-                                    R.string.device_calibration_dual_label,
-                                    currentStep.positionName,
-                                    "Dual"
-                                )
+                                getString(R.string.device_calibration_dual_label, currentStep.positionName, "Second").asHtml
                         }
-                        else -> {}
+                        else -> Unit
                     }
                 } else {
                     binding.labelTv.text =

@@ -36,15 +36,17 @@ object KnobAngleManager {
 
     fun validateDualKnobAngle(
         angle: Float,
-        highSingleAngle: Float?,
-        mediumAngle: Float?,
         offAngle: Float?,
+        highSingleAngle: Float?,
         lowSingleAngle: Float?,
+        highDualAngle: Float?,
+        lowDualAngle: Float?,
         angleOffset: Int
     ): Boolean {
         offAngle?.let { if (abs(angle - it) < angleOffset) return false }
         lowSingleAngle?.let { if (abs(angle - it) < angleOffset) return false }
-        mediumAngle?.let { if (abs(angle - it) < angleOffset) return false }
+        highDualAngle?.let { if (abs(angle - it) < angleOffset) return false }
+        lowDualAngle?.let { if (abs(angle - it) < angleOffset) return false }
         highSingleAngle?.let { if (abs(angle - it) < angleOffset) return false }
         return true
     }

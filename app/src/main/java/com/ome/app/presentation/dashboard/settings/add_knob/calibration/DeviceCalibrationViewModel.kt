@@ -33,10 +33,11 @@ class DeviceCalibrationViewModel @Inject constructor(
             if (isDualKnob) {
                 if (KnobAngleManager.validateDualKnobAngle(
                         angle = angle,
-                        highSingleAngle = highSingleAngle,
-                        mediumAngle = mediumAngle,
                         offAngle = offAngle,
+                        highSingleAngle = highSingleAngle,
                         lowSingleAngle = lowSingleAngle,
+                        highDualAngle = highDualAngle,
+                        lowDualAngle = lowDualAngle,
                         angleOffset = angleOffset
                     )
                 ) {
@@ -114,6 +115,7 @@ class DeviceCalibrationViewModel @Inject constructor(
         } ?: run {
             launch {
                 stoveRepository.getAllKnobs()
+                setLabel()
             }
         }
 
@@ -171,11 +173,10 @@ class DeviceCalibrationViewModel @Inject constructor(
         if (currentIndex == 0) {
             previousScreenTriggered.postValue(true)
         } else {
-            val step = if (!isDualKnob) {
-                calibrationStatesSequenceSingleZone[currentIndex - 1]
-            } else {
-                calibrationStatesSequenceDualZone[currentIndex - 1]
-            }
+            val step = if (!isDualKnob)
+                calibrationStatesSequenceSingleZone.getOrNull(currentIndex - 1)
+            else
+                calibrationStatesSequenceDualZone.getOrNull(currentIndex - 1)
 
             when (step) {
                 CalibrationState.OFF -> offAngle = null
@@ -184,6 +185,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                 CalibrationState.HIGH_SINGLE -> highSingleAngle = null
                 CalibrationState.HIGH_DUAL -> highDualAngle = null
                 CalibrationState.LOW_DUAL -> lowDualAngle = null
+                null -> Unit
             }
             currentCalibrationState.value = step
             currSetPosition--

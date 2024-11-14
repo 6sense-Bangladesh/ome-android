@@ -54,6 +54,7 @@ import com.google.android.flexbox.FlexboxLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ome.app.BuildConfig
+import com.ome.app.R
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
@@ -1568,4 +1569,7 @@ fun TextView.enableCustomTabClick(url: String, urlText: String, fullText: String
     text = spannableString
     movementMethod = LinkMovementMethod.getInstance()
 }
+
+val String?.asHtml
+    get() = HtmlCompat.fromHtml(orEmpty(), HtmlCompat.FROM_HTML_MODE_COMPACT)
 

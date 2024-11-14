@@ -93,7 +93,7 @@
 
 
     <style name="Label.LargeExtra">
-        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:textSize">@dimen/_15ssp</item>
     </style>
 
     <style name="Label.Large">

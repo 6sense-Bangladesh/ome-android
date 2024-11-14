@@ -2,6 +2,9 @@ package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 
 import androidx.lifecycle.viewModelScope
 import com.ome.app.data.remote.websocket.WebSocketManager
+import com.ome.app.domain.model.network.request.SetCalibrationRequest
+import com.ome.app.domain.model.network.request.Zone
+import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
@@ -26,12 +29,12 @@ abstract class BaseCalibrationViewModel(
     var isDualKnob = false
 
     var offAngle: Float? = null
+
     var lowSingleAngle: Float? = null
     var mediumAngle: Float? = null
     var highSingleAngle: Float? = null
 
     var lowDualAngle: Float? = null
-    var mediumDualAngle: Float? = null
     var highDualAngle: Float? = null
 
 
@@ -43,7 +46,7 @@ abstract class BaseCalibrationViewModel(
     var rotationDir: Int? = null
 
     val angleOffset = 15
-    val angleDualOffset = 31
+    private val angleDualOffset = 31
 
     val calibrationStatesSequenceSingleZone = arrayListOf(
         CalibrationState.OFF,
@@ -94,10 +97,80 @@ abstract class BaseCalibrationViewModel(
         launch(ioContext) {
             stoveRepository.knobsFlow.mapNotNull { dto -> dto.find { it.macAddr == macAddress } }.stateIn(viewModelScope).collect { foundKnob ->
                 if (webSocketManager.knobAngleFlow.value == null) {
-                    knobAngleFlow.value = foundKnob.angle.toFloat()
+                    val angle = foundKnob.angle.toFloat()
+                    if (!isDualKnob) {
+                        knobAngleFlow.value = angle
+                    } else {
+                        if (offAngle != null) handleDualKnobUpdated(angle)
+                        else knobAngleFlow.value = angle
+                    }
                 }
                 zoneLiveData.postValue(foundKnob.stovePosition)
             }
         }
     }
+
+    suspend fun setCalibration(){
+        if (!isDualKnob) {
+            if (offAngle != null && lowSingleAngle != null && mediumAngle != null && highSingleAngle != null && rotationDir != null) {
+                stoveRepository.setCalibration(
+                    SetCalibrationRequest(
+                        offAngle = offAngle!!.toInt(),
+                        rotationDir = rotationDir!!,
+                        zones = arrayListOf(
+                            Zone(
+                                highAngle = highSingleAngle!!.toInt(),
+                                mediumAngle = mediumAngle!!.toInt(),
+                                lowAngle = lowSingleAngle!!.toInt(),
+                                zoneName = "Single",
+                                zoneNumber = 1
+                            )
+                        )
+                    ),
+                    macAddress
+                )
+            }
+            else error("Something went wrong")
+        } else {
+            if (offAngle != null
+                && lowSingleAngle != null
+                && highSingleAngle != null
+                && lowDualAngle != null
+                && highDualAngle != null
+//                && rotationDir != null
+            ) {
+                stoveRepository.setCalibration(
+                    SetCalibrationRequest(
+                        offAngle = offAngle!!.toInt(),
+                        rotationDir = Rotation.DUAL.value,
+                        zones = arrayListOf(
+                            Zone(
+                                highAngle = highSingleAngle!!.toInt(),
+                                mediumAngle = KnobAngleManager.generateMediumAngle(
+                                    highSingleAngle!!.toInt(),
+                                    lowSingleAngle!!.toInt()
+                                ),
+                                lowAngle = lowSingleAngle!!.toInt(),
+                                zoneName = "First",
+                                zoneNumber = 1
+                            ),
+                            Zone(
+                                highAngle = highDualAngle!!.toInt(),
+                                mediumAngle = KnobAngleManager.generateMediumAngle(
+                                    highDualAngle!!.toInt(),
+                                    lowDualAngle!!.toInt()
+                                ),
+                                lowAngle = lowDualAngle!!.toInt(),
+                                zoneName = "Second",
+                                zoneNumber = 2
+                            )
+                        )
+                    ),
+                    macAddress
+                )
+            }
+            else error("Something went wrong")
+        }
+    }
+
 }

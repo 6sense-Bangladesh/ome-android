@@ -20,6 +20,7 @@ class SetupCompleteFragment :
 
     override fun setupUI() {
         super.setupUI()
+        mainViewModel.getAllKnobs()
         if(args.isComeFromSettings){
             binding.setupAnotherKnobBtn.makeGone()
         }

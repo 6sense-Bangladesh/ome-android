@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/_20sdp"
             android:paddingVertical="@dimen/_14sdp"
-            android:text="@string/double_zone"
+            android:text="@string/dual_zone"
             app:icon="@drawable/ic_dual_zone"
             app:iconGravity="top"
             app:iconPadding="@dimen/_10sdp"

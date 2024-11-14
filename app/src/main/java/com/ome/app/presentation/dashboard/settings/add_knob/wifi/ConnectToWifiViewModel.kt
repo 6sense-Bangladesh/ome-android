@@ -85,7 +85,7 @@ class ConnectToWifiViewModel @Inject constructor(
             } else {
                 result.second?.let { message ->
                     loadingLiveData.postValue(false)
-                    defaultErrorLiveData.postValue(message)
+                    error(message)
                 } ?: connectToWifi()
             }
         }

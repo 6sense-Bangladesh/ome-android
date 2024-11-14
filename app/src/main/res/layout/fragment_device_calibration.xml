@@ -34,9 +34,10 @@
         style="@style/Label.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginStart="@dimen/margin_horizontal"
+        android:layout_marginEnd="@dimen/_30sdp"
         android:layout_marginTop="@dimen/_5sdp"
-        android:text="@string/device_calibration_label"
+        tools:text="@string/device_calibration_off_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelZone" />

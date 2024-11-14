@@ -74,21 +74,16 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
-    fun setFontSize(size: Float) {
-        binding.offTv.textSize = size
-        binding.lowSingleTv.textSize = size
-        binding.lowDualTv.textSize = size
-        binding.mediumTv.textSize = size
-        binding.highSingleTv.textSize = size
-        binding.highDualTv.textSize = size
-        binding.stovePositionTv.textSize = size - 2
-
-        (binding.offTv.layoutParams as MarginLayoutParams).setMargins(0)
-        (binding.lowSingleTv.layoutParams as MarginLayoutParams).setMargins(0)
-        (binding.lowDualTv.layoutParams as MarginLayoutParams).setMargins(0)
-        (binding.mediumTv.layoutParams as MarginLayoutParams).setMargins(0)
-        (binding.highSingleTv.layoutParams as MarginLayoutParams).setMargins(0)
-        (binding.highDualTv.layoutParams as MarginLayoutParams).setMargins(0)
+    fun setFontSize(size: Float, removeMargin: Boolean = true) {
+        binding.apply {
+            val tvLists = listOf(offTv, lowSingleTv, lowDualTv, mediumTv, highSingleTv, highDualTv)
+            tvLists.forEach {
+                it.textSize = size
+                if(removeMargin)
+                    (it.layoutParams as MarginLayoutParams).setMargins(0)
+            }
+            stovePositionTv.textSize = size - 2
+        }
     }
 
 
@@ -134,7 +129,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun setLowSinglePosition(angle: Float, doRotate: Boolean = false) {
-        if (angle.isZeroOrMinusOne()) return
+        if (angle.isMinusOne()) return
         binding.lowSingleCl.makeVisible()
         binding.lowSingleCl.rotation = angle
         binding.lowSingleTv.rotation = -angle
@@ -143,7 +138,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun setMediumPosition(angle: Float, doRotate: Boolean = false) {
-        if (angle.isZeroOrMinusOne()) return
+        if (angle.isMinusOne()) return
         binding.mediumCl.makeVisible()
         binding.mediumCl.rotation = angle
         binding.mediumTv.rotation = -angle
@@ -152,7 +147,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun setHighSinglePosition(angle: Float, doRotate: Boolean = false) {
-        if (angle.isZeroOrMinusOne()) return
+        if (angle.isMinusOne()) return
         binding.highSingleCl.makeVisible()
         binding.highSingleCl.rotation = angle
         binding.highSingleTv.rotation = -angle
@@ -161,7 +156,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun setHighDualPosition(angle: Float, doRotate: Boolean = false) {
-        if (angle.isZeroOrMinusOne()) return
+        if (angle.isMinusOne()) return
         binding.highDualCl.makeVisible()
         binding.highDualCl.rotation = angle
         binding.highDualTv.rotation = -angle
@@ -170,7 +165,7 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun setLowDualPosition(angle: Float, doRotate: Boolean = false) {
-        if (angle.isZeroOrMinusOne()) return
+        if (angle.isMinusOne()) return
         binding.lowDualCl.makeVisible()
         binding.lowDualCl.rotation = angle
         binding.lowDualTv.rotation = -angle
@@ -185,21 +180,24 @@ class KnobView @JvmOverloads constructor(
         binding.stovePositionTv.changeVisibility(knobImageState != KnobImageState.ADD)
     }
 
-    fun changeKnobState(knob: KnobState): Boolean {
+    fun changeKnobState(knob: KnobState, isCalibrated: Boolean?): Boolean {
         knob.angle?.toFloat()?.let { setKnobPosition(it) }
         knob.battery?.let {
             changeBatteryState(batteryLevel = it)
-            if(knob.connectStatus!= null && knob.wifiStrengthPercentage != null)
-                changeConnectionState(knob.connectStatus, knob.wifiStrengthPercentage, knob.battery)
+            if(knob.connectStatus!= null && knob.wifiStrengthPercentage != null) {
+                if(changeConnectionState(knob.connectStatus, knob.wifiStrengthPercentage, knob.battery))
+                    changeConfigurationState(isCalibrated = isCalibrated)
+            }
         }
-        return when{ (knob.battery != null && knob.battery <= 15) || knob.connectStatus == ConnectionState.Offline ||
-                ( knob.connectStatus == ConnectionState.Online && knob.wifiStrengthPercentage in 0..35)
-            -> {
+        return when{ (knob.battery != null && knob.battery <= 15) || isCalibrated.isFalse() || knob.connectStatus == ConnectionState.Offline ||
+            ( knob.connectStatus == ConnectionState.Online && knob.wifiStrengthPercentage in 0..35) -> {
                 hideLabel()
                 changeKnobState(KnobImageState.TRANSPARENT)
+                changeKnobProgressVisibility(false)
                 false
             }else -> {
-//                changeKnobState(KnobImageState.NORMAL)
+                changeKnobState(KnobImageState.NORMAL)
+                changeKnobProgressVisibility(true)
                 true
             }
         }
@@ -212,7 +210,7 @@ class KnobView @JvmOverloads constructor(
         return when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.Offline ||
             ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) -> {
                 hideLabel()
-            changeKnobState(KnobImageState.TRANSPARENT)
+                changeKnobState(KnobImageState.TRANSPARENT)
                 changeKnobProgressVisibility(false)
                 false
             }

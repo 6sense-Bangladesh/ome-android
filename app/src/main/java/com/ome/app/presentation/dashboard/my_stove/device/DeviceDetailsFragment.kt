@@ -34,7 +34,7 @@ class DeviceDetailsFragment :
     override fun setupUI() {
         viewModel.macAddress = args.params.macAddr
         viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
-        binding.knobView.setFontSize(18F)
+        binding.knobView.setFontSize(17F)
         viewModel.initSubscriptions()
         val selectedColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
         binding.apply {

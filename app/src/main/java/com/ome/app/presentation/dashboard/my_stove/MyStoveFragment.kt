@@ -156,9 +156,9 @@ class MyStoveFragment :
                         if(knobState.angle == null) return@collectWithLifecycleStateIn
                         when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
                             StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS ->
-                                listOfFiveBurners.getOrNull(knob.stovePosition-1)?.changeKnobState(knobState)
+                                listOfFiveBurners.getOrNull(knob.stovePosition-1)?.changeKnobState(knobState, knob.calibrated)
                             else ->
-                                listOfSixBurners.getOrNull(knob.stovePosition-1)?.changeKnobState(knobState)
+                                listOfSixBurners.getOrNull(knob.stovePosition-1)?.changeKnobState(knobState, knob.calibrated)
                         }
                     }
                 }
