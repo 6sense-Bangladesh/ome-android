@@ -87,6 +87,8 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
         connectionStatusListener.shouldReactOnChanges = true
     }
 
+    var credentialFail = 0
+
 
     private suspend fun handleWifiStatusMessage(message: String) {
         when (message) {
@@ -105,8 +107,12 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 defaultErrorLiveData.postValue(resourceProvider.getString(R.string.incorrect_network_name_and_password))
             }
             "2" -> {
-                delay(4.seconds)
-                sendMessage(KnobSocketMessageType.WIFI_STATUS)
+                credentialFail++
+                if(credentialFail <= 10) {
+                    delay(4.seconds)
+                    sendMessage(KnobSocketMessageType.WIFI_STATUS)
+                }else
+                    defaultErrorLiveData.postValue(resourceProvider.getString(R.string.incorrect_network_name_and_password))
             }
             "1" -> {
                 sendMessage(
@@ -133,6 +139,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     }
 
     fun testWifi(pass: String) = launch(ioContext) {
+        credentialFail = 0
         password = pass
         sendMessage(
             type = KnobSocketMessageType.TEST_WIFI,
