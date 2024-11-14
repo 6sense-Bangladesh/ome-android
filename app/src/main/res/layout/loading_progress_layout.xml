@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,12 +10,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.9"
+        android:alpha=".9"
         android:background="@color/white" />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.CircularProgressIndicator
         android:layout_width="wrap_content"
+        android:indeterminate="true"
         android:layout_height="wrap_content"
-        android:indeterminateTint="@color/gradient_end_unpressed_color"
-        android:layout_centerInParent="true" />
-</RelativeLayout>
+        android:layout_gravity="center"/>
+</FrameLayout>

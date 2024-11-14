@@ -21,14 +21,14 @@ class QrCodeScannerViewModel @Inject constructor(
     var stovePosition: Int? = null
     var macAddress: String? = null
 
-    val isKnobAddedFlow = MutableStateFlow<Unit?>(Unit)
+    val isKnobAddedFlow = MutableStateFlow<Unit?>(null)
 
     fun checkKnobOwnership(macAddress: String) = launch(ioContext) {
         val response = stoveRepository.getKnobOwnership(macAddress)
         when (response.status.knobStatus) {
             KnobStatus.InUsedByAnotherUser -> {
-                loadingLiveData.value = false
-                defaultErrorLiveData.value = resourceProvider.getString(R.string.knob_in_use)
+                loadingLiveData.postValue(false)
+                defaultErrorLiveData.postValue(resourceProvider.getString(R.string.knob_in_use))
             }
             KnobStatus.NotInUse -> {
                 addNewKnob()
@@ -39,11 +39,10 @@ class QrCodeScannerViewModel @Inject constructor(
                 this@QrCodeScannerViewModel.macAddress = macAddress
             }
             KnobStatus.DoesNotExists -> {
-                loadingLiveData.value = false
-                defaultErrorLiveData.value = resourceProvider.getString(R.string.knob_doesnt_exist)
+                loadingLiveData.postValue(false)
+                defaultErrorLiveData.postValue(resourceProvider.getString(R.string.knob_doesnt_exist))
             }
         }
-
     }
 
 
