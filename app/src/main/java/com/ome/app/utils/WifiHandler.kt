@@ -2,6 +2,9 @@ package com.ome.app.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
@@ -100,27 +103,75 @@ class WifiHandler(val context: Context) {
         }
     }
 
-    private fun getCurrentWifiSsid(): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-            getCurrentWifiSsidNew()
-        else
-            getCurrentWifiSsidOld()
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun isConnectedToWifiImpl23(): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun isConnectedToWifiOld(): Boolean {
+        val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val wifiInfo = wifiManager.connectionInfo
+        return wifiManager.isWifiEnabled && wifiInfo.networkId != -1
+    }
+
+
+
+    private suspend fun getCurrentWifiSsid(): String? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !isConnectedToWifiImpl23())
+            return null
+        else if (!isConnectedToWifiOld())
+            return null
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            getCurrentWifiSsidImpl31().let {
+                if(it == WifiManager.UNKNOWN_SSID)
+                    getCurrentWifiSsidOld()
+                else it
+            }
+        }
+        else getCurrentWifiSsidOld()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private suspend fun getCurrentWifiSsidImpl31() = suspendCancellableCoroutine{ continuation ->
+        val connectivityManager = context.applicationContext.getSystemService(ConnectivityManager::class.java)
+        connectivityManager.activeNetwork
+        val request =
+            NetworkRequest.Builder()
+                .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+                .build()
+        val networkCallback = object : ConnectivityManager.NetworkCallback(FLAG_INCLUDE_LOCATION_INFO) {
+            override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+                val wifiInfo = networkCapabilities.transportInfo as WifiInfo
+                // Use wifiInfo as needed
+                if(continuation.isActive)
+                    continuation.resume(wifiInfo.ssid.trim('"'))
+            }
+        }
+        connectivityManager?.requestNetwork(request, networkCallback)
+        continuation.invokeOnCancellation {
+            connectivityManager?.unregisterNetworkCallback(networkCallback) // Unregister the callback
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
-    private fun getCurrentWifiSsidNew(): String {
+    private fun getCurrentWifiSsidImpl29(): String {
         val connectivityManager = context.applicationContext.getSystemService(ConnectivityManager::class.java)
         val wifiInfo = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)?.transportInfo as? WifiInfo
         return if(wifiInfo?.ssid == null || wifiInfo.ssid == WifiManager.UNKNOWN_SSID)
             getCurrentWifiSsidOld()
-        else wifiInfo.ssid
+        else wifiInfo.ssid.trim('"')
     }
 
     @Suppress("DEPRECATION")
     private fun getCurrentWifiSsidOld(): String {
         val wifiManager = context.applicationContext
             .getSystemService(Context.WIFI_SERVICE) as WifiManager
-        return wifiManager.connectionInfo.ssid.replace("\"", "")
+        return wifiManager.connectionInfo.ssid.trim('"')
     }
 
 
