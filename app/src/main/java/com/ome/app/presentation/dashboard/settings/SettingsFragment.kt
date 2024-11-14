@@ -12,7 +12,6 @@ import com.ome.app.presentation.base.recycler.ItemModel
 import com.ome.app.presentation.dashboard.DashboardFragmentDirections
 import com.ome.app.presentation.dashboard.my_stove.device.DeviceSettingsFragmentParams
 import com.ome.app.presentation.dashboard.settings.adapter.SettingItemAdapter
-import com.ome.app.presentation.dashboard.settings.adapter.StovesBottomSheet
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsKnobItemModel
 import com.ome.app.presentation.dashboard.settings.add_knob.wake_up.KnobWakeUpParams
@@ -40,39 +39,12 @@ class SettingsFragment :
         val navHostFragment =
             activity?.supportFragmentManager?.findFragmentById(R.id.navHost) as? NavHostFragment
         navController = navHostFragment?.navController
-//        binding.titleTv.applyInsetter {
-//            type(navigationBars = true, statusBars = true) {
-//                padding(horizontal = true)
-//                margin(top = true)
-//            }
-//        }
-//        binding.rootCl.applyInsetter {
-//            type(navigationBars = true, statusBars = true) {
-//                padding(bottom = true)
-//            }
-//        }
-//        binding.supportIv.setOnClickListener {
-//            navController?.navigateSafe(R.id.action_dashboardFragment_to_supportFragment)
-//        }
-
-//        binding.stoveSubtitleCl.setOnClickListener { showStoves() }
         viewModel.loadSettings()
     }
 
 
-    private fun showStoves() {
-        val dialog = StovesBottomSheet()
-        dialog.onStoveClick = {}
-        dialog.show(parentFragmentManager, "stove_bottom_sheet")
-    }
-
-
     override fun setupUI() {
-//        binding.recyclerView.addItemDecoration(
-//            SettingsItemDecoration()
-//        )
         binding.recyclerView.adapter = adapter
-//        binding.recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     }
 
     override fun setupObserver() {
@@ -88,35 +60,6 @@ class SettingsFragment :
                 val foundValue = Settings.entries.firstOrNull { it.option == item.option }
                 foundValue?.let { option ->
                     when (option) {
-//                                Settings.LEAVE_STOVE -> {
-//                                    val str =
-//                                        SpannableStringBuilder("Please Confirm that you would like to LEAVE “Family #1 Stove”?")
-//                                    val first = str.indexOf("LEAVE")
-//                                    str.setSpan(
-//                                        ForegroundColorSpan(Color.RED),
-//                                        first,
-//                                        first + 5,
-//                                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-//                                    )
-//                                    showDialog(
-//                                        message = str,
-//                                        positiveButtonText = "Accept",
-//                                        negativeButtonText = "Reject",
-//                                        onPositiveButtonClick = {},
-//                                        onNegativeButtonClick = {}
-//                                    )
-//                                }
-//                                Settings.STOVE_INFO_SETTINGS -> {
-//                                    navController.navigate(Screens.StoveInfo)
-//                                    navController?.navigateSafe(
-//                                        SettingsFragmentDirections.actionSettingsFragmentToStoveInfoFragment(
-//                                            viewModel.userRepository.userFlow.value?.stoveId ?: ""
-//                                        )
-//                                    )
-//                                }
-//                                Settings.STOVE_HISTORY -> {
-//
-//                                }
                         Settings.ADD_NEW_KNOB ->{
                             if(mainViewModel.userInfo.value.stoveSetupComplete.isTrue())
                                 navController?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToKnobWakeUpFragment(KnobWakeUpParams()))

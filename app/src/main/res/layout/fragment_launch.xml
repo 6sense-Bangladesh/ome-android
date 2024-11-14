@@ -24,7 +24,7 @@
         android:layout_height="120dp"
         android:layout_marginTop="74dp"
         android:fitsSystemWindows="true"
-        android:src="@drawable/ome_logo_splash_screen"
+        android:src="@drawable/ome_logo"
         app:layout_constraintEnd_toEndOf="@+id/include"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

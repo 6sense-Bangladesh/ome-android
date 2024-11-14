@@ -1,11 +1,8 @@
 package com.ome.app.presentation.dashboard.profile
 
 import android.annotation.SuppressLint
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Spannable
 import android.text.SpannableStringBuilder
-import android.text.style.StyleSpan
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
@@ -121,52 +118,6 @@ class ProfileFragment :
             }
             false
         })
-
-//        binding.lastName.onFocusChangeListener =
-//            OnFocusChangeListener { view, hasFocus ->
-//                if (!hasFocus) {
-////                    viewModel.updateLastName(binding.lastName.text.toString().trim())
-//                }
-//            }
-
-//        binding.avatarIv.setImageDrawable(
-//            TextDrawable.builder().beginConfig()
-//                .bold()
-//                .toUpperCase()
-//                .endConfig()
-//                .buildRound(
-//                    "AS",
-//                    ContextCompat.getColor(requireContext(), R.color.gradient_mid_unpressed_color)
-//                )
-//        )
-//        binding.messageIv.setOnClickListener {
-//            showMessages()
-//        }
-    }
-
-    private fun showMessages() {
-        val dialog =
-            MessagesBottomSheet()
-        dialog.onMessageClick = {
-            val str = SpannableStringBuilder("\"${it}\" INVITE you  to join in \"Family #1 Stove\"")
-            str.setSpan(
-                StyleSpan(Typeface.BOLD),
-                1,
-                it.length + 1,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-            showDialog(
-                message = str,
-                positiveButtonText = "Accept",
-                negativeButtonText = "Reject",
-                onPositiveButtonClick = {},
-                onNegativeButtonClick = {}
-            )
-        }
-        dialog.show(
-            parentFragmentManager,
-            "messages_bottom_sheet"
-        )
     }
 
 

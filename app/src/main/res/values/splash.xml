@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
          <item name="windowSplashScreenBackground">@color/white</item>
-         <item name="windowSplashScreenAnimatedIcon">@drawable/ome_logo_black</item>
+         <item name="windowSplashScreenAnimatedIcon">@drawable/ome_logo_splash</item>
          <item name="postSplashScreenTheme">@style/Theme.OmeApp</item>
         <item name="android:windowSplashScreenBehavior" tools:targetApi="33">icon_preferred</item>
     </style>
