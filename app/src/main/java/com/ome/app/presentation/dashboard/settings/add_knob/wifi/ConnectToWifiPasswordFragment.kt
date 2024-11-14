@@ -42,8 +42,10 @@ class ConnectToWifiPasswordFragment :
             closeKeyboard()
             binding.connectBtn.startAnimation()
             binding.password.text.toString().let {
-                if(it.isBlank())
+                if(it.isBlank()) {
+                    binding.connectBtn.revertAnimation()
                     binding.passwordLayout.errorPassword = DefaultValidation.REQUIRED
+                }
                 else
                     viewModel.testWifi(it)
             }
