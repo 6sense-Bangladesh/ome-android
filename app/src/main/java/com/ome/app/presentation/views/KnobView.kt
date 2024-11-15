@@ -189,6 +189,8 @@ class KnobView @JvmOverloads constructor(
     }
 
     fun changeKnobState(knob: KnobState, calibration: Calibration): Boolean {
+        if(calibration.isCalibrated)
+            adjustKnobColorScale(calibration)
         knob.angle?.toFloat()?.let { setKnobPosition(it) }
         knob.battery?.let {
             changeBatteryState(batteryLevel = it)
@@ -197,8 +199,9 @@ class KnobView @JvmOverloads constructor(
                     changeConfigurationState(isCalibrated = calibration.isCalibrated)
             }
         }
-        return when{ (knob.battery != null && knob.battery <= 15) || calibration.isCalibrated.isFalse() || knob.connectStatus == ConnectionState.Offline ||
-            ( knob.connectStatus == ConnectionState.Online && knob.wifiStrengthPercentage in 0..35) -> {
+        return when{ (knob.battery != null && knob.battery <= 15) || calibration.isCalibrated.isFalse() ||
+                ( knob.connectStatus == ConnectionState.Online && knob.wifiStrengthPercentage in 0..35)||
+                knob.connectStatus != ConnectionState.Online  -> {
                 hideLabel()
                 changeKnobState(KnobImageState.TRANSPARENT)
                 changeKnobProgressVisibility(false, calibration.rotation == Rotation.DUAL)
@@ -213,12 +216,15 @@ class KnobView @JvmOverloads constructor(
 
     fun changeKnobStatus(knob: KnobDto): Boolean {
         val cal = knob.calibration.toCalibration(knob.calibrated)
-        
+
+        if(cal.isCalibrated)
+            adjustKnobColorScale(cal)
         changeBatteryState(batteryLevel = knob.battery)
         if(changeConnectionState(knob.connectStatus.connectionState, knob.rssi.wifiStrengthPercentage, knob.battery))
             changeConfigurationState(isCalibrated = knob.calibrated)
-        return when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.Offline ||
-            ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) -> {
+        return when{ knob.battery <= 15 || knob.calibrated.isFalse() ||
+                ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) ||
+                knob.connectStatus.connectionState != ConnectionState.Online -> {
                 hideLabel()
                 changeKnobState(KnobImageState.TRANSPARENT)
                 changeKnobProgressVisibility(false, cal.rotation == Rotation.DUAL)
@@ -227,7 +233,6 @@ class KnobView @JvmOverloads constructor(
             else -> {
                 changeKnobState(KnobImageState.NORMAL)
                 changeKnobProgressVisibility(true, cal.rotation == Rotation.DUAL)
-                adjustKnobColorScale(cal)
                 true
             }
         }
@@ -238,27 +243,27 @@ class KnobView @JvmOverloads constructor(
         val cal = knob.calibration.toCalibration(knob.calibrated)
         changeKnobProgressVisibility(true, cal.rotation == Rotation.DUAL)
         if(cal.isCalibrated) {
-            val calibration = knob.calibration.toCalibration(knob.calibrated)
-            calibration.zone1?.let { zone ->
+            adjustKnobColorScale(cal)
+            cal.zone1?.let { zone ->
                 setHighSinglePosition(zone.highAngle.toFloat())
-                if(calibration.rotation != Rotation.DUAL)
+                if(cal.rotation != Rotation.DUAL)
                     setMediumPosition(zone.mediumAngle.toFloat())
                 setLowSinglePosition(zone.lowAngle.toFloat())
             }
-            calibration.zone2?.let { zone ->
+            cal.zone2?.let { zone ->
                 setHighDualPosition(zone.highAngle.toFloat())
                 setLowDualPosition(zone.lowAngle.toFloat())
             }
-            setOffPosition(calibration.offAngle.toFloat())
+            setOffPosition(cal.offAngle.toFloat())
         }
-        return when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.Offline ||
-                ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) -> {
-            changeKnobState(KnobImageState.TRANSPARENT)
+        return when{ knob.battery <= 15 || knob.calibrated.isFalse() ||
+                ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) ||
+                knob.connectStatus.connectionState != ConnectionState.Online -> {
+                    changeKnobState(KnobImageState.TRANSPARENT)
                     false
                 }
             else -> {
                 changeKnobState(KnobImageState.NORMAL)
-                adjustKnobColorScale(cal)
                 true
             }
         }
@@ -275,10 +280,10 @@ class KnobView @JvmOverloads constructor(
                 binding.knobProgressFirstZone.scaleY = 1F
             else
                 binding.knobProgressFirstZone.scaleY = -1F
-            if (cal.zone2.lowAngle < cal.zone2.highAngle)
-                binding.knobProgressSecondZone.scaleY = -1F
-            else
+            if (cal.zone2.lowAngle > cal.zone2.highAngle)
                 binding.knobProgressSecondZone.scaleY = 1F
+            else
+                binding.knobProgressSecondZone.scaleY = -1F
         }
     }
 
@@ -338,7 +343,7 @@ class KnobView @JvmOverloads constructor(
                     in 96..100 ->
                         binding.connectionStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_battery_full, 0, 0, 0)
                 }
-                true
+                false
             }
         }
     }

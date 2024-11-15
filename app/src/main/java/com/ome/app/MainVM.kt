@@ -201,14 +201,14 @@ val dummyKnobs = listOf(
             rotationDir = 2,
             zones = listOf(
                 KnobDto.CalibrationDto.ZoneDto(
-                    highAngle = 150,
                     lowAngle = 45,
+                    highAngle = 150,
                     zoneName = "Single",
                     zoneNumber = 1
                 ),
                 KnobDto.CalibrationDto.ZoneDto(
-                    highAngle = 220,
                     lowAngle = 310,
+                    highAngle = 220,
                     zoneName = "Single",
                     zoneNumber = 2
                 )
@@ -242,14 +242,14 @@ val dummyKnobs = listOf(
             rotationDir = 2,
             zones = listOf(
                 KnobDto.CalibrationDto.ZoneDto(
-                    highAngle = 45,
                     lowAngle = 130,
+                    highAngle = 45,
                     zoneName = "Single",
                     zoneNumber = 1
                 ),
                 KnobDto.CalibrationDto.ZoneDto(
-                    highAngle = 320,
                     lowAngle = 220,
+                    highAngle = 320,
                     zoneName = "Single",
                     zoneNumber = 2
                 )
@@ -274,7 +274,7 @@ val dummyKnobs = listOf(
         userId = "enim"
     ),
     KnobDto(
-        angle = 0,
+        angle = 100,
         battery = 70,
         batteryVolts = 4.5,
         calibrated = true,
@@ -283,20 +283,20 @@ val dummyKnobs = listOf(
             rotationDir = 2,
             zones = listOf(
                 KnobDto.CalibrationDto.ZoneDto(
-                    highAngle = 130,
                     lowAngle = 45,
+                    highAngle = 130,
                     zoneName = "Single",
                     zoneNumber = 1
                 ),
                 KnobDto.CalibrationDto.ZoneDto(
-                    highAngle = 320,
                     lowAngle = 220,
+                    highAngle = 320,
                     zoneName = "Single",
                     zoneNumber = 2
                 )
             )
         ),
-        connectStatus = "charging",
+        connectStatus = "online",
         firmwareVersion = "ceteros",
         gasOrElectric = "graeci",
         ipAddress = "explicari",

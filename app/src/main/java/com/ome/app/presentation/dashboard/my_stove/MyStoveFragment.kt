@@ -140,10 +140,10 @@ class MyStoveFragment :
                 }
             }
             var getKnobStateScope : CoroutineScope? = null
+            val listOfFiveBurners = listOf(knob1, knob2, knob4, knob5, knob3)
+            val listOfSixBurners = listOf(knob1, knob2, knob3, knob4, knob5, knob6)
             mainViewModel.knobs.collectWithLifecycle {knobs->
                 getKnobStateScope?.cancel()
-                val listOfFiveBurners = listOf(knob1, knob2, knob4, knob5, knob3)
-                val listOfSixBurners = listOf(knob1, knob2, knob3, knob4, knob5, knob6)
                 knobs.forEach { knob->
                     when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
                         StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS ->
