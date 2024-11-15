@@ -7,7 +7,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceSettingsBinding
-import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.base.recycler.ItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.SettingItemAdapter
@@ -15,7 +14,6 @@ import com.ome.app.presentation.dashboard.settings.adapter.model.DeviceSettingsI
 import com.ome.app.presentation.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiParams
-import com.ome.app.presentation.views.KnobView
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
@@ -90,11 +88,6 @@ class DeviceSettingsFragment :
 //        viewModel.loadingFlow.collectWithLifecycle {
 //            binding.loadingLayout.root.changeVisibility(it)
 //        }
-    }
-
-    private fun KnobView.setupKnob(knob: KnobDto) {
-
-
     }
 
     private val onClick: (ItemModel) -> Unit = { item ->
