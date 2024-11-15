@@ -1,5 +1,6 @@
 package com.ome.app.data.remote.repo
 
+import com.ome.app.BuildConfig
 import com.ome.app.data.remote.StoveService
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.NetworkCall.safeApiCall
@@ -7,6 +8,7 @@ import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.model.network.request.*
 import com.ome.app.domain.model.network.response.*
 import com.ome.app.domain.repo.StoveRepository
+import com.ome.app.dummyKnobs
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.coroutines.coroutineContext
 
@@ -32,10 +34,13 @@ class StoveRepositoryImpl(
 
     override suspend fun getAllKnobs(): List<KnobDto> {
         val response = safeApiCall(coroutineContext) {
-            stoveService.getAllKnobs().also {
-                knobsFlow.value = it
+            stoveService.getAllKnobs()
+        }.getOrNull().orEmpty().let {
+            it.toMutableList().apply {
+                if(BuildConfig.IS_INTERNAL_TESTING)
+                    addAll(dummyKnobs)
             }
-        }.getOrNull().orEmpty()
+        }
         knobsFlow.value = response
         return response
     }

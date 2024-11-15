@@ -54,7 +54,6 @@ import com.google.android.flexbox.FlexboxLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ome.app.BuildConfig
-import com.ome.app.R
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
@@ -1352,14 +1351,6 @@ fun Context.openGoogleMaps(lat: Double, lon: Double) {
     }
 }
 
-fun Context?.showCustomTab(url: String?) {
-    if (this != null && url != null) {
-        val intent = CustomTabsIntent.Builder().build()
-        intent.launchUrl(this, Uri.parse(url))
-    }
-}
-
-
 fun Double.formatAmount(): String {
     return when {
         this >= 1_000_000 -> "%.1fM".format(this / 1_000_000)
@@ -1557,10 +1548,16 @@ fun RecyclerView.setFullHeight() {
     this.layoutParams = layoutParams
 }
 
+fun Context?.showCustomTab(url: String?) {
+    tryGet { if (this != null && !url.isNullOrEmpty()) {
+        val intent = CustomTabsIntent.Builder().build()
+        intent.launchUrl(this, Uri.parse(url))
+    } }
+}
+
 fun TextView.enableCustomTabClick(url: String, urlText: String, fullText: String? = null) {
     val clickableSpan = object : ClickableSpan() {
-        override fun onClick(widget: View) =
-            CustomTabsIntent.Builder().build().launchUrl(context, Uri.parse(url))
+        override fun onClick(widget: View) = context.showCustomTab(url)
     }
     val spannableString = SpannableString(fullText ?: text).apply {
         val startIndex = indexOf(urlText)

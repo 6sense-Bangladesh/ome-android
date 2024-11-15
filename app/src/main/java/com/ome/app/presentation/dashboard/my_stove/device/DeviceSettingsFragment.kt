@@ -8,7 +8,6 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceSettingsBinding
 import com.ome.app.domain.model.network.response.KnobDto
-import com.ome.app.domain.model.state.Rotation
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.base.recycler.ItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.SettingItemAdapter
@@ -37,7 +36,6 @@ class DeviceSettingsFragment :
             viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
 //            name.text = args.params.name
             mainViewModel.knobs.value.find { it.macAddr == args.params.macAddr }?.let { knob ->
-                knobView.changeKnobBasicStatus(knob)
 //                knobView.setFontSize(18F)
             }
             recyclerView.adapter = adapter
@@ -61,7 +59,7 @@ class DeviceSettingsFragment :
 //            }
         viewModel.currentKnob.collectWithLifecycle {
             it.log("currentKnob")
-            binding.knobView.setupKnob(it)
+            binding.knobView.changeKnobBasicStatus(it)
         }
 //        viewModel.zonesLiveData.collectWithLifecycle{
 //            binding.knobView.setOffPosition(it.offAngle.toFloat())
@@ -95,20 +93,8 @@ class DeviceSettingsFragment :
     }
 
     private fun KnobView.setupKnob(knob: KnobDto) {
-        if(knob.calibrated.isTrue()) {
-            val calibration = knob.calibration.toCalibration()
-            calibration.zones1?.let { zone ->
-                setHighSinglePosition(zone.highAngle.toFloat())
-                if(calibration.rotation != Rotation.DUAL)
-                    setMediumPosition(zone.mediumAngle.toFloat())
-                setLowSinglePosition(zone.lowAngle.toFloat())
-            }
-            calibration.zones2?.let { zone ->
-                setHighDualPosition(zone.highAngle.toFloat())
-                setLowDualPosition(zone.lowAngle.toFloat())
-            }
-            setOffPosition(calibration.offAngle.toFloat())
-        }
+
+
     }
 
     private val onClick: (ItemModel) -> Unit = { item ->

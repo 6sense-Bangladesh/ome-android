@@ -193,20 +193,7 @@ class DeviceDetailsFragment :
 
     private fun KnobView.setupKnob(knob: KnobDto) {
         changeKnobBasicStatus(knob)
-        if(knob.calibrated.isTrue()) {
-            val calibration = knob.calibration.toCalibration()
-            calibration.zones1?.let { zone ->
-                setHighSinglePosition(zone.highAngle.toFloat())
-                if(calibration.rotation != Rotation.DUAL)
-                    setMediumPosition(zone.mediumAngle.toFloat())
-                setLowSinglePosition(zone.lowAngle.toFloat())
-            }
-            calibration.zones2?.let { zone ->
-                setHighDualPosition(zone.highAngle.toFloat())
-                setLowDualPosition(zone.lowAngle.toFloat())
-            }
-            setOffPosition(calibration.offAngle.toFloat())
-        }else if(viewModel.currentKnob.value?.connectStatus.connectionState != ConnectionState.Offline){
+        if(knob.calibrated.isFalse() && viewModel.currentKnob.value?.connectStatus.connectionState != ConnectionState.Offline){
             withDelay(700L){
                 binding.warningCard.animateVisible()
             }
@@ -247,7 +234,7 @@ class DeviceDetailsFragment :
             ConnectionState.Online, ConnectionState.Offline -> {
                 chipStrokeColor = R.color.grayBlue
                 textColor = R.color.black
-                batteryIconTintColor = if (batteryLevel in 0..20) R.color.red else R.color.black
+                batteryIconTintColor = if (batteryLevel in 1..20) R.color.red else R.color.black
 
                 batteryIconResId = when (batteryLevel) {
                     in 0..9 -> R.drawable.ic_battery_0

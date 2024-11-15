@@ -9,6 +9,7 @@ import com.ome.app.domain.model.state.*
 import com.ome.app.utils.Rssi
 import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
 import com.ome.app.utils.isFalse
+import com.ome.app.utils.orFalse
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -60,16 +61,17 @@ data class KnobDto(
             )
         }
 
-        fun toCalibration() =
+        fun toCalibration(isCalibrated: Boolean?) =
             Calibration(
+                isCalibrated = isCalibrated.orFalse(),
                 offAngle = offAngle,
                 rotation = rotationDir.rotation,
                 rotationClockWise = when (rotationDir) {
                     -1 -> false
                     else -> true
                 },
-                zones1 = zones.find { it.zoneNumber == 1 },
-                zones2 = zones.find { it.zoneNumber == 2 }
+                zone1 = zones.find { it.zoneNumber == 1 },
+                zone2 = zones.find { it.zoneNumber == 2 }
             )
         fun toSetCalibrationRequest() = SetCalibrationRequest(
             offAngle = offAngle,
@@ -95,16 +97,16 @@ val KnobDto.asKnobState
 val KnobDto.asBurnerState
     get()= buildList{
         if(calibrated.isFalse()) return@buildList
-        val cal = calibration.toCalibration()
+        val cal = calibration.toCalibration(calibrated)
         add(BurnerState.Off(cal.offAngle))
-        if(cal.zones1 != null){
-            add(BurnerState.Low(cal.zones1.lowAngle))
+        if(cal.zone1 != null){
+            add(BurnerState.Low(cal.zone1.lowAngle))
             if(cal.rotation != Rotation.DUAL) {
-                add(BurnerState.HighMid((cal.zones1.highAngle + cal.zones1.mediumAngle)/2))
-                add(BurnerState.Medium(cal.zones1.mediumAngle))
-                add(BurnerState.LowMid((cal.zones1.lowAngle + cal.zones1.mediumAngle)/2))
+                add(BurnerState.HighMid((cal.zone1.highAngle + cal.zone1.mediumAngle)/2))
+                add(BurnerState.Medium(cal.zone1.mediumAngle))
+                add(BurnerState.LowMid((cal.zone1.lowAngle + cal.zone1.mediumAngle)/2))
             }
-            add(BurnerState.High(cal.zones1.highAngle))
+            add(BurnerState.High(cal.zone1.highAngle))
         }
 //        else if(cal.zones2 != null){
 //            add(BurnerState.Low(cal.zones2.lowAngle))
@@ -116,9 +118,10 @@ val KnobDto.asBurnerState
 
 @Parcelize
 data class Calibration(
+    val isCalibrated: Boolean,
     val offAngle: Int,
     val rotation: Rotation,
     val rotationClockWise: Boolean,
-    val zones1: KnobDto.CalibrationDto.ZoneDto?,
-    val zones2: KnobDto.CalibrationDto.ZoneDto?
+    val zone1: KnobDto.CalibrationDto.ZoneDto?,
+    val zone2: KnobDto.CalibrationDto.ZoneDto?
 ): Parcelable

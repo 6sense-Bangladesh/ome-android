@@ -77,14 +77,14 @@ class MyStoveFragment :
         }
         stovePosition = knob.stovePosition
         if(changeKnobStatus(knob)) {
-            val calibration = knob.calibration.toCalibration()
-            calibration.zones1?.let { zone ->
+            val calibration = knob.calibration.toCalibration(knob.calibrated)
+            calibration.zone1?.let { zone ->
                 setHighSinglePosition(zone.highAngle.toFloat())
                 if(calibration.rotation != Rotation.DUAL)
                     setMediumPosition(zone.mediumAngle.toFloat())
                 setLowSinglePosition(zone.lowAngle.toFloat())
             }
-            calibration.zones2?.let { zone ->
+            calibration.zone2?.let { zone ->
                 setHighDualPosition(zone.highAngle.toFloat())
                 setLowDualPosition(zone.lowAngle.toFloat())
             }
@@ -156,9 +156,9 @@ class MyStoveFragment :
                         if(knobState.angle == null) return@collectWithLifecycleStateIn
                         when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
                             StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS ->
-                                listOfFiveBurners.getOrNull(knob.stovePosition-1)?.changeKnobState(knobState, knob.calibrated)
+                                listOfFiveBurners.getOrNull(knob.stovePosition-1)?.changeKnobState(knobState, knob.calibration.toCalibration(knob.calibrated))
                             else ->
-                                listOfSixBurners.getOrNull(knob.stovePosition-1)?.changeKnobState(knobState, knob.calibrated)
+                                listOfSixBurners.getOrNull(knob.stovePosition-1)?.changeKnobState(knobState, knob.calibration.toCalibration(knob.calibrated))
                         }
                     }
                 }

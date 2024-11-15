@@ -16,9 +16,11 @@ import androidx.core.os.ParcelCompat
 import androidx.core.view.setMargins
 import com.ome.app.R
 import com.ome.app.databinding.KnobViewLayoutBinding
+import com.ome.app.domain.model.network.response.Calibration
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.state.ConnectionState
+import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.model.state.connectionState
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.CalibrationState
 import com.ome.app.utils.*
@@ -89,9 +91,12 @@ class KnobView @JvmOverloads constructor(
 
     fun enableFullLabel() {
         binding.offTv.text = context.getString(R.string.off_position_full)
+
         binding.lowSingleTv.text = context.getString(R.string.low_position_full)
         binding.mediumTv.text = context.getString(R.string.medium_position_full)
         binding.highSingleTv.text = context.getString(R.string.high_position_full)
+
+        binding.lowDualTv.text = context.getString(R.string.low_position_full)
         binding.highDualTv.text = context.getString(R.string.high_position_full)
     }
 
@@ -101,6 +106,7 @@ class KnobView @JvmOverloads constructor(
             CalibrationState.LOW_SINGLE -> binding.lowSingleCl.makeGone()
             CalibrationState.MEDIUM -> binding.mediumCl.makeGone()
             CalibrationState.HIGH_SINGLE -> binding.highSingleCl.makeGone()
+
             CalibrationState.HIGH_DUAL -> binding.highDualCl.makeGone()
             CalibrationState.LOW_DUAL -> binding.lowDualCl.makeGone()
             else -> {
@@ -108,6 +114,8 @@ class KnobView @JvmOverloads constructor(
                 binding.lowSingleCl.makeGone()
                 binding.mediumCl.makeGone()
                 binding.highSingleCl.makeGone()
+
+                binding.lowDualCl.makeGone()
                 binding.highDualCl.makeGone()
             }
         }
@@ -180,30 +188,32 @@ class KnobView @JvmOverloads constructor(
         binding.stovePositionTv.changeVisibility(knobImageState != KnobImageState.ADD)
     }
 
-    fun changeKnobState(knob: KnobState, isCalibrated: Boolean?): Boolean {
+    fun changeKnobState(knob: KnobState, calibration: Calibration): Boolean {
         knob.angle?.toFloat()?.let { setKnobPosition(it) }
         knob.battery?.let {
             changeBatteryState(batteryLevel = it)
             if(knob.connectStatus!= null && knob.wifiStrengthPercentage != null) {
                 if(changeConnectionState(knob.connectStatus, knob.wifiStrengthPercentage, knob.battery))
-                    changeConfigurationState(isCalibrated = isCalibrated)
+                    changeConfigurationState(isCalibrated = calibration.isCalibrated)
             }
         }
-        return when{ (knob.battery != null && knob.battery <= 15) || isCalibrated.isFalse() || knob.connectStatus == ConnectionState.Offline ||
+        return when{ (knob.battery != null && knob.battery <= 15) || calibration.isCalibrated.isFalse() || knob.connectStatus == ConnectionState.Offline ||
             ( knob.connectStatus == ConnectionState.Online && knob.wifiStrengthPercentage in 0..35) -> {
                 hideLabel()
                 changeKnobState(KnobImageState.TRANSPARENT)
-                changeKnobProgressVisibility(false)
+                changeKnobProgressVisibility(false, calibration.rotation == Rotation.DUAL)
                 false
             }else -> {
                 changeKnobState(KnobImageState.NORMAL)
-                changeKnobProgressVisibility(true)
+                changeKnobProgressVisibility(true, calibration.rotation == Rotation.DUAL)
                 true
             }
         }
     }
 
     fun changeKnobStatus(knob: KnobDto): Boolean {
+        val cal = knob.calibration.toCalibration(knob.calibrated)
+        
         changeBatteryState(batteryLevel = knob.battery)
         if(changeConnectionState(knob.connectStatus.connectionState, knob.rssi.wifiStrengthPercentage, knob.battery))
             changeConfigurationState(isCalibrated = knob.calibrated)
@@ -211,26 +221,36 @@ class KnobView @JvmOverloads constructor(
             ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) -> {
                 hideLabel()
                 changeKnobState(KnobImageState.TRANSPARENT)
-                changeKnobProgressVisibility(false)
+                changeKnobProgressVisibility(false, cal.rotation == Rotation.DUAL)
                 false
             }
             else -> {
                 changeKnobState(KnobImageState.NORMAL)
-                changeKnobProgressVisibility(true)
-                val zone1 =knob.calibration.toCalibration().zones1
-                if(zone1 != null && zone1.lowAngle < zone1.highAngle)
-                    binding.knobProgress.scaleX = 1F
-                else
-                    binding.knobProgress.scaleX = -1F
+                changeKnobProgressVisibility(true, cal.rotation == Rotation.DUAL)
+                adjustKnobColorScale(cal)
                 true
             }
         }
     }
 
     fun changeKnobBasicStatus(knob: KnobDto): Boolean {
-        changeKnobProgressVisibility(true)
-//        setKnobPosition(knob.angle.toFloat())
         stovePosition = knob.stovePosition
+        val cal = knob.calibration.toCalibration(knob.calibrated)
+        changeKnobProgressVisibility(true, cal.rotation == Rotation.DUAL)
+        if(cal.isCalibrated) {
+            val calibration = knob.calibration.toCalibration(knob.calibrated)
+            calibration.zone1?.let { zone ->
+                setHighSinglePosition(zone.highAngle.toFloat())
+                if(calibration.rotation != Rotation.DUAL)
+                    setMediumPosition(zone.mediumAngle.toFloat())
+                setLowSinglePosition(zone.lowAngle.toFloat())
+            }
+            calibration.zone2?.let { zone ->
+                setHighDualPosition(zone.highAngle.toFloat())
+                setLowDualPosition(zone.lowAngle.toFloat())
+            }
+            setOffPosition(calibration.offAngle.toFloat())
+        }
         return when{ knob.battery <= 15 || knob.calibrated.isFalse() || knob.connectStatus.connectionState == ConnectionState.Offline ||
                 ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) -> {
             changeKnobState(KnobImageState.TRANSPARENT)
@@ -238,13 +258,27 @@ class KnobView @JvmOverloads constructor(
                 }
             else -> {
                 changeKnobState(KnobImageState.NORMAL)
-                val zone1 =knob.calibration.toCalibration().zones1
-                if(zone1 != null && zone1.lowAngle < zone1.highAngle)
-                    binding.knobProgress.scaleX = 1F
-                else
-                    binding.knobProgress.scaleX = -1F
+                adjustKnobColorScale(cal)
                 true
             }
+        }
+    }
+
+    fun adjustKnobColorScale(cal: Calibration) {
+        if (cal.rotation != Rotation.DUAL) {
+            if (cal.zone1 != null && cal.zone1.lowAngle < cal.zone1.highAngle)
+                binding.knobProgressSingleZone.scaleX = 1F
+            else
+                binding.knobProgressSingleZone.scaleX = -1F
+        } else if (cal.zone1 != null && cal.zone2 != null) {
+            if (cal.zone1.lowAngle < cal.zone1.highAngle)
+                binding.knobProgressFirstZone.scaleY = 1F
+            else
+                binding.knobProgressFirstZone.scaleY = -1F
+            if (cal.zone2.lowAngle < cal.zone2.highAngle)
+                binding.knobProgressSecondZone.scaleY = -1F
+            else
+                binding.knobProgressSecondZone.scaleY = 1F
         }
     }
 
@@ -309,8 +343,14 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
-    fun changeKnobProgressVisibility(isVisible: Boolean) {
-        binding.knobProgress.changeVisibility(isVisible)
+    fun changeKnobProgressVisibility(isVisible: Boolean, isDualZone: Boolean) {
+        if(isDualZone){
+            binding.knobProgressFirstZone.changeVisibility(isVisible)
+            binding.knobProgressSecondZone.changeVisibility(isVisible)
+        }
+        else {
+            binding.knobProgressSingleZone.changeVisibility(isVisible)
+        }
     }
 
     val knobImageState : KnobImageState

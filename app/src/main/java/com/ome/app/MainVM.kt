@@ -42,9 +42,7 @@ class MainVM @Inject constructor(
 ) : BaseViewModel() {
     var userInfo = savedStateHandle.getStateFlow("userInfo", preferencesProvider.getUserData())
     private var knobState = savedStateHandle.getStateFlow("knobState", mutableMapOf<MacAddress, KnobState>())
-    var knobs = savedStateHandle.getStateFlow("knobs", buildList<KnobDto> {
-        if (BuildConfig.IS_INTERNAL_TESTING) addAll(dummyKnobs)
-    })
+    var knobs = savedStateHandle.getStateFlow("knobs", listOf<KnobDto>())
 
     override var defaultErrorHandler = CoroutineExceptionHandler { _, _ ->
         startDestinationInitialized.postValue(R.id.launchFragment to null)
@@ -74,9 +72,7 @@ class MainVM @Inject constructor(
         }
         launch(ioContext) {
             stoveRepository.knobsFlow.filterNotNull().collect {
-                savedStateHandle["knobs"] = it.toMutableList().apply {
-                    if (BuildConfig.IS_INTERNAL_TESTING) addAll(dummyKnobs)
-                }.toList()
+                savedStateHandle["knobs"] = it
             }
         }
         launch(ioContext) {
@@ -202,18 +198,23 @@ val dummyKnobs = listOf(
         calibrated = true,
         calibration = KnobDto.CalibrationDto(
             offAngle = 0,
-            rotationDir = 1,
+            rotationDir = 2,
             zones = listOf(
                 KnobDto.CalibrationDto.ZoneDto(
-                    highAngle = 300,
-                    lowAngle = 100,
-                    mediumAngle = 200,
+                    highAngle = 150,
+                    lowAngle = 45,
                     zoneName = "Single",
                     zoneNumber = 1
+                ),
+                KnobDto.CalibrationDto.ZoneDto(
+                    highAngle = 220,
+                    lowAngle = 310,
+                    zoneName = "Single",
+                    zoneNumber = 2
                 )
             )
         ),
-        connectStatus = "offline",
+        connectStatus = "online",
         firmwareVersion = "ceteros",
         gasOrElectric = "graeci",
         ipAddress = "explicari",
@@ -238,14 +239,19 @@ val dummyKnobs = listOf(
         calibrated = true,
         calibration = KnobDto.CalibrationDto(
             offAngle = 0,
-            rotationDir = 1,
+            rotationDir = 2,
             zones = listOf(
                 KnobDto.CalibrationDto.ZoneDto(
-                    highAngle = 300,
-                    lowAngle = 100,
-                    mediumAngle = 200,
+                    highAngle = 45,
+                    lowAngle = 130,
                     zoneName = "Single",
                     zoneNumber = 1
+                ),
+                KnobDto.CalibrationDto.ZoneDto(
+                    highAngle = 320,
+                    lowAngle = 220,
+                    zoneName = "Single",
+                    zoneNumber = 2
                 )
             )
         ),
@@ -271,17 +277,22 @@ val dummyKnobs = listOf(
         angle = 0,
         battery = 70,
         batteryVolts = 4.5,
-        calibrated = null,
+        calibrated = true,
         calibration = KnobDto.CalibrationDto(
             offAngle = 0,
-            rotationDir = 1,
+            rotationDir = 2,
             zones = listOf(
                 KnobDto.CalibrationDto.ZoneDto(
-                    highAngle = 300,
-                    lowAngle = 100,
-                    mediumAngle = 200,
+                    highAngle = 130,
+                    lowAngle = 45,
                     zoneName = "Single",
                     zoneNumber = 1
+                ),
+                KnobDto.CalibrationDto.ZoneDto(
+                    highAngle = 320,
+                    lowAngle = 220,
+                    zoneName = "Single",
+                    zoneNumber = 2
                 )
             )
         ),

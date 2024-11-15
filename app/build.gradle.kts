@@ -128,8 +128,9 @@ dependencies {
     ksp("com.google.dagger:hilt-compiler:2.52")
 
     //Navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:2.8.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.8.3")
+    val nav = "2.8.4"
+    implementation("androidx.navigation:navigation-fragment-ktx:$nav")
+    implementation("androidx.navigation:navigation-ui-ktx:$nav")
 
     //Rest API
     val retrofit2 = "2.11.0"
@@ -144,23 +145,22 @@ dependencies {
     implementation("androidx.camera:camera-view:$cameraX")
 
     //QR code
-    implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.1")
     implementation("androidx.camera:camera-mlkit-vision:$cameraX")
+    implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.1")
 
     //UI
     implementation("com.github.fornewid:neumorphism:0.3.2")
     implementation("com.google.android.material:material:1.12.0")
-//    implementation("com.github.GrenderG:Toasty:1.5.2")
 
     // Amplify frameworks
     val amplify = "1.38.8" //Don't upgrade this version
     implementation("com.amplifyframework:core:$amplify")
     implementation("com.amplifyframework:aws-api:$amplify")
     implementation("com.amplifyframework:aws-auth-cognito:$amplify")
-//    implementation("com.amplifyframework:aws-datastore:1.35.3")
     // Amplify coroutines
     //noinspection GradleDependency
     implementation("com.amplifyframework:core-kotlin:0.22.8") //Don't upgrade this version
+    implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
 
     //Phone validator
     implementation("com.googlecode.libphonenumber:libphonenumber:8.13.49")
@@ -188,10 +188,6 @@ dependencies {
 
     implementation("dev.chrisbanes.insetter:insetter:0.6.1")
 
-//    implementation("com.google.guava:guava:33.3.1-android")
-
-    implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
-
     val scarlet = "0.1.12"
     implementation("com.tinder.scarlet:scarlet:$scarlet")
     implementation("com.tinder.scarlet:stream-adapter-coroutines:$scarlet")
@@ -199,8 +195,6 @@ dependencies {
     implementation("com.tinder.scarlet:websocket-okhttp:$scarlet")
 
     implementation("com.neovisionaries:nv-websocket-client:2.14")
-
-//    implementation("com.github.santalu:maskara:1.0.0")
 
     testImplementation("junit:junit:4.13.2")
 
@@ -218,9 +212,10 @@ dependencies {
 
     implementation("com.github.chesire:lifecyklelog:3.1.1")
 
-    implementation("io.coil-kt.coil3:coil:3.0.0")
-    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.0")
-    implementation("io.coil-kt.coil3:coil-gif:3.0.0")
+    val coil = "3.0.3"
+    implementation("io.coil-kt.coil3:coil:$coil")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:$coil")
+    implementation("io.coil-kt.coil3:coil-gif:$coil")
 
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     implementation("androidx.browser:browser:1.8.0")
