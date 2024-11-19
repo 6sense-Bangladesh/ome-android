@@ -5,7 +5,6 @@ import android.os.Parcelable
 import android.view.View
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
@@ -13,7 +12,6 @@ import com.ome.app.databinding.FragmentDeviceCalibrationBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 
@@ -68,27 +66,19 @@ class DeviceCalibrationFragment :
         }
         subscribe(viewModel.calibrationIsDoneLiveData) {
             if (it) {
-                if(viewModel.isDualKnob){
-                    lifecycleScope.launch {
-                        binding.continueBtn.startAnimation()
-                        viewModel.setCalibration()
-                        navigateSafe(DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToSetupCompleteFragment(false))
-                    }
-                    return@subscribe
-                }
                 navigateSafe(
                     DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToDeviceCalibrationConfirmationFragment(
                         DeviceCalibrationConfirmationFragmentParams(
                             isComeFromSettings = args.params.isComeFromSettings,
-                            offPosition = viewModel.offAngle ?: 0f,
-                            lowSinglePosition = viewModel.lowSingleAngle ?: 0f,
-                            lowDualPosition = viewModel.lowDualAngle ?: 0f,
-                            medPosition = viewModel.mediumAngle ?: 0f,
-                            highSinglePosition = viewModel.highSingleAngle ?: 0f,
-                            highDualPosition = viewModel.highDualAngle ?: 0f,
+                            offPosition = viewModel.offAngle.orZero(),
+                            lowSinglePosition = viewModel.lowSingleAngle.orZero(),
+                            lowDualPosition = viewModel.lowDualAngle.orZero(),
+                            medPosition = viewModel.mediumAngle.orZero(),
+                            highSinglePosition = viewModel.highSingleAngle.orZero(),
+                            highDualPosition = viewModel.highDualAngle.orZero(),
                             macAddr = viewModel.macAddress,
                             isDualKnob = args.params.isDualKnob,
-                            rotateDir = viewModel.rotationDir ?: -1
+                            rotateDir = viewModel.rotationDir.orMinusOne()
                         )
                     )
                 )

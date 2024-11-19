@@ -35,7 +35,7 @@ class DeviceCalibrationConfirmationFragment :
         viewModel.lowSingleAngle = args.params.lowSinglePosition
         viewModel.lowDualAngle = args.params.lowDualPosition
         binding.knobView.enableFullLabel()
-        initLabels()
+//        initLabels()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,8 +48,7 @@ class DeviceCalibrationConfirmationFragment :
                 title = getString(R.string.warning),
                 message = getString(R.string.ome_knob_will_rotate),
                 onDismiss = {
-                    viewModel.nextStep()
-                    binding.continueBtn.startAnimation()
+                    startCalibration()
                 })
         }
 
@@ -70,21 +69,24 @@ class DeviceCalibrationConfirmationFragment :
                     title = getString(R.string.warning),
                     message = getString(R.string.ome_knob_will_rotate),
                     onDismiss = {
-                        viewModel.nextStep()
-                        binding.continueBtn.startAnimation()
+                        startCalibration()
                     })
-            } else if (viewModel.currentCalibrationState.value == CalibrationState.OFF && viewModel.offTriggerCount == 1) {
-                showSuccessDialog(
-                    title = getString(R.string.warning),
-                    message = getString(R.string.ome_knob_manually_turn_to_the_low),
-                    onDismiss = {
-                        viewModel.currentCalibrationState.value = CalibrationState.LOW_SINGLE
-                    })
-            } else {
-                viewModel.nextStep()
-                binding.continueBtn.startAnimation()
             }
+//            else if (viewModel.currentCalibrationState.value == CalibrationState.OFF && viewModel.offTriggerCount == 1) {
+//                showSuccessDialog(
+//                    title = getString(R.string.warning),
+//                    message = getString(R.string.ome_knob_manually_turn_to_the_low),
+//                    onDismiss = {
+//                        viewModel.currentCalibrationState.value = CalibrationState.LOW_SINGLE
+//                    })
+//            }
+            else startCalibration()
         }
+    }
+
+    private fun startCalibration() {
+        viewModel.nextStep()
+        binding.continueBtn.startAnimation()
     }
 
     override fun handleBackPressEvent() {
@@ -127,42 +129,32 @@ class DeviceCalibrationConfirmationFragment :
             binding.knobView.stovePosition = it
         }
         viewModel.currentCalibrationState.collectWithLifecycle{ currentStep ->
-            binding.labelTv.text = getString(R.string.calibration_confirmation_label, currentStep.positionName)
-//            when(currentStep){
-//                CalibrationState.OFF -> viewModel.offAngle?.let { binding.knobView.setOffPosition(it) }
-//                CalibrationState.HIGH_SINGLE -> viewModel.highSingleAngle?.let { binding.knobView.setHighSinglePosition(it) }
-//                CalibrationState.HIGH_DUAL -> viewModel.highDualAngle?.let { binding.knobView.setHighDualPosition(it) }
-//                CalibrationState.MEDIUM -> viewModel.mediumAngle?.let { binding.knobView.setMediumPosition(it) }
-//                CalibrationState.LOW_SINGLE -> viewModel.lowSingleAngle?.let { binding.knobView.setLowSinglePosition(it) }
-//                CalibrationState.LOW_DUAL -> viewModel.lowDualAngle?.let { binding.knobView.setLowDualPosition(it) }
-//            }
+            when(currentStep){
+                CalibrationState.OFF -> viewModel.offAngle?.let { binding.knobView.setOffPosition(it) }
+                CalibrationState.HIGH_SINGLE -> viewModel.highSingleAngle?.let { binding.knobView.setHighSinglePosition(it) }
+                CalibrationState.HIGH_DUAL -> viewModel.highDualAngle?.let { binding.knobView.setHighDualPosition(it) }
+                CalibrationState.MEDIUM -> viewModel.mediumAngle?.let { binding.knobView.setMediumPosition(it) }
+                CalibrationState.LOW_SINGLE -> viewModel.lowSingleAngle?.let { binding.knobView.setLowSinglePosition(it) }
+                CalibrationState.LOW_DUAL -> viewModel.lowDualAngle?.let { binding.knobView.setLowDualPosition(it) }
+            }
 
-//            currentStep?.let {
-//                if (viewModel.isDualKnob) {
-//                    when (currentStep) {
-//                        CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE -> {
-//                            binding.labelTv.text =
-//                                getString(
-//                                    R.string.calibration_confirmation_dual_label,
-//                                    currentStep.positionName,
-//                                    "Single"
-//                                )
-//                        }
-//                        CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> {
-//                            binding.labelTv.text =
-//                                getString(
-//                                    R.string.calibration_confirmation_dual_label,
-//                                    currentStep.positionName,
-//                                    "Dual"
-//                                )
-//                        }
-//                        else -> {
-//                            binding.labelTv.text =
-//                                getString(R.string.calibration_confirmation_label, currentStep.positionName)
-//                        }
-//                    }
-//                } else
-//            }
+            if (viewModel.isDualKnob) {
+                when (currentStep) {
+                    CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE -> {
+                        binding.labelTv.text =
+                            getString(R.string.calibration_confirmation_dual_label, currentStep.positionName, "First")
+                    }
+                    CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> {
+                        binding.labelTv.text =
+                            getString(R.string.calibration_confirmation_dual_label, currentStep.positionName, "Second")
+                    }
+                    else -> {
+                        binding.labelTv.text =
+                            getString(R.string.calibration_confirmation_label, currentStep.positionName)
+                    }
+                }
+            }else
+                binding.labelTv.text = getString(R.string.calibration_confirmation_label, currentStep.positionName)
         }
 
     }

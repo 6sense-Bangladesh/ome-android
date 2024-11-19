@@ -589,13 +589,6 @@
             app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_deviceCalibrationFragment_to_deviceCalibrationConfirmationFragment"
             app:destination="@id/deviceCalibrationConfirmationFragment" />
-        <action
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            android:id="@+id/action_deviceCalibrationFragment_to_setupCompleteFragment"
-            app:destination="@id/setupCompleteFragment"/>
     </fragment>
     <fragment
         android:id="@+id/knobInstallationManualFragment"

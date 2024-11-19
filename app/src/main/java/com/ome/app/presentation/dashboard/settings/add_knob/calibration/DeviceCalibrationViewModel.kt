@@ -112,12 +112,13 @@ class DeviceCalibrationViewModel @Inject constructor(
                     defaultErrorLiveData.postValue(resourceProvider.getString(R.string.calibration_labels_error))
                 }
             }
-        } ?: run {
-            launch {
-                stoveRepository.getAllKnobs()
-                setLabel()
-            }
         }
+//            ?: run {
+//            launch {
+//                stoveRepository.getAllKnobs()
+//                setLabel()
+//            }
+//        }
 
     }
 

@@ -124,6 +124,7 @@
     <string name="device_calibration_dual_label">Manually turn your knob to <![CDATA[<b>%1$s</b>]]> position for the <![CDATA[<b>%2$s Zone</b>]]> and press continue</string>
     <string name="device_calibration_confirmation_label">Manually turn your knob to %1$s and press continue</string>
     <string name="calibration_confirmation_label">Is knob at %1$s?</string>
+    <string name="calibration_confirmation_dual_label">Is knob at %1$s for the %2$s zone?</string>
     <string name="confirm_position">Confirm Position</string>
     <string name="confirm_position_body">Are you sure, You want to change the knob to %1$s position?</string>
     <string name="confirm_logout">Are you sure you want to log out?</string>
@@ -133,7 +134,6 @@
     <string name="stove_brand_changed">Stove Brand Changed</string>
     <string name="stove_type_changed">Stove Type Changed</string>
     <string name="stove_layout_changed">Stove Layout Changed</string>
-    <string name="calibration_confirmation_dual_label">Is knob at %1$s for the %2$s zone burner?</string>
     <string name="issue_with_knob_label">There seems to be an issue with your knob. Please contact customer service so we can help! \n 855–663–5227 \n support@omekitchen.com</string>
     <string name="yes_btn">Yes</string>
     <string name="yes_continue">Yes, Continue</string>
