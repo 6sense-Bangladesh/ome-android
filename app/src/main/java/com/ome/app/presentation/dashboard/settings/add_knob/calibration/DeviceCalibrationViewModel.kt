@@ -166,10 +166,6 @@ class DeviceCalibrationViewModel @Inject constructor(
                     CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE, CalibrationState.OFF -> isFirstZone = true
                     else -> Unit
                 }
-                if(currentCalibrationState.value == CalibrationState.HIGH_DUAL)
-                    isFirstZone = true
-                else if(currentCalibrationState.value == CalibrationState.OFF)
-                    isFirstZone = false
             }
         }
     }
