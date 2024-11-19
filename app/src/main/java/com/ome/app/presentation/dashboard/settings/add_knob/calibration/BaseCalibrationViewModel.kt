@@ -42,6 +42,7 @@ abstract class BaseCalibrationViewModel(
 
     var firstDiv: Int = 0
     var secondDiv: Int = 0
+    var isFirstZone: Boolean = false
 
     var rotationDir: Int? = null
 
@@ -66,13 +67,21 @@ abstract class BaseCalibrationViewModel(
 
     open fun handleDualKnobUpdated(value: Float) {
 
-        val result = KnobAngleManager.processDualKnobResult(
+//        val result = KnobAngleManager.processDualKnobResult(
+//            angleValue = value,
+//            firstDiv = firstDiv,
+//            secondDiv = secondDiv,
+//            currentStepAngle = labelLiveData.value?.second?.toInt(),
+//            currSetPosition = currSetPosition,
+//            highSingleAngle = highSingleAngle,
+//            angleDualOffset = angleDualOffset
+//        )
+
+        val result = KnobAngleManager.processDualKnobResult2(
             angleValue = value,
             firstDiv = firstDiv,
             secondDiv = secondDiv,
-            currentStepAngle = labelLiveData.value?.second?.toInt(),
-            currSetPosition = currSetPosition,
-            highSingleAngle = highSingleAngle,
+            isFirstZone = isFirstZone,
             angleDualOffset = angleDualOffset
         )
         knobAngleFlow.value = result

@@ -56,7 +56,10 @@ class DeviceCalibrationViewModel @Inject constructor(
                                 divideCircleBasedOnOffPosition()
                             }
                             CalibrationState.LOW_SINGLE ->  lowSingleAngle = angle
-                            CalibrationState.LOW_DUAL -> lowDualAngle = angle
+                            CalibrationState.LOW_DUAL -> {
+                                lowDualAngle = angle
+                                isFirstZone = false
+                            }
                             CalibrationState.HIGH_SINGLE -> highSingleAngle = angle
                             CalibrationState.HIGH_DUAL -> highDualAngle = angle
                             else -> Unit
