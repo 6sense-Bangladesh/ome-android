@@ -150,20 +150,20 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
 //                    }
                 }
                 null -> {
-                    highDualAngle?.let {
+                    highSingleAngle?.let {
                         stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
                     }
                     currentCalibrationState.value = CalibrationState.HIGH_SINGLE
                 }
                 CalibrationState.HIGH_SINGLE -> {
-                    offAngle?.let {
+                    lowSingleAngle?.let {
                         stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
                     }
 //                    offTriggerCount++
                     currentCalibrationState.value = CalibrationState.LOW_SINGLE
                 }
                 CalibrationState.LOW_SINGLE -> {
-                    lowSingleAngle?.let {
+                    highDualAngle?.let {
                         stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
                     }
                     currentCalibrationState.value = CalibrationState.HIGH_DUAL
