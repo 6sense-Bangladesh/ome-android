@@ -42,7 +42,7 @@ abstract class BaseCalibrationViewModel(
 
     var firstDiv: Int = 0
     var secondDiv: Int = 0
-    var isFirstZone: Boolean = false
+    var isFirstZone: Boolean = true
 
     var rotationDir: Int? = null
 

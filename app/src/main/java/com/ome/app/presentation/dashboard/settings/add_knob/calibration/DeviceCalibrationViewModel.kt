@@ -56,10 +56,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                                 divideCircleBasedOnOffPosition()
                             }
                             CalibrationState.LOW_SINGLE ->  lowSingleAngle = angle
-                            CalibrationState.LOW_DUAL -> {
-                                lowDualAngle = angle
-                                isFirstZone = false
-                            }
+                            CalibrationState.LOW_DUAL -> lowDualAngle = angle
                             CalibrationState.HIGH_SINGLE -> highSingleAngle = angle
                             CalibrationState.HIGH_DUAL -> highDualAngle = angle
                             else -> Unit
@@ -164,6 +161,15 @@ class DeviceCalibrationViewModel @Inject constructor(
                 calibrationIsDoneLiveData.postValue(true)
             } else {
                 currentCalibrationState.value =(calibrationStatesSequenceDualZone[currentIndex + 1])
+                when(currentCalibrationState.value){
+                    CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> isFirstZone = false
+                    CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE, CalibrationState.OFF -> isFirstZone = true
+                    else -> Unit
+                }
+                if(currentCalibrationState.value == CalibrationState.HIGH_DUAL)
+                    isFirstZone = true
+                else if(currentCalibrationState.value == CalibrationState.OFF)
+                    isFirstZone = false
             }
         }
     }
