@@ -50,11 +50,14 @@ class KnobView @JvmOverloads constructor(
 
     init {
         attrs?.let {
-            context.obtainStyledAttributes(it, R.styleable.KnobView).use { typedArray->
+            val typedArray = context.obtainStyledAttributes(it, R.styleable.KnobView)
+            try {
                 if (typedArray.hasValue(R.styleable.KnobView_knobSize)) {
                     val size = typedArray.getDimensionPixelSize(R.styleable.KnobView_knobSize, 0)
                     setKnobSize(size)
                 }
+            } finally {
+                typedArray.recycle()
             }
         }
     }
