@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-//    id("kotlin-kapt")
     id("kotlin-parcelize")
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
@@ -40,9 +39,6 @@ android {
         versionName = ProjectConfig.versionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("boolean", "IS_INTERNAL_TESTING", "Boolean.parseBoolean(\"${ProjectConfig.IS_INTERNAL_TESTING}\")")
-//        ndk {
-//            abiFilters.remove("riscv64")
-//        }
     }
 
     buildTypes {
@@ -106,10 +102,6 @@ android {
     }
 }
 
-//kapt {
-//    correctErrorTypes = true
-//}
-
 dependencies {
     //noinspection GradleDependency
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.0")
@@ -117,8 +109,6 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
-
-//    implementation("io.projectreactor.netty:reactor-netty-core:1.1.23")
 
     //DI
     implementation("com.google.dagger:hilt-android:2.52")
@@ -165,13 +155,8 @@ dependencies {
     //Phone validator
     implementation("com.googlecode.libphonenumber:libphonenumber:8.13.49")
 
-//    implementation("com.squareup.moshi:moshi:1.15.1")
 
     implementation("com.apachat:loadingbutton-android:1.0.11")
-
-    //View
-//    implementation("com.github.ramseth001:TextDrawable:1.1.6")
-
     implementation("com.jaredrummler:material-spinner:1.3.1")
 
     //image loading
@@ -204,7 +189,7 @@ dependencies {
     implementation("com.github.chuckerteam.chucker:library:4.0.0")
 //    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
 
-    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
     implementation("com.google.firebase:firebase-crashlytics")
 
     implementation("com.intuit.sdp:sdp-android:1.1.1")
@@ -219,8 +204,6 @@ dependencies {
 
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     implementation("androidx.browser:browser:1.8.0")
-
-    implementation("com.airbnb.android:lottie:6.6.0")
 
     // Play In-App Update:
     implementation("com.google.android.play:app-update:2.1.0")

@@ -45,7 +45,6 @@ class KnobView @JvmOverloads constructor(
     private val binding = inflate<KnobViewLayoutBinding>()
     private val knobSrc = binding.knobSrc
 
-    var prevAngle = 0.0F
     private var mCurrAngle = 0.0F
 
     init {

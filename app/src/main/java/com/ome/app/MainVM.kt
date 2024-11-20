@@ -35,7 +35,6 @@ class MainVM @Inject constructor(
     private val preferencesProvider: PreferencesProvider,
     private val userRepository: UserRepository,
     private val stoveRepository: StoveRepository,
-    private val wifiHandler: WifiHandler,
     private val webSocketManager: WebSocketManager,
     private val savedStateHandle: SavedStateHandle,
     val connectionStatusListener: ConnectionStatusListener
@@ -96,7 +95,6 @@ class MainVM @Inject constructor(
     fun getKnobByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }
     fun getKnobStateByMac(macAddress: MacAddress) = knobState.map { it[macAddress] }
     fun getStovePositionByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.stovePosition.orMinusOne()
-    fun getOffAngleByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.calibration?.offAngle
     fun getKnobBurnerStatesByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.asBurnerState.orEmpty()
 
     fun initStartDestination() {

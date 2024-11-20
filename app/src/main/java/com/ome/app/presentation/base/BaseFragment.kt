@@ -24,7 +24,6 @@ import com.ome.app.presentation.dashboard.profile.ProfileFragment
 import com.ome.app.presentation.dashboard.settings.SettingsFragment
 import com.ome.app.presentation.launch.LaunchFragment
 import com.ome.app.presentation.signup.welcome.WelcomeFragment
-import com.ome.app.presentation.views.ProgressDialog
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.subscribe
 import com.ome.app.utils.toast
@@ -42,7 +41,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
     protected var onDismissSuccessDialog: () -> Unit = {}
     protected val isFromDeepLink by lazy { arguments?.containsKey(NavController.KEY_DEEP_LINK_INTENT) ?: false }
 
-    private val loader by lazy { ProgressDialog.create(context)}
+//    private val loader by lazy { ProgressDialog.create(context)}
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,8 +85,8 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
         }
     }
 
-    fun showLoader() = loader?.show()
-    fun hideLoader() = loader?.dismiss()
+//    fun showLoader() = loader?.show()
+//    fun hideLoader() = loader?.dismiss()
 
     open fun handleBackPressEvent() {
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner) {
