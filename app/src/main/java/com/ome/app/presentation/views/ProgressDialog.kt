@@ -49,7 +49,7 @@ class ProgressDialog(builder: Builder) : Dialog(builder.context) {
     }
 
     override fun dismiss() {
-        tryGet {
+        runCatching {
             super.dismiss()
             timeOutJob?.cancel()
         }

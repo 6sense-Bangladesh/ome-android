@@ -192,7 +192,7 @@ class MainVM @Inject constructor(
 
 val dummyKnobs = listOf(
     KnobDto(
-        angle = 0,
+        angle = 200,
         battery = 30,
         batteryVolts = 4.5,
         calibrated = true,
@@ -202,12 +202,14 @@ val dummyKnobs = listOf(
             zones = listOf(
                 KnobDto.CalibrationDto.ZoneDto(
                     lowAngle = 45,
+                    mediumAngle = 95,
                     highAngle = 150,
                     zoneName = "Single",
                     zoneNumber = 1
                 ),
                 KnobDto.CalibrationDto.ZoneDto(
                     lowAngle = 310,
+                    mediumAngle = 265,
                     highAngle = 220,
                     zoneName = "Single",
                     zoneNumber = 2
@@ -243,12 +245,14 @@ val dummyKnobs = listOf(
             zones = listOf(
                 KnobDto.CalibrationDto.ZoneDto(
                     lowAngle = 130,
+                    mediumAngle = 85,
                     highAngle = 45,
                     zoneName = "Single",
                     zoneNumber = 1
                 ),
                 KnobDto.CalibrationDto.ZoneDto(
                     lowAngle = 220,
+                    mediumAngle = 265,
                     highAngle = 320,
                     zoneName = "Single",
                     zoneNumber = 2
@@ -284,12 +288,14 @@ val dummyKnobs = listOf(
             zones = listOf(
                 KnobDto.CalibrationDto.ZoneDto(
                     lowAngle = 45,
+                    mediumAngle = 85,
                     highAngle = 130,
                     zoneName = "Single",
                     zoneNumber = 1
                 ),
                 KnobDto.CalibrationDto.ZoneDto(
                     lowAngle = 220,
+                    mediumAngle = 265,
                     highAngle = 320,
                     zoneName = "Single",
                     zoneNumber = 2
@@ -315,10 +321,10 @@ val dummyKnobs = listOf(
         userId = "enim"
     ),
     KnobDto(
-        angle = 0,
+        angle = 50,
         battery = 90,
         batteryVolts = 4.5,
-        calibrated = false,
+        calibrated = true,
         calibration = KnobDto.CalibrationDto(
             offAngle = 0,
             rotationDir = 1,
@@ -346,6 +352,42 @@ val dummyKnobs = listOf(
         scheduleStartTime = 4237,
         stoveId = "pri",
         stovePosition = 4,
+        temperature = 6.7,
+        updated = "explicari",
+        userId = "enim"
+    ),
+    KnobDto(
+        angle = 0,
+        battery = 90,
+        batteryVolts = 4.5,
+        calibrated = false,
+        calibration = KnobDto.CalibrationDto(
+            offAngle = 0,
+            rotationDir = 1,
+            zones = listOf(
+                KnobDto.CalibrationDto.ZoneDto(
+                    highAngle = 300,
+                    lowAngle = 100,
+                    mediumAngle = 200,
+                    zoneName = "Single",
+                    zoneNumber = 1
+                )
+            )
+        ),
+        connectStatus = "online",
+        firmwareVersion = "ceteros",
+        gasOrElectric = "graeci",
+        ipAddress = "explicari",
+        lastScheduleCommand = "intellegebat",
+        macAddr = "fake_mac5",
+        mountingSurface = "dolor",
+        rssi = -70,
+        safetyLock = false,
+        scheduleFinishTime = 9022,
+        schedulePauseRemainingTime = 3846,
+        scheduleStartTime = 4237,
+        stoveId = "pri",
+        stovePosition = 5,
         temperature = 6.7,
         updated = "explicari",
         userId = "enim"

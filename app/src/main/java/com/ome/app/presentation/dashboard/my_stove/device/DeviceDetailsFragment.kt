@@ -43,8 +43,10 @@ class DeviceDetailsFragment :
 //                .debounce(700)
                 .collectWithLifecycle { rotation ->
                     Log.d(TAG, "doOnRotationChange: $rotation ${viewModel.isEnable.value}")
-                    if(viewModel.isEnable.value)
+                    if(viewModel.isEnable.value) {
                         viewModel.changeKnobAngle(rotation)
+                        changeBurnerStatus(rotation.toInt())
+                    }
                     else{
                         onError(
                             title = "Knob is Off",

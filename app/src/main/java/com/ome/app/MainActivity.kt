@@ -1,6 +1,8 @@
 package com.ome.app
 
+import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +27,10 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen().apply {
             setKeepOnScreenCondition { viewModel.isSplashScreenLoading }
         }
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+        )
         viewModel.registerConnectionListener()
         setContentView(R.layout.activity_main)
         initFragment()

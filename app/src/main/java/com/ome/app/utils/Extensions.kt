@@ -1549,7 +1549,7 @@ fun RecyclerView.setFullHeight() {
 }
 
 fun Context?.showCustomTab(url: String?) {
-    tryGet { if (this != null && !url.isNullOrEmpty()) {
+    runCatching { if (this != null && !url.isNullOrEmpty()) {
         val intent = CustomTabsIntent.Builder().build()
         intent.launchUrl(this, Uri.parse(url))
     } }

@@ -8,11 +8,11 @@ object ProjectConfig {
     const val targetSdk = 35
 
     const val versionCode = 11
-    const val versionName = "1.0.022-ome-dev"
+    const val versionName = "1.0.024-ome-dev"
 
     val javaVersion = JavaVersion.VERSION_21
 
-    var IS_INTERNAL_TESTING = false
+    var IS_INTERNAL_TESTING = true
 
     const val BASE_URL_DEV = "\"https://app-dev.api.omekitchen.com\""
     const val BASE_URL_SANDBOX = "\"https://app-sandbox.api.omekitchen.com\""
