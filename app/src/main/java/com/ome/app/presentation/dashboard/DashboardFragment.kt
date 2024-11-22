@@ -22,8 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class DashboardFragment :
     BaseFragment<DashboardViewModel, FragmentDashboardBinding>(FragmentDashboardBinding::inflate) {
 
-//    private lateinit var bottomNavigationController: BottomNavigationController
-
     override val viewModel: DashboardViewModel by viewModels()
 
     private val navFragments= listOf(
@@ -33,46 +31,8 @@ class DashboardFragment :
     )
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-//        bottomNavigationController = BottomNavigationController(
-//            bottomGraphs = listOf(
-//                BottomNavigationController.BottomGraph(
-//                    BottomItem.SETTINGS,
-//                    R.navigation.settings_navigation,
-//                    R.id.settingsNavigation
-//                ),
-//                BottomNavigationController.BottomGraph(
-//                    BottomItem.MY_STOVE,
-//                    R.navigation.my_stove_nav_graph,
-//                    R.id.myStoveSetupNavGraph,
-//                    if (viewModel.isStoveInfoExist()) R.id.myStoveFragment else R.id.welcomeFragment
-//                ),
-//                BottomNavigationController.BottomGraph(
-//                    BottomItem.MEMBERS,
-//                    R.navigation.members_navigation,
-//                    R.id.membersNavigation
-//                ),
-//                BottomNavigationController.BottomGraph(
-//                    BottomItem.PROFILE,
-//                    R.navigation.profile_navigation,
-//                    R.id.profileNavigation
-//                )
-//            ),
-//            fragmentManager = childFragmentManager,
-//            containerId = R.id.dashboardContainer
-//        )
-
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.bottomNavigation.applyInsetter {
-//            type(navigationBars = true) {
-//                margin(top = true, bottom = true)
-//            }
-//        }
         initBottomNavigation()
     }
 
@@ -86,7 +46,6 @@ class DashboardFragment :
     }
 
     override fun setupUI() {
-//        setStatusBarAppearance(true)
         when(binding.dashboardViewPager.currentItem){
             0 -> binding.topAppBar.title = getString(R.string.menu_settings)
             1 -> binding.topAppBar.title = getString(R.string.app_name)
@@ -102,9 +61,6 @@ class DashboardFragment :
         binding.dashboardViewPager.adapter = ViewPagerAdapter(navFragments,this)
         binding.bottomNavigation.selectedItemId = R.id.menuMyStove
         binding.dashboardViewPager.setCurrentItem(1, false)
-//        binding.root.post {
-//            binding.dashboardViewPager.setCurrentItem(1, false)
-//        }
         binding.topAppBar.setOnMenuItemClickListener{
             when(it.itemId){
                 R.id.menuLogout -> {
@@ -165,30 +121,6 @@ class DashboardFragment :
                 else -> false
             }
         }
-//        viewModel.connectBottomNavController(
-//            bottomNavigationController.setup(
-//                bottomNavigationView = binding.bottomNavigation,
-//                intent = requireActivity().intent
-//            )
-//        )
     }
 
-    override fun setupObserver() {
-        super.setupObserver()
-//        subscribe(viewModel.bottomBarVisible) {
-//            binding.bottomNavigation.isVisible = it
-//        }
-//        subscribe(viewModel.signOutLiveData) {
-//            navigateSafe(R.id.action_dashboardFragment_to_launchFragment)
-//        }
-//        subscribe(viewModel.stoveExistLiveData) {
-//            if (it) {
-//                binding.bottomNavigation.setEnabledTabState(BottomItem.SETTINGS, true)
-//                binding.bottomNavigation.setEnabledTabState(BottomItem.MEMBERS, true)
-//            } else {
-//                binding.bottomNavigation.setEnabledTabState(BottomItem.SETTINGS, false)
-//                binding.bottomNavigation.setEnabledTabState(BottomItem.MEMBERS, false)
-//            }
-//        }
-    }
 }

@@ -327,6 +327,13 @@
             app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_dashboardFragment_to_stoveSetupBurnersFragment"
             app:destination="@id/stoveSetupBurnersFragment" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_dashboardFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
     </fragment>
 
     <action

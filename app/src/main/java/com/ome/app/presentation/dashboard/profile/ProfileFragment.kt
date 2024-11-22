@@ -33,29 +33,6 @@ class ProfileFragment :
         val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.navHost) as? NavHostFragment
         navController = navHostFragment?.navController
         binding.softwareVersion.text = "Software Version: ${BuildConfig.VERSION_NAME}"
-//        viewModel.initUserDataSubscription()
-
-//        binding.titleTv.applyInsetter {
-//            type(navigationBars = true, statusBars = true) {
-//                padding(horizontal = true)
-//                margin(top = true)
-//            }
-//        }
-//        binding.scroll.applyInsetter {
-//            type(navigationBars = true, statusBars = true) {
-//                padding(bottom = true)
-//            }
-//        }
-//        binding.signOut.setBounceClickListener {
-//            showDialog(
-//                message = SpannableStringBuilder(getString(R.string.confirm_logout)),
-//                onPositiveButtonClick = {
-//                    binding.signOut.startAnimation()
-//                    viewModel.signOut{
-//                        navController?.navigateSafe(R.id.action_dashboardFragment_to_launchFragment)
-//                    }
-//                })
-//        }
 
         if (BuildConfig.DEBUG) {
             binding.deleteAccount.makeVisible()
@@ -69,6 +46,9 @@ class ProfileFragment :
                             navController?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToLaunchFragment())
                         }
                     })
+            }
+            binding.avatarIv.setBounceClickListener {
+                navController?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToWelcomeFragment())
             }
         }
 

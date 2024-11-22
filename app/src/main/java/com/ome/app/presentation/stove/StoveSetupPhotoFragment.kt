@@ -1,14 +1,13 @@
 package com.ome.app.presentation.stove
 
-import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupPhotoBinding
 import com.ome.app.domain.model.state.StoveType
+import com.ome.app.presentation.views.camera.ImageViewDialogFragment
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
@@ -16,29 +15,16 @@ import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class StoveSetupPhotoFragment :
-    BasePhotoFragment<StoveSetupPhotoViewModel, FragmentStoveSetupPhotoBinding>(
+    BasePhotoFragment<FragmentStoveSetupPhotoBinding>(
         FragmentStoveSetupPhotoBinding::inflate
     ) {
 
-    override val viewModel: StoveSetupPhotoViewModel by activityViewModels()
-
     private val args by navArgs<StoveSetupPhotoFragmentArgs>()
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setStatusBarAppearance(true)
 
-//        viewModel.currentContentUri?.let {
-//            binding.shaftIv.setImageURI(it)
-//        }
-
-//        binding.label1.applyInsetter {
-//            type(navigationBars = true, statusBars = true) {
-//                padding(horizontal = true)
-//                margin(top = true)
-//            }
-//        }
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.takePhoto.setBounceClickListener{
             if(binding.takePhoto.text == getString(R.string.take_photo))
@@ -51,10 +37,6 @@ class StoveSetupPhotoFragment :
         }
     }
 
-    override fun handleTakeAPhotoResult(uri: Uri) {
-//        binding.shaftIv.setImageURI(uri)
-//        viewModel.uploadImage()
-    }
 
     override fun setupObserver() {
         super.setupObserver()
@@ -77,6 +59,9 @@ class StoveSetupPhotoFragment :
             it.firstOrNull()?.let{ photoFile->
                 viewModel.currentFile = photoFile
                 binding.shaftIv.loadDrawable(photoFile)
+                binding.shaftIv.setBounceClickListener {
+                    ImageViewDialogFragment(listOf(photoFile)).show(childFragmentManager, "FullScreenImageDialog")
+                }
                 binding.retakePhoto.visible()
                 binding.takePhoto.text = getString(R.string.use_photo)
 //                viewModel.uploadImage(photoFile)

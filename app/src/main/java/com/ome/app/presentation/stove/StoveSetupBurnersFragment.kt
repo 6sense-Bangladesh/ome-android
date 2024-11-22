@@ -29,10 +29,6 @@ class StoveSetupBurnersFragment :
     private val args by navArgs<StoveSetupBurnersFragmentArgs>()
 
     override fun setupUI() {
-        mainViewModel.knobs.value.isNotEmpty {
-            binding.textWarn.visible()
-            binding.continueBtn.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.gray)
-        }
         args.let {
             viewModel.brand = it.params.brand
             it.params.type?.apply {
@@ -41,6 +37,10 @@ class StoveSetupBurnersFragment :
             }
         }
         if (args.params.isEditMode) {
+            mainViewModel.knobs.value.isNotEmpty {
+                binding.textWarn.visible()
+                binding.continueBtn.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.gray)
+            }
             binding.continueBtn.text = getString(R.string.save)
             mainViewModel.userInfo.value.stoveOrientation.stoveOrientation
         }else{
@@ -86,7 +86,7 @@ class StoveSetupBurnersFragment :
             }
         }
         binding.continueBtn.setBounceClickListener  {
-            if(mainViewModel.knobs.value.isNotEmpty()) return@setBounceClickListener
+            if(mainViewModel.knobs.value.isNotEmpty() && args.params.isEditMode) return@setBounceClickListener
             if (args.params.isEditMode) {
                 binding.continueBtn.startAnimation()
                 mainViewModel.stoveData.stoveOrientation = viewModel.stoveOrientation?.number

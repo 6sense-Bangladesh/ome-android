@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ome.app.databinding.ItemPhotoBinding
-import com.ome.app.presentation.stove.StoveSetupPhotoViewModel
+import com.ome.app.presentation.stove.PhotoCaptureViewModel
 import com.ome.app.utils.setBounceClickListener
 
 class PhotoAdapter(
     private val items: List<Bitmap>,
-    private val viewModel: StoveSetupPhotoViewModel
+    private val viewModel: PhotoCaptureViewModel
 ) : RecyclerView.Adapter<PhotoAdapter.ViewHolder>() {
 
     var onItemClickListener: ((Int) -> Unit)? = null

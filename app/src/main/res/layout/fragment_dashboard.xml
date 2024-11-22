@@ -33,31 +33,6 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        tools:visibility="visible"
-        layout="@layout/fragment_my_stove"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
-        app:layout_constraintTop_toBottomOf="@+id/topAppBar"/>
-
-<!--    <androidx.fragment.app.FragmentContainerView-->
-<!--        android:id="@+id/dashboardContainer"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:visibility="gone"-->
-<!--        android:layout_height="match_parent"/>-->
-
-
-<!--    <com.ome.app.ui.views.OmeNavBar-->
-<!--        android:id="@+id/bottomNavigation2"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:visibility="gone"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"

@@ -94,10 +94,7 @@ android {
     }
     packaging {
         resources {
-            pickFirsts += setOf(
-                "META-INF/INDEX.LIST",
-                "META-INF/io.netty.versions.properties"
-            )
+            pickFirsts += setOf("META-INF/INDEX.LIST", "META-INF/io.netty.versions.properties")
         }
     }
 }
@@ -150,7 +147,6 @@ dependencies {
     // Amplify coroutines
     //noinspection GradleDependency
     implementation("com.amplifyframework:core-kotlin:0.22.8") //Don't upgrade this version
-    implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
 
     //Phone validator
     implementation("com.googlecode.libphonenumber:libphonenumber:8.13.49")
@@ -180,9 +176,10 @@ dependencies {
     implementation("com.tinder.scarlet:websocket-okhttp:$scarlet")
 
     implementation("com.neovisionaries:nv-websocket-client:2.14")
+    implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
+
 
     testImplementation("junit:junit:4.13.2")
-
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 

@@ -19,21 +19,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.ome.app.R
 import com.ome.app.databinding.FragmentCaptureBinding
-import com.ome.app.presentation.stove.StoveSetupPhotoViewModel
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.gone
-import com.ome.app.utils.loge
-import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.toBitmap
-import com.ome.app.utils.toast
-import com.ome.app.utils.tryGet
-import com.ome.app.utils.visible
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.ome.app.presentation.stove.PhotoCaptureViewModel
+import com.ome.app.utils.*
+import kotlinx.coroutines.*
 import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.ExecutorService
@@ -43,7 +31,7 @@ class CaptureDialogFragment(
     private val photoFile: (File) -> Unit = {}
 ) : DialogFragment() {
     private lateinit var binding: FragmentCaptureBinding
-    private val viewModel: StoveSetupPhotoViewModel by activityViewModels()
+    private val viewModel: PhotoCaptureViewModel by activityViewModels()
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
     private var photoAdapter: PhotoAdapter? = null
@@ -176,7 +164,6 @@ class CaptureDialogFragment(
 
     private fun takePhoto() {
 //        viewModel.processingCount++
-        viewModel.isProcessing = true
         binding.loadingLayout.visible()
         // Get a stable reference of the modifiable image capture use case
         val imageCapture = imageCapture ?: return
@@ -221,7 +208,6 @@ class CaptureDialogFragment(
                             }
                         }
                         viewModel.addPhoto(photoFile)
-                        viewModel.isProcessing = false
                         onProcessingEnd()
 //                        if(binding.loadingLayout.isVisible)
 //                            onProcessingEnd()

@@ -41,14 +41,10 @@ abstract class BaseViewModel: ViewModel() {
     ): Job {
         return viewModelScope.launch(dispatcher + coroutineExceptionHandler) {
             try {
-                withContext(mainContext) {
-                    if(showLoading) loadingFlow.emit(true)
-                }
-                this.block()
+                if(showLoading) loadingFlow.emit(true)
+                block()
             } finally {
-                withContext(mainContext) {
-                    if(showLoading) loadingFlow.emit(false)
-                }
+                if(showLoading) loadingFlow.emit(false)
             }
         }
     }
