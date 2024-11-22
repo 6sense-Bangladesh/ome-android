@@ -43,19 +43,11 @@ class DirectionSelectionFragment :
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
         binding.continueBtn.setOnClickListener {
-            if(args.params.isEditMode){
+            if(args.params.isEditMode)
                 viewModel.updateDirection(onEnd = mainViewModel::getAllKnobs)
-            }else {
-                navigateSafe(
-                    DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
-                        DeviceCalibrationFragmentParams(
-                            isComeFromSettings = args.params.isComeFromSettings,
-                            isDualKnob = args.params.isDualKnob,
-                            rotateDir = viewModel.clockwiseDir,
-                            macAddress = args.params.macAddress
-                        )
-                    )
-                )
+            else {
+                binding.continueBtn.startAnimation()
+                mainViewModel.connectToSocket()
             }
         }
         binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
@@ -66,30 +58,31 @@ class DirectionSelectionFragment :
                 }
             }
         }
-//        binding.counterClockWiseRl.setOnClickListener {
-//            binding.clockWiseCoverIv.makeVisible()
-//            binding.counterClockWiseCoverIv.makeGone()
-//            viewModel.clockwiseDir = -1
-//            enableContinueButton()
-//        }
-//        binding.clockWiseRl.setOnClickListener {
-//            binding.counterClockWiseCoverIv.makeVisible()
-//            binding.clockWiseCoverIv.makeGone()
-//            viewModel.clockwiseDir = 1
-//            enableContinueButton()
-//        }
-
     }
 
 
     override fun setupObserver() {
         super.setupObserver()
+        mainViewModel.socketConnected.collectWithLifecycle {
+            binding.continueBtn.revertAnimation()
+            navigateSafe(
+                DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
+                    DeviceCalibrationFragmentParams(
+                        isComeFromSettings = args.params.isComeFromSettings,
+                        isDualKnob = args.params.isDualKnob,
+                        rotateDir = viewModel.clockwiseDir,
+                        macAddress = args.params.macAddress
+                    )
+                )
+            )
+        }
         viewModel.loadingFlow.collectWithLifecycle {
             if(it)
                 binding.continueBtn.startAnimation()
             else {
                 binding.continueBtn.revertAnimation()
-                onBackPressed()
+                if(args.params.isEditMode)
+                    onBackPressed()
             }
         }
     }

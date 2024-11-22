@@ -19,10 +19,15 @@ import com.ome.app.utils.orMinusOne
 import com.tinder.scarlet.Scarlet
 import com.tinder.scarlet.messageadapter.gson.GsonMessageAdapter
 import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import kotlin.coroutines.coroutineContext
+import kotlin.time.Duration.Companion.seconds
 
 class WebSocketManager(
     private val context: Context
@@ -54,7 +59,10 @@ class WebSocketManager(
             .addMessageAdapterFactory(GsonMessageAdapter.Factory())
             .addStreamAdapterFactory(FlowStreamAdapter.Factory)
             .build()
-        subscribe()
+        CoroutineScope(coroutineContext).launch {
+            subscribe()
+        }
+        delay(4.seconds)
     }
 
 
@@ -95,11 +103,6 @@ class WebSocketManager(
                         }.toMap()
                     }
                     KnobEntity.MOUNTING_SURFACE -> {
-//                        knobMountingSurfaceFlow.emit(KnobMountingSurface(
-//                            it.macAddr.orEmpty(),
-//                            knobEntity.key,
-//                            it.value as String
-//                        ))
                         if(it.macAddr == null) return@collect
                         knobState.value = knobState.value.toMutableMap().apply {
                             val currentKnobState = this[it.macAddr]
@@ -108,11 +111,6 @@ class WebSocketManager(
                         }.toMap()
                     }
                     KnobEntity.BATTERY -> {
-//                        knobBatteryFlow.emit(KnobBattery(
-//                            it.macAddr.orEmpty(),
-//                            knobEntity.key,
-//                            value
-//                        ))
                         if(it.macAddr == null) return@collect
                         knobState.value = knobState.value.toMutableMap().apply {
                             val currentKnobState = this[it.macAddr]
@@ -121,11 +119,6 @@ class WebSocketManager(
                         }.toMap()
                     }
                     KnobEntity.TEMPERATURE -> {
-//                        knobTemperatureFlow.emit(KnobTemperature(
-//                            it.macAddr.orEmpty(),
-//                            knobEntity.key,
-//                            it.value as Double
-//                        ))
                         if(it.macAddr == null) return@collect
                         knobState.value = knobState.value.toMutableMap().apply {
                             val currentKnobState = this[it.macAddr]
@@ -134,11 +127,6 @@ class WebSocketManager(
                         }.toMap()
                     }
                     KnobEntity.RSSI -> {
-//                        knobRssiFlow.emit(KnobRssi(
-//                            it.macAddr.orEmpty(),
-//                            knobEntity.key,
-//                            it.value as Double
-//                        ))
                         if(it.macAddr == null) return@collect
                         knobState.value = knobState.value.toMutableMap().apply {
                             val currentKnobState = this[it.macAddr]
@@ -148,13 +136,6 @@ class WebSocketManager(
 
                     }
                     KnobEntity.CONNECT_STATUS -> {
-//                        knobConnectStatusFlow.emit(
-//                            KnobConnectStatus(
-//                                it.macAddr.orEmpty(),
-//                                knobEntity.key,
-//                                it.value as String
-//                            )
-//                        )
                         if(it.macAddr == null) return@collect
                         knobState.value = knobState.value.toMutableMap().apply {
                             val currentKnobState = this[it.macAddr]
@@ -163,13 +144,6 @@ class WebSocketManager(
                         }.toMap()
                     }
                     KnobEntity.CONNECT_IP_ADD -> {
-//                        knobConnectIpAddrFlow.emit(
-//                            KnobConnectIpAddr(
-//                                it.macAddr.orEmpty(),
-//                                knobEntity.key,
-//                                it.value as String
-//                            )
-//                        )
                         if(it.macAddr == null) return@collect
                         knobState.value = knobState.value.toMutableMap().apply {
                             val currentKnobState = this[it.macAddr]
@@ -178,13 +152,6 @@ class WebSocketManager(
                         }.toMap()
                     }
                     KnobEntity.FIRMWARE_VERSION -> {
-//                        knobFirmwareVersionFlow.emit(
-//                            KnobFirmwareVersion(
-//                                it.macAddr.orEmpty(),
-//                                knobEntity.key,
-//                                it.value as String
-//                            )
-//                        )
                         if(it.macAddr == null) return@collect
                         knobState.value = knobState.value.toMutableMap().apply {
                             val currentKnobState = this[it.macAddr]
@@ -193,13 +160,6 @@ class WebSocketManager(
                         }.toMap()
                     }
                     KnobEntity.KNOB_REPORTED_SCHEDULE_STOP -> {
-//                        knobReportedScheduleStopFlow.emit(
-//                            KnobReportedScheduleStop(
-//                                it.macAddr.orEmpty(),
-//                                knobEntity.key,
-//                                it.value as Int
-//                            )
-//                        )
                         if(it.macAddr == null) return@collect
                         knobState.value = knobState.value.toMutableMap().apply {
                             val currentKnobState = this[it.macAddr]
@@ -208,11 +168,9 @@ class WebSocketManager(
                         }.toMap()
                     }
                     KnobEntity.KNOB_POST, KnobEntity.KNOB_PATCH, KnobEntity.KNOB_SET_CALIBRATION, KnobEntity.KNOB_DELETE -> {
-//                        stoveRepository.getAllKnobs()
                         needRefresh = false
                     }
                     KnobEntity.USER_POST, KnobEntity.USER_PATCH, KnobEntity.USER_DELETE -> {
-//                        userRepository.getUserData()
                         needRefresh = false
                     }
                     null -> needRefresh = false

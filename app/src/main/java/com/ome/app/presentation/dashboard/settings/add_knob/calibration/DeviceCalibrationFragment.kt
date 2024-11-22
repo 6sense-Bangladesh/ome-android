@@ -32,7 +32,6 @@ class DeviceCalibrationFragment :
             binding.labelZone.text = getString(R.string.dual_zone_knob)
         else
             binding.labelZone.text = getString(R.string.single_zone_knob)
-        mainViewModel.connectToSocket()
         binding.knobView.enableFullLabel()
     }
 

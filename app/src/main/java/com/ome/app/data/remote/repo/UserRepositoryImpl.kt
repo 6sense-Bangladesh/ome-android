@@ -1,6 +1,7 @@
 package com.ome.app.data.remote.repo
 
 import com.ome.app.data.remote.UserService
+import com.ome.app.domain.NetworkCall.respectErrorApiCall
 import com.ome.app.domain.NetworkCall.safeApiCall
 import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.model.network.request.CreateUserRequest
@@ -33,7 +34,9 @@ class UserRepositoryImpl(
     }
 
     override suspend fun uploadImage(url: String, requestBody: RequestBody) {
-        userService.uploadImage(url = url, body = requestBody)
+        respectErrorApiCall(coroutineContext) {
+            userService.uploadImage(url = url, body = requestBody)
+        }
     }
 
     override suspend fun createUser(params: CreateUserRequest): ResponseWrapper<UserResponse> {
@@ -52,6 +55,8 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun deleteUser(): BaseResponse = userService.deleteUser()
+    override suspend fun deleteUser(): BaseResponse = respectErrorApiCall(coroutineContext) {
+        userService.deleteUser()
+    }
 
 }

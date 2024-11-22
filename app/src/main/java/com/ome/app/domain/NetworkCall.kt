@@ -33,11 +33,40 @@ object NetworkCall {
         }
     }
 
+    suspend fun <T> respectErrorApiCall(dispatcher: CoroutineContext, apiCall: suspend () -> T): T {
+        return withContext(dispatcher) {
+            try {
+                apiCall.invoke()
+            } catch (throwable: Throwable) {
+                when (throwable) {
+                    is UnknownHostException -> error(ErrorType.NO_INTERNET.message)
+                    is IOException -> throw IOException(ErrorType.NETWORK.message)
+                    is HttpException -> {
+                        val errorResponse = convertErrorBody(throwable)
+                        error(errorResponse?.message?.formatedError() ?: ErrorType.DEFAULT.message)
+                    }
+                    else -> {
+                        if(throwable.message != null)
+                            throw throwable
+                        else
+                            error(ErrorType.DEFAULT.message)
+                    }
+                }
+            }
+        }
+    }
+
     private fun convertErrorBody(throwable: HttpException): ErrorResponse? {
         return try {
             Gson().fromJson(throwable.response()?.errorBody()?.string(), ErrorResponse::class.java)
         } catch (exception: Exception) {
             null
+        }
+    }
+
+    private fun String.formatedError(): String {
+        return "\\b[a-z]".toRegex().replace(this) { matchResult ->
+            matchResult.value.uppercase()
         }
     }
 

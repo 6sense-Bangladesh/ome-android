@@ -18,7 +18,7 @@ sealed class ResponseWrapper<out T> {
 }
 
 enum class ErrorType(val message: String){
-    DEFAULT("Something went wrong"),
-    NETWORK("Server not responding"),
-    NO_INTERNET("No internet connection")
+    DEFAULT("Something went wrong."),
+    NETWORK("Server not responding."),
+    NO_INTERNET("No internet connection.")
 }
