@@ -14,20 +14,20 @@ class AutoShutOffViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    val autoShutOffLiveData: SingleLiveEvent<String> = SingleLiveEvent()
+    val autoShutOffLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
     val autoShutOffResponseLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
-    var selectedTime = 0
+    var selectedTime = -1
     var timeList = listOf(
-        "15 Minutes",
-        "20 Minutes",
-        "25 Minutes",
-        "30 Minutes",
-        "35 Minutes",
-        "40 Minutes",
-        "45 Minutes",
-        "50 Minutes",
-        "55 Minutes",
-        "60 Minutes"
+        "15 Minutes" to 15,
+        "20 Minutes" to 20,
+        "25 Minutes" to 25,
+        "30 Minutes" to 30,
+        "35 Minutes" to 35,
+        "40 Minutes" to 40,
+        "45 Minutes" to 45,
+        "50 Minutes" to 50,
+        "55 Minutes" to 55,
+        "60 Minutes" to 60
     )
 
 
@@ -35,22 +35,22 @@ class AutoShutOffViewModel @Inject constructor(
         userRepository.userFlow.collect {
             it?.stoveAutoOffMins?.let { value ->
                 selectedTime = value
-                autoShutOffLiveData.postValue("$value Minutes")
+                autoShutOffLiveData.postValue(timeList.indexOfFirst { it.second == value })
             }
         }
     }
 
 
     fun updateAutoShutOffTime() = launch(ioContext) {
-        userRepository.userFlow.value?.stoveAutoOffMins?.let {
-            if (it != selectedTime) {
-                stoveRepository.updateStove(
-                    StoveRequest(stoveAutoOffMins = selectedTime),
-                    userRepository.userFlow.value?.stoveId ?: ""
-                )
-                userRepository.getUserData()
-                autoShutOffResponseLiveData.postValue(true)
-            }
+        if (selectedTime != -1) {
+            stoveRepository.updateStove(
+                StoveRequest(stoveAutoOffMins = selectedTime),
+                userRepository.userFlow.value?.stoveId ?: ""
+            )
+            userRepository.getUserData()
+            autoShutOffResponseLiveData.postValue(true)
+        }else{
+            error("Please select a time")
         }
 
     }
