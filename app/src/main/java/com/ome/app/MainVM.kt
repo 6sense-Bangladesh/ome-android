@@ -168,17 +168,18 @@ class MainVM @Inject constructor(
     }
 
     fun connectToSocket() = launch(ioContext) {
-        webSocketManager.onSocketConnect = {
+//        webSocketManager.onSocketConnect = {
 //            delay(3.seconds)
-            if(it) socketConnected.emit(Unit)
-            else error("Socket connection failed.")
-        }
+//            if(it) socketConnected.emit(Unit)
+//            else error("Socket connection failed.")
+//        }
         val knobs = stoveRepository.getAllKnobs()
         savedStateHandle["knobs"] = knobs.toList()
         try {
             preferencesProvider.getUserId()?.let { userId ->
                 if(knobs.isNotEmpty()){
                     webSocketManager.initWebSocket(knobs, userId)
+//                    socketConnected.emit(Unit)
                 }else error("Error with socket connection.")
             }
         }

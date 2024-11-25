@@ -2,6 +2,7 @@ package com.ome.app.presentation.dashboard.settings.add_knob.zone
 
 import android.os.Parcelable
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentZoneSelectionBinding
 import com.ome.app.presentation.base.BaseFragment
@@ -12,7 +13,10 @@ import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class ZoneSelectionFragment :
@@ -30,7 +34,20 @@ class ZoneSelectionFragment :
         binding.continueBtn.setBounceClickListener {
             if (viewModel.isDualKnob) {
                 binding.continueBtn.startAnimation()
-                mainViewModel.connectToSocket()
+                lifecycleScope.launch {
+                    delay(3.seconds)
+                    binding.continueBtn.revertAnimation()
+                    navigateSafe(
+                        ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
+                            DeviceCalibrationFragmentParams(
+                                isComeFromSettings = args.params.isComeFromSettings,
+                                isDualKnob = viewModel.isDualKnob,
+                                macAddress =  args.params.macAddrs
+                            )
+                        )
+                    )
+                }
+//                mainViewModel.connectToSocket()
             } else {
                 navigateSafe(
                     ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(

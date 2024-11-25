@@ -2,6 +2,7 @@ package com.ome.app.presentation.dashboard.settings.add_knob.direction
 
 import android.os.Parcelable
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentDirectionSelectionBinding
 import com.ome.app.domain.model.state.Rotation
@@ -13,7 +14,10 @@ import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.orFalse
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class DirectionSelectionFragment :
@@ -47,7 +51,21 @@ class DirectionSelectionFragment :
                 viewModel.updateDirection(onEnd = mainViewModel::getAllKnobs)
             else {
                 binding.continueBtn.startAnimation()
-                mainViewModel.connectToSocket()
+                lifecycleScope.launch {
+                    delay(3.seconds)
+                    binding.continueBtn.revertAnimation()
+                    navigateSafe(
+                        DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
+                            DeviceCalibrationFragmentParams(
+                                isComeFromSettings = args.params.isComeFromSettings,
+                                isDualKnob = args.params.isDualKnob,
+                                rotateDir = viewModel.clockwiseDir,
+                                macAddress = args.params.macAddress
+                            )
+                        )
+                    )
+                }
+//                mainViewModel.connectToSocket()
             }
         }
         binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
