@@ -58,6 +58,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                     }
                     KnobSocketMessageType.SET_WIFI -> {
                         if (message == "ok") {
+                            delay(1.seconds)
                             sendMessage(KnobSocketMessageType.REBOOT)
 //                        withDelay(2000) {
 //                            disconnectFromNetwork()
