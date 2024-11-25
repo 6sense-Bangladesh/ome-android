@@ -22,14 +22,12 @@ import com.ome.app.utils.isFalse
 import com.ome.app.utils.logi
 import com.ome.app.utils.orMinusOne
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 
 @HiltViewModel
@@ -38,7 +36,7 @@ class MainVM @Inject constructor(
     private val preferencesProvider: PreferencesProvider,
     private val userRepository: UserRepository,
     private val stoveRepository: StoveRepository,
-    private val webSocketManager: WebSocketManager,
+    val webSocketManager: WebSocketManager,
     private val savedStateHandle: SavedStateHandle,
     val connectionStatusListener: ConnectionStatusListener
 ) : BaseViewModel() {
@@ -168,11 +166,11 @@ class MainVM @Inject constructor(
     }
 
     fun connectToSocket() = launch(ioContext) {
-//        webSocketManager.onSocketConnect = {
-//            delay(3.seconds)
-//            if(it) socketConnected.emit(Unit)
-//            else error("Socket connection failed.")
-//        }
+        webSocketManager.onSocketConnect = {
+            delay(3.seconds)
+            if(it) socketConnected.emit(Unit)
+            else error("Socket connection failed.")
+        }
         val knobs = stoveRepository.getAllKnobs()
         savedStateHandle["knobs"] = knobs.toList()
         try {

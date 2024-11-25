@@ -16,16 +16,19 @@ import com.ome.app.domain.model.state.mountingSurface
 import com.ome.app.utils.FlowStreamAdapter
 import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
 import com.ome.app.utils.orMinusOne
+import com.ome.app.utils.tryInMain
 import com.tinder.scarlet.Scarlet
 import com.tinder.scarlet.messageadapter.gson.GsonMessageAdapter
 import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import kotlin.coroutines.coroutineContext
+import kotlin.time.Duration.Companion.minutes
 
 class WebSocketManager(
     private val context: Context
@@ -37,7 +40,7 @@ class WebSocketManager(
     val knobAngleFlow: MutableStateFlow<KnobAngle?> = MutableStateFlow(null)
 
     var onSocketConnect: suspend (Boolean) -> Unit = {}
-    private var connected = true
+    var connected = false
 
 
 //    private val knobBatteryFlow: MutableStateFlow<KnobBattery?> = MutableStateFlow(null)
@@ -87,13 +90,12 @@ class WebSocketManager(
 
     suspend fun subscribe() {
         try{
-//            tryInMain {
-//                delay(1.2.minutes)
-//                if (!connected) onSocketConnect(false)
-//            }
-//            onSocketConnect(true)
-//            connected = true
+            tryInMain {
+                delay(1.2.minutes)
+                onSocketConnect(connected)
+            }
             getKnobService()?.knobMessageEvent()?.collect {
+                connected = true
                 Log.d("getKnobService", "subscribe: ${it.name} - ${it.name} ${it.value} ${it.macAddr}")
                 val knobEntity = it.name.knobEntity
                 var needRefresh = true
@@ -185,6 +187,7 @@ class WebSocketManager(
                 }
                 if(needRefresh)
                     knobState.value = knobState.value.toMutableMap()
+                onSocketConnect(connected)
             }
         } catch (ex: Exception){
             ex.printStackTrace()

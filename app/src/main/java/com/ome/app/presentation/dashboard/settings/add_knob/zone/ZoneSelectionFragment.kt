@@ -34,20 +34,14 @@ class ZoneSelectionFragment :
         binding.continueBtn.setBounceClickListener {
             if (viewModel.isDualKnob) {
                 binding.continueBtn.startAnimation()
-                lifecycleScope.launch {
-                    delay(3.seconds)
-                    binding.continueBtn.revertAnimation()
-                    navigateSafe(
-                        ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
-                            DeviceCalibrationFragmentParams(
-                                isComeFromSettings = args.params.isComeFromSettings,
-                                isDualKnob = viewModel.isDualKnob,
-                                macAddress =  args.params.macAddrs
-                            )
-                        )
-                    )
+                if(!mainViewModel.webSocketManager.connected)
+                    mainViewModel.connectToSocket()
+                else {
+                    lifecycleScope.launch {
+                        delay(1.seconds)
+                        mainViewModel.socketConnected.emit(Unit)
+                    }
                 }
-//                mainViewModel.connectToSocket()
             } else {
                 navigateSafe(
                     ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(

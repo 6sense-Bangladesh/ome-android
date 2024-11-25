@@ -51,21 +51,14 @@ class DirectionSelectionFragment :
                 viewModel.updateDirection(onEnd = mainViewModel::getAllKnobs)
             else {
                 binding.continueBtn.startAnimation()
-                lifecycleScope.launch {
-                    delay(3.seconds)
-                    binding.continueBtn.revertAnimation()
-                    navigateSafe(
-                        DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
-                            DeviceCalibrationFragmentParams(
-                                isComeFromSettings = args.params.isComeFromSettings,
-                                isDualKnob = args.params.isDualKnob,
-                                rotateDir = viewModel.clockwiseDir,
-                                macAddress = args.params.macAddress
-                            )
-                        )
-                    )
+                if(!mainViewModel.webSocketManager.connected)
+                    mainViewModel.connectToSocket()
+                else {
+                    lifecycleScope.launch {
+                        delay(1.seconds)
+                        mainViewModel.socketConnected.emit(Unit)
+                    }
                 }
-//                mainViewModel.connectToSocket()
             }
         }
         binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
