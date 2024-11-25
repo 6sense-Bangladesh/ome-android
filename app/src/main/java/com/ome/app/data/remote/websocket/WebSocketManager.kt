@@ -9,10 +9,7 @@ import com.ome.app.domain.model.network.response.asKnobState
 import com.ome.app.domain.model.network.websocket.KnobAngle
 import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.network.websocket.MacAddress
-import com.ome.app.domain.model.state.KnobEntity
-import com.ome.app.domain.model.state.connectionState
-import com.ome.app.domain.model.state.knobEntity
-import com.ome.app.domain.model.state.mountingSurface
+import com.ome.app.domain.model.state.*
 import com.ome.app.utils.FlowStreamAdapter
 import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
 import com.ome.app.utils.orMinusOne
@@ -53,6 +50,7 @@ class WebSocketManager(
 //    private val knobTemperatureFlow: MutableStateFlow<KnobTemperature?> = MutableStateFlow(null)
 
     suspend fun initWebSocket(knobs: List<KnobDto>, userId: String) {
+        connected = false
         val url = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=${knobs.map { knob -> knob.macAddr }.joinToString(separator = ",") { it }}&inirvUid=$userId"
         val knobStates= knobs.associateBy { it.macAddr }.mapValues { it.value.asKnobState }
         knobState.value = knobStates
@@ -95,7 +93,6 @@ class WebSocketManager(
                 onSocketConnect(connected)
             }
             getKnobService()?.knobMessageEvent()?.collect {
-                connected = true
                 Log.d("getKnobService", "subscribe: ${it.name} - ${it.name} ${it.value} ${it.macAddr}")
                 val knobEntity = it.name.knobEntity
                 var needRefresh = true
@@ -150,6 +147,8 @@ class WebSocketManager(
                         knobState.value = knobState.value.toMutableMap().apply {
                             val currentKnobState = this[it.macAddr]
                             val value = it.value.toString().connectionState
+                            connected = value == ConnectionState.Online
+                            onSocketConnect(connected)
                             this[it.macAddr] = currentKnobState?.copy(connectStatus = value) ?: KnobState(connectStatus = value)
                         }.toMap()
                     }
@@ -187,7 +186,6 @@ class WebSocketManager(
                 }
                 if(needRefresh)
                     knobState.value = knobState.value.toMutableMap()
-                onSocketConnect(connected)
             }
         } catch (ex: Exception){
             ex.printStackTrace()

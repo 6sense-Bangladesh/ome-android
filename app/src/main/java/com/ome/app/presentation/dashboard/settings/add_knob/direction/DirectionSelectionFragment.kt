@@ -55,8 +55,8 @@ class DirectionSelectionFragment :
                     mainViewModel.connectToSocket()
                 else {
                     lifecycleScope.launch {
-                        delay(1.seconds)
-                        mainViewModel.socketConnected.emit(Unit)
+                        delay(3.seconds)
+                        mainViewModel.socketConnected.emit(true)
                     }
                 }
             }
@@ -76,16 +76,18 @@ class DirectionSelectionFragment :
         super.setupObserver()
         mainViewModel.socketConnected.collectWithLifecycle {
             binding.continueBtn.revertAnimation()
-            navigateSafe(
-                DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
-                    DeviceCalibrationFragmentParams(
-                        isComeFromSettings = args.params.isComeFromSettings,
-                        isDualKnob = args.params.isDualKnob,
-                        rotateDir = viewModel.clockwiseDir,
-                        macAddress = args.params.macAddress
+            if(it) {
+                navigateSafe(
+                    DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
+                        DeviceCalibrationFragmentParams(
+                            isComeFromSettings = args.params.isComeFromSettings,
+                            isDualKnob = args.params.isDualKnob,
+                            rotateDir = viewModel.clockwiseDir,
+                            macAddress = args.params.macAddress
+                        )
                     )
                 )
-            )
+            }else onError("Socket connection failed.")
         }
         viewModel.loadingFlow.collectWithLifecycle {
             if(it)

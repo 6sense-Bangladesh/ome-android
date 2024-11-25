@@ -54,7 +54,7 @@ class MainVM @Inject constructor(
     val startDestinationInitialized = SingleLiveEvent<Pair<Int, Bundle?>>()
     val startDestination = savedStateHandle.getStateFlow<Int?>("startDestination", null)
 
-    val socketConnected = MutableSharedFlow<Unit>()
+    val socketConnected = MutableSharedFlow<Boolean>()
 
     var isSplashScreenLoading = true
     var startDestinationJob: Job? = null
@@ -169,9 +169,11 @@ class MainVM @Inject constructor(
     fun connectToSocket() = launch(ioContext) {
         webSocketManager.onSocketConnect = {
             "onSocketConnect $it".loge()
-            delay(3.seconds)
-            if(it) socketConnected.emit(Unit)
-            else error("Socket connection failed.")
+            if(it) {
+                delay(5.seconds)
+                socketConnected.emit(true)
+            }else
+                socketConnected.emit(false)
         }
         val knobs = stoveRepository.getAllKnobs()
         savedStateHandle["knobs"] = knobs.toList()

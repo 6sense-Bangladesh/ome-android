@@ -38,8 +38,8 @@ class ZoneSelectionFragment :
                     mainViewModel.connectToSocket()
                 else {
                     lifecycleScope.launch {
-                        delay(1.seconds)
-                        mainViewModel.socketConnected.emit(Unit)
+                        delay(3.seconds)
+                        mainViewModel.socketConnected.emit(true)
                     }
                 }
             } else {
@@ -69,15 +69,17 @@ class ZoneSelectionFragment :
         super.setupObserver()
         mainViewModel.socketConnected.collectWithLifecycle {
             binding.continueBtn.revertAnimation()
-            navigateSafe(
-                ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
-                    DeviceCalibrationFragmentParams(
-                        isComeFromSettings = args.params.isComeFromSettings,
-                        isDualKnob = viewModel.isDualKnob,
-                        macAddress =  args.params.macAddrs
+            if(it) {
+                navigateSafe(
+                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
+                        DeviceCalibrationFragmentParams(
+                            isComeFromSettings = args.params.isComeFromSettings,
+                            isDualKnob = viewModel.isDualKnob,
+                            macAddress = args.params.macAddrs
+                        )
                     )
                 )
-            )
+            }else onError("Socket connection failed.")
         }
     }
 
