@@ -12,6 +12,7 @@ import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.utils.InAppUpdate
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.subscribe
+import com.ome.app.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,6 +36,9 @@ class MainActivity : AppCompatActivity() {
         initFragment()
         subscribeConnectionListener()
         inAppUpdate.checkForUpdate()
+        subscribe(viewModel.defaultErrorLiveData){
+            toast(it)
+        }
     }
 
     override fun onResume() {
@@ -65,15 +69,16 @@ class MainActivity : AppCompatActivity() {
                 when (status) {
                     ConnectionStatusListener.ConnectionStatusState.Default,
                     ConnectionStatusListener.ConnectionStatusState.HasConnection,
-                    ConnectionStatusListener.ConnectionStatusState.Dismissed -> {
-                    }
+                    ConnectionStatusListener.ConnectionStatusState.Dismissed -> Unit
 
                     ConnectionStatusListener.ConnectionStatusState.NoConnection -> {
                         viewModel.isSplashScreenLoading = false
                         viewModel.startDestinationJob?.cancel()
                         val navHostFragment =
                             supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
-                        navHostFragment.navController.navigate(R.id.actionInternetConnectionFragment)
+                        runCatching {
+                            navHostFragment.navController.navigate(R.id.actionInternetConnectionFragment)
+                        }
                     }
                 }
             }

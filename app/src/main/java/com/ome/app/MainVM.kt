@@ -18,11 +18,14 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
-import com.ome.app.utils.*
+import com.ome.app.utils.isFalse
+import com.ome.app.utils.logi
+import com.ome.app.utils.orMinusOne
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -43,12 +46,16 @@ class MainVM @Inject constructor(
     private var knobState = savedStateHandle.getStateFlow("knobState", mutableMapOf<MacAddress, KnobState>())
     var knobs = savedStateHandle.getStateFlow("knobs", listOf<KnobDto>())
 
-    override var defaultErrorHandler = CoroutineExceptionHandler { _, _ ->
-        startDestinationInitialized.postValue(R.id.launchFragment to null)
-//        savedStateHandle["startDestination"] = R.id.launchFragment
+    override var defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
+        if(isSplashScreenLoading)
+            savedStateHandle["startDestination"] = R.id.launchFragment
+        else
+            defaultErrorLiveData.postValue(throwable.message)
     }
     val startDestinationInitialized = SingleLiveEvent<Pair<Int, Bundle?>>()
     val startDestination = savedStateHandle.getStateFlow<Int?>("startDestination", null)
+
+    val socketConnected = MutableSharedFlow<Unit>()
 
     var isSplashScreenLoading = true
     var startDestinationJob: Job? = null
@@ -163,10 +170,16 @@ class MainVM @Inject constructor(
     fun connectToSocket() = launch(ioContext) {
         val knobs = stoveRepository.getAllKnobs()
         savedStateHandle["knobs"] = knobs.toList()
-        preferencesProvider.getUserId()?.let { userId ->
-            knobs.isNotEmpty {
-                webSocketManager.initWebSocket(it, userId)
+        try {
+            preferencesProvider.getUserId()?.let { userId ->
+                if(knobs.isNotEmpty()){
+                    webSocketManager.initWebSocket(knobs, userId)
+                    socketConnected.emit(Unit)
+                }else error("Error with socket connection.")
             }
+        }
+        catch (e: Exception){
+            error("Error with socket connection.")
         }
     }
 

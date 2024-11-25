@@ -7,6 +7,7 @@ import com.ome.app.databinding.FragmentZoneSelectionBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
+import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
@@ -28,15 +29,8 @@ class ZoneSelectionFragment :
 
         binding.continueBtn.setBounceClickListener {
             if (viewModel.isDualKnob) {
-                navigateSafe(
-                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
-                        DeviceCalibrationFragmentParams(
-                            isComeFromSettings = args.params.isComeFromSettings,
-                            isDualKnob = viewModel.isDualKnob,
-                            macAddress =  args.params.macAddrs
-                        )
-                    )
-                )
+                binding.continueBtn.startAnimation()
+                mainViewModel.connectToSocket()
             } else {
                 navigateSafe(
                     ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(
@@ -58,18 +52,22 @@ class ZoneSelectionFragment :
                 }
             }
         }
-//        binding.singleZoneRl.setOnClickListener {
-//            binding.dualZoneCoverIv.makeVisible()
-//            binding.singleZoneCoverIv.makeGone()
-//            viewModel.zoneNumber = 1
-//            viewModel.isDualKnob = false
-//        }
-//        binding.dualZoneCoverIv.setOnClickListener {
-//            binding.singleZoneCoverIv.makeVisible()
-//            binding.dualZoneCoverIv.makeGone()
-//            viewModel.zoneNumber = 2
-//            viewModel.isDualKnob = true
-//        }
+    }
+
+    override fun setupObserver() {
+        super.setupObserver()
+        mainViewModel.socketConnected.collectWithLifecycle {
+            binding.continueBtn.revertAnimation()
+            navigateSafe(
+                ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
+                    DeviceCalibrationFragmentParams(
+                        isComeFromSettings = args.params.isComeFromSettings,
+                        isDualKnob = viewModel.isDualKnob,
+                        macAddress =  args.params.macAddrs
+                    )
+                )
+            )
+        }
     }
 
 }

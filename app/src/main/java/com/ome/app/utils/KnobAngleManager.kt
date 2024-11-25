@@ -43,11 +43,11 @@ object KnobAngleManager {
         lowDualAngle: Float?,
         angleOffset: Int
     ): Boolean {
-//        offAngle?.let { if (abs(angle - it) < angleOffset) return false }
-//        lowSingleAngle?.let { if (abs(angle - it) < angleOffset) return false }
-//        highDualAngle?.let { if (abs(angle - it) < angleOffset) return false }
-//        lowDualAngle?.let { if (abs(angle - it) < angleOffset) return false }
-//        highSingleAngle?.let { if (abs(angle - it) < angleOffset) return false }
+        offAngle?.let { if (abs(angle - it) < angleOffset) return false }
+        lowSingleAngle?.let { if (abs(angle - it) < angleOffset) return false }
+        highDualAngle?.let { if (abs(angle - it) < angleOffset) return false }
+        lowDualAngle?.let { if (abs(angle - it) < angleOffset) return false }
+        highSingleAngle?.let { if (abs(angle - it) < angleOffset) return false }
         return true
     }
 

@@ -3,6 +3,7 @@ package com.ome.app.data.remote.repo
 import com.ome.app.BuildConfig
 import com.ome.app.data.remote.StoveService
 import com.ome.app.data.remote.websocket.WebSocketManager
+import com.ome.app.domain.NetworkCall.respectErrorApiCall
 import com.ome.app.domain.NetworkCall.safeApiCall
 import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.model.network.request.*
@@ -46,50 +47,66 @@ class StoveRepositoryImpl(
     }
 
     override suspend fun getKnobOwnership(macAddress: String): KnobOwnershipResponse {
-        return stoveService.getKnobOwnership(macAddress)
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.getKnobOwnership(macAddress)
+        }
     }
 
     override suspend fun initCalibration(
         params: InitCalibrationRequest,
         macAddress: String
     ): KnobDto {
-        return stoveService.initCalibration(params, macAddress)
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.initCalibration(params, macAddress)
+        }
     }
 
     override suspend fun setCalibration(
         params: SetCalibrationRequest,
         macAddress: String
     ): KnobDto {
-        return stoveService.setCalibration(params, macAddress)
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.setCalibration(params, macAddress)
+        }
     }
 
     override suspend fun changeKnobAngle(
         params: ChangeKnobAngle,
         macAddress: String
     ): ChangeKnobAngleResponse {
-        return stoveService.changeKnobAngle(params,macAddress)
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.changeKnobAngle(params, macAddress)
+        }
     }
 
     override suspend fun createKnob(
         params: CreateKnobRequest,
         macAddress: String
     ): CreateKnobResponse {
-        return stoveService.createKnob(params, macAddress)
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.createKnob(params, macAddress)
+        }
     }
 
     override suspend fun deleteKnob(macAddress: String): BaseResponse {
-        return stoveService.deleteKnob(macAddress)
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.deleteKnob(macAddress)
+        }
     }
 
     override suspend fun updateKnobInfo(
         params: CreateKnobRequest,
         macAddress: String
     ): CreateKnobResponse {
-        return stoveService.updateKnobInfo(params, macAddress)
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.updateKnobInfo(params, macAddress)
+        }
     }
 
     override suspend fun clearWifi(macAddress: String): BaseResponse {
-        return stoveService.clearWifi(macAddress)
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.clearWifi(macAddress)
+        }
     }
 
     override val knobsFlow: MutableStateFlow<List<KnobDto>> = MutableStateFlow(listOf())
