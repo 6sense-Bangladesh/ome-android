@@ -169,6 +169,7 @@ class MainVM @Inject constructor(
 
     fun connectToSocket() = launch(ioContext) {
         webSocketManager.onSocketConnect = {
+//            delay(3.seconds)
             if(it) socketConnected.emit(Unit)
             else error("Socket connection failed.")
         }

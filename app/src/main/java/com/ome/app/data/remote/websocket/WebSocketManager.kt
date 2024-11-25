@@ -40,7 +40,7 @@ class WebSocketManager(
     val knobAngleFlow: MutableStateFlow<KnobAngle?> = MutableStateFlow(null)
 
     var onSocketConnect: suspend (Boolean) -> Unit = {}
-    var connected = true
+    private var connected = true
 
 
 //    private val knobBatteryFlow: MutableStateFlow<KnobBattery?> = MutableStateFlow(null)
@@ -91,12 +91,10 @@ class WebSocketManager(
     suspend fun subscribe() {
         try{
             tryInMain {
-                delay(3.minutes)
+                delay(5.minutes)
                 if (!connected) onSocketConnect(false)
             }
             getKnobService()?.knobMessageEvent()?.collect {
-                onSocketConnect(true)
-                connected = true
                 Log.d("getKnobService", "subscribe: ${it.name} - ${it.name} ${it.value} ${it.macAddr}")
                 val knobEntity = it.name.knobEntity
                 var needRefresh = true
@@ -112,6 +110,8 @@ class WebSocketManager(
                             val currentKnobState = this[it.macAddr]
                             this[it.macAddr] = currentKnobState?.copy(angle = it.value) ?: KnobState(angle = it.value)
                         }.toMap()
+                        onSocketConnect(true)
+                        connected = true
                     }
                     KnobEntity.MOUNTING_SURFACE -> {
                         if(it.macAddr == null) return@collect
