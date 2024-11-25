@@ -6,11 +6,7 @@ import androidx.fragment.app.viewModels
 import com.ome.app.R
 import com.ome.app.databinding.FragmentAutoShutOffSettingsBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.orZero
-import com.ome.app.utils.subscribe
-import com.ome.app.utils.toast
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,7 +33,6 @@ class AutoShutOffSettingsFragment :
                 message = SpannableStringBuilder(getString(R.string.auto_shut_off_time_change_confirmation)),
                 onPositiveButtonClick = {
                     viewModel.updateAutoShutOffTime()
-                    binding.saveBtn.startAnimation()
                 }
             )
         }
