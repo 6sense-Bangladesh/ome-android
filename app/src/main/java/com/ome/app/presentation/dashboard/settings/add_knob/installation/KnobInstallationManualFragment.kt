@@ -30,7 +30,7 @@ class KnobInstallationManualFragment :
 
     override fun setupUI() {
         binding.shaftIv.loadDrawable(R.drawable.knob_plug)
-        mainViewModel.connectToSocket()
+        mainViewModel.connectToSocket(false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
