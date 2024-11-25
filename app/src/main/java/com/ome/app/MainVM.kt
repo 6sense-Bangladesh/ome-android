@@ -168,12 +168,10 @@ class MainVM @Inject constructor(
 
     fun connectToSocket() = launch(ioContext) {
         webSocketManager.onSocketConnect = {
+            "onSocketConnect $it".loge()
             delay(3.seconds)
             if(it) socketConnected.emit(Unit)
-            else {
-                "Socket connection failed".loge()
-                error("Socket connection failed.")
-            }
+            else error("Socket connection failed.")
         }
         val knobs = stoveRepository.getAllKnobs()
         savedStateHandle["knobs"] = knobs.toList()
