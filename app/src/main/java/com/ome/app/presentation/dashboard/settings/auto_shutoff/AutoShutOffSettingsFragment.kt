@@ -1,16 +1,17 @@
 package com.ome.app.presentation.dashboard.settings.auto_shutoff
 
-import android.os.Bundle
 import android.text.SpannableStringBuilder
-import android.view.View
+import android.widget.AdapterView
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.ome.app.R
 import com.ome.app.databinding.FragmentAutoShutOffSettingsBinding
 import com.ome.app.presentation.base.BaseFragment
+import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.orZero
 import com.ome.app.utils.subscribe
+import com.ome.app.utils.toast
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 
 @AndroidEntryPoint
 class AutoShutOffSettingsFragment :
@@ -21,21 +22,13 @@ class AutoShutOffSettingsFragment :
 
 //    private val args by navArgs<AutoShutOffSettingsFragmentArgs>()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.backIv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-        binding.backIv.setOnClickListener { findNavController().popBackStack() }
+    override fun setupUI() {
+        binding.autoShutOffSelector.setSimpleItems(viewModel.timeList.map { it.first }.toTypedArray())
+        viewModel.loadData()
+    }
 
-        binding.autoShutOffSelector.setItems(viewModel.timeList)
-        binding.autoShutOffSelector.setOnItemSelectedListener { view, position, id, item ->
-            viewModel.selectedTime = (item as String).replace("Minutes", "").trim().toInt()
-        }
-
+    override fun setupListener() {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.saveBtn.setOnClickListener {
             showDialog(
                 title = getString(R.string.warning),
@@ -47,16 +40,32 @@ class AutoShutOffSettingsFragment :
                     binding.saveBtn.startAnimation()
                 }
             )
-
         }
-        viewModel.loadData()
+        binding.autoShutOffSelector.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, position, _ ->
+                viewModel.selectedTime = viewModel.timeList.getOrNull(position)?.second.orZero()
+            }
     }
 
     override fun setupObserver() {
         super.setupObserver()
-        subscribe(viewModel.autoShutOffLiveData) {
-            binding.autoShutOffSelector.selectedIndex = viewModel.timeList.indexOf(it)
+        viewModel.loadingFlow.collectWithLifecycle{
+            if(it)
+                binding.saveBtn.startAnimation()
+            else {
+                binding.saveBtn.revertAnimation()
+            }
+        }
+        subscribe(viewModel.autoShutOffLiveData) {position->
+            val selected = viewModel.timeList.getOrNull(position)
+            binding.autoShutOffSelector.setText(selected?.first)
+            viewModel.selectedTime = selected?.second.orZero()
+            binding.autoShutOffSelector.setSimpleItems(viewModel.timeList.map { it.first }.toTypedArray())
+        }
+        subscribe(viewModel.autoShutOffResponseLiveData) {
             binding.saveBtn.revertAnimation()
+            toast("Shut off time updated")
+            onBackPressed()
         }
     }
 }
