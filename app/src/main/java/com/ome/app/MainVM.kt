@@ -184,11 +184,12 @@ class MainVM @Inject constructor(
                 if(knobs.isNotEmpty()){
                     webSocketManager.initWebSocket(knobs, userId)
 //                    socketConnected.emit(Unit)
-                }else error("Error with socket connection.")
+                }
+                else if(needStatus) error("Error with socket connection.")
             }
         }
         catch (e: Exception){
-            error("Error with socket connection.")
+            if(needStatus) error("Error with socket connection.")
         }
     }
 

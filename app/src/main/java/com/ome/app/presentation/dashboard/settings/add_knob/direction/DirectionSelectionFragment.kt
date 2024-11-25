@@ -56,7 +56,7 @@ class DirectionSelectionFragment :
                 else {
                     lifecycleScope.launch {
                         delay(3.seconds)
-                        mainViewModel.socketConnected.emit(true)
+                        mainViewModel.socketConnected.emit(mainViewModel.webSocketManager.connected)
                     }
                 }
             }
