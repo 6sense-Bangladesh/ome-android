@@ -2,7 +2,7 @@ package com.ome.app.data.local
 
 import android.content.Context
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
-import com.ome.app.utils.isNotEmpty
+import com.ome.app.utils.TAG
 import com.ome.app.utils.log
 import com.ome.app.utils.loge
 import com.ome.app.utils.logi
@@ -78,7 +78,7 @@ class SocketManager(
                 if (message == KnobSocketMessageType.TEST_WIFI || message == KnobSocketMessageType.SET_WIFI) {
                     finalMessage += " \"${params[0]}\" \"${params[1]}\" ${params[2]}"
                 }
-
+                logi("Sending: $finalMessage $mOut")
                 // Send the message
                 if (mOut != null) {
                     logi("Sending: $finalMessage")
@@ -95,7 +95,7 @@ class SocketManager(
                     lastMessageSent = message
                 }
             } catch (e: Exception) {
-                loge("SocketException encountered: ${e.message}. Attempting to reconnect...")
+                "SocketException encountered: ${e.message}".loge(TAG)
 //                reconnectSocket()  // Attempt to reconnect
 //                sendMessage(message, *params)  // Retry sending the message after reconnecting
             }
@@ -131,15 +131,29 @@ class SocketManager(
 
     private fun parseNetworkList(message: String): List<NetworkItemModel> {
         val networksList = arrayListOf<NetworkItemModel>()
-        val regex = Regex("""\d+\s+\d+\s+-\d+\s+([A-F0-9:]{17})\s+\d+\s+([\w\s]+)""")
-        regex.findAll(message).forEach { matchResult ->
-            matchResult.groupValues.getOrNull(2)?.trim()?.let {
-                it.isNotEmpty { ssid ->
+        val lines = message.split("#")  // Split the message into lines
+        lines.forEach {
+            val parts = it.trim().replace("  ", " ").split(" ")  // Split each line into parts
+
+            // Check if the line contains valid information
+            if (parts.size > 5) {
+                val ssid = parts.drop(5).joinToString(" ")  // Join the parts from the 5th element onward to get the SSID
+                if (ssid.isNotEmpty()) {  // Only add non-empty SSIDs that are not just "1"
                     networksList.add(NetworkItemModel(ssid = ssid, securityType = "WPA2"))
                 }
             }
         }
         networksList.log("wifiNetworksList")
+
+//        val regex = """\d+\s+\d+\s+-\d+\s+([A-F0-9:]{17})\s+\d+\s+(.*)""".toRegex()
+//
+//        regex.findAll(message).forEach { matchResult ->
+//            matchResult.groupValues.getOrNull(2)?.trim()?.let {
+//                it.isNotEmpty { ssid ->
+//                    networksList.add(NetworkItemModel(ssid = ssid, securityType = "WPA2"))
+//                }
+//            }
+//        }
 //        val list = message.split("#")
 //        list.forEach { item ->
 //            item.log("scanForNetworks2")
@@ -247,7 +261,7 @@ class SocketManager(
                 }
             } catch (e: Exception) {
                 attempts++
-                loge("Reconnect attempt $attempts failed: ${e.message}")
+                "Reconnect attempt $attempts failed: ${e.message}".loge(TAG)
                 delay(delayMillis)  // Wait before the next attempt
             }
         }
@@ -262,6 +276,7 @@ class SocketManager(
 
 
     fun connect(){
+        "Connect to socket".loge(TAG)
         stopClient()
         try {
             socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
@@ -269,10 +284,12 @@ class SocketManager(
             mOut = DataOutputStream(socket.getOutputStream())
             mIn = DataInputStream(socket.getInputStream())
             onSocketConnect()
+            "Socket Connected".loge(TAG)
             while (mRun) {
                 read()
             }
         } catch (e: Exception) {
+            e.loge(TAG)
             // Handle the connection error
             reconnectSocket()  // Attempt to reconnect
 //            throw ConnectException("Error with socket connection.")
@@ -302,4 +319,34 @@ enum class KnobSocketMessageType(val path: String) {
     SET_WIFI("setwifi"),
     REBOOT("reboot"),
     GET_NETWORKS("getap \"\"")
+}
+
+fun main() {
+    fun parseNetworkList(message: String): List<NetworkItemModel> {
+        val networksList = arrayListOf<NetworkItemModel>()
+
+        val lines = message.split("#")  // Split the message into lines
+        lines.forEach {
+            val parts = it.trim().replace("  ", " ").split(" ")  // Split each line into parts
+
+            // Check if the line contains valid information
+            if (parts.size >= 5) {
+                val ssid = parts.drop(5).joinToString(" ")  // Join the parts from the 5th element onward to get the SSID
+                if (ssid.isNotEmpty()) {  // Only add non-empty SSIDs that are not just "1"
+                    networksList.add(NetworkItemModel(ssid = ssid, securityType = "WPA2"))
+                }
+            }
+        }
+
+        return networksList.distinctBy { it.ssid }  // Return distinct SSIDs
+    }
+
+    val data = "#  1  1  -58 50:2C:C6:68:FD:B0 1  c668fdb0\n" +
+            "#  4  6  -50 84:D8:1B:C6:24:8E 1  6sense-3\n" +
+            "#  7  6  -53 8A:D8:1B:C6:24:8E 1  \n" +
+            "#  8 11  -74 50:C7:BF:7B:16:90 1  6sense - 4\n" +
+            "# 10 11  -88 8C:DE:F9:77:E1:71 1  phenix it\n" +
+            "# 11  2  -54 C0:C9:E3:82:96:7A 1  6sense - 2\n"
+
+    println(parseNetworkList(data))
 }

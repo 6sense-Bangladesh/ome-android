@@ -24,6 +24,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 typealias Rssi = Int
@@ -69,7 +70,7 @@ class WifiHandler(val context: Context) {
                     continuation.resume(true to null)
                 } else {
                     tryInMain {
-                        delay(15.seconds)
+                        delay(1.minutes)
                         if (continuation.isActive) {
                             omeFail = false
                             continuation.resume(false to
@@ -80,11 +81,13 @@ class WifiHandler(val context: Context) {
                     WifiUtils.withContext(context).connectWith(currentSSID, PASSWORD)
                         .onConnectionResult(object : ConnectionSuccessListener {
                             override fun success() {
+                                if(!continuation.isActive) return
                                 omeFail = false
                                 continuation.resume(true to null)
                             }
 
                             override fun failed(errorCode: ConnectionErrorCode) {
+                                if(!continuation.isActive) return
                                 if(!omeFail) {
                                     continuation.resume(false to null)
                                     omeFail = true

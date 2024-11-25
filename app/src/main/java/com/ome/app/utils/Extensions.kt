@@ -1474,15 +1474,15 @@ fun Fragment.dpToPx(dp: Float): Int {
     return (dp * density).toInt()
 }
 
-fun Any.loge(tag: String = "SPRO") {
+fun Any.loge(tag: String = "log>") {
     if (BuildConfig.DEBUG) {
-        val stackTraceElement = Throwable().stackTrace[1]
-        val fullClassName = stackTraceElement.className
-        val fileName = stackTraceElement.fileName
-        val lineNumber = stackTraceElement.lineNumber
-        val methodName = stackTraceElement.methodName
+        val stackTraceElement = Throwable().stackTrace.firstOrNull()
+        val fullClassName = stackTraceElement?.className
+        val fileName = stackTraceElement?.fileName
+        val lineNumber = stackTraceElement?.lineNumber
+        val methodName = stackTraceElement?.methodName
 
-        val customTag = "$tag: " + fullClassName.substringAfterLast('.')
+        val customTag = "$tag: " + fullClassName?.substringAfterLast('.')
         val logMessage = "($fileName:$lineNumber) #$methodName: $this"
 
         Log.e(customTag, logMessage)
