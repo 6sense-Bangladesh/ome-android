@@ -136,7 +136,7 @@ class SocketManager(
             val parts = it.trim().replace("  ", " ").split(" ")  // Split each line into parts
 
             // Check if the line contains valid information
-            if (parts.size > 5) {
+            if (parts.size >= 5) {
                 val ssid = parts.drop(5).joinToString(" ")  // Join the parts from the 5th element onward to get the SSID
                 if (ssid.isNotEmpty()) {  // Only add non-empty SSIDs that are not just "1"
                     networksList.add(NetworkItemModel(ssid = ssid, securityType = "WPA2"))

@@ -16,6 +16,7 @@ import com.ome.app.domain.model.state.mountingSurface
 import com.ome.app.utils.FlowStreamAdapter
 import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
 import com.ome.app.utils.orMinusOne
+import com.ome.app.utils.tryInMain
 import com.tinder.scarlet.Scarlet
 import com.tinder.scarlet.messageadapter.gson.GsonMessageAdapter
 import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
@@ -27,7 +28,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import kotlin.coroutines.coroutineContext
-import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Duration.Companion.minutes
 
 class WebSocketManager(
     private val context: Context
@@ -37,6 +38,10 @@ class WebSocketManager(
     val knobState= MutableStateFlow(mapOf<MacAddress, KnobState>())
 
     val knobAngleFlow: MutableStateFlow<KnobAngle?> = MutableStateFlow(null)
+
+    var onSocketConnect: suspend (Boolean) -> Unit = {}
+    var connected = true
+
 
 //    private val knobBatteryFlow: MutableStateFlow<KnobBattery?> = MutableStateFlow(null)
 //    private val knobConnectStatusFlow: MutableStateFlow<KnobConnectStatus?> = MutableStateFlow(null)
@@ -62,7 +67,7 @@ class WebSocketManager(
         CoroutineScope(coroutineContext).launch {
             subscribe()
         }
-        delay(4.seconds)
+//        delay(4.seconds)
     }
 
 
@@ -85,7 +90,13 @@ class WebSocketManager(
 
     suspend fun subscribe() {
         try{
+            tryInMain {
+                delay(3.minutes)
+                if (!connected) onSocketConnect(false)
+            }
             getKnobService()?.knobMessageEvent()?.collect {
+                onSocketConnect(true)
+                connected = true
                 Log.d("getKnobService", "subscribe: ${it.name} - ${it.name} ${it.value} ${it.macAddr}")
                 val knobEntity = it.name.knobEntity
                 var needRefresh = true
