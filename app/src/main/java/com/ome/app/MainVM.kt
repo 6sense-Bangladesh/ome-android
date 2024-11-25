@@ -19,6 +19,7 @@ import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.isFalse
+import com.ome.app.utils.loge
 import com.ome.app.utils.logi
 import com.ome.app.utils.orMinusOne
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -169,7 +170,10 @@ class MainVM @Inject constructor(
         webSocketManager.onSocketConnect = {
             delay(3.seconds)
             if(it) socketConnected.emit(Unit)
-            else error("Socket connection failed.")
+            else {
+                "Socket connection failed".loge()
+                error("Socket connection failed.")
+            }
         }
         val knobs = stoveRepository.getAllKnobs()
         savedStateHandle["knobs"] = knobs.toList()
