@@ -2,6 +2,7 @@ package com.ome.app.presentation.dashboard.my_stove.device
 
 
 import androidx.lifecycle.SavedStateHandle
+import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.network.request.ChangeKnobAngle
 import com.ome.app.domain.model.network.response.KnobDto
@@ -20,8 +21,9 @@ import javax.inject.Inject
 @HiltViewModel
 class DeviceViewModel @Inject constructor(
     private val stoveRepository: StoveRepository,
-    val webSocketManager: WebSocketManager,
-    private val savedStateHandle: SavedStateHandle
+    private val webSocketManager: WebSocketManager,
+    private val savedStateHandle: SavedStateHandle,
+    val pref: PreferencesProvider
 ) : BaseViewModel() {
     var stovePosition: Int  = -1
     val isEnable = MutableStateFlow(false)
@@ -46,7 +48,7 @@ class DeviceViewModel @Inject constructor(
 
 
     fun initSubscriptions() {
-        launch(ioContext) {
+        launch(ioContext, showLoading = false) {
             webSocketManager.knobAngleFlow.filter { it?.macAddr == macAddress }.collect {
                 it?.let {
                     logi("angle ViewModel ${it.value.toFloat()}")
@@ -54,7 +56,7 @@ class DeviceViewModel @Inject constructor(
                 }
             }
         }
-        launch(ioContext) {
+        launch(ioContext, showLoading = false) {
             stoveRepository.knobsFlow.mapNotNull  { dto -> dto.find { it.macAddr == macAddress }}.collect { foundKnob ->
                 savedStateHandle["currentKnob"] = foundKnob
                 if (webSocketManager.knobAngleFlow.value == null) {
@@ -65,7 +67,7 @@ class DeviceViewModel @Inject constructor(
     }
 
     fun changeKnobAngle(angle: Float) {
-        launch {
+        launch(ioContext, showLoading = false) {
             stoveRepository.changeKnobAngle(
                 params = ChangeKnobAngle(angle.toInt()),
                 macAddress
@@ -74,10 +76,34 @@ class DeviceViewModel @Inject constructor(
     }
 
     fun deleteKnob(onEnd: () -> Unit) {
-        launch {
+        launch(ioContext) {
             stoveRepository.deleteKnob(macAddress)
             stoveRepository.getAllKnobs()
             onEnd()
+        }
+    }
+
+    fun startTurnOffTimer(hour: Int, minute: Int, second: Int){
+        val totalSeconds = hour * 3600 + minute * 60 + second
+        val offAngle = currentKnob.value?.calibration?.offAngle
+        launch(ioContext) {
+            offAngle?.also {
+                stoveRepository.startTurnOffTimer(
+                    macAddress = macAddress,
+                    offAngle = offAngle,
+                    second = totalSeconds
+                )
+//                pref.lastTimer = mapOf(macAddress to System.currentTimeMillis() + totalSeconds * 1000)
+                pref.setTimer(macAddress, System.currentTimeMillis() )
+            } ?: error("Something went wrong.")
+        }
+    }
+
+    fun stopTimer() {
+        launch(ioContext) {
+            stoveRepository.stopTimer(macAddress)
+//            pref.lastTimer = mapOf(macAddress to 0)
+            pref.setTimer(macAddress,0)
         }
     }
 

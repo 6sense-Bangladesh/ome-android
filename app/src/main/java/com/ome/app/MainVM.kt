@@ -166,30 +166,34 @@ class MainVM @Inject constructor(
         }
     }
 
-    fun connectToSocket(needStatus: Boolean = true) = launch(ioContext) {
-        webSocketManager.onSocketConnect = {
-            if(needStatus) {
-                "onSocketConnect $it".loge()
-                if (it) {
-                    delay(5.seconds)
-                    socketConnected.emit(true)
-                } else
-                    socketConnected.emit(false)
-            }
-        }
-        val knobs = stoveRepository.getAllKnobs()
-        savedStateHandle["knobs"] = knobs.toList()
-        try {
-            preferencesProvider.getUserId()?.let { userId ->
-                if(knobs.isNotEmpty()){
-                    webSocketManager.initWebSocket(knobs, userId)
-//                    socketConnected.emit(Unit)
+    fun connectToSocket(needStatus: Boolean = true){
+        launch(ioContext) {
+            webSocketManager.onSocketConnect = {
+                if(needStatus) {
+                    "onSocketConnect $it".loge()
+                    if (it) {
+                        delay(5.seconds)
+                        socketConnected.emit(true)
+                    } else
+                        socketConnected.emit(false)
                 }
-                else if(needStatus) error("Error with socket connection.")
             }
-        }
-        catch (e: Exception){
-            if(needStatus) error("Error with socket connection.")
+            val knobs = stoveRepository.getAllKnobs()
+            savedStateHandle["knobs"] = knobs.toList()
+            try {
+                preferencesProvider.getUserId()?.let { userId ->
+                    if(knobs.isNotEmpty())
+                        webSocketManager.initWebSocket(knobs, userId)
+                    else if(needStatus)
+                        error("Error with socket connection.")
+                    else
+                        connectToSocket(false)
+                }
+            }
+            catch (e: Exception){
+                if(needStatus) error("Error with socket connection.")
+                else connectToSocket(false)
+            }
         }
     }
 

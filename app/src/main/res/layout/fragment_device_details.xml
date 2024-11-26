@@ -146,7 +146,6 @@
             style="@style/Title.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_yellow_circle"
             app:layout_constraintBottom_toTopOf="@+id/tvLevel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -175,7 +174,6 @@
             style="@style/Label.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_yellow_circle"
             android:text="@string/level"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -232,42 +230,85 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/warningCard"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:minHeight="@dimen/_45sdp"
         style="@style/Widget.Material3.CardView.Filled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_14sdp"
-        app:contentPadding="@dimen/_12sdp"
-        app:cardBackgroundColor="@color/redLight"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/burnerSelection">
+        android:layout_marginTop="@dimen/_14sdp"
+        android:minHeight="@dimen/_45sdp"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/redLight"
+        app:contentPadding="@dimen/_12sdp"
+        app:layout_constraintTop_toBottomOf="@+id/burnerSelection"
+        tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_height="match_parent">
+            android:gravity="center">
 
             <TextView
                 style="@style/Label.Large"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/configure_the_knob_to_use_it"
                 android:textColor="@color/black" />
 
             <TextView
                 style="@style/Title.Small"
-                android:layout_marginHorizontal="@dimen/_5sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:text="@string/configure"
                 android:textColor="@color/red"
                 app:layout_constraintStart_toEndOf="@id/icon"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/configure"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/timerCard"
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_14sdp"
+        android:minHeight="@dimen/_50sdp"
+        android:visibility="gone"
+        app:cardBackgroundColor="@color/off_white"
+        app:contentPadding="@dimen/_12sdp"
+        app:layout_constraintBottom_toTopOf="@id/btnTimer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/timerText"
+                style="@style/Title.Large"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:layout_weight="1"
+                android:gravity="center"
+                tools:text="01 : 00 : 00" />
+
+            <TextView
+                style="@style/Title.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:text="@string/stop"
+                android:textColor="@color/red"
+                app:layout_constraintStart_toEndOf="@id/icon"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -277,13 +318,13 @@
         android:id="@+id/knobView"
         android:layout_width="@dimen/_220sdp"
         android:layout_height="@dimen/_220sdp"
-        app:layout_constraintBottom_toTopOf="@+id/continueBtn"
+        app:layout_constraintBottom_toTopOf="@+id/btnTimer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/burnerSelection" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/continueBtn"
+        android:id="@+id/btnTimer"
         style="@style/OmeButton.Blue"
         android:layout_width="wrap_content"
         android:text="@string/set_timer"
@@ -291,5 +332,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <include
+        android:id="@+id/loadingLayout"
+        layout="@layout/loading_progress_layout"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

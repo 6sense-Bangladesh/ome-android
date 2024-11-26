@@ -2,13 +2,11 @@ package com.ome.app.presentation.views
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.Log
 import android.util.SparseArray
-import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
@@ -425,12 +423,7 @@ class KnobView @JvmOverloads constructor(
             Log.d(TAG, "setOnTouchListener: $angle")
             if(doRotate.value) {
                 setKnobPosition(angle)
-                performHapticFeedback(
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1)
-                        HapticFeedbackConstants.TEXT_HANDLE_MOVE
-                    else
-                        HapticFeedbackConstants.KEYBOARD_TAP
-                )
+                performHapticFeedback(smallHaptic)
             }
             true
         }

@@ -17,5 +17,9 @@ interface StoveRepository {
     suspend fun deleteKnob(macAddress: String): BaseResponse
     suspend fun updateKnobInfo(params: CreateKnobRequest, macAddress: String): CreateKnobResponse
     suspend fun clearWifi(macAddress: String): BaseResponse
+    suspend fun startTurnOffTimer(macAddress: String, offAngle: Int, second: Int): BaseResponse
+    suspend fun stopTimer(macAddress: String): BaseResponse
+    suspend fun pauseTimer(macAddress: String): BaseResponse
+
     val knobsFlow: MutableStateFlow<List<KnobDto>>
 }

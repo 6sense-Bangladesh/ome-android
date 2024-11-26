@@ -109,6 +109,31 @@ class StoveRepositoryImpl(
         }
     }
 
+    override suspend fun startTurnOffTimer(
+        macAddress: String,
+        offAngle: Int,
+        second: Int
+    ): BaseResponse {
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.startSchedule(
+                params = ScheduleRequest(listOf(ScheduleRequest.KnobRotationPlan(offAngle, second))),
+                macAddress = macAddress
+            )
+        }
+    }
+
+    override suspend fun stopTimer(macAddress: String): BaseResponse {
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.stopSchedule(macAddress)
+        }
+    }
+
+    override suspend fun pauseTimer(macAddress: String): BaseResponse {
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.pauseSchedule(macAddress)
+        }
+    }
+
     override val knobsFlow: MutableStateFlow<List<KnobDto>> = MutableStateFlow(listOf())
 
 }

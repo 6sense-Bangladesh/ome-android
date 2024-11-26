@@ -61,4 +61,20 @@ interface StoveService {
         @Body params: SetCalibrationRequest,
         @Path("macAddress") macAddress: String
     ): KnobDto
+
+    @POST("/knob/schedule/{macAddress}/start")
+    suspend fun startSchedule(
+        @Body params: ScheduleRequest,
+        @Path("macAddress") macAddress: String
+    ): BaseResponse
+
+    @POST("/knob/schedule/{macAddress}/stop")
+    suspend fun stopSchedule(
+        @Path("macAddress") macAddress: String
+    ): BaseResponse
+
+    @POST("/knob/schedule/{macAddress}/pause")
+    suspend fun pauseSchedule(
+        @Path("macAddress") macAddress: String
+    ): BaseResponse
 }

@@ -669,12 +669,15 @@ fun String.to12HourFormat(): String {
 }
 
 
-var time = 120
-val sec get() = time % 60
-val min get() = time / 60
 fun Int.toTimer(): String {
-    time = this
-    return "$min:${if (sec < 10) "0" else ""}$sec"
+    val hours = this / 3600
+    val minutes = (this % 3600) / 60
+    val seconds = this % 60
+    return if (hours > 0) {
+        "%02d : %02d : %02d".format(hours, minutes, seconds) // HH:mm:ss format
+    } else {
+        "%02d : %02d".format(minutes, seconds) // mm:ss format
+    }
 }
 
 fun Context.getClipBoardData(): String {
@@ -1569,4 +1572,10 @@ fun TextView.enableCustomTabClick(url: String, urlText: String, fullText: String
 
 val String?.asHtml
     get() = HtmlCompat.fromHtml(orEmpty(), HtmlCompat.FROM_HTML_MODE_COMPACT)
+
+val smallHaptic : Int
+    get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1)
+        HapticFeedbackConstants.TEXT_HANDLE_MOVE
+    else
+        HapticFeedbackConstants.KEYBOARD_TAP
 

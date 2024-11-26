@@ -2,11 +2,15 @@ package com.ome.app.presentation.dashboard.my_stove.device
 
 import android.os.Parcelable
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.ome.app.BuildConfig
 import com.ome.app.R
+import com.ome.app.databinding.DialogTimerBinding
 import com.ome.app.databinding.FragmentDeviceDetailsBinding
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.state.*
@@ -17,8 +21,11 @@ import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobIns
 import com.ome.app.presentation.views.KnobView
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
+import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class DeviceDetailsFragment :
@@ -31,12 +38,50 @@ class DeviceDetailsFragment :
     private val burnerStates
         get() = mainViewModel.getKnobBurnerStatesByMac(args.params.macAddr)
 
+    private val picker =
+        MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(0)
+            .setMinute(0)
+            .setTitleText("Select Appointment time")
+            .build()
+
+    private val dialogBinding by lazy { DialogTimerBinding.inflate(layoutInflater) }
+    private val dialogTimer by lazy { context?.let {
+        AlertDialog.Builder(it)
+            .setView(dialogBinding.root)
+            .create()
+    }}
+
+    private fun setupTimer(){
+        dialogTimer?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialogBinding.apply {
+            pickerHour.maxValue = 11
+            pickerMin.maxValue = 60
+            pickerSec.maxValue = 60
+            listOf(pickerHour, pickerMin, pickerSec).forEach {
+                it.setOnValueChangedListener { picker, _, _ ->
+                    picker.performHapticFeedback(smallHaptic)
+                }
+            }
+            btnCancel.setBounceClickListener {
+                dialogTimer?.dismiss()
+            }
+            btnOkay.setBounceClickListener {
+                dialogTimer?.dismiss()
+                viewModel.startTurnOffTimer(pickerHour.value, pickerMin.value, pickerSec.value)
+            }
+        }
+    }
+
     override fun setupUI() {
         viewModel.macAddress = args.params.macAddr
         viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
         binding.knobView.setFontSize(17F)
         viewModel.initSubscriptions()
         val selectedColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
+        setupTimer()
+        activeTimer()
         binding.apply {
             name.text = context?.getString(R.string.burner_, viewModel.stovePosition)
             knobView.doOnRotationChange(doRotate = viewModel.isEnable)
@@ -142,7 +187,13 @@ class DeviceDetailsFragment :
                 )
             }
         }
-
+        binding.btnTimer.setBounceClickListener {
+            dialogTimer?.show()
+        }
+        binding.timerCard.setBounceClickListener {
+            binding.timerCard.animateInvisible()
+            viewModel.stopTimer()
+        }
         binding.warningCard.setBounceClickListener {
             navigateSafe(
                 DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToKnobInstallationManualFragment(
@@ -164,9 +215,30 @@ class DeviceDetailsFragment :
         }
     }
 
+
+    private val lastTime by lazy { viewModel.pref.getTimer(args.params.macAddr) }
+    private val time
+        get() = (System.currentTimeMillis().minus(lastTime) /1000).toInt()
+
+    private fun activeTimer(){
+        viewLifecycleScope.launch {
+            if(time >0)
+                binding.timerCard.animateVisible()
+            while (time > 0){
+                binding.timerText.text = time.toTimer()
+                delay(1.seconds)
+            }
+            binding.timerCard.animateInvisible()
+        }
+    }
+
     override fun setupObserver() {
         super.setupObserver()
         binding.apply {
+            viewModel.loadingFlow.collectWithLifecycle {
+                binding.loadingLayout.root.changeVisibility(it)
+                if(!it) activeTimer()
+            }
             viewModel.currentKnob.collectWithLifecycle {
                 it.log("currentKnob")
                 knobView.setupKnob(it)
