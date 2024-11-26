@@ -38,7 +38,7 @@ class StoveRepositoryImpl(
             stoveService.getAllKnobs()
         }.getOrNull().orEmpty().let {
             it.toMutableList().apply {
-                if(BuildConfig.IS_INTERNAL_TESTING)
+                if (BuildConfig.IS_INTERNAL_TESTING)
                     addAll(dummyKnobs)
             }
         }
@@ -106,6 +106,18 @@ class StoveRepositoryImpl(
     override suspend fun clearWifi(macAddress: String): BaseResponse {
         return respectErrorApiCall(coroutineContext) {
             stoveService.clearWifi(macAddress)
+        }
+    }
+
+    override suspend fun setSafetyLockOn(macAddress: String): BaseResponse {
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.setSafetyLockOn(macAddress)
+        }
+    }
+
+    override suspend fun setSafetyLockOff(macAddress: String): BaseResponse {
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.setSafetyLockOff(macAddress)
         }
     }
 

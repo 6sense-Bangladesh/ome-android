@@ -2,19 +2,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:id="@+id/group_profile" android:visible="false">
+    <group
+        android:id="@+id/group_profile"
+        android:visible="false">
         <item
             android:id="@+id/menuFeedback"
             android:icon="@drawable/ic_feedback"
             android:title="@string/menu_feedback"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom" />
         <item
             android:id="@+id/menuLogout"
             android:icon="@drawable/ic_logout"
             android:title="@string/menu_logout"
-            app:showAsAction="ifRoom"/>
+            app:showAsAction="ifRoom" />
     </group>
 
+
+    <group
+        android:id="@+id/group_my_stove"
+        android:visible="false">
+        <item
+            android:id="@+id/menuLock"
+            android:icon="@drawable/ic_safety_lock_open"
+            android:title="@string/menu_feedback"
+            app:showAsAction="ifRoom" />
+    </group>
 
 
 </menu>

@@ -28,12 +28,12 @@ class AutoShutOffSettingsFragment :
         binding.saveBtn.setOnClickListener {
             showDialog(
                 title = getString(R.string.warning),
-                positiveButtonText = getString(R.string.confirm),
+                positiveButtonText = "Yes, Change",
                 negativeButtonText = getString(R.string.cancel),
                 message = SpannableStringBuilder(getString(R.string.auto_shut_off_time_change_confirmation)),
                 onPositiveButtonClick = {
                     viewModel.updateAutoShutOffTime()
-                }
+                },
             )
         }
         binding.autoShutOffSelector.onItemClickListener =
@@ -54,7 +54,7 @@ class AutoShutOffSettingsFragment :
         subscribe(viewModel.autoShutOffLiveData) {position->
             val selected = viewModel.timeList.getOrNull(position)
             binding.autoShutOffSelector.setText(selected?.first)
-            viewModel.selectedTime = selected?.second.orZero()
+            viewModel.selectedTime = selected?.second
             binding.autoShutOffSelector.setSimpleItems(viewModel.timeList.map { it.first }.toTypedArray())
         }
         subscribe(viewModel.autoShutOffResponseLiveData) {

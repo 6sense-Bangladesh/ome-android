@@ -4,94 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:fitsSystemWindows="true"
+    tools:context=".presentation.dashboard.settings.support.SupportFragment">
 
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/backIv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_arrow_left"
-        android:tint="@color/light_blue_color"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/topicCl"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/Widget.App.Toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="64dp"
-        android:background="@drawable/stove_brand_selector_shape"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/backIv">
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="Support"
+        app:titleMargin="@dimen/_5sdp" />
 
-        <com.jaredrummler.materialspinner.MaterialSpinner
-            android:id="@+id/topicSelector"
-            style="@style/Label.14sp"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_margin="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:ms_arrow_tint="@color/gradient_end_unpressed_color"
-            app:ms_hint="@string/select_issue"
-            app:ms_hint_color="@color/gradient_end_unpressed_color"
-            app:ms_text_color="@color/gradient_end_unpressed_color" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <TextView
-        android:id="@+id/textView5"
-        style="@style/Label.17sp"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="42dp"
-        android:text="@string/how_can_we_help"
-        app:layout_constraintStart_toStartOf="@+id/topicCl"
-        app:layout_constraintTop_toBottomOf="@+id/topicCl" />
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="@dimen/margin_top_bar"
+        app:boxBackgroundColor="@color/white"
+        app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+        app:boxCornerRadiusTopStart="@dimen/_8sdp"
+        app:endIconDrawable="@drawable/ic_arrow_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/textCl"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/stove_brand_selector_shape"
-        app:layout_constraintEnd_toEndOf="@+id/topicCl"
-        app:layout_constraintStart_toStartOf="@+id/topicCl"
-        app:layout_constraintTop_toBottomOf="@+id/textView5">
-
-        <EditText
-            android:id="@+id/textEt"
-            style="@style/ProfileEditText"
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/autoShutOffSelector"
+            style="@style/Label.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="top|start"
-            android:inputType="textMultiLine"
-            android:maxLines="15"
-            android:minLines="15"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:hint="@string/issue_type"
+            android:inputType="none"
+            app:dropDownBackgroundTint="@color/white" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_200sdp"
+        android:layout_margin="@dimen/margin_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+        app:boxCornerRadiusTopStart="@dimen/_8sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        app:hintEnabled="true"
+        app:hintAnimationEnabled="false"
+        android:hint="@string/how_can_we_help">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:textAlignment="textStart"
+            android:gravity="start"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/sendBtn"
         style="@style/OmeButton.Blue"
-        android:layout_marginTop="24dp"
         android:text="@string/send"
         android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/topicCl"
-        app:layout_constraintStart_toStartOf="@+id/topicCl" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

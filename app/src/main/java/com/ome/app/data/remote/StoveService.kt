@@ -77,4 +77,14 @@ interface StoveService {
     suspend fun pauseSchedule(
         @Path("macAddress") macAddress: String
     ): BaseResponse
+
+    @POST("/knob/safetyLock/{macAddress}/on")
+    suspend fun setSafetyLockOn(
+        @Path("macAddress") macAddress: String
+    ): BaseResponse
+
+    @POST("/knob/safetyLock/{macAddress}/off")
+    suspend fun setSafetyLockOff(
+        @Path("macAddress") macAddress: String
+    ): BaseResponse
 }
