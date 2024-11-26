@@ -222,13 +222,14 @@ class DeviceDetailsFragment :
 
     private fun activeTimer(){
         viewLifecycleScope.launch {
-            if(time >0)
+            if(lastTime > 0 && time > 0) {
                 binding.timerCard.animateVisible()
-            while (time > 0){
-                binding.timerText.text = time.toTimer()
-                delay(1.seconds)
+                while (time > 0) {
+                    binding.timerText.text = time.toTimer()
+                    delay(1.seconds)
+                }
+                binding.timerCard.animateInvisible()
             }
-            binding.timerCard.animateInvisible()
         }
     }
 
@@ -260,6 +261,11 @@ class DeviceDetailsFragment :
                 }
                 knob.wifiStrengthPercentage?.let {
 //                    knobView.changeWiFiState(it)
+                }
+                if(knob.knobSetSafetyMode.isFalse()){
+                    viewModel.currentKnob.value?.calibration?.offAngle?.let {
+                        binding.knobView.setKnobPosition(it.toFloat())
+                    }
                 }
             }
         }

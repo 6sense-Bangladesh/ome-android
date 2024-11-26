@@ -211,10 +211,6 @@ class MainVM @Inject constructor(
                 preferencesProvider.getUserId()?.let { userId ->
                     if(knobs.isNotEmpty())
                         webSocketManager.initWebSocket(knobs, userId)
-                    else if(needStatus)
-                        error("Error with socket connection.")
-                    else
-                        connectToSocket(false)
                 }
             }
             catch (e: Exception){

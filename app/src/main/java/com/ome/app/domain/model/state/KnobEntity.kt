@@ -14,6 +14,7 @@ enum class KnobEntity(val key: String) {
     KNOB_POST("knobPost"),
     KNOB_PATCH("knobPatch"),
     KNOB_SET_CALIBRATION("knobSetCalibration"),
+    KNOB_SET_SAFETY_MODE("knobSetSafetyMode"),
     KNOB_DELETE("knobDelete"),
 
     USER_POST("userPost"),

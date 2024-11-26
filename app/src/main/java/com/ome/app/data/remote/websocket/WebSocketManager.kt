@@ -176,6 +176,14 @@ class WebSocketManager(
                             this[it.macAddr] = currentKnobState?.copy(knobReportedScheduleStop = value) ?: KnobState(knobReportedScheduleStop = value)
                         }.toMap()
                     }
+                    KnobEntity.KNOB_SET_SAFETY_MODE->{
+                        if(it.macAddr == null) return@collect
+                        knobState.value = knobState.value.toMutableMap().apply {
+                            val currentKnobState = this[it.macAddr]
+                            val value = it.value.toString().toBoolean()
+                            this[it.macAddr] = currentKnobState?.copy(knobSetSafetyMode = value) ?: KnobState(knobSetSafetyMode = value)
+                        }.toMap()
+                    }
                     KnobEntity.KNOB_POST, KnobEntity.KNOB_PATCH, KnobEntity.KNOB_SET_CALIBRATION, KnobEntity.KNOB_DELETE -> {
                         needRefresh = false
                     }
@@ -183,6 +191,10 @@ class WebSocketManager(
                         needRefresh = false
                     }
                     null -> needRefresh = false
+                }
+                if(knobEntity != KnobEntity.CONNECT_STATUS){
+                    connected = true
+                    onSocketConnect(true)
                 }
                 if(needRefresh)
                     knobState.value = knobState.value.toMutableMap()

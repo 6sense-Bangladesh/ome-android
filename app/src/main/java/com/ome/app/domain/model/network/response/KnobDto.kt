@@ -89,6 +89,7 @@ val KnobDto.asKnobState
         temperature = temperature,
         wifiStrengthPercentage = rssi.wifiStrengthPercentage,
         knobReportedScheduleStop = -1,
+        knobSetSafetyMode = safetyLock,
         connectStatus = connectStatus.connectionState,
         connectIpAddr = ipAddress,
         firmwareVersion = firmwareVersion,

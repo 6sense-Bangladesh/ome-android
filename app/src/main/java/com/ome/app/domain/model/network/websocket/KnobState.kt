@@ -13,6 +13,7 @@ data class KnobState(
     val temperature: Double? = null,
     val wifiStrengthPercentage: Int? = null,
     val knobReportedScheduleStop: Int? = null,
+    val knobSetSafetyMode: Boolean? = null,
     val connectStatus: ConnectionState? = null,
     val connectIpAddr: String? = null,
     val firmwareVersion: String? = null
