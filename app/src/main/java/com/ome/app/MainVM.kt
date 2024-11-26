@@ -42,11 +42,12 @@ class MainVM @Inject constructor(
     val connectionStatusListener: ConnectionStatusListener
 ) : BaseViewModel() {
     var userInfo = savedStateHandle.getStateFlow("userInfo", preferencesProvider.getUserData())
-    private var knobState = savedStateHandle.getStateFlow("knobState", mutableMapOf<MacAddress, KnobState>())
+    private var knobState =
+        savedStateHandle.getStateFlow("knobState", mutableMapOf<MacAddress, KnobState>())
     var knobs = savedStateHandle.getStateFlow("knobs", listOf<KnobDto>())
 
     override var defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
-        if(isSplashScreenLoading)
+        if (isSplashScreenLoading)
             savedStateHandle["startDestination"] = R.id.launchFragment
         else
             defaultErrorLiveData.postValue(throwable.message)
@@ -68,7 +69,7 @@ class MainVM @Inject constructor(
             val oldKnobListSize = userRepository.userFlow.value?.knobMacAddrs?.size.orMinusOne()
             userRepository.userFlow.filterNotNull().collect {
                 savedStateHandle["userInfo"] = it
-                if(oldKnobListSize != it.knobMacAddrs.size){
+                if (oldKnobListSize != it.knobMacAddrs.size) {
                     savedStateHandle["knobs"] = emptyList<KnobDto>()
                     stoveRepository.knobsFlow.value = emptyList()
                     stoveRepository.getAllKnobs()
@@ -92,16 +93,38 @@ class MainVM @Inject constructor(
             userRepository.getUserData()
         }
     }
+
     fun getAllKnobs() {
         launch(ioContext) {
             stoveRepository.getAllKnobs()
         }
     }
 
+    fun setSafetyLockOn() {
+        launch(ioContext) {
+            userRepository.userFlow.value?.knobMacAddrs?.forEach {
+                stoveRepository.setSafetyLockOn(it)
+            }
+            stoveRepository.getAllKnobs()
+        }
+    }
+
+    fun setSafetyLockOff() {
+        launch(ioContext) {
+            userRepository.userFlow.value?.knobMacAddrs?.forEach {
+                stoveRepository.setSafetyLockOff(it)
+            }
+            stoveRepository.getAllKnobs()
+        }
+    }
+
     fun getKnobByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }
     fun getKnobStateByMac(macAddress: MacAddress) = knobState.map { it[macAddress] }
-    fun getStovePositionByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.stovePosition.orMinusOne()
-    fun getKnobBurnerStatesByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }?.asBurnerState.orEmpty()
+    fun getStovePositionByMac(macAddress: MacAddress) =
+        knobs.value.find { it.macAddr == macAddress }?.stovePosition.orMinusOne()
+
+    fun getKnobBurnerStatesByMac(macAddress: MacAddress) =
+        knobs.value.find { it.macAddr == macAddress }?.asBurnerState.orEmpty()
 
     fun initStartDestination() {
         if (startDestination.value != null) return
@@ -135,18 +158,22 @@ class MainVM @Inject constructor(
                                         if (result.message.contains("Not found")) {
                                             amplifyManager.deleteUser()
                                             preferencesProvider.clearData()
-                                            savedStateHandle["startDestination"] = R.id.launchFragment
+                                            savedStateHandle["startDestination"] =
+                                                R.id.launchFragment
                                         } else {
-                                            savedStateHandle["startDestination"] = R.id.dashboardFragment
+                                            savedStateHandle["startDestination"] =
+                                                R.id.dashboardFragment
                                         }
                                     }
 
                                     is ResponseWrapper.Success -> {
                                         if (result.value.stoveSetupComplete.isFalse()) {
-                                            savedStateHandle["startDestination"] = R.id.welcomeFragment
+                                            savedStateHandle["startDestination"] =
+                                                R.id.welcomeFragment
                                             return@launch
                                         }
-                                        savedStateHandle["startDestination"] = R.id.dashboardFragment
+                                        savedStateHandle["startDestination"] =
+                                            R.id.dashboardFragment
                                         connectToSocket()
                                     }
                                 }

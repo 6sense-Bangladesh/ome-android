@@ -16,8 +16,9 @@ class AutoShutOffViewModel @Inject constructor(
 
     val autoShutOffLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
     val autoShutOffResponseLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
-    var selectedTime = -1
+    var selectedTime : Int? = -1
     var timeList = listOf(
+        "Off" to null,
         "15 Minutes" to 15,
         "20 Minutes" to 20,
         "25 Minutes" to 25,
