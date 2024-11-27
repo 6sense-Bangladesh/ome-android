@@ -33,6 +33,12 @@ class StoveRepositoryImpl(
         }
     }
 
+    override suspend fun turnOffAllKnobs(): TurnOffKnobsResponse {
+        return respectErrorApiCall(coroutineContext) {
+            stoveService.turnOffAllKnobs()
+        }
+    }
+
     override suspend fun getAllKnobs(): List<KnobDto> {
         val response = safeApiCall(coroutineContext) {
             stoveService.getAllKnobs()

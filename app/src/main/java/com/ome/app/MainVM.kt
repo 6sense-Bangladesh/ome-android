@@ -102,6 +102,7 @@ class MainVM @Inject constructor(
 
     fun setSafetyLockOn() {
         launch(ioContext) {
+            stoveRepository.turnOffAllKnobs()
             userRepository.userFlow.value?.knobMacAddrs?.forEach {
                 stoveRepository.setSafetyLockOn(it)
             }
@@ -115,6 +116,13 @@ class MainVM @Inject constructor(
                 stoveRepository.setSafetyLockOff(it)
             }
             delay(5.seconds)
+        }
+    }
+
+    fun turnOffAllKnobs(){
+        launch(ioContext) {
+            stoveRepository.turnOffAllKnobs()
+            stoveRepository.getAllKnobs()
         }
     }
 

@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 interface StoveRepository {
     suspend fun createStove(params: StoveRequest): ResponseWrapper<StoveResponse>
     suspend fun updateStove(params: StoveRequest, stoveId: String): ResponseWrapper<StoveResponse>
+    suspend fun turnOffAllKnobs(): TurnOffKnobsResponse
     suspend fun getAllKnobs(): List<KnobDto>
     suspend fun getKnobOwnership(macAddress: String): KnobOwnershipResponse
     suspend fun initCalibration(params: InitCalibrationRequest, macAddress: String): KnobDto

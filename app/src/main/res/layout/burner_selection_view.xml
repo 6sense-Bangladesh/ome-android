@@ -16,11 +16,7 @@
         android:layout_height="wrap_content"
         android:paddingVertical="@dimen/_15sdp"
         app:flexWrap="wrap"
-        app:justifyContent="space_evenly"
-        app:layout_constraintBottom_toTopOf="@id/continueTurnOff"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:justifyContent="space_evenly">
 
         <LinearLayout
             android:id="@+id/knob1"

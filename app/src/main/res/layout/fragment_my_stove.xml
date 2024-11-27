@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:flexWrap="wrap"
         app:justifyContent="space_evenly"
-        app:layout_constraintBottom_toTopOf="@id/continueTurnOff"
+        app:layout_constraintBottom_toTopOf="@id/btnTurnOff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,7 +107,7 @@
     </com.google.android.flexbox.FlexboxLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/continueTurnOff"
+        android:id="@+id/btnTurnOff"
         style="@style/OmeButton.Blue"
         android:layout_width="wrap_content"
         android:text="@string/turn_off"

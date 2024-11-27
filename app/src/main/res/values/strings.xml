@@ -131,6 +131,7 @@
     <string name="confirm_position_body">Are you sure, You want to change the knob to %1$s position?</string>
     <string name="confirm_logout">Are you sure you want to log out?</string>
     <string name="confirm_delete">Are you sure you want to delete this knob?</string>
+    <string name="confirm_knob_turn_off">Are you sure you want to turn off all the knobs?</string>
     <string name="confirm_delete_account">Are you sure you want to delete your account?</string>
     <string name="knob_position_changed">Knob Position Changed</string>
     <string name="stove_brand_changed">Stove Brand Changed</string>

@@ -1,6 +1,7 @@
 package com.ome.app.presentation.dashboard.my_stove
 
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -61,6 +62,15 @@ class MyStoveFragment :
 //                        navController?.navigateSafe(R.id.action_dashboardFragment_to_addKnobNavGraph)
 //                        navController?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToAddKnobNavGraph())
                 }
+            }
+            btnTurnOff.setBounceClickListener {
+                showDialog(
+                    message = SpannableStringBuilder(getString(R.string.confirm_knob_turn_off)),
+                    positiveButtonText = getString(R.string.turn_off),
+                    isRedPositiveButton = true,
+                    onPositiveButtonClick = {
+                        mainViewModel.turnOffAllKnobs()
+                    })
             }
         }
     }
