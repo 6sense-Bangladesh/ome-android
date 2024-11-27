@@ -65,6 +65,7 @@
     <color name="read_message_color">#666666</color>
     <color name="divider_color">#F0F0F5</color>
     <color name="cardBackground">#f1f4f9</color>
+    <color name="cardBackground2">#f6fafe</color>
     <color name="cardStrokeColor">#eef1f6</color>
     <color name="cardStrokeColorDeep">#dde3ea</color>
 

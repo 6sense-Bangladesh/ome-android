@@ -74,6 +74,15 @@ class DeviceDetailsFragment :
         }
     }
 
+    private fun showTimerDialog(hour: Int=0, min: Int=0, sec: Int=0){
+        dialogBinding.apply {
+            pickerHour.value = hour
+            pickerMin.value = min
+            pickerSec.value = sec
+        }
+        dialogTimer?.show()
+    }
+
     override fun setupUI() {
         viewModel.macAddress = args.params.macAddr
         viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
@@ -188,9 +197,13 @@ class DeviceDetailsFragment :
             }
         }
         binding.btnTimer.setBounceClickListener {
-            dialogTimer?.show()
+            showTimerDialog()
         }
-        binding.timerCard.setBounceClickListener {
+        binding.btnEditTimer.setBounceClickListener {
+            val timer = time.toTimer()
+            showTimerDialog(timer.first, timer.second, timer.third)
+        }
+        binding.btnStopTimer.setBounceClickListener {
             binding.timerCard.animateInvisible()
             viewModel.stopTimer()
         }
@@ -216,19 +229,31 @@ class DeviceDetailsFragment :
     }
 
 
-    private val lastTime by lazy { viewModel.pref.getTimer(args.params.macAddr) }
+    private var lastTime = 0L
     private val time
-        get() = (System.currentTimeMillis().minus(lastTime) /1000).toInt()
+        get() = (lastTime.minus(System.currentTimeMillis()) / 1000).toInt()
 
     private fun activeTimer(){
+        lastTime = viewModel.pref.getTimer(args.params.macAddr)
         viewLifecycleScope.launch {
-            if(lastTime > 0 && time > 0) {
+            Log.d(TAG, "Current time: ${System.currentTimeMillis()}")
+            Log.d(TAG,"Last time: $lastTime")
+            Log.d(TAG, "activeTimer: $time")
+            if(time >= 0) {
+                binding.btnTimer.invisible()
                 binding.timerCard.animateVisible()
                 while (time > 0) {
-                    binding.timerText.text = time.toTimer()
-                    delay(1.seconds)
+                    time.toTimer().let { (hr, min, sec) ->
+                        Log.d(TAG, "activeTimer: $hr $min $sec")
+                        binding.hour.text = hr.toStringLocale()
+                        binding.minute.text = min.toStringLocale()
+                        binding.second.text = sec.toStringLocale()
+                    }
+                    if(time == 0) break
+                    else delay(1.seconds)
                 }
                 binding.timerCard.animateInvisible()
+                binding.btnTimer.visible()
             }
         }
     }

@@ -140,13 +140,13 @@ fun View.animateVisibility(doOnEnd: (isVisible: Boolean) -> Unit = {}, doOnStart
         }
         valueAnimator.doOnEnd {
             doOnEnd.invoke(false)
-            gone()
+            visibility = View.GONE
         }
         valueAnimator.start()
     }
 }
 
-fun View.animateInvisible() {
+fun View.animateInvisible(doOnEnd: () -> Unit = {}) {
     if (height != 0 || isVisible) {
         Log.d("a", "animateInvisible")
         val valueAnimator = ValueAnimator.ofInt(this.measuredHeight, 0)
@@ -158,10 +158,14 @@ fun View.animateInvisible() {
             this.layoutParams = params
         }
         valueAnimator.start()
+        valueAnimator.doOnEnd {
+            doOnEnd.invoke()
+            visibility = View.GONE
+        }
     }
 }
 
-fun View.animateVisible() {
+fun View.animateVisible(doOnEnd: () -> Unit = {}) {
     if (height == 0 || !isVisible) {
         alpha = 0f
         Log.d("animateVisibility:", "if View.VISIBLE")
@@ -176,6 +180,7 @@ fun View.animateVisible() {
             animate().alpha(1f).start()
         }
         valueAnimator.start()
+        valueAnimator.doOnEnd { doOnEnd.invoke() }
     }
 }
 

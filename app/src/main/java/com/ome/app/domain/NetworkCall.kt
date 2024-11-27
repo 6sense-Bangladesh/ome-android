@@ -1,8 +1,10 @@
 package com.ome.app.domain
 
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import com.ome.app.domain.model.base.ErrorType
 import com.ome.app.domain.model.base.ResponseWrapper
+import com.ome.app.utils.log
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
@@ -11,20 +13,33 @@ import kotlin.coroutines.CoroutineContext
 
 object NetworkCall {
 
-    suspend fun <T> safeApiCall(dispatcher: CoroutineContext, apiCall: suspend () -> T): ResponseWrapper<T> {
+    suspend fun <T> safeApiCall(
+        dispatcher: CoroutineContext,
+        apiCall: suspend () -> T
+    ): ResponseWrapper<T> {
         return withContext(dispatcher) {
             try {
                 ResponseWrapper.Success(apiCall.invoke())
             } catch (throwable: Throwable) {
                 when (throwable) {
                     is UnknownHostException -> ResponseWrapper.Error(
-                        ErrorType.NO_INTERNET.message, ErrorType.NO_INTERNET)
-                    is IOException -> ResponseWrapper.Error(ErrorType.NETWORK.message, ErrorType.NETWORK)
+                        ErrorType.NO_INTERNET.message, ErrorType.NO_INTERNET
+                    )
+
+                    is IOException -> ResponseWrapper.Error(
+                        ErrorType.NETWORK.message,
+                        ErrorType.NETWORK
+                    )
+
                     is HttpException -> {
                         val code = throwable.code()
                         val errorResponse = convertErrorBody(throwable)
-                        ResponseWrapper.Error(errorResponse?.message ?: ErrorType.DEFAULT.message, code = code)
+                        ResponseWrapper.Error(
+                            errorResponse ?: ErrorType.DEFAULT.message,
+                            code = code
+                        )
                     }
+
                     else -> {
                         ResponseWrapper.Error(throwable.message ?: ErrorType.DEFAULT.message)
                     }
@@ -43,10 +58,11 @@ object NetworkCall {
                     is IOException -> throw IOException(ErrorType.NETWORK.message)
                     is HttpException -> {
                         val errorResponse = convertErrorBody(throwable)
-                        error(errorResponse?.message?.formatedError() ?: ErrorType.DEFAULT.message)
+                        error(errorResponse?.formattedError() ?: ErrorType.DEFAULT.message)
                     }
+
                     else -> {
-                        if(throwable.message != null)
+                        if (throwable.message != null)
                             throw throwable
                         else
                             error(ErrorType.DEFAULT.message)
@@ -56,19 +72,33 @@ object NetworkCall {
         }
     }
 
-    private fun convertErrorBody(throwable: HttpException): ErrorResponse? {
+    private fun convertErrorBody(throwable: HttpException): String? {
         return try {
-            Gson().fromJson(throwable.response()?.errorBody()?.string(), ErrorResponse::class.java)
+            val errorBody = throwable.response()?.errorBody()?.string()
+            errorBody.log()
+            Gson().fromJson(errorBody, ErrorResponse::class.java)?.message.log()
+            Gson().fromJson(errorBody, ErrorResponseType2::class.java)?.message.log()
+            Gson().fromJson(errorBody, ErrorResponse::class.java)?.message.let {
+                if(it.isNullOrEmpty())
+                    Gson().fromJson(errorBody, ErrorResponseType2::class.java)?.message
+                else it
+            }
         } catch (exception: Exception) {
+            exception.printStackTrace()
             null
         }
     }
 
-    private fun String.formatedError(): String {
-        return "\\b[a-z]".toRegex().replace(this) { matchResult ->
-            matchResult.value.uppercase()
-        }
+    private fun String.formattedError(): String {
+        return this.trim()
+            .replace(Regex("(?<!^)([A-Z])"), " $1")
+            .lowercase()
+            .replaceFirstChar { it.uppercase() }
+            .let { formatted ->
+                if (formatted.endsWith(".")) formatted else "$formatted."
+            }
     }
 
-    data class ErrorResponse(val message: String?)
+    data class ErrorResponse(@SerializedName("message") val message: String? = "")
+    data class ErrorResponseType2(@SerializedName("Message") val message: String? = "")
 }

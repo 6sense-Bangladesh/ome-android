@@ -66,6 +66,9 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.math.abs
@@ -669,15 +672,11 @@ fun String.to12HourFormat(): String {
 }
 
 
-fun Int.toTimer(): String {
+fun Int.toTimer(): Triple<Int, Int, Int> {
     val hours = this / 3600
     val minutes = (this % 3600) / 60
     val seconds = this % 60
-    return if (hours > 0) {
-        "%02d : %02d : %02d".format(hours, minutes, seconds) // HH:mm:ss format
-    } else {
-        "%02d : %02d".format(minutes, seconds) // mm:ss format
-    }
+    return Triple(hours, minutes, seconds)
 }
 
 fun Context.getClipBoardData(): String {

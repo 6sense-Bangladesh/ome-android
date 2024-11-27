@@ -14,7 +14,7 @@ class PreferencesProviderImpl(context: Context) : PreferencesProvider {
         private const val USER_DATA_KEY = "user_data"
         private const val ACCESS_TOKEN_KEY = "access_token"
         private const val USER_ID_KEY = "user_id"
-        private const val TIMER_KEY = "user_id"
+        private const val TIMER_KEY = "timer_id"
     }
 
     private val sharedPreferences =
@@ -72,6 +72,4 @@ class PreferencesProviderImpl(context: Context) : PreferencesProvider {
             sharedPreferences.edit().putString(TIMER_KEY, Gson().toJson(toMap())).apply()
         }
     }
-
-    override var lastTimer : Map<MacAddress, Long> = mapOf("" to 0L)
 }

@@ -1,7 +1,6 @@
 package com.ome.app.data.local
 
 import com.ome.app.domain.model.network.response.UserResponse
-import com.ome.app.domain.model.network.websocket.MacAddress
 
 
 interface PreferencesProvider {
@@ -18,8 +17,6 @@ interface PreferencesProvider {
     fun saveUserId(userId: String?)
 
     fun getUserId(): String?
-
-    var lastTimer: Map<MacAddress, Long>
 
     fun getTimer(macAddress: String): Long
 

@@ -274,41 +274,120 @@
         style="@style/Widget.Material3.CardView.Filled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_14sdp"
+        android:layout_marginBottom="@dimen/margin_horizontal"
         android:minHeight="@dimen/_50sdp"
         android:visibility="gone"
-        app:cardBackgroundColor="@color/off_white"
-        app:contentPadding="@dimen/_12sdp"
-        app:layout_constraintBottom_toTopOf="@id/btnTimer"
+        app:cardBackgroundColor="@color/cardBackground"
+        app:contentPadding="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="visible">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center">
 
-            <TextView
-                android:id="@+id/timerText"
-                style="@style/Title.Large"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/margin_horizontal"
-                android:layout_weight="1"
-                android:gravity="center"
-                tools:text="01 : 00 : 00" />
-
-            <TextView
-                style="@style/Title.Medium"
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnEditTimer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_5sdp"
-                android:text="@string/stop"
-                android:textColor="@color/red"
-                app:layout_constraintStart_toEndOf="@id/icon"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@drawable/btn_special_wht_bg"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_edit" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/hour"
+                    style="@style/Title.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    tools:text="01" />
+
+                <TextView
+                    style="@style/Label.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="@dimen/_1sdp"
+                    android:layout_marginBottom="1.5sp"
+                    android:includeFontPadding="false"
+                    android:text="@string/hr"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    style="@style/Title.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:includeFontPadding="false"
+                    android:text="@string/clone"
+                    android:textColor="@color/grayBlue" />
+
+                <TextView
+                    android:id="@+id/minute"
+                    style="@style/Title.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    tools:text="01" />
+
+                <TextView
+                    style="@style/Label.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="@dimen/_1sdp"
+                    android:layout_marginBottom="1.5sp"
+                    android:includeFontPadding="false"
+                    android:text="@string/min"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    style="@style/Title.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:includeFontPadding="false"
+                    android:text="@string/clone"
+                    android:textColor="@color/grayBlue" />
+
+                <TextView
+                    android:id="@+id/second"
+                    style="@style/Title.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    tools:text="01" />
+
+                <TextView
+                    style="@style/Label.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="@dimen/_1sdp"
+                    android:layout_marginBottom="1.5sp"
+                    android:includeFontPadding="false"
+                    android:text="@string/sec"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
+
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btnStopTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_special_wht_bg"
+                android:padding="@dimen/_8sdp"
+                android:src="@drawable/ic_stop"
+                android:tint="@color/red" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

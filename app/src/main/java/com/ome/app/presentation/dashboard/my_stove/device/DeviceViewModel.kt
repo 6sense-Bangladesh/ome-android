@@ -93,8 +93,7 @@ class DeviceViewModel @Inject constructor(
                     offAngle = offAngle,
                     second = totalSeconds
                 )
-//                pref.lastTimer = mapOf(macAddress to System.currentTimeMillis() + totalSeconds * 1000)
-                pref.setTimer(macAddress, System.currentTimeMillis() )
+                pref.setTimer(macAddress, System.currentTimeMillis() + totalSeconds * 1000)
             } ?: error("Something went wrong.")
         }
     }

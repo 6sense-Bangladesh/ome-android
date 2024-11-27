@@ -53,7 +53,7 @@
     <string name="how_are_the_burners_on_your_stove_organized">How are the burners on your stove organized?</string>
     <string name="finish">Finish</string>
     <string name="stove_configuration_complete">Stove Configuration Complete</string>
-    <string name="next_nlet_s_setup_your_smart_knob">Next,\nlet\'s setup your smart knob!</string>
+    <string name="next_nlet_s_setup_your_smart_knob">Next,\nlet\'s setup your Smart Knob!</string>
     <string name="skip_knob_setup">Skip Knob Setup</string>
     <string name="no_internet_connection">No Internet Connection</string>
     <string name="settings">Settings</string>
@@ -110,7 +110,7 @@
     <string name="manual_setup3">It might take a moment to show up. If asked for a password, enter <font color='#0099d7'>\"password\"</font>. Once connected, return to this screen.</string>
     <string name="manual_connection_to_hotspot_error">The network you connected to is not the knob\'s network \"%1$s\" or \"%2$s\".</string>
     <string name="select_a_network_for_to_connect">Select a network to connect your knob.</string>
-    <string name="ome_smart_knob_will_be_setup_on">Ome smart knob will be setup on</string>
+    <string name="ome_smart_knob_will_be_setup_on">Ome Smart Knob will be setup on</string>
     <string name="connect">Connect</string>
     <string name="incorrect_network_name_and_password">Incorrect network name or password.</string>
     <string name="something_went_wrong">Something went wrong.</string>
@@ -167,7 +167,7 @@
     <string name="electric_stove">Electric Stovetop</string>
     <string name="gas_range">Gas Range</string>
     <string name="electric_range">Electric Range</string>
-    <string name="now_let_s_setup_your_smart_knob">Now, let\'s setup your smart knob!</string>
+    <string name="now_let_s_setup_your_smart_knob">Now, let\'s setup your Smart Knob!</string>
     <string name="select_your_appliance">Select your appliance</string>
     <string name="button">button</string>
     <string name="close">close</string>
@@ -219,6 +219,9 @@
     <string name="enter_time">Enter Time</string>
     <string name="stop">Stop</string>
     <string name="issue_type">Issue Type</string>
+    <string name="sec">Sec</string>
+    <string name="min">Min</string>
+    <string name="hr">Hr</string>
 
 
 </resources>
