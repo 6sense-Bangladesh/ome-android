@@ -125,8 +125,8 @@
     <string name="device_calibration_label">Manually turn your knob to <![CDATA[<b>%1$s</b>]]> position and press continue</string>
     <string name="device_calibration_dual_label">Manually turn your knob to <![CDATA[<b>%1$s</b>]]> position for the <![CDATA[<b>%2$s Zone</b>]]> and press continue</string>
     <string name="device_calibration_confirmation_label">Manually turn your knob to %1$s and press continue</string>
-    <string name="calibration_confirmation_label">Is knob at %1$s?</string>
-    <string name="calibration_confirmation_dual_label">Is knob at %1$s for the %2$s zone?</string>
+    <string name="calibration_confirmation_label">Is knob at <![CDATA[<b>%1$s</b>]]>?</string>
+    <string name="calibration_confirmation_dual_label">Is knob at <![CDATA[<b>%1$s</b>]]> for the <![CDATA[<b>%2$s</b>]]> zone?</string>
     <string name="confirm_position">Confirm Position</string>
     <string name="confirm_position_body">Are you sure, You want to change the knob to %1$s position?</string>
     <string name="confirm_logout">Are you sure you want to log out?</string>

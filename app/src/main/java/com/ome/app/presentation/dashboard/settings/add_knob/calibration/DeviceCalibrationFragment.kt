@@ -120,7 +120,7 @@ class DeviceCalibrationFragment :
                     }
                 } else {
                     binding.labelTv.text =
-                        getString(R.string.device_calibration_label, currentStep.positionName)
+                        getString(R.string.device_calibration_label, currentStep.positionName).asHtml
                 }
 
             }

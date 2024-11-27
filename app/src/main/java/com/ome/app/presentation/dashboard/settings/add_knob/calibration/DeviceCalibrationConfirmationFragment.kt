@@ -142,19 +142,19 @@ class DeviceCalibrationConfirmationFragment :
                 when (currentStep) {
                     CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE -> {
                         binding.labelTv.text =
-                            getString(R.string.calibration_confirmation_dual_label, currentStep.positionName, "First")
+                            getString(R.string.calibration_confirmation_dual_label, currentStep.positionName, "First").asHtml
                     }
                     CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> {
                         binding.labelTv.text =
-                            getString(R.string.calibration_confirmation_dual_label, currentStep.positionName, "Second")
+                            getString(R.string.calibration_confirmation_dual_label, currentStep.positionName, "Second").asHtml
                     }
                     else -> {
                         binding.labelTv.text =
-                            getString(R.string.calibration_confirmation_label, currentStep.positionName)
+                            getString(R.string.calibration_confirmation_label, currentStep.positionName).asHtml
                     }
                 }
             }else
-                binding.labelTv.text = getString(R.string.calibration_confirmation_label, currentStep.positionName)
+                binding.labelTv.text = getString(R.string.calibration_confirmation_label, currentStep.positionName).asHtml
         }
 
     }
