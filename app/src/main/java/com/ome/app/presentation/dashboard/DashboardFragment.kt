@@ -117,9 +117,9 @@ class DashboardFragment :
                             },
                             message = SpannableStringBuilder(
                                 if (this) {
-                                    "Are you sure you want to disable safety lock?"
+                                    "Are you sure you want to disable the safety lock?"
                                 } else {
-                                    "Are you sure you want to enable safety lock?"
+                                    "Are you sure you want to enable the safety lock?"
                                 }
                             ),
                             positiveButtonText = if (this) "Yes, Disable" else "Yes, Enable",
