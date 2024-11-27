@@ -5,7 +5,6 @@ import android.os.Parcelable
 import android.view.View
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceCalibrationConfirmationBinding

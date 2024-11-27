@@ -6,7 +6,6 @@ import android.os.Parcelable
 import android.text.method.LinkMovementMethod
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentSignUpPasswordBinding

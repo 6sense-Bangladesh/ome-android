@@ -1,7 +1,6 @@
 package com.ome.app.presentation.internet_error
 
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.databinding.FragmentNoInternetConnectionBinding
 import com.ome.app.presentation.base.BaseFragment

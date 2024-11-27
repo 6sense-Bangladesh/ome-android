@@ -3,7 +3,6 @@ package com.ome.app.presentation.signup.name
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.ome.app.databinding.FragmentSignUpNameBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.signup.email.NameParams

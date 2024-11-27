@@ -3,7 +3,6 @@ package com.ome.app.presentation.signin.forgotpassword
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentForgotPasswordEmailBinding
 import com.ome.app.presentation.base.BaseFragment

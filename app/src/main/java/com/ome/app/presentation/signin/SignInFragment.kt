@@ -3,7 +3,6 @@ package com.ome.app.presentation.signin
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.amplifyframework.kotlin.core.Amplify
 import com.ome.app.R
 import com.ome.app.data.remote.AmplifyManager
