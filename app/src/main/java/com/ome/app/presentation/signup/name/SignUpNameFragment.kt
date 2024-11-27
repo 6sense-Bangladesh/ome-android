@@ -8,6 +8,7 @@ import com.ome.app.databinding.FragmentSignUpNameBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.signup.email.NameParams
 import com.ome.app.utils.navigateSafe
+import com.ome.app.utils.popBackSafe
 import com.ome.app.utils.subscribe
 import dev.chrisbanes.insetter.applyInsetter
 
@@ -24,7 +25,7 @@ class SignUpNameFragment :
                 margin(top = true)
             }
         }
-        binding.backIv.setOnClickListener { findNavController().popBackStack() }
+        binding.backIv.setOnClickListener { popBackSafe() }
         binding.continueBtn.setOnClickListener {
             viewModel.validateFirstAndLastName(
                 binding.firstName.getText(),

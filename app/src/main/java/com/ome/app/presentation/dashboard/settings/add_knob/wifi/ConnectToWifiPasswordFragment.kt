@@ -54,7 +54,7 @@ class ConnectToWifiPasswordFragment :
         onDismissSuccessDialog = {
             if (args.params.isEditMode) {
                 mainViewModel.getUserInfo()
-                findNavController().popBackStack(R.id.deviceSettingsFragment, false)
+                popBackSafe(R.id.deviceSettingsFragment, false)
             } else {
                 navigateSafe(
                     ConnectToWifiPasswordFragmentDirections.actionConnectToWifiPasswordFragmentToKnobInstallationManualFragment(

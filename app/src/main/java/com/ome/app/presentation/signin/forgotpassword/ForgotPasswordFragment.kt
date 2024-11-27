@@ -9,6 +9,7 @@ import com.ome.app.databinding.FragmentForgotPasswordEmailBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.signup.password.AuthParams
 import com.ome.app.utils.navigateSafe
+import com.ome.app.utils.popBackSafe
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -32,14 +33,14 @@ class ForgotPasswordFragment :
                 margin(top = true)
             }
         }
-        binding.backIv.setOnClickListener { findNavController().popBackStack() }
+        binding.backIv.setOnClickListener { popBackSafe() }
         binding.continueBtn.setOnClickListener {
             binding.continueBtn.startAnimation()
             viewModel.validateEmail(binding.email.getText())
         }
 
         binding.backToLoginBtn.setOnClickListener {
-            findNavController().popBackStack()
+            popBackSafe()
         }
 
     }

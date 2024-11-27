@@ -31,7 +31,7 @@ class ChangePasswordFragment:  BaseFragment<ChangePasswordViewModel, FragmentCha
 //            }
 //        }
 //        binding.backIv.setOnClickListener {
-//            findNavController().popBackStack()
+//            popBackSafe()
 //        }
         binding.continueBtn.setOnClickListener {
             viewModel.validatePassword(

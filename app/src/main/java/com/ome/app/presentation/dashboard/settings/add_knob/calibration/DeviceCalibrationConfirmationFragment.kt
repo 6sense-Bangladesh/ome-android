@@ -58,7 +58,7 @@ class DeviceCalibrationConfirmationFragment :
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.noBtn.setOnClickListener {
             if (viewModel.currentCalibrationState.value == null) {
-                findNavController().popBackStack()
+                popBackSafe()
             } else {
                 viewModel.triggerCurrentStepAgain()
             }
@@ -108,7 +108,7 @@ class DeviceCalibrationConfirmationFragment :
     override fun setupObserver() {
         super.setupObserver()
         subscribe(viewModel.previousScreenTriggered) {
-            findNavController().popBackStack()
+            popBackSafe()
         }
         subscribe(viewModel.calibrationIsDoneLiveData) {
             navigateSafe(

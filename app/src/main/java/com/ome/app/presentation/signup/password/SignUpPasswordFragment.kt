@@ -13,6 +13,7 @@ import com.ome.app.databinding.FragmentSignUpPasswordBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.applyMaskToEmail
 import com.ome.app.utils.navigateSafe
+import com.ome.app.utils.popBackSafe
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -37,7 +38,7 @@ class SignUpPasswordFragment :
             }
         }
         binding.backIv.setOnClickListener {
-            findNavController().popBackStack()
+            popBackSafe()
         }
         binding.continueBtn.setOnClickListener {
             viewModel.validatePassword(
@@ -85,7 +86,7 @@ class SignUpPasswordFragment :
 
         subscribe(viewModel.passwordResetLiveData){
             showSuccessDialog(message = getString(R.string.password_reset), onDismiss = {
-                findNavController().popBackStack(R.id.signInFragment, false)
+                popBackSafe(R.id.signInFragment, false)
             })
         }
     }

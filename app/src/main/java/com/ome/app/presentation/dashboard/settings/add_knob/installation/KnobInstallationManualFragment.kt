@@ -16,6 +16,7 @@ import com.ome.app.presentation.dashboard.settings.add_knob.zone.ZoneSelectionFr
 import com.ome.app.utils.loadDrawable
 import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.popBackSafe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -56,7 +57,7 @@ class KnobInstallationManualFragment :
     }
     override fun handleBackPressEvent() {
         activity?.onBackPressedDispatcher?.addCallback(this){
-            findNavController().popBackStack(if(args.params.isComeFromSettings) R.id.deviceDetailsFragment else R.id.dashboardFragment, false)
+            popBackSafe(if(args.params.isComeFromSettings) R.id.deviceDetailsFragment else R.id.dashboardFragment, false)
         }
     }
 }

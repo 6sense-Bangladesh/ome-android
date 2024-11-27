@@ -25,6 +25,7 @@ import com.ome.app.presentation.dashboard.settings.SettingsFragment
 import com.ome.app.presentation.launch.LaunchFragment
 import com.ome.app.presentation.signup.welcome.WelcomeFragment
 import com.ome.app.utils.collectWithLifecycle
+import com.ome.app.utils.popBackSafe
 import com.ome.app.utils.subscribe
 import com.ome.app.utils.toast
 
@@ -101,7 +102,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                     }
 
                     else -> {
-                        findNavController().popBackStack()
+                        popBackSafe()
                     }
                 }
             }

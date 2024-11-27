@@ -8,6 +8,7 @@ import com.ome.app.R
 import com.ome.app.databinding.FragmentSetupCompleteBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.makeGone
+import com.ome.app.utils.popBackSafe
 
 class SetupCompleteFragment :
     BaseFragment<SetupCompleteViewModel, FragmentSetupCompleteBinding>(
@@ -30,15 +31,15 @@ class SetupCompleteFragment :
 
         binding.setupAnotherKnobBtn.setOnClickListener {
             mainViewModel.selectedBurnerIndex = null
-            findNavController().popBackStack(R.id.knobWakeUpFragment, false)
+            popBackSafe(R.id.knobWakeUpFragment, false)
         }
 
         binding.imDoneBtn.setOnClickListener {
             mainViewModel.selectedBurnerIndex = null
             if(args.isComeFromSettings)
-                findNavController().popBackStack(R.id.deviceDetailsFragment, false)
+                popBackSafe(R.id.deviceDetailsFragment, false)
             else
-                findNavController().popBackStack(R.id.dashboardFragment, false)
+                popBackSafe(R.id.dashboardFragment, false)
         }
 
     }

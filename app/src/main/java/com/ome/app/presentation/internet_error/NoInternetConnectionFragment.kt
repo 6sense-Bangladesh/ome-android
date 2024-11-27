@@ -5,6 +5,7 @@ import androidx.navigation.fragment.findNavController
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.databinding.FragmentNoInternetConnectionBinding
 import com.ome.app.presentation.base.BaseFragment
+import com.ome.app.utils.popBackSafe
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,7 +32,7 @@ class NoInternetConnectionFragment :
                     if(mainViewModel.startDestinationInitialized.value==null){
                         mainViewModel.initStartDestination()
                     } else {
-                        findNavController().popBackStack()
+                        popBackSafe()
                     }
                 }
                 ConnectionStatusListener.ConnectionStatusState.NoConnection -> {

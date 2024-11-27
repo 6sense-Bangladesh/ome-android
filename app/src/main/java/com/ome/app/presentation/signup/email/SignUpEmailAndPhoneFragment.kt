@@ -10,6 +10,7 @@ import com.ome.app.databinding.FragmentSignUpEmailAndPasswordBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.signup.password.AuthParams
 import com.ome.app.utils.navigateSafe
+import com.ome.app.utils.popBackSafe
 import com.ome.app.utils.subscribe
 import dev.chrisbanes.insetter.applyInsetter
 import kotlinx.parcelize.Parcelize
@@ -31,7 +32,7 @@ class SignUpEmailAndPhoneFragment :
             }
         }
         binding.backIv.setOnClickListener {
-            findNavController().popBackStack()
+            popBackSafe()
         }
         binding.continueBtn.setOnClickListener {
             viewModel.validateFields(

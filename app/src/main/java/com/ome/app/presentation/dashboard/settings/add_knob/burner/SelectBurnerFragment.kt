@@ -80,7 +80,7 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
             else{
                 binding.continueBtn.revertAnimation()
                 toast(getString(R.string.knob_position_changed))
-                findNavController().popBackStack()
+                popBackSafe()
             }
         }
 

@@ -61,7 +61,7 @@ class DeviceCalibrationFragment :
     override fun setupObserver() {
         super.setupObserver()
         subscribe(viewModel.previousScreenTriggered) {
-            findNavController().popBackStack()
+            popBackSafe()
         }
         subscribe(viewModel.calibrationIsDoneLiveData) {
             if (it) {

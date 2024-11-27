@@ -3,7 +3,6 @@ package com.ome.app.presentation.dashboard.my_stove.device
 import android.os.Parcelable
 import android.text.SpannableStringBuilder
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceSettingsBinding
@@ -85,9 +84,10 @@ class DeviceSettingsFragment :
             adapter.submitList(it)
         }
 
-//        viewModel.loadingFlow.collectWithLifecycle {
-//            binding.loadingLayout.root.changeVisibility(it)
-//        }
+        viewModel.loadingFlow.collectWithLifecycle {
+            binding.loadingLayout.root.changeVisibility(it)
+            if(!it) popBackSafe(R.id.dashboardFragment, false)
+        }
     }
 
     private val onClick: (ItemModel) -> Unit = { item ->
@@ -121,11 +121,7 @@ class DeviceSettingsFragment :
                             positiveButtonText = getString(R.string.delete),
                             isRedPositiveButton = true,
                             onPositiveButtonClick = {
-                                binding.loadingLayout.root.visible()
-                                viewModel.deleteKnob{
-                                    findNavController().popBackStack(R.id.dashboardFragment, false)
-                                    binding.loadingLayout.root.gone()
-                                }
+                                viewModel.deleteKnob()
                             }
                         )
                     }

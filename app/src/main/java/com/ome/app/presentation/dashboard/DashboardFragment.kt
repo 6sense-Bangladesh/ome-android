@@ -147,6 +147,7 @@ class DashboardFragment :
                         binding.topAppBar.title = getString(R.string.app_name)
                         binding.topAppBar.menu?.setGroupVisible(R.id.group_profile, false)
                         binding.topAppBar.menu?.setGroupVisible(R.id.group_my_stove, true)
+                        binding.bottomNavigation.selectedItemId = R.id.menuMyStove
                     }
 
                     2 -> {

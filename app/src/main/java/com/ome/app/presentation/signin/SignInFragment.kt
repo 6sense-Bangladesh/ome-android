@@ -11,6 +11,7 @@ import com.ome.app.databinding.FragmentSignInBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.closeKeyboard
 import com.ome.app.utils.navigateSafe
+import com.ome.app.utils.popBackSafe
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.insetter.applyInsetter
@@ -30,7 +31,7 @@ class SignInFragment :
                 margin(top = true)
             }
         }
-        binding.backIv.setOnClickListener { findNavController().popBackStack() }
+        binding.backIv.setOnClickListener { popBackSafe() }
 
         binding.continueBtn.setOnClickListener {
             binding.continueBtn.startAnimation()

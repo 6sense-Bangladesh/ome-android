@@ -66,9 +66,6 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
-import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.InvocationKind
-import kotlin.contracts.contract
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.math.abs
@@ -348,6 +345,19 @@ fun Fragment.navigateSafe(directions: NavDirections): Unit? {
         if (lifecycle.currentState == Lifecycle.State.RESUMED)
             findNavController().navigate(directions)
         else null
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}
+fun Fragment.popBackSafe(@IdRes destinationId: Int? = null, inclusive: Boolean= true): Boolean? {
+    return try {
+        findNavController().run {
+            if (lifecycle.currentState == Lifecycle.State.RESUMED)
+                findNavController().popBackStack(destinationId ?: currentDestination!!.id, inclusive).orNull()
+            else null
+        }
+
     } catch (e: Exception) {
         e.printStackTrace()
         null
@@ -913,6 +923,7 @@ fun Float?.orZero() = this ?: 0.0F
 fun String?.orZero() = this?.toIntOrNull() ?: 0
 fun String?.orZeroD() = this?.toDoubleOrNull() ?: 0.0
 fun Boolean?.orFalse() = this ?: false
+fun Boolean.orNull() = if(!this) null else true
 
 fun Int?.isZero() = this == null || this == 0
 fun Long?.isZero() = this == null || this == 0L
