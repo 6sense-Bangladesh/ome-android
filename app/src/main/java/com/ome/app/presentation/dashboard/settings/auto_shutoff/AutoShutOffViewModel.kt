@@ -16,9 +16,8 @@ class AutoShutOffViewModel @Inject constructor(
 
     val autoShutOffLiveData: SingleLiveEvent<Int> = SingleLiveEvent()
     val autoShutOffResponseLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
-    var selectedTime : Int? = -1
+    var selectedTime : Int = 15
     var timeList = listOf(
-        "Off" to null,
         "15 Minutes" to 15,
         "20 Minutes" to 20,
         "25 Minutes" to 25,
@@ -33,27 +32,25 @@ class AutoShutOffViewModel @Inject constructor(
 
 
     fun loadData() = launch(ioContext, showLoading = false) {
-        userRepository.userFlow.collect {
-            it?.stoveAutoOffMins?.let { value ->
+        userRepository.userFlow.collect { data ->
+            data?.stoveAutoOffMins?.also { value ->
                 selectedTime = value
                 autoShutOffLiveData.postValue(timeList.indexOfFirst { it.second == value })
+            } ?: run {
+                selectedTime = 15
+                autoShutOffLiveData.postValue(0)
             }
         }
     }
 
 
     fun updateAutoShutOffTime() = launch(ioContext) {
-        if (selectedTime != -1) {
-            stoveRepository.updateStove(
-                StoveRequest(stoveAutoOffMins = selectedTime),
-                userRepository.userFlow.value?.stoveId ?: ""
-            )
-            userRepository.getUserData()
-            autoShutOffResponseLiveData.postValue(true)
-        }else{
-            error("Please select a time")
-        }
-
+        stoveRepository.updateStove(
+            StoveRequest(stoveAutoOffMins = selectedTime),
+            userRepository.userFlow.value?.stoveId ?: ""
+        )
+        userRepository.getUserData()
+        autoShutOffResponseLiveData.postValue(true)
     }
 
 }

@@ -51,10 +51,10 @@ class AutoShutOffSettingsFragment :
                 binding.saveBtn.revertAnimation()
             }
         }
-        subscribe(viewModel.autoShutOffLiveData) {position->
-            val selected = viewModel.timeList.getOrNull(position)
-            binding.autoShutOffSelector.setText(selected?.first)
-            viewModel.selectedTime = selected?.second
+        subscribe(viewModel.autoShutOffLiveData) { position ->
+            val selected = viewModel.timeList.getOrNull(position) ?: viewModel.timeList.first()
+            binding.autoShutOffSelector.setText(selected.first)
+            viewModel.selectedTime = selected.second
             binding.autoShutOffSelector.setSimpleItems(viewModel.timeList.map { it.first }.toTypedArray())
         }
         subscribe(viewModel.autoShutOffResponseLiveData) {
