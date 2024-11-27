@@ -63,6 +63,8 @@
         android:hint="@string/how_can_we_help">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/text"
+            style="@style/Label.Medium"
             android:textAlignment="textStart"
             android:gravity="start"
             android:layout_width="match_parent"

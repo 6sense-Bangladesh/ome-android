@@ -7,45 +7,82 @@
     android:fitsSystemWindows="false"
     tools:context=".presentation.launch.LaunchFragment">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/ome_background_gradient"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:translationY="-200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_background_new" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView2"
+        style="@style/Widget.Material3.CardView.Filled"
+        android:layout_width="@dimen/_500sdp"
+        android:layout_height="@dimen/_500sdp"
+        android:translationX="-50dp"
+        android:layout_marginBottom="-300dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_250sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-
+    </com.google.android.material.card.MaterialCardView>
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="220dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="74dp"
-        android:fitsSystemWindows="true"
-        android:src="@drawable/ome_logo"
-        app:layout_constraintEnd_toEndOf="@+id/include"
+        android:id="@+id/imageView7"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_marginTop="@dimen/_28sdp"
+        android:src="@drawable/ome_logo_transparent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/materialCardView2" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/materialTextView"
+        style="@style/Label.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:text="@string/peace_of_mind_peace_of_home"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/createAccountBtn"
-        style="@style/OmeButton.White"
-        android:text="@string/create_account"
-        app:layout_constraintBottom_toTopOf="@+id/signInBtn"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/signInBtn"
-        style="@style/OmeButton.White.Outline"
-        android:fitsSystemWindows="true"
-        android:text="@string/sign_in"
-        app:layout_constraintBottom_toBottomOf="@+id/include"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/createAccountBtn"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_14sdp"
+            android:layout_weight="1"
+            android:text="@string/create_account" />
 
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="0dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/signInBtn"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_14sdp"
+            android:layout_weight="1"
+            android:text="@string/sign_in"
+            android:textColor="@color/black"
+            app:strokeColor="@color/gray" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

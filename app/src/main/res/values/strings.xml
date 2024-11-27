@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Ome</string>
-    <string name="create_account">Create An Account</string>
+    <string name="create_account">Create Account</string>
     <string name="sign_in">Sign In</string>
     <string name="continue_btn">Continue</string>
     <string name="scan_again">Scan Again</string>
@@ -219,6 +219,7 @@
     <string name="enter_time">Enter Time</string>
     <string name="stop">Stop</string>
     <string name="issue_type">Issue Type</string>
+    <string name="peace_of_mind_peace_of_home">Peace of Mind, Peace of Home.</string>
     <string name="sec">Sec</string>
     <string name="min">Min</string>
     <string name="hr">Hr</string>
