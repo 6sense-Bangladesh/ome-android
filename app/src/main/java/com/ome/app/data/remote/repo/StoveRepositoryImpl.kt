@@ -80,7 +80,7 @@ class StoveRepositoryImpl(
     }
 
     override suspend fun createKnob(
-        params: CreateKnobRequest,
+        params: KnobRequest,
         macAddress: String
     ): CreateKnobResponse {
         return respectErrorApiCall(coroutineContext) {
@@ -95,7 +95,7 @@ class StoveRepositoryImpl(
     }
 
     override suspend fun updateKnobInfo(
-        params: CreateKnobRequest,
+        params: KnobRequest,
         macAddress: String
     ): CreateKnobResponse {
         return respectErrorApiCall(coroutineContext) {

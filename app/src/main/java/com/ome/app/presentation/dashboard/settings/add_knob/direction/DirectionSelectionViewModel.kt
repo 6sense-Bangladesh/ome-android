@@ -1,7 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.direction
 
 import androidx.lifecycle.SavedStateHandle
-import com.ome.app.domain.model.network.request.CreateKnobRequest
+import com.ome.app.domain.model.network.request.KnobRequest
 import com.ome.app.domain.model.network.request.SetCalibrationRequest
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
@@ -30,7 +30,7 @@ class DirectionSelectionViewModel @Inject constructor(
                         macAddress = macAddress
                     )
                     if (!calibrated)
-                        stoveRepository.updateKnobInfo(CreateKnobRequest(calibrated = false), macAddress)
+                        stoveRepository.updateKnobInfo(KnobRequest(calibrated = false), macAddress)
                     onEnd()
                     successToastFlow.emit("Orientation updated successfully")
                 } else error("Knob not configured.")

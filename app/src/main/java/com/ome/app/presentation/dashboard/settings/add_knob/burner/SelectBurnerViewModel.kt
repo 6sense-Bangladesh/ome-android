@@ -1,6 +1,6 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.burner
 
-import com.ome.app.domain.model.network.request.CreateKnobRequest
+import com.ome.app.domain.model.network.request.KnobRequest
 import com.ome.app.domain.model.state.StoveOrientation
 import com.ome.app.domain.model.state.stoveOrientation
 import com.ome.app.domain.repo.StoveRepository
@@ -38,7 +38,7 @@ class SelectBurnerViewModel @Inject constructor(
 
     fun changeKnobPosition(stovePosition: Int) = launch(ioContext) {
         stoveRepository.updateKnobInfo(
-            params = CreateKnobRequest(
+            params = KnobRequest(
                 stovePosition = stovePosition,
             ),
             macAddress = macAddress

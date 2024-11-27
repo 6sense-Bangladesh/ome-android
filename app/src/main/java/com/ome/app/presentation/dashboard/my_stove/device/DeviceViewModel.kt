@@ -78,6 +78,9 @@ class DeviceViewModel @Inject constructor(
     fun deleteKnob() {
         launch(ioContext) {
             stoveRepository.deleteKnob(macAddress)
+            webSocketManager.knobState.value = webSocketManager.knobState.value.toMutableMap().apply {
+                remove(macAddress)
+            }.toMap()
             stoveRepository.getAllKnobs()
         }
     }

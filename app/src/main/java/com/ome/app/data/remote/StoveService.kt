@@ -24,7 +24,7 @@ interface StoveService {
 
     @POST("/knob/{macAddress}")
     suspend fun createKnob(
-        @Body params: CreateKnobRequest,
+        @Body params: KnobRequest,
         @Path("macAddress") macAddress: String
     ): CreateKnobResponse
 
@@ -35,7 +35,7 @@ interface StoveService {
 
     @PATCH("/knob/{macAddress}")
     suspend fun updateKnobInfo(
-        @Body params: CreateKnobRequest,
+        @Body params: KnobRequest,
         @Path("macAddress") macAddress: String
     ): CreateKnobResponse
 

@@ -223,6 +223,7 @@
     <string name="sec">Sec</string>
     <string name="min">Min</string>
     <string name="hr">Hr</string>
+    <string name="safety_locked">Safety Locked</string>
 
 
 </resources>

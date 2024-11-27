@@ -292,6 +292,18 @@
             android:text="@string/configure"
             android:visibility="gone"
             tools:visibility="visible" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/safetyLock"
+            style="@style/Label.Mini"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_safety_lock_small"
+            android:drawablePadding="@dimen/_3sdp"
+            android:gravity="center"
+            android:text="@string/safety_locked"
+            android:visibility="gone"
+            tools:visibility="visible" />
     </LinearLayout>
 
 

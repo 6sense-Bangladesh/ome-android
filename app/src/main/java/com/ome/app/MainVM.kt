@@ -42,7 +42,7 @@ class MainVM @Inject constructor(
     val connectionStatusListener: ConnectionStatusListener
 ) : BaseViewModel() {
     var userInfo = savedStateHandle.getStateFlow("userInfo", preferencesProvider.getUserData())
-    private var knobState =
+    var knobState =
         savedStateHandle.getStateFlow("knobState", mutableMapOf<MacAddress, KnobState>())
     var knobs = savedStateHandle.getStateFlow("knobs", listOf<KnobDto>())
 
@@ -105,7 +105,7 @@ class MainVM @Inject constructor(
             userRepository.userFlow.value?.knobMacAddrs?.forEach {
                 stoveRepository.setSafetyLockOn(it)
             }
-            stoveRepository.getAllKnobs()
+            delay(5.seconds)
         }
     }
 
@@ -114,7 +114,7 @@ class MainVM @Inject constructor(
             userRepository.userFlow.value?.knobMacAddrs?.forEach {
                 stoveRepository.setSafetyLockOff(it)
             }
-            stoveRepository.getAllKnobs()
+            delay(5.seconds)
         }
     }
 

@@ -13,9 +13,9 @@ interface StoveRepository {
     suspend fun initCalibration(params: InitCalibrationRequest, macAddress: String): KnobDto
     suspend fun setCalibration(params: SetCalibrationRequest, macAddress: String): KnobDto
     suspend fun changeKnobAngle(params: ChangeKnobAngle, macAddress: String): ChangeKnobAngleResponse
-    suspend fun createKnob(params: CreateKnobRequest, macAddress: String): CreateKnobResponse
+    suspend fun createKnob(params: KnobRequest, macAddress: String): CreateKnobResponse
     suspend fun deleteKnob(macAddress: String): BaseResponse
-    suspend fun updateKnobInfo(params: CreateKnobRequest, macAddress: String): CreateKnobResponse
+    suspend fun updateKnobInfo(params: KnobRequest, macAddress: String): CreateKnobResponse
     suspend fun clearWifi(macAddress: String): BaseResponse
     suspend fun setSafetyLockOn(macAddress: String): BaseResponse
     suspend fun setSafetyLockOff(macAddress: String): BaseResponse

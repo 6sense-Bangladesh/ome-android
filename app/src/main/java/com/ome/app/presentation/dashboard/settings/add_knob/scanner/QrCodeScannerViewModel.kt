@@ -2,7 +2,7 @@ package com.ome.app.presentation.dashboard.settings.add_knob.scanner
 
 import com.ome.app.R
 import com.ome.app.data.local.ResourceProvider
-import com.ome.app.domain.model.network.request.CreateKnobRequest
+import com.ome.app.domain.model.network.request.KnobRequest
 import com.ome.app.domain.model.state.KnobStatus
 import com.ome.app.domain.model.state.knobStatus
 import com.ome.app.domain.repo.StoveRepository
@@ -49,7 +49,11 @@ class QrCodeScannerViewModel @Inject constructor(
     private suspend fun addNewKnob(){
         if (macAddress != null && stovePosition != null) {
             stoveRepository.createKnob(
-                params = CreateKnobRequest(stovePosition = stovePosition!!, calibrated = false),
+                params = KnobRequest(stovePosition = stovePosition!!),
+                macAddress = macAddress!!
+            )
+            stoveRepository.updateKnobInfo(
+                params = KnobRequest(calibrated = false, safetyLock = false),
                 macAddress = macAddress!!
             )
             isKnobAddedFlow.value = Unit

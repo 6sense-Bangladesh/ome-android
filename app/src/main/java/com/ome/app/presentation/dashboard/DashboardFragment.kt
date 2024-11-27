@@ -50,9 +50,9 @@ class DashboardFragment :
     override fun setupObserver() {
         super.setupObserver()
         val menuItem = binding.topAppBar.menu?.findItem(R.id.menuLock)
-        mainViewModel.knobs.collectWithLifecycle {
+        mainViewModel.knobState.collectWithLifecycle {state ->
             if (binding.dashboardViewPager.currentItem != 1) return@collectWithLifecycle
-            if (it.any { it.safetyLock }) {
+            if (state.toList().any { it.second.knobSetSafetyMode == true }) {
                 menuItem?.setIcon(R.drawable.ic_safety_lock)
             } else {
                 menuItem?.setIcon(R.drawable.ic_safety_lock_open)
@@ -83,8 +83,8 @@ class DashboardFragment :
         binding.dashboardViewPager.adapter = ViewPagerAdapter(navFragments, this)
         binding.bottomNavigation.selectedItemId = R.id.menuMyStove
         binding.dashboardViewPager.setCurrentItem(1, false)
-        binding.topAppBar.setOnMenuItemClickListener {
-            when (it.itemId) {
+        binding.topAppBar.setOnMenuItemClickListener { menu ->
+            when (menu.itemId) {
                 R.id.menuLogout -> {
                     showDialog(
                         message = SpannableStringBuilder(getString(R.string.confirm_logout)),
@@ -105,7 +105,7 @@ class DashboardFragment :
                 }
 
                 R.id.menuLock -> {
-                    mainViewModel.knobs.value.any { it.safetyLock }.run {
+                    mainViewModel.knobState.value.toList().any { it.second.knobSetSafetyMode == true }.run {
                         showDialog(
                             title = if (this) "Disable Safety Lock" else "Enable Safety Lock",
                             onPositiveButtonClick = {

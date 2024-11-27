@@ -193,6 +193,8 @@ class KnobView @JvmOverloads constructor(
     fun changeKnobState(knob: KnobState, calibration: Calibration): Boolean {
         if(calibration.isCalibrated)
             adjustKnobColorScale(calibration)
+        binding.safetyLock.changeVisibility(knob.knobSetSafetyMode.orFalse())
+
         knob.angle?.toFloat()?.let { setKnobPosition(it) }
         knob.battery?.let {
             changeBatteryState(batteryLevel = it)
