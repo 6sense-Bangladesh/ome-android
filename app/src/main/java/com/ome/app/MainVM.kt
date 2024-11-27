@@ -12,6 +12,7 @@ import com.ome.app.domain.model.network.request.StoveRequest
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.network.response.UserResponse
 import com.ome.app.domain.model.network.response.asBurnerState
+import com.ome.app.domain.model.network.response.asKnobState
 import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.network.websocket.MacAddress
 import com.ome.app.domain.repo.StoveRepository
@@ -77,8 +78,9 @@ class MainVM @Inject constructor(
             }
         }
         launch(ioContext) {
-            stoveRepository.knobsFlow.filterNotNull().collect {
-                savedStateHandle["knobs"] = it
+            stoveRepository.knobsFlow.filterNotNull().collect { lst ->
+                savedStateHandle["knobs"] = lst
+                savedStateHandle["knobState"] = lst.associateByTo(mutableMapOf(), { it.macAddr }, { it.asKnobState }).toMap()
             }
         }
         launch(ioContext) {
@@ -106,7 +108,7 @@ class MainVM @Inject constructor(
             userRepository.userFlow.value?.knobMacAddrs?.forEach {
                 stoveRepository.setSafetyLockOn(it)
             }
-            delay(5.seconds)
+            stoveRepository.getAllKnobs()
         }
     }
 
@@ -115,7 +117,7 @@ class MainVM @Inject constructor(
             userRepository.userFlow.value?.knobMacAddrs?.forEach {
                 stoveRepository.setSafetyLockOff(it)
             }
-            delay(5.seconds)
+            stoveRepository.getAllKnobs()
         }
     }
 
