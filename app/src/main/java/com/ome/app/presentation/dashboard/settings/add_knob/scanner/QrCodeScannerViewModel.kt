@@ -46,8 +46,10 @@ class QrCodeScannerViewModel @Inject constructor(
     }
 
 
-    private suspend fun addNewKnob(){
+    private suspend fun addNewKnob() {
         if (macAddress != null && stovePosition != null) {
+            if (stoveRepository.knobsFlow.value.any { it.stovePosition == stovePosition })
+                error(resourceProvider.getString(R.string.knob_already_exists))
             stoveRepository.createKnob(
                 params = KnobRequest(stovePosition = stovePosition!!),
                 macAddress = macAddress!!
