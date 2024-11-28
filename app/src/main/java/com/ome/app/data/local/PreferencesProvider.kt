@@ -24,5 +24,3 @@ interface PreferencesProvider {
     fun setPauseTime(macAddress: String, time: Triple<Int, Int, Int>? = null)
     fun getPauseTime(macAddress: String): Triple<Int, Int, Int>
 }
-
-data class Timer(val macAddress: String, val timeStamp: Long)

@@ -233,6 +233,8 @@
     <string name="hr">Hr</string>
     <string name="safety_locked">Safety Lock</string>
     <string name="_00">00</string>
+    <string name="password">Password</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
 
 
 </resources>
