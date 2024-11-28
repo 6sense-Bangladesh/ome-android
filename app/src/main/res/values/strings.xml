@@ -107,7 +107,7 @@
     <string name="connect_your_phone_to_ome">Connect your phone to Ome</string>
     <string name="manual_setup1">Open Wi-Fi settings on your phone and select the network that says either:</string>
     <string name="or">or</string>
-    <string name="manual_setup3">It might take a moment to show up. If asked for a password, enter <font color='#0099d7'>\"password\"</font>. Once connected, return to this screen.</string>
+    <string name="manual_setup3">It might take a moment to show up. If asked for a password, enter <font color='#0e89b9'>\"password\"</font>. Once connected, return to this screen.</string>
     <string name="manual_connection_to_hotspot_error">The network you connected to is not the knob\'s network \"%1$s\" or \"%2$s\".</string>
     <string name="select_a_network_for_to_connect">Select a network to connect your knob.</string>
     <string name="ome_smart_knob_will_be_setup_on">Ome Smart Knob will be setup on</string>
@@ -131,8 +131,10 @@
     <string name="confirm_position_body">Are you sure, You want to change the knob to %1$s position?</string>
     <string name="confirm_logout">Are you sure you want to log out?</string>
     <string name="confirm_delete">Are you sure you want to delete this knob?</string>
-    <string name="confirm_knob_turn_off">Are you sure you want to turn off all the knobs?</string>
+    <string name="confirm_knob_turn_off">Are you sure you want to turn off the knobs?</string>
     <string name="confirm_delete_account">Are you sure you want to delete your account?</string>
+    <string name="confirm_disable_safety_lock">Are you sure you want to disable the safety lock?</string>
+    <string name="confirm_enable_safety_lock">Are you sure you want to enable the safety lock?</string>
     <string name="knob_position_changed">Knob Position Changed</string>
     <string name="stove_brand_changed">Stove Brand Changed</string>
     <string name="stove_type_changed">Stove Type Changed</string>
@@ -179,6 +181,11 @@
     <string name="retake">Retake</string>
     <string name="update">Update</string>
     <string name="turn_off">Turn Off</string>
+    <string name="yes_turn_off">Yes, Turn Off</string>
+    <string name="yes_disable">Yes, Disable</string>
+    <string name="yes_enable">Yes, Enable</string>
+    <string name="disable_safety_lock">Disable Safety Lock</string>
+    <string name="enable_safety_lock">Enable Safety Lock</string>
     <string name="menu_feedback">Feedback</string>
     <string name="menu_logout">Logout</string>
     <string name="menu_device_setting">Device Setting</string>
@@ -225,6 +232,7 @@
     <string name="min">Min</string>
     <string name="hr">Hr</string>
     <string name="safety_locked">Safety Lock</string>
+    <string name="_00">00</string>
 
 
 </resources>

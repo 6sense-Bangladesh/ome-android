@@ -425,7 +425,7 @@ class KnobView @JvmOverloads constructor(
             Log.d(TAG, "setOnTouchListener: $angle")
             if(doRotate.value) {
                 setKnobPosition(angle)
-                performHapticFeedback(smallHaptic)
+                performSmallHaptic()
             }
             true
         }

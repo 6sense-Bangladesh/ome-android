@@ -66,8 +66,8 @@ class MyStoveFragment :
             btnTurnOff.setBounceClickListener {
                 showDialog(
                     message = SpannableStringBuilder(getString(R.string.confirm_knob_turn_off)),
-                    positiveButtonText = getString(R.string.turn_off),
-                    isRedPositiveButton = true,
+                    positiveButtonText = getString(R.string.yes_turn_off),
+                    negativeButtonText = getString(R.string.no_btn),
                     onPositiveButtonClick = {
                         mainViewModel.turnOffAllKnobs()
                     })

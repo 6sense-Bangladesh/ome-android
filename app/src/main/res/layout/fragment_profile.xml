@@ -31,7 +31,7 @@
                 android:layout_height="@dimen/_40sdp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:background="@color/colorPrimaryTransLess"
+                android:background="@color/colorPrimaryTrans"
                 android:contentDescription="@string/logo"
                 android:src="@drawable/ic_profile"
                 app:contentPadding="@dimen/_10sdp"

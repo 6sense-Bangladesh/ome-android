@@ -73,8 +73,8 @@ class MainVM @Inject constructor(
                 if (oldKnobListSize != it.knobMacAddrs.size) {
                     savedStateHandle["knobs"] = emptyList<KnobDto>()
                     stoveRepository.knobsFlow.value = emptyList()
-                    stoveRepository.getAllKnobs()
                 }
+                stoveRepository.getAllKnobs()
             }
         }
         launch(ioContext) {

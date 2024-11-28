@@ -15,6 +15,7 @@ class PreferencesProviderImpl(context: Context) : PreferencesProvider {
         private const val ACCESS_TOKEN_KEY = "access_token"
         private const val USER_ID_KEY = "user_id"
         private const val TIMER_KEY = "timer_id"
+        private const val TIMER_PAUSE_KEY = "timer_pause_id"
     }
 
     private val sharedPreferences =
@@ -49,6 +50,13 @@ class PreferencesProviderImpl(context: Context) : PreferencesProvider {
 
     override fun getUserId(): String? = sharedPreferences.getString(USER_ID_KEY, "")
 
+    override fun setTimer(macAddress: String, timeStamp: Long) {
+        getTimerMap().toMutableMap().apply {
+            put(macAddress, timeStamp)
+            sharedPreferences.edit().putString(TIMER_KEY, Gson().toJson(toMap())).apply()
+        }
+    }
+
     override fun getTimer(macAddress: String): Long {
         val map = getTimerMap()
         return map.getOrDefault(macAddress, 0L)
@@ -65,11 +73,26 @@ class PreferencesProviderImpl(context: Context) : PreferencesProvider {
         }
     }
 
-
-    override fun setTimer(macAddress: String, timeStamp: Long) {
-        getTimerMap().toMutableMap().apply {
-            put(macAddress, timeStamp)
-            sharedPreferences.edit().putString(TIMER_KEY, Gson().toJson(toMap())).apply()
+    private fun getPauseTimerMap(): Map<MacAddress, Triple<Int, Int, Int>> {
+        val empty = Gson().toJson(emptyMap<MacAddress, Triple<Int, Int, Int>>())
+        val json = sharedPreferences.getString(TIMER_PAUSE_KEY, empty) ?: empty
+        val typeMap = object : TypeToken<Map<MacAddress, Triple<Int, Int, Int>>>() {}.type
+        return try {
+            Gson().fromJson<Map<MacAddress, Triple<Int, Int, Int>>>(json, typeMap).orEmpty()
+        } catch (e: JsonSyntaxException) {
+            emptyMap()
         }
+    }
+
+    override fun setPauseTime(macAddress: String, time: Triple<Int, Int, Int>?) {
+        getPauseTimerMap().toMutableMap().apply {
+            time?.also { put(macAddress, it) } ?: remove(macAddress)
+            sharedPreferences.edit().putString(TIMER_PAUSE_KEY, Gson().toJson(toMap())).apply()
+        }
+    }
+
+    override fun getPauseTime(macAddress: String): Triple<Int, Int, Int> {
+        val map = getPauseTimerMap()
+        return map.getOrDefault(macAddress, Triple(0,0,0))
     }
 }

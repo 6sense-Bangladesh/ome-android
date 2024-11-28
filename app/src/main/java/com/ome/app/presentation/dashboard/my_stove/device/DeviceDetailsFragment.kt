@@ -6,8 +6,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.timepicker.MaterialTimePicker
-import com.google.android.material.timepicker.TimeFormat
 import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.DialogTimerBinding
@@ -21,8 +19,10 @@ import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobIns
 import com.ome.app.presentation.views.KnobView
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
 import kotlin.time.Duration.Companion.seconds
@@ -38,50 +38,12 @@ class DeviceDetailsFragment :
     private val burnerStates
         get() = mainViewModel.getKnobBurnerStatesByMac(args.params.macAddr)
 
-    private val picker =
-        MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_24H)
-            .setHour(0)
-            .setMinute(0)
-            .setTitleText("Select Appointment time")
-            .build()
-
     private val dialogBinding by lazy { DialogTimerBinding.inflate(layoutInflater) }
     private val dialogTimer by lazy { context?.let {
         AlertDialog.Builder(it)
             .setView(dialogBinding.root)
             .create()
     }}
-
-    private fun setupTimer(){
-        dialogTimer?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialogBinding.apply {
-            pickerHour.maxValue = 11
-            pickerMin.maxValue = 60
-            pickerSec.maxValue = 60
-            listOf(pickerHour, pickerMin, pickerSec).forEach {
-                it.setOnValueChangedListener { picker, _, _ ->
-                    picker.performHapticFeedback(smallHaptic)
-                }
-            }
-            btnCancel.setBounceClickListener {
-                dialogTimer?.dismiss()
-            }
-            btnOkay.setBounceClickListener {
-                dialogTimer?.dismiss()
-                viewModel.startTurnOffTimer(pickerHour.value, pickerMin.value, pickerSec.value)
-            }
-        }
-    }
-
-    private fun showTimerDialog(hour: Int=0, min: Int=0, sec: Int=0){
-        dialogBinding.apply {
-            pickerHour.value = hour
-            pickerMin.value = min
-            pickerSec.value = sec
-        }
-        dialogTimer?.show()
-    }
 
     override fun setupUI() {
         viewModel.macAddress = args.params.macAddr
@@ -196,17 +158,6 @@ class DeviceDetailsFragment :
                 )
             }
         }
-        binding.btnTimer.setBounceClickListener {
-            showTimerDialog()
-        }
-        binding.btnEditTimer.setBounceClickListener {
-            val timer = time.toTimer()
-            showTimerDialog(timer.first, timer.second, timer.third)
-        }
-        binding.btnStopTimer.setBounceClickListener {
-            binding.timerCard.animateInvisible()
-            viewModel.stopTimer()
-        }
         binding.warningCard.setBounceClickListener {
             navigateSafe(
                 DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToKnobInstallationManualFragment(
@@ -226,6 +177,32 @@ class DeviceDetailsFragment :
                 else -> false
             }
         }
+        binding.btnTimer.setBounceClickListener {
+            showTimerDialog()
+        }
+        binding.btnEditTimer.setBounceClickListener {
+            val timer = time.toTimer()
+            showTimerDialog(timer.first, timer.second, timer.third)
+        }
+        binding.btnStopTimer.setBounceClickListener {
+            binding.timerCard.animateInvisible()
+            viewModel.stopTimer()
+        }
+        binding.btnPauseResumeTimer.setBounceClickListener {
+            when (binding.btnPauseResumeTimer.tag) {
+                R.drawable.ic_pause -> {
+                    binding.btnPauseResumeTimer.setImageResource(R.drawable.ic_play)
+                    binding.btnPauseResumeTimer.tag = R.drawable.ic_play
+                    timeJob?.cancel()
+                    viewModel.pauseTimer(time)
+                }
+                R.drawable.ic_play -> {
+                    binding.btnPauseResumeTimer.setImageResource(R.drawable.ic_pause)
+                    binding.btnPauseResumeTimer.tag = R.drawable.ic_pause
+                    viewModel.resumeTimer()
+                }
+            }
+        }
     }
 
 
@@ -233,13 +210,17 @@ class DeviceDetailsFragment :
     private val time
         get() = (lastTime.minus(System.currentTimeMillis()) / 1000).toInt()
 
+    private var timeJob: Job? = null
+
     private fun activeTimer(){
         lastTime = viewModel.pref.getTimer(args.params.macAddr)
-        viewLifecycleScope.launch {
+        timeJob?.cancel()
+        timeJob = viewLifecycleScope.launch {
             Log.d(TAG, "Current time: ${System.currentTimeMillis()}")
             Log.d(TAG,"Last time: $lastTime")
             Log.d(TAG, "activeTimer: $time")
             if(time >= 0) {
+                binding.btnPauseResumeTimer.tag = R.drawable.ic_pause
                 binding.btnTimer.invisible()
                 binding.timerCard.animateVisible()
                 while (time > 0) {
@@ -251,19 +232,62 @@ class DeviceDetailsFragment :
                     }
                     if(time == 0) break
                     else delay(1.seconds)
+                    yield()
                 }
                 binding.timerCard.animateInvisible()
                 binding.btnTimer.visible()
+            } else if(viewModel.isPauseEnabled.apply { log("isPauseEnabled") }) {
+                viewModel.pref.getPauseTime(args.params.macAddr).let { (hr, min, sec) ->
+                    binding.btnPauseResumeTimer.tag = R.drawable.ic_play
+                    binding.btnPauseResumeTimer.setImageResource(R.drawable.ic_play)
+                    binding.btnTimer.invisible()
+                    binding.timerCard.animateVisible()
+                    binding.hour.text = hr.toStringLocale()
+                    binding.minute.text = min.toStringLocale()
+                    binding.second.text = sec.toStringLocale()
+                }
             }
         }
+    }
+
+    private fun setupTimer(){
+        dialogTimer?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialogBinding.apply {
+            pickerHour.maxValue = 11
+            pickerMin.maxValue = 59
+            pickerSec.maxValue = 59
+            listOf(pickerHour, pickerMin, pickerSec).forEach {
+                it.setOnValueChangedListener { picker, _, _ ->
+                    picker.performSmallHaptic()
+                }
+            }
+            btnCancel.setBounceClickListener {
+                dialogTimer?.dismiss()
+            }
+            btnOkay.setBounceClickListener {
+                dialogTimer?.dismiss()
+                viewModel.startTurnOffTimer(pickerHour.value, pickerMin.value, pickerSec.value)
+            }
+        }
+    }
+
+    private fun showTimerDialog(hour: Int=0, min: Int=0, sec: Int=0){
+        dialogBinding.apply {
+            pickerHour.value = hour
+            pickerMin.value = min
+            pickerSec.value = sec
+        }
+        dialogTimer?.show()
     }
 
     override fun setupObserver() {
         super.setupObserver()
         binding.apply {
+            viewModel.showTimer.collectWithLifecycle {
+                activeTimer()
+            }
             viewModel.loadingFlow.collectWithLifecycle {
                 binding.loadingLayout.root.changeVisibility(it)
-                if(!it) activeTimer()
             }
             viewModel.currentKnob.collectWithLifecycle {
                 it.log("currentKnob")

@@ -18,9 +18,11 @@ interface PreferencesProvider {
 
     fun getUserId(): String?
 
+    fun setTimer(macAddress: String, timeStamp: Long)
     fun getTimer(macAddress: String): Long
 
-    fun setTimer(macAddress: String, timeStamp: Long)
+    fun setPauseTime(macAddress: String, time: Triple<Int, Int, Int>? = null)
+    fun getPauseTime(macAddress: String): Triple<Int, Int, Int>
 }
 
 data class Timer(val macAddress: String, val timeStamp: Long)

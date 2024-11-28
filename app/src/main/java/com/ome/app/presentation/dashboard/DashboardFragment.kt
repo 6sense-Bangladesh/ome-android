@@ -105,25 +105,18 @@ class DashboardFragment :
                 }
 
                 R.id.menuLock -> {
-                    mainViewModel.knobState.value.toList().any { it.second.knobSetSafetyMode == true }.run {
+                    mainViewModel.knobState.value.toList().any { it.second.knobSetSafetyMode == true }.also {
                         showDialog(
-                            title = if (this) "Disable Safety Lock" else "Enable Safety Lock",
+                            title = if (it) getString(R.string.disable_safety_lock) else getString(R.string.enable_safety_lock),
                             onPositiveButtonClick = {
-                                if (this) {
-                                    mainViewModel.setSafetyLockOff()
-                                } else {
-                                    mainViewModel.setSafetyLockOn()
-                                }
+                                if (it) mainViewModel.setSafetyLockOff() else mainViewModel.setSafetyLockOn()
                             },
                             message = SpannableStringBuilder(
-                                if (this) {
-                                    "Are you sure you want to disable the safety lock?"
-                                } else {
-                                    "Are you sure you want to enable the safety lock?"
-                                }
+                                if (it) getString(R.string.confirm_disable_safety_lock)
+                                else getString(R.string.confirm_enable_safety_lock)
                             ),
-                            positiveButtonText = if (this) "Yes, Disable" else "Yes, Enable",
-                            negativeButtonText = "No"
+                            positiveButtonText = if (it) getString(R.string.yes_disable) else getString(R.string.yes_enable),
+                            negativeButtonText = getString(R.string.no_btn)
                         )
                     }
                     true

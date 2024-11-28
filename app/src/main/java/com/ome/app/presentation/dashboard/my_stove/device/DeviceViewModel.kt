@@ -1,6 +1,7 @@
 package com.ome.app.presentation.dashboard.my_stove.device
 
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.websocket.WebSocketManager
@@ -10,8 +11,11 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.DeviceSettingsItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsTitleItemModel
+import com.ome.app.utils.TAG
 import com.ome.app.utils.logi
+import com.ome.app.utils.toTimer
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.mapNotNull
@@ -27,12 +31,19 @@ class DeviceViewModel @Inject constructor(
 ) : BaseViewModel() {
     var stovePosition: Int  = -1
     val isEnable = MutableStateFlow(false)
+    val showTimer = MutableSharedFlow<Unit>()
 
     val currentKnob = savedStateHandle.getStateFlow("currentKnob", null as KnobDto?)
 
     val knobAngle = MutableStateFlow<Float?>(null)
     var macAddress = ""
     var isDualZone = false
+
+    val isPauseEnabled
+        get() = pref.getPauseTime(macAddress).let { (hr, min, sec) ->
+            Log.d(TAG, "isPauseEnabled: $hr $min $sec")
+            hr + min + sec != 0
+        }
 
     val deviceSettingsList by lazy {
         savedStateHandle.getStateFlow("deviceSettingsList",
@@ -96,15 +107,30 @@ class DeviceViewModel @Inject constructor(
                     second = totalSeconds
                 )
                 pref.setTimer(macAddress, System.currentTimeMillis() + totalSeconds * 1000)
+                showTimer.emit(Unit)
             } ?: error("Something went wrong.")
         }
     }
 
-    fun stopTimer() {
+    fun stopTimer(onlyLocal: Boolean = false) {
         launch(ioContext) {
-            stoveRepository.stopTimer(macAddress)
-//            pref.lastTimer = mapOf(macAddress to 0)
+            if(!onlyLocal)
+                stoveRepository.stopTimer(macAddress)
             pref.setTimer(macAddress,0)
+        }
+    }
+
+    fun pauseTimer(time: Int?) {
+        launch(ioContext, showLoading = false) {
+            stopTimer(time == null)
+            pref.setPauseTime(macAddress, time?.toTimer())
+        }
+    }
+    fun resumeTimer() {
+        launch(ioContext) {
+            val time = pref.getPauseTime(macAddress)
+            pauseTimer(null)
+            startTurnOffTimer(time.first, time.second, time.third)
         }
     }
 

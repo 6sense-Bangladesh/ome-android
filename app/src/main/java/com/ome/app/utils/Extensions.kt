@@ -1583,9 +1583,11 @@ fun TextView.enableCustomTabClick(url: String, urlText: String, fullText: String
 val String?.asHtml
     get() = HtmlCompat.fromHtml(orEmpty(), HtmlCompat.FROM_HTML_MODE_COMPACT)
 
-val smallHaptic : Int
-    get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1)
+
+fun View.performSmallHaptic() = performHapticFeedback(
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1)
         HapticFeedbackConstants.TEXT_HANDLE_MOVE
     else
         HapticFeedbackConstants.KEYBOARD_TAP
+)
 
