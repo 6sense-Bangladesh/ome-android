@@ -4,24 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
     tools:context=".presentation.launch.LaunchFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageView5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:translationY="-150dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_background_new" />
+        android:src="@drawable/ic_background_new"
+        android:translationY="-150dp" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView2"
         style="@style/Widget.Material3.CardView.Filled"
         android:layout_width="@dimen/_500sdp"
         android:layout_height="@dimen/_500sdp"
-        android:translationX="-50dp"
         android:layout_marginBottom="-300dp"
+        android:translationX="-50dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/_250sdp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,6 +28,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
     </com.google.android.material.card.MaterialCardView>
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageView7"
         android:layout_width="@dimen/_150sdp"
@@ -52,9 +52,10 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginBottom="@dimen/_18sdp"
+        android:fitsSystemWindows="true"
         android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,10 +65,10 @@
             android:id="@+id/createAccountBtn"
             style="@style/Widget.Material3.Button.IconButton.Filled"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="@dimen/_12sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_weight="1"
-            android:text="@string/create_account" />
+            android:text="@string/create_account"
+            android:textSize="@dimen/_12sdp" />
 
         <Space
             android:layout_width="@dimen/_10sdp"
@@ -77,11 +78,11 @@
             android:id="@+id/signInBtn"
             style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="@dimen/_12sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_weight="1"
             android:text="@string/sign_in"
             android:textColor="@color/black"
+            android:textSize="@dimen/_12sdp"
             app:strokeColor="@color/gray" />
     </LinearLayout>
 

@@ -323,7 +323,7 @@ class DeviceDetailsFragment :
                 knob.wifiStrengthPercentage?.let {
 //                    knobView.changeWiFiState(it)
                 }
-                if(knob.knobSetSafetyMode.isFalse()){
+                if(knob.knobSetSafetyMode.isTrue()){
                     viewModel.currentKnob.value?.calibration?.offAngle?.let {
                         binding.knobView.setKnobPosition(it.toFloat())
                     }
