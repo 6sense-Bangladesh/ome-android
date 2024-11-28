@@ -62,13 +62,7 @@ class DeviceDetailsFragment :
                     if(viewModel.isEnable.value) {
                         viewModel.changeKnobAngle(rotation)
                         changeBurnerStatus(rotation.toInt())
-                    }
-                    else{
-                        onError(
-                            title = "Knob is Off",
-                            errorMessage = getString(R.string.manually_turn_the_knob_on)
-                        )
-                    }
+                    } else stateBaseErrorDialog()
                 }
             burnerSelection.visible()
             mainViewModel.userInfo.value.stoveOrientation.stoveOrientation.let {
@@ -178,7 +172,10 @@ class DeviceDetailsFragment :
             }
         }
         binding.btnTimer.setBounceClickListener {
-            showTimerDialog()
+            if(viewModel.isEnable.value)
+                showTimerDialog()
+            else
+                stateBaseErrorDialog()
         }
         binding.btnEditTimer.setBounceClickListener {
             val timer = time.toTimer()
@@ -202,6 +199,20 @@ class DeviceDetailsFragment :
                     viewModel.resumeTimer()
                 }
             }
+        }
+    }
+
+    private fun stateBaseErrorDialog() {
+        if (viewModel.isSafetyLockOn) {
+            onError(
+                title = getString(R.string.safety_lock_is_on),
+                errorMessage = getString(R.string.turn_off_safety_lock)
+            )
+        } else {
+            onError(
+                title = getString(R.string.knob_is_off),
+                errorMessage = getString(R.string.manually_turn_the_knob_on)
+            )
         }
     }
 
@@ -296,6 +307,7 @@ class DeviceDetailsFragment :
             mainViewModel.getKnobStateByMac(args.params.macAddr).collectWithLifecycleStateIn{knob ->
                 knob.log("getKnobStateByMac")
                 val batteryLevel = knob.battery
+                viewModel.isSafetyLockOn = knob.knobSetSafetyMode.orFalse()
                 batteryPercentage.text = batteryLevel?.addPercentage().orEmpty()
                 knob.angle?.toInt()?.let {
                     changeBurnerStatus(it)

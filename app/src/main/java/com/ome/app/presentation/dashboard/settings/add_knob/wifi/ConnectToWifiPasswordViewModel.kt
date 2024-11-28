@@ -58,7 +58,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                     }
                     KnobSocketMessageType.SET_WIFI -> {
                         if (message == "ok") {
-                            delay(1.seconds)
+                            delay(3.seconds)
                             sendMessage(KnobSocketMessageType.REBOOT)
 //                        withDelay(2000) {
 //                            disconnectFromNetwork()
@@ -112,8 +112,9 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 if(credentialFail < 15) {
                     delay(4.seconds)
                     sendMessage(KnobSocketMessageType.WIFI_STATUS)
-                }else
+                }else {
                     defaultErrorLiveData.postValue(resourceProvider.getString(R.string.incorrect_network_name_and_password))
+                }
             }
             "1" -> {
                 sendMessage(

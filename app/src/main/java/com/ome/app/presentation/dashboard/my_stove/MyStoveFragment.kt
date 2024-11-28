@@ -104,8 +104,8 @@ class MyStoveFragment :
     }
 
 
-    private fun initKnob(vararg know : KnobView) {
-        know.forEach {
+    private fun initKnob(vararg knob : KnobView) {
+        knob.forEach {
             it.changeKnobState(KnobView.KnobImageState.ADD)
         }
     }

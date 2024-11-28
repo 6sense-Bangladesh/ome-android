@@ -78,7 +78,6 @@ class SocketManager(
                 if (message == KnobSocketMessageType.TEST_WIFI || message == KnobSocketMessageType.SET_WIFI) {
                     finalMessage += " \"${params[0]}\" \"${params[1]}\" ${params[2]}"
                 }
-                logi("Sending: $finalMessage $mOut")
                 // Send the message
                 if (mOut != null) {
                     logi("Sending: $finalMessage")

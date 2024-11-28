@@ -32,6 +32,7 @@ class DeviceViewModel @Inject constructor(
     var stovePosition: Int  = -1
     val isEnable = MutableStateFlow(false)
     val showTimer = MutableSharedFlow<Unit>()
+    var isSafetyLockOn = false
 
     val currentKnob = savedStateHandle.getStateFlow("currentKnob", null as KnobDto?)
 
@@ -70,6 +71,7 @@ class DeviceViewModel @Inject constructor(
         launch(ioContext, showLoading = false) {
             stoveRepository.knobsFlow.mapNotNull  { dto -> dto.find { it.macAddr == macAddress }}.collect { foundKnob ->
                 savedStateHandle["currentKnob"] = foundKnob
+                isSafetyLockOn = foundKnob.safetyLock
                 if (webSocketManager.knobAngleFlow.value == null) {
                     knobAngle.value = foundKnob.angle.toFloat()
                 }

@@ -207,7 +207,10 @@
     <string name="set_timer">Set Timer</string>
     <string name="knob_">Knob #%1$d</string>
     <string name="burner_">Burner #%1$d</string>
+    <string name="knob_is_off">Knob is Off</string>
+    <string name="safety_lock_is_on">Safety Lock is On</string>
     <string name="manually_turn_the_knob_on">Please manually turn the knob on if you want to control it from the app.</string>
+    <string name="turn_off_safety_lock">Please turn off safety lock if you want to control it from the app.</string>
     <string name="single_zone_knob">Single Zone Knob</string>
     <string name="dual_zone_knob">Dual Zone Knob</string>
     <string name="single_zone">Single Zone</string>
