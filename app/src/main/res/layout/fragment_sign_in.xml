@@ -1,125 +1,113 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
     tools:context=".presentation.signin.SignInFragment">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/ome_background_gradient"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/Widget.App.Toolbar"
+        android:layout_width="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="Sign In"
+        app:titleMargin="@dimen/_5sdp" />
 
-    <include
-        android:id="@+id/loadingLayout"
-        layout="@layout/loading_progress_layout"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/backIv"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_arrow_left"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="@dimen/margin_top_bar"
+        app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+        app:boxCornerRadiusTopStart="@dimen/_8sdp"
+        app:errorEnabled="true"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="140dp"
-        app:layout_constraintBottom_toBottomOf="@+id/include"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textView"
-            style="@style/Label.20sp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/sign_in"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="@+id/email"
-            app:layout_constraintStart_toStartOf="@+id/email"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.ome.app.presentation.views.OmeTextInput
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
+            style="@style/Label.Large"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginTop="20dp"
-            app:hint="@string/enter_email"
-            app:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-        <com.ome.app.presentation.views.OmeTextInput
-            android:id="@+id/password"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="10dp"
-            app:hint="@string/enter_password"
-            app:inputType="password"
-            app:layout_constraintEnd_toEndOf="@+id/email"
-            app:layout_constraintStart_toStartOf="@+id/email"
-            app:layout_constraintTop_toBottomOf="@+id/email" />
-
-
-
-        <com.apachat.loadingbutton.core.customViews.CircularProgressButton
-            android:id="@+id/continueBtn"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="12dp"
-            style="@style/OmeButton.White.Outline"
-            android:text="@string/sign_in"
-            app:layout_constraintEnd_toEndOf="@+id/password"
-            app:layout_constraintStart_toStartOf="@+id/password"
-            app:layout_constraintTop_toBottomOf="@+id/password"/>
-
-
-<!--        <com.apachat.loadingbutton.core.customViews.CircularProgressButton-->
-<!--            android:id="@+id/deleteBtn"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:layout_marginTop="12dp"-->
-<!--            style="@style/OmeButton.White.Outline"-->
-<!--            android:text="Delete"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/continueBtn"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/continueBtn"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/continueBtn"/>-->
-
-
-
-        <TextView
-            android:id="@+id/forgotPassword"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/forgot_password"
-            android:textColor="@drawable/ome_white_transparent_button_color_selector"
-            app:layout_constraintEnd_toEndOf="@+id/continueBtn"
-            app:layout_constraintStart_toStartOf="@+id/continueBtn"
-            app:layout_constraintTop_toBottomOf="@+id/continueBtn" />
+            android:hint="@string/email"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:nextFocusForward="@id/lastName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
+        app:boxCornerRadiusBottomStart="@dimen/_8sdp"
+        app:boxCornerRadiusTopEnd="@dimen/_8sdp"
+        app:boxCornerRadiusTopStart="@dimen/_8sdp"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailLayout"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            style="@style/Label.Large"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/materialButton"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forgot_password"
+        android:textAppearance="@style/Label.Medium"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/passwordLayout"
+        app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
+
+    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+        android:id="@+id/signInBtn"
+        style="@style/OmeButton.Blue"
+        android:elevation="0dp"
+        android:text="@string/sign_in"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialButton" />
 
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/materialTextView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_horizontal"
+        android:gravity="center"
+        android:paddingTop="@dimen/margin_horizontal"
+        android:text="Don't have any account?"
+        app:layout_constraintTop_toBottomOf="@+id/signInBtn" />
 
+    <com.google.android.material.button.MaterialButton
+        android:translationY="-12dp"
+        android:id="@+id/signup_button"
+        style="@style/OmeButton.Blue.Outline"
+        android:text="@string/create_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialTextView2" />
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

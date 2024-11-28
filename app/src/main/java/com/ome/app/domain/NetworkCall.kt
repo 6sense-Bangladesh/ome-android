@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.ome.app.domain.model.base.ErrorType
 import com.ome.app.domain.model.base.ResponseWrapper
-import com.ome.app.utils.log
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
@@ -75,9 +74,6 @@ object NetworkCall {
     private fun convertErrorBody(throwable: HttpException): String? {
         return try {
             val errorBody = throwable.response()?.errorBody()?.string()
-            errorBody.log()
-            Gson().fromJson(errorBody, ErrorResponse::class.java)?.message.log()
-            Gson().fromJson(errorBody, ErrorResponseType2::class.java)?.message.log()
             Gson().fromJson(errorBody, ErrorResponse::class.java)?.message.let {
                 if(it.isNullOrEmpty())
                     Gson().fromJson(errorBody, ErrorResponseType2::class.java)?.message
