@@ -36,14 +36,12 @@ class WelcomeFragment :
                 margin(bottom = true)
             }
         }
-        setStatusBarAppearance(true)
         if(BuildConfig.DEBUG){
             binding.textView.setBounceClickListener {
                 navigateSafe(R.id.stoveSetupCompletedFragment)
             }
         }
         binding.continueBtn.setBounceClickListener {
-            setStatusBarAppearance(true)
             navigateSafe(WelcomeFragmentDirections.actionWelcomeFragmentToStoveSetupBrandFragment(StoveSetupBrandArgs()))
 //            binding.continueBtn.startAnimation()
             viewModel.setup()

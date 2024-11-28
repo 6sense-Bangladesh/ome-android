@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".presentation.signin.SignInFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -69,7 +70,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButton"
+        android:id="@+id/btnForgetPassword"
         style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -80,13 +81,13 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordLayout" />
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
-        android:id="@+id/signInBtn"
+        android:id="@+id/btnSignIn"
         style="@style/OmeButton.Blue"
         android:elevation="0dp"
         android:text="@string/sign_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialButton" />
+        app:layout_constraintTop_toBottomOf="@+id/btnForgetPassword" />
 
 
     <com.google.android.material.textview.MaterialTextView
@@ -97,13 +98,13 @@
         android:gravity="center"
         android:paddingTop="@dimen/margin_horizontal"
         android:text="Don't have any account?"
-        app:layout_constraintTop_toBottomOf="@+id/signInBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSignIn" />
 
     <com.google.android.material.button.MaterialButton
-        android:translationY="-12dp"
-        android:id="@+id/signup_button"
+        android:id="@+id/btnCreateAccount"
         style="@style/OmeButton.Blue.Outline"
         android:text="@string/create_account"
+        android:translationY="-12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialTextView2" />

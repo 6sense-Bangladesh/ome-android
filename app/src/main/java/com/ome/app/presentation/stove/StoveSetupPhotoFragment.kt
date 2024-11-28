@@ -23,7 +23,6 @@ class StoveSetupPhotoFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setStatusBarAppearance(true)
 
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.takePhoto.setBounceClickListener{

@@ -29,7 +29,8 @@
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.ome.app.presentation.signin.SignInFragment"
-        android:label="SignInFragment">
+        android:label="SignInFragment"
+        tools:layout="@layout/fragment_sign_in">
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -42,11 +43,11 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            android:id="@+id/action_signInFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment"
             app:popUpToInclusive="true"
             app:launchSingleTop="true"
-            app:popUpTo="@+id/mainNavGraph" />
+            app:popUpTo="@+id/mainNavGraph"
+            android:id="@+id/action_signInFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -57,6 +58,13 @@
             app:popUpToInclusive="true"
             app:launchSingleTop="true"
             app:popUpTo="@+id/mainNavGraph" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_signInFragment_to_signUpNameFragment"
+            app:destination="@id/signUpNameFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpNameFragment"

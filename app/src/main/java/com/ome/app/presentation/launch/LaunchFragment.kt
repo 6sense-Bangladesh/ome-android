@@ -9,7 +9,6 @@ import com.ome.app.presentation.base.EmptyViewModel
 import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.setBounceClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 
 @AndroidEntryPoint
 class LaunchFragment :
@@ -19,12 +18,6 @@ class LaunchFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setStatusBarAppearance(false)
-        binding.signInBtn.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                margin(bottom = true)
-            }
-        }
         binding.createAccountBtn.setBounceClickListener {
             navigateSafe(LaunchFragmentDirections.actionWelcomeFragmentToSignUpNameFragment())
         }

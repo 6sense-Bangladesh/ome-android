@@ -52,9 +52,9 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_40sdp"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginBottom="@dimen/_16sdp"
+        android:layout_marginBottom="@dimen/_18sdp"
         android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,21 +64,21 @@
             android:id="@+id/createAccountBtn"
             style="@style/Widget.Material3.Button.IconButton.Filled"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/_14sdp"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/_12sdp"
             android:layout_weight="1"
             android:text="@string/create_account" />
 
         <Space
-            android:layout_width="16dp"
+            android:layout_width="@dimen/_10sdp"
             android:layout_height="0dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/signInBtn"
             style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/_14sdp"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/_12sdp"
             android:layout_weight="1"
             android:text="@string/sign_in"
             android:textColor="@color/black"
