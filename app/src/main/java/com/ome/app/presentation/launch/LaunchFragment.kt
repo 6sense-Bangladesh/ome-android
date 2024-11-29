@@ -19,12 +19,10 @@ class LaunchFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.createAccountBtn.setBounceClickListener {
-            navigateSafe(LaunchFragmentDirections.actionWelcomeFragmentToSignUpNameFragment())
+            navigateSafe(LaunchFragmentDirections.actionWelcomeFragmentToSignUpFragment())
         }
         binding.signInBtn.setBounceClickListener {
             navigateSafe(LaunchFragmentDirections.actionWelcomeFragmentToSignInFragment())
         }
     }
-
-
 }

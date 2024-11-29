@@ -15,12 +15,14 @@
             android:id="@+id/action_welcomeFragment_to_signInFragment"
             app:destination="@id/signInFragment"
             app:enterAnim="@anim/slide_in_right"
+            app:launchSingleTop="true"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_welcomeFragment_to_signUpNameFragment"
-            app:destination="@id/signUpNameFragment"
+            android:id="@+id/action_welcomeFragment_to_SignUpFragment"
+            app:destination="@id/signUpFragment"
+            app:launchSingleTop="true"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -63,20 +65,30 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            android:id="@+id/action_signInFragment_to_signUpNameFragment"
-            app:destination="@id/signUpNameFragment" />
+            app:launchSingleTop="true"
+            android:id="@+id/action_signInFragment_to_SignUpFragment"
+            app:destination="@id/signUpFragment" />
     </fragment>
     <fragment
-        android:id="@+id/signUpNameFragment"
-        android:name="com.ome.app.presentation.signup.name.SignUpNameFragment"
-        android:label="SignUpNameFragment">
+        android:id="@+id/signUpFragment"
+        android:name="com.ome.app.presentation.signup.SignupFragment"
+        android:label="SignUpFragment"
+        tools:layout="@layout/fragment_signup">
         <action
-            android:id="@+id/action_signUpNameFragment_to_signUpEmailAndPasswordFragment"
+            android:id="@+id/action_SignUpFragment_to_signUpEmailAndPasswordFragment"
             app:destination="@id/signUpEmailAndPhoneFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:launchSingleTop="true"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_signUpFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpEmailAndPhoneFragment"

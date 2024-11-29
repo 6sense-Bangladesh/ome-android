@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.signin.SignInFragment">
+    android:fitsSystemWindows="true"
+    tools:context=".presentation.signup.SignupFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
@@ -188,7 +189,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.apachat.loadingbutton.core.customViews.CircularProgressButton
-                android:id="@+id/signInBtn"
+                android:id="@+id/signup_button"
                 style="@style/OmeButton.Blue"
                 android:text="@string/create_account"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -203,10 +204,10 @@
                 android:gravity="center"
                 android:paddingTop="@dimen/margin_horizontal"
                 android:text="Already have an account?"
-                app:layout_constraintTop_toBottomOf="@+id/signInBtn" />
+                app:layout_constraintTop_toBottomOf="@+id/signup_button" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/signup_button"
+                android:id="@+id/signin_button"
                 style="@style/OmeButton.Blue.Outline"
                 android:text="@string/sign_in"
                 android:translationY="-12dp"

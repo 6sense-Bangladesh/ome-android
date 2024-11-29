@@ -5,10 +5,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.ome.app.databinding.FragmentSignUpNameBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.signup.email.NameParams
-import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.popBackSafe
-import com.ome.app.utils.subscribe
 import dev.chrisbanes.insetter.applyInsetter
 
 class SignUpNameFragment :
@@ -29,17 +26,6 @@ class SignUpNameFragment :
             viewModel.validateFirstAndLastName(
                 binding.firstName.getText(),
                 binding.lastName.getText()
-            )
-        }
-    }
-
-    override fun setupObserver() {
-        super.setupObserver()
-        subscribe(viewModel.firstAndLastNameValidationLiveData){
-            navigateSafe(
-                SignUpNameFragmentDirections.actionSignUpNameFragmentToSignUpEmailAndPasswordFragment(
-                    NameParams(binding.firstName.getText(), binding.lastName.getText())
-                )
             )
         }
     }

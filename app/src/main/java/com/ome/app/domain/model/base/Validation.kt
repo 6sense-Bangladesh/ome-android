@@ -8,6 +8,8 @@ enum class Validation{
     FIRST_NAME,
     LAST_NAME,
     ALL_FIELDS,
+    EMAIL,
+    PHONE
 }
 
 var TextInputLayout.errorPassword: String?
@@ -38,4 +40,6 @@ fun String.isValidPasswordResult(): ResponseWrapper<Boolean> {
 
 object DefaultValidation{
     const val REQUIRED = "Required field."
+    const val INVALID_EMAIL = "Invalid email."
+    const val INVALID_PHONE = "US phone numbers only."
 }

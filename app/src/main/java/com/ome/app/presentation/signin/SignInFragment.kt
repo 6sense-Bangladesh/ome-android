@@ -18,14 +18,14 @@ class SignInFragment :
 
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
-        binding.btnSignIn.setBounceClickListener() {
+        binding.btnSignIn.setBounceClickListener {
             closeKeyboard()
             binding.btnSignIn.startAnimation()
             viewModel.signIn(binding.email.text.toString(), binding.password.text.toString())
         }
         binding.btnCreateAccount.setBounceClickListener {
             closeKeyboard()
-            navigateSafe(SignInFragmentDirections.actionSignInFragmentToSignUpNameFragment())
+            navigateSafe(SignInFragmentDirections.actionSignInFragmentToSignUpFragment())
         }
         onDismissErrorDialog = {
             binding.btnSignIn.revertAnimation()
