@@ -7,13 +7,13 @@ import com.ome.app.databinding.FragmentSignupBinding
 import com.ome.app.domain.model.base.Validation
 import com.ome.app.domain.model.base.errorPassword
 import com.ome.app.presentation.base.BaseFragment
+import com.ome.app.presentation.signup.password.AuthParams
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
-import kotlin.getValue
 
 @AndroidEntryPoint
 class SignupFragment : BaseFragment<SignupViewModel, FragmentSignupBinding>(
@@ -74,7 +74,22 @@ class SignupFragment : BaseFragment<SignupViewModel, FragmentSignupBinding>(
         viewModel.loadingFlow.collectWithLifecycle {
             if (it) {
                 binding.signupButton.startAnimation()
-            } else binding.signupButton.revertAnimation()
+            } else {
+                binding.signupButton.revertAnimation()
+            }
+        }
+        viewModel.validationSuccessFlow.collectWithLifecycle {
+            if(it.isSuccessful) {
+                navigateSafe(SignupFragmentDirections.actionSignUpFragmentToVerificationFragment(
+                    params = AuthParams(
+                        firstName = viewModel.firstName,
+                        lastName = viewModel.lastName,
+                        email = viewModel.email,
+                        phone = viewModel.phone
+                    )
+
+                ))
+            }
         }
         binding.signinButton.setBounceClickListener{
             navigateSafe(SignupFragmentDirections.actionSignUpFragmentToSignInFragment())

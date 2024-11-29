@@ -69,7 +69,7 @@ class SignUpPasswordFragment :
         subscribe(viewModel.signUpResultLiveData) {
             showSuccessDialog(message = getString(R.string.confirmation_label_dialog, viewModel.email.applyMaskToEmail()), onDismiss = {
                 navigateSafe(
-                    SignUpPasswordFragmentDirections.actionSignUpPasswordFragmentToSignUpConfirmationFragment(
+                    SignUpPasswordFragmentDirections.actionSignUpPasswordFragmentToVerificationFragment(
                         AuthParams(
                             firstName = viewModel.firstName,
                             lastName = viewModel.lastName,

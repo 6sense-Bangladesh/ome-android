@@ -689,7 +689,8 @@ fun Int.toTimer(): Triple<Int, Int, Int> {
     return Triple(hours, minutes, seconds)
 }
 
-fun Context.getClipBoardData(): String {
+fun Context?.getClipBoardData(): String {
+    this ?: return ""
     val clipBoardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     var data = ""
     if (clipBoardManager.primaryClip?.description?.hasMimeType("text/*") == true) {

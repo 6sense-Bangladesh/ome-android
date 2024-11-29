@@ -40,7 +40,8 @@
             android:hint="@string/email"
             android:imeOptions="actionNext"
             android:inputType="text"
-            android:nextFocusForward="@id/lastName" />
+            android:nextFocusForward="@id/lastName"
+            android:textSize="@dimen/_12ssp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,7 +68,8 @@
             android:layout_height="wrap_content"
             android:autofillHints="password"
             android:hint="@string/password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textSize="@dimen/_12ssp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

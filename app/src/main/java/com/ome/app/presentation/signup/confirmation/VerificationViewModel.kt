@@ -1,5 +1,6 @@
 package com.ome.app.presentation.signup.confirmation
 
+import androidx.lifecycle.SavedStateHandle
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.ome.app.BuildConfig
 import com.ome.app.data.local.PreferencesProvider
@@ -19,29 +20,31 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class SignUpConfirmationViewModel @Inject constructor(
+class VerificationViewModel @Inject constructor(
     private val amplifyManager: AmplifyManager,
     private val preferencesProvider: PreferencesProvider,
     private val userRepository: UserRepository,
-    private val stoveRepository: StoveRepository
-) :
-    BaseViewModel() {
+    private val stoveRepository: StoveRepository,
+    private val savedStateHandle: SavedStateHandle
+) : BaseViewModel() {
 
-    var firstName = ""
-    var lastName = ""
-    var phone = ""
-    var email = ""
+    val params by lazy { VerificationFragmentArgs.fromSavedStateHandle(savedStateHandle).params }
+    
+//    var firstName = args.firstName
+//    var lastName = ""
+//    var phone = ""
+//    var email = ""
     var code = ""
-    var currentPassword = ""
-    var isForgotPassword = false
+//    var currentPassword = ""
+//    var isForgotPassword = false
 
     val signUpConfirmationResultLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val resendClickedResultLiveData: SingleLiveEvent<AmplifyResultValue> = SingleLiveEvent()
     val codeValidationLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     fun confirmSignUp() = launch(ioContext) {
-        amplifyManager.confirmSignUp(email, code)
-        signIn(email, currentPassword)
+        amplifyManager.confirmSignUp(params.email, code)
+        signIn(params.email, params.currentPassword)
         fetchUserData()
         createUser()
     }
@@ -52,10 +55,10 @@ class SignUpConfirmationViewModel @Inject constructor(
             when (val result = userRepository.createUser(
                 CreateUserRequest(
                     deviceTokens = listOf(),
-                    email = email,
-                    firstName = firstName,
-                    lastName = lastName,
-                    phone = phone,
+                    email = params.email,
+                    firstName = params.firstName,
+                    lastName = params.lastName,
+                    phone = params.phone,
                     stoveOrientation = -1,
                     uiAppType = "Android",
                     uiAppVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
@@ -80,7 +83,7 @@ class SignUpConfirmationViewModel @Inject constructor(
     }
 
     fun validateConfirmationCode(code: String) {
-        if (code.trim().isEmpty()) {
+        if (code.isBlank()) {
             defaultErrorLiveData.postValue("Please make sure to enter confirmation code.")
             loadingLiveData.postValue(false)
             return

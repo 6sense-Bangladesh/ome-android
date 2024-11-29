@@ -24,15 +24,6 @@ class ChangePasswordFragment:  BaseFragment<ChangePasswordViewModel, FragmentCha
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.backIv.applyInsetter {
-//            type(navigationBars = true, statusBars = true) {
-//                padding(horizontal = true)
-//                margin(top = true)
-//            }
-//        }
-//        binding.backIv.setOnClickListener {
-//            popBackSafe()
-//        }
         binding.continueBtn.setOnClickListener {
             viewModel.validatePassword(
                 binding.oldPassword.text.toString(),

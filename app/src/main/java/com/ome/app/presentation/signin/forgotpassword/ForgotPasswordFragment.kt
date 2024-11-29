@@ -49,7 +49,7 @@ class ForgotPasswordFragment :
         subscribe(viewModel.forgotPasswordSuccess) {
             binding.continueBtn.revertAnimation()
             navigateSafe(
-                ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToSignUpConfirmationFragment(
+                ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToVerificationFragment(
                     AuthParams(isForgotPassword = true, email = binding.email.getText())
                 )
             )

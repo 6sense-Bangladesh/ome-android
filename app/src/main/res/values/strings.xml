@@ -20,9 +20,15 @@
     <string name="by_clicking_continue2">By clicking continue, you agree to <a href="https://www.omekitchen.com/pages/terms">Ome\'s Terms of Service</a> and <a href="https://www.omekitchen.com/pages/privacy-policy"> Privacy Policy</a></string>
     <string name="password_rules">Password must have 9 characters or more and contains at least 3 of the following types: uppercase, lowercase, and number.</string>
     <string name="check_email_for_code">Check email for code</string>
-    <string name="confirmation_label">Confirmation code sent via email to: email(%1$s) Make sure to check your spam folder</string>
-    <string name="confirmation_label_dialog">Confirmation code sent via email to: email(%1$s)</string>
+    <string name="confirmation_label">Enter the code we sent to your email address %1$s</string>
+    <string name="confirmation_label_dialog">Confirmation code sent via email your email address %1$s</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="hyphen">-</string>
+    <string name="zero">0</string>
+    <string name="resend_after_sec">Resend after %1$s sec</string>
     <string name="resend_code">Resend Code</string>
+    <string name="need_help">Need Help?</string>
+    <string name="verify">Verify</string>
     <string name="hello">Hello!</string>
     <string name="welcome_to_ome">Welcome to Ome App\nTo use our app to manage.</string>
     <string name="now_let_s_get_information_about_your_stove">Now let\'s get information about your stove.</string>

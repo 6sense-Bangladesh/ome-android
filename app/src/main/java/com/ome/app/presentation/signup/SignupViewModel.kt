@@ -20,6 +20,11 @@ class SignupViewModel @Inject constructor(private val amplifyManager: AmplifyMan
     val validationErrorFlow = MutableSharedFlow<Pair<Validation, String>>()
     val validationSuccessFlow = MutableSharedFlow<AmplifyResultValue>()
 
+    var firstName = ""
+    var lastName = ""
+    var email = ""
+    var phone = ""
+
     fun validateFields(
         firstName: String,
         lastName: String,
@@ -28,6 +33,11 @@ class SignupViewModel @Inject constructor(private val amplifyManager: AmplifyMan
         password: String,
         confirmPassword: String
     ) {
+        this.firstName = firstName
+        this.lastName = lastName
+        this.email = email
+        this.phone = phone
+
         val passValidator = password.isValidPasswordResult()
 
         launch(ioContext) {
