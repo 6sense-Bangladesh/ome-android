@@ -7,63 +7,74 @@
     android:fitsSystemWindows="false"
     tools:context=".presentation.signup.welcome.WelcomeFragment">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/ome_background_gradient"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_margin="@dimen/_12sdp"
+        android:id="@+id/iconDone"
+        android:layout_width="@dimen/_36sdp"
+        android:layout_height="@dimen/_36sdp"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/ic_done_small"
+        app:layout_constraintBottom_toTopOf="@+id/congoUser"
+        app:layout_constraintEnd_toEndOf="@+id/congoUser"
+        app:layout_constraintStart_toStartOf="@+id/congoUser"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Round.18" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/congoUser"
+        style="@style/Title.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_horizontal"
+        android:layout_marginEnd="@dimen/margin_horizontal"
+        android:layout_marginBottom="@dimen/_48sdp"
+        android:gravity="center"
+        android:text="@string/congoUser"
+        app:layout_constraintBottom_toTopOf="@+id/materialTextView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/materialTextView4"
+        style="@style/Title.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:gravity="center"
+        android:text="Start Setting Up Stove"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/loadingLayout"
-        layout="@layout/loading_progress_layout"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="0dp"
-        android:layout_height="32dp"
-        android:layout_margin="16dp"
-        android:src="@drawable/ome_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        style="@style/Title.ExtraLarge"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_50sdp"
-        android:text="@string/hello"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
-
-    <TextView
-        android:id="@+id/textView2"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/materialTextView3"
         style="@style/Label.Medium"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_20sdp"
-        android:text="@string/welcome_to_ome"
-        android:textColor="@color/white"
+        android:layout_margin="@dimen/margin_horizontal"
+        android:gravity="center"
+        android:text="Set up your stove, install Smart Knobs, and calibrate to control it remotely in minutes."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/materialTextView4" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/skipSetup"
+        style="@style/OmeButton.Blue.Outline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Skip for Now"
+        app:layout_constraintBottom_toTopOf="@+id/startSetup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
-        android:id="@+id/continueBtn"
+        android:id="@+id/startSetup"
         style="@style/OmeButton.Blue"
         android:fitsSystemWindows="true"
-        android:text="@string/add_a_stove"
+        android:text="Start Set Up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

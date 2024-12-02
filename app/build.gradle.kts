@@ -180,8 +180,18 @@ dependencies {
 
 
     testImplementation("junit:junit:4.13.2")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    //google truth
+
+    val truth = "1.1.5"
+    testImplementation("com.google.truth:truth:$truth")
+    androidTestImplementation("com.google.truth:truth:$truth")
+
+    val mockito = "5.14.2"
+    testImplementation("org.mockito:mockito-core:$mockito")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
 
     implementation("com.github.chuckerteam.chucker:library:4.0.0")
 //    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")

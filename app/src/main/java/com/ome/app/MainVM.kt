@@ -80,7 +80,8 @@ class MainVM @Inject constructor(
         launch(ioContext) {
             stoveRepository.knobsFlow.filterNotNull().collect { lst ->
                 savedStateHandle["knobs"] = lst
-                savedStateHandle["knobState"] = lst.associateByTo(mutableMapOf(), { it.macAddr }, { it.asKnobState }).toMap()
+                savedStateHandle["knobState"] =
+                    lst.associateByTo(mutableMapOf(), { it.macAddr }, { it.asKnobState }).toMap()
             }
         }
         launch(ioContext) {
@@ -121,7 +122,7 @@ class MainVM @Inject constructor(
         }
     }
 
-    fun turnOffAllKnobs(){
+    fun turnOffAllKnobs() {
         launch(ioContext) {
             stoveRepository.turnOffAllKnobs()
             stoveRepository.getAllKnobs()
@@ -199,10 +200,10 @@ class MainVM @Inject constructor(
         }
     }
 
-    fun connectToSocket(needStatus: Boolean = true){
+    fun connectToSocket(needStatus: Boolean = true) {
         launch(ioContext) {
             webSocketManager.onSocketConnect = {
-                if(needStatus) {
+                if (needStatus) {
                     "onSocketConnect $it".loge()
                     if (it) {
                         delay(5.seconds)
@@ -215,12 +216,11 @@ class MainVM @Inject constructor(
             savedStateHandle["knobs"] = knobs.toList()
             try {
                 preferencesProvider.getUserId()?.let { userId ->
-                    if(knobs.isNotEmpty())
+                    if (knobs.isNotEmpty())
                         webSocketManager.initWebSocket(knobs, userId)
                 }
-            }
-            catch (e: Exception){
-                if(needStatus) error("Error with socket connection.")
+            } catch (e: Exception) {
+                if (needStatus) error("Error with socket connection.")
                 else connectToSocket(false)
             }
         }

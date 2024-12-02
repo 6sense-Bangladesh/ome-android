@@ -247,6 +247,7 @@
     <string name="knob_already_exists">A knob already exists in this position.</string>
     <string name="retry">Retry</string>
     <string name="retrying">Retrying..</string>
+    <string name="congoUser">Congratulation %s!</string>
 
 
 </resources>

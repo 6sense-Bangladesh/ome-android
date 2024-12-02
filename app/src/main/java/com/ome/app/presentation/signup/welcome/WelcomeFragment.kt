@@ -23,28 +23,34 @@ class WelcomeFragment :
 
     override val viewModel: WelcomeViewModel by viewModels()
 
+    private lateinit var userName: String
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.logo.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-        binding.continueBtn.applyInsetter {
+        userName = mainViewModel.userInfo.value.firstName.toString()
+        binding.congoUser.text = getString(R.string.congoUser, userName)
+
+        binding.startSetup.applyInsetter {
             type(navigationBars = true, statusBars = true) {
                 margin(bottom = true)
             }
         }
-        if(BuildConfig.DEBUG){
-            binding.textView.setBounceClickListener {
+        if (BuildConfig.DEBUG) {
+            binding.iconDone.setBounceClickListener {
                 navigateSafe(R.id.stoveSetupCompletedFragment)
             }
         }
-        binding.continueBtn.setBounceClickListener {
-            navigateSafe(WelcomeFragmentDirections.actionWelcomeFragmentToStoveSetupBrandFragment(StoveSetupBrandArgs()))
+        binding.startSetup.setBounceClickListener {
+            navigateSafe(
+                WelcomeFragmentDirections.actionWelcomeFragmentToStoveSetupBrandFragment(
+                    StoveSetupBrandArgs()
+                )
+            )
 //            binding.continueBtn.startAnimation()
             viewModel.setup()
+        }
+
+        binding.skipSetup.setBounceClickListener {
+            navigateSafe(R.id.action_welcomeFragment_to_dashboardFragment)
         }
 
     }
@@ -53,7 +59,7 @@ class WelcomeFragment :
     override fun setupObserver() {
         super.setupObserver()
         subscribe(viewModel.loadingLiveData) {
-            binding.continueBtn.revertAnimation()
+            binding.startSetup.revertAnimation()
         }
         subscribe(viewModel.fetchUserDataStatus) {
 //            navigateSafe(R.id.action_welcomeFragment_to_stoveSetupBrandFragment)
