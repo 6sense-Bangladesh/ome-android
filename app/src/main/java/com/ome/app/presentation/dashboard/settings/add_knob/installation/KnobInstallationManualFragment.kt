@@ -27,6 +27,7 @@ class KnobInstallationManualFragment :
     override val viewModel: EmptyViewModel by viewModels()
 
     private val args by navArgs<KnobInstallationManualFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun setupUI() {
         binding.shaftIv.loadDrawable(R.drawable.knob_plug)
@@ -47,8 +48,8 @@ class KnobInstallationManualFragment :
             navigateSafe(
                 KnobInstallationManualFragmentDirections.actionKnobInstallationManualFragmentToZoneSelectionFragment(
                     ZoneSelectionFragmentParams(
-                        macAddrs = args.params.macAddr,
-                        isComeFromSettings = args.params.isComeFromSettings
+                        macAddrs = params.macAddr,
+                        isComeFromSettings = params.isComeFromSettings
                     )
                 )
             )
@@ -56,7 +57,7 @@ class KnobInstallationManualFragment :
     }
     override fun handleBackPressEvent() {
         activity?.onBackPressedDispatcher?.addCallback(this){
-            popBackSafe(if(args.params.isComeFromSettings) R.id.deviceDetailsFragment else R.id.dashboardFragment, false)
+            popBackSafe(if(params.isComeFromSettings) R.id.deviceDetailsFragment else R.id.dashboardFragment, false)
         }
     }
 }

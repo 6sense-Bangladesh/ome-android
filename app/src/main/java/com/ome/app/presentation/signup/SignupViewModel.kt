@@ -1,6 +1,7 @@
 package com.ome.app.presentation.signup
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
 import com.ome.app.domain.model.base.DefaultValidation
@@ -14,8 +15,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class SignupViewModel @Inject constructor(private val amplifyManager: AmplifyManager) :
-    BaseViewModel() {
+class SignupViewModel @Inject constructor(
+    val pref: PreferencesProvider,
+    private val amplifyManager: AmplifyManager
+) : BaseViewModel() {
 
     val validationErrorFlow = MutableSharedFlow<Pair<Validation, String>>()
     val validationSuccessFlow = MutableSharedFlow<AmplifyResultValue>()
@@ -24,6 +27,7 @@ class SignupViewModel @Inject constructor(private val amplifyManager: AmplifyMan
     var lastName = ""
     var email = ""
     var phone = ""
+    var password = ""
 
     fun validateFields(
         firstName: String,
@@ -37,6 +41,7 @@ class SignupViewModel @Inject constructor(private val amplifyManager: AmplifyMan
         this.lastName = lastName
         this.email = email
         this.phone = phone
+        this.password = password
 
         val passValidator = password.isValidPasswordResult()
 

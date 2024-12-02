@@ -1,8 +1,6 @@
 package com.ome.app.presentation.signup.confirmation
 
-import android.os.Bundle
 import android.view.KeyEvent
-import android.view.View
 import androidx.core.view.OnReceiveContentListener
 import androidx.core.view.ViewCompat
 import androidx.core.widget.doOnTextChanged
@@ -15,6 +13,10 @@ import com.ome.app.databinding.FragmentVerificationBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 
 @AndroidEntryPoint
@@ -28,11 +30,12 @@ class VerificationFragment :
     private val args by navArgs<VerificationFragmentArgs>()
     val params by lazy { args.params }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    companion object{
+    }
 
-        binding.textLabel.text =
-            getString(R.string.confirmation_label, params.email.applyMaskToEmail())
+    override fun setupUI() {
+        binding.textLabel.text = getString(R.string.confirmation_label, params.email.applyMaskToEmail())
+        startTimer()
     }
 
     override fun setupListener() {
@@ -46,6 +49,7 @@ class VerificationFragment :
                 )
             }
             btnResend.setOnClickListener {
+                binding.loadingLayout.root.visible()
                 viewModel.resendCode(params.email.trim())
             }
             listOf(otp1,otp2,otp3,otp4,otp5,otp6).forEach {
@@ -134,6 +138,9 @@ class VerificationFragment :
             }
 
         }
+        onDismissErrorDialog = {
+            binding.loadingLayout.root.gone()
+        }
     }
 
     override fun setupObserver() {
@@ -149,12 +156,11 @@ class VerificationFragment :
 
         }
         subscribe(viewModel.resendClickedResultLiveData) {
-            showSuccessDialog(
-                message = getString(
-                    R.string.confirmation_label_dialog,
-                    params.email.applyMaskToEmail()
-                )
-            )
+            binding.loadingLayout.root.gone()
+            if(it.isSuccessful) {
+                showSuccessDialog(message = getString(R.string.confirmation_label_dialog, params.email.applyMaskToEmail()))
+                startTimer()
+            }
         }
 
         subscribe(viewModel.loadingLiveData) {
@@ -176,5 +182,38 @@ class VerificationFragment :
             binding.btnVerify.revertAnimation()
         }
     }
+
+    private var lastTime = 0L
+    private val time
+        get() = (lastTime.minus(System.currentTimeMillis()) / 1000).toInt()
+
+    private var timerJob: Job? = null
+
+    private fun startTimer(){
+        timerJob?.cancel()
+        timerJob = viewLifecycleScope.launch {
+            lastTime = IO { viewModel.pref.getTimer(Constants.VERIFICATION_KEY) }
+            binding.apply {
+                if(time > 0) {
+                    btnResend.gone()
+                    resendText.visible()
+                }
+                while(time >= 0){
+                    resendText.text = getString(R.string.resend_after_sec, time.toTimer())
+                    delay(1.seconds)
+                }
+                resendText.gone()
+                btnResend.visible()
+            }
+        }
+    }
+
+
+    private fun Int.toTimer(): String {
+        val minutes = this / 60
+        val seconds = this % 60
+        return "%02d:%02d".format(minutes, seconds)
+    }
+
 
 }

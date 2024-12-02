@@ -168,22 +168,18 @@ class MainVM @Inject constructor(
                                         if (result.message.contains("Not found")) {
                                             amplifyManager.deleteUser()
                                             preferencesProvider.clearData()
-                                            savedStateHandle["startDestination"] =
-                                                R.id.launchFragment
+                                            savedStateHandle["startDestination"] = R.id.launchFragment
                                         } else {
-                                            savedStateHandle["startDestination"] =
-                                                R.id.dashboardFragment
+                                            savedStateHandle["startDestination"] = R.id.dashboardFragment
                                         }
                                     }
 
                                     is ResponseWrapper.Success -> {
                                         if (result.value.stoveSetupComplete.isFalse()) {
-                                            savedStateHandle["startDestination"] =
-                                                R.id.welcomeFragment
+                                            savedStateHandle["startDestination"] = R.id.welcomeFragment
                                             return@launch
                                         }
-                                        savedStateHandle["startDestination"] =
-                                            R.id.dashboardFragment
+                                        savedStateHandle["startDestination"] = R.id.dashboardFragment
                                         connectToSocket()
                                     }
                                 }

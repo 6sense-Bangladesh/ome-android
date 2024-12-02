@@ -24,21 +24,22 @@ class DeviceSettingsFragment :
     override val viewModel: DeviceViewModel by viewModels()
 
     private val args by navArgs<DeviceSettingsFragmentArgs>()
+    val params by lazy { args.params }
 
     private val adapter by lazy { SettingItemAdapter(onClick) }
 
     override fun setupUI() {
         binding.apply {
-            viewModel.macAddress = args.params.macAddr
+            viewModel.macAddress = params.macAddr
             viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
-//            name.text = args.params.name
-            mainViewModel.knobs.value.find { it.macAddr == args.params.macAddr }?.let { knob ->
+//            name.text = params.name
+            mainViewModel.knobs.value.find { it.macAddr == params.macAddr }?.let { knob ->
 //                knobView.setFontSize(18F)
             }
             recyclerView.adapter = adapter
             viewModel.initSubscriptions()
             knobTv.text = getString(R.string.knob_, viewModel.stovePosition)
-            macAddressTv.text = getString(R.string.knob_mac_addr_label, args.params.macAddr)
+            macAddressTv.text = getString(R.string.knob_mac_addr_label, params.macAddr)
         }
     }
 
@@ -79,7 +80,7 @@ class DeviceSettingsFragment :
             binding.knobView.setKnobPosition(angle)
         }
 
-        viewModel.isDualZone = mainViewModel.getKnobByMac(args.params.macAddr)?.calibration?.rotationDir == 2
+        viewModel.isDualZone = mainViewModel.getKnobByMac(params.macAddr)?.calibration?.rotationDir == 2
         viewModel.deviceSettingsList.collectWithLifecycle{
             adapter.submitList(it)
         }

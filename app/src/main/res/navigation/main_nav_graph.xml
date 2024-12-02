@@ -33,6 +33,16 @@
             app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_launchFragment_to_verificationFragment"
             app:destination="@id/verificationFragment" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/mainNavGraph"
+            android:id="@+id/action_launchFragment_to_verificationFragmentNoBack"
+            app:destination="@id/verificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -380,7 +390,12 @@
     <fragment
         android:id="@+id/noInternetConnectionFragment"
         android:name="com.ome.app.presentation.internet_error.NoInternetConnectionFragment"
-        android:label="NoInternetConnectionFragment" />
+        android:label="NoInternetConnectionFragment">
+        <argument
+            android:name="showRetryButton"
+            app:argType="boolean"
+            android:defaultValue="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/changePasswordFragment"

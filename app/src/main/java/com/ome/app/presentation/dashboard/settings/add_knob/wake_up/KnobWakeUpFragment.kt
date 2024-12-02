@@ -19,6 +19,7 @@ class KnobWakeUpFragment : BaseFragment<KnobWakeUpViewModel, FragmentKnobWakeUpB
     override val viewModel: KnobWakeUpViewModel by viewModels()
 
     private val args by navArgs<KnobWakeUpFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun setupUI() {
         binding.labelInstruction.enableCustomTabClick(
@@ -32,7 +33,7 @@ class KnobWakeUpFragment : BaseFragment<KnobWakeUpViewModel, FragmentKnobWakeUpB
         binding.continueBtn.setOnClickListener{
             navigateSafe(
                 KnobWakeUpFragmentDirections.actionKnobWakeUpFragmentToMetalPlateInstallationFragment(
-                    MetalPlateInstallationParams(selectedKnobPosition = args.params.selectedKnobPosition)
+                    MetalPlateInstallationParams(selectedKnobPosition = params.selectedKnobPosition)
                 )
             )
         }

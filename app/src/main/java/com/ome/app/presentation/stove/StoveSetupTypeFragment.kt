@@ -20,6 +20,7 @@ class StoveSetupTypeFragment :
     override val viewModel: StoveSetupTypeViewModel by viewModels()
 
     private val args by navArgs<StoveSetupTypeFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun setupUI() {
 //        initButtonsStates()
@@ -29,7 +30,7 @@ class StoveSetupTypeFragment :
 //                margin(top = true)
 //            }
 //        }
-        if (args.params.isEditMode) {
+        if (params.isEditMode) {
             binding.continueBtn.text = getString(R.string.save)
             mainViewModel.userInfo.value.stoveType
         }else{
@@ -55,7 +56,7 @@ class StoveSetupTypeFragment :
 
             if(mainViewModel.stoveData.stoveType == null)
                 onError("Please select stove type")
-            else if (args.params.isEditMode) {
+            else if (params.isEditMode) {
                 binding.continueBtn.startAnimation()
                 viewModel.saveStoveType(mainViewModel.userInfo.value.stoveId, onEnd = mainViewModel::getUserInfo)
             }
@@ -63,7 +64,7 @@ class StoveSetupTypeFragment :
                 mainViewModel.stoveData.stoveType.isNotNull {
                     navigateSafe(
                         StoveSetupTypeFragmentDirections.actionStoveSetupTypeFragmentToStoveSetupPhotoFragment(
-                            StoveSetupPhotoArgs(args.params.brand, it)
+                            StoveSetupPhotoArgs(params.brand, it)
                         )
                     )
                 } ?: onError("Please select stove type")
@@ -82,7 +83,7 @@ class StoveSetupTypeFragment :
 //        binding.gasIv.setOnClickListener {
 //            if (viewModel.stoveType.isEmpty() || viewModel.stoveType == "electric") {
 //                binding.continueBtn.isEnabled = true
-//                if(args.params.isEditMode){
+//                if(params.isEditMode){
 //                    ContextCompat.getDrawable(requireContext(), R.drawable.ome_gradient_button_unpressed_color)
 //                        ?.let {
 //                            binding.continueBtn.drawableBackground = it
@@ -100,7 +101,7 @@ class StoveSetupTypeFragment :
 //        binding.electricIv.setOnClickListener {
 //            if (viewModel.stoveType.isEmpty() || viewModel.stoveType == "gas") {
 //                binding.continueBtn.isEnabled = true
-//                if(args.params.isEditMode){
+//                if(params.isEditMode){
 //                    ContextCompat.getDrawable(requireContext(), R.drawable.ome_gradient_button_unpressed_color)
 //                        ?.let {
 //                            binding.continueBtn.drawableBackground = it
@@ -159,7 +160,7 @@ class StoveSetupTypeFragment :
                 binding.continueBtn.startAnimation()
             else {
                 binding.continueBtn.revertAnimation()
-                if (args.params.isEditMode) {
+                if (params.isEditMode) {
                     toast(getString(R.string.stove_type_changed))
                     onBackPressed()
                 }

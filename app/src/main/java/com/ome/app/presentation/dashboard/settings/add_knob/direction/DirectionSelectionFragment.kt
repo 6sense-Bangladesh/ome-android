@@ -27,10 +27,11 @@ class DirectionSelectionFragment :
     override val viewModel: DirectionSelectionViewModel by viewModels()
 
     private val args by navArgs<DirectionSelectionFragmentArgs>()
+    val params by lazy { args.params }
 
 
     override fun setupUI() {
-        viewModel.macAddress = args.params.macAddress
+        viewModel.macAddress = params.macAddress
         mainViewModel.getKnobByMac(viewModel.macAddress)?.let {
             viewModel.calRequest = it.calibration.toSetCalibrationRequest()
             viewModel.calibrated = it.calibrated.orFalse()
@@ -47,7 +48,7 @@ class DirectionSelectionFragment :
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
         binding.continueBtn.setOnClickListener {
-            if(args.params.isEditMode)
+            if(params.isEditMode)
                 viewModel.updateDirection(onEnd = mainViewModel::getAllKnobs)
             else {
                 binding.continueBtn.startAnimation()
@@ -80,10 +81,10 @@ class DirectionSelectionFragment :
                 navigateSafe(
                     DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
                         DeviceCalibrationFragmentParams(
-                            isComeFromSettings = args.params.isComeFromSettings,
-                            isDualKnob = args.params.isDualKnob,
+                            isComeFromSettings = params.isComeFromSettings,
+                            isDualKnob = params.isDualKnob,
                             rotateDir = viewModel.clockwiseDir,
-                            macAddress = args.params.macAddress
+                            macAddress = params.macAddress
                         )
                     )
                 )
@@ -94,7 +95,7 @@ class DirectionSelectionFragment :
                 binding.continueBtn.startAnimation()
             else {
                 binding.continueBtn.revertAnimation()
-                if(args.params.isEditMode)
+                if(params.isEditMode)
                     onBackPressed()
             }
         }

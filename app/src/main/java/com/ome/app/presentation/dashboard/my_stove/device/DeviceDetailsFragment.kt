@@ -34,9 +34,10 @@ class DeviceDetailsFragment :
     override val viewModel: DeviceViewModel by viewModels()
 
     private val args by navArgs<DeviceDetailsFragmentArgs>()
+    val params by lazy { args.params }
 
     private val burnerStates
-        get() = mainViewModel.getKnobBurnerStatesByMac(args.params.macAddr)
+        get() = mainViewModel.getKnobBurnerStatesByMac(params.macAddr)
 
     private val dialogBinding by lazy { DialogTimerBinding.inflate(layoutInflater) }
     private val dialogTimer by lazy { context?.let {
@@ -46,7 +47,7 @@ class DeviceDetailsFragment :
     }}
 
     override fun setupUI() {
-        viewModel.macAddress = args.params.macAddr
+        viewModel.macAddress = params.macAddr
         viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
         binding.knobView.setFontSize(17F)
         viewModel.initSubscriptions()
@@ -128,7 +129,7 @@ class DeviceDetailsFragment :
                 navigateSafe(
                     DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToDeviceCalibrationFragment(
                         DeviceCalibrationFragmentParams(
-                            macAddress = args.params.macAddr,
+                            macAddress = params.macAddr,
                             isDualKnob = true,
                             isComeFromSettings = true
                         )
@@ -139,7 +140,7 @@ class DeviceDetailsFragment :
                 navigateSafe(
                     DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToDeviceCalibrationConfirmationFragment(
                         DeviceCalibrationConfirmationFragmentParams(
-                            macAddr = args.params.macAddr,
+                            macAddr = params.macAddr,
                             isComeFromSettings = true,
                             offPosition = 0f,
                             isDualKnob = true,
@@ -155,7 +156,7 @@ class DeviceDetailsFragment :
         binding.warningCard.setBounceClickListener {
             navigateSafe(
                 DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToKnobInstallationManualFragment(
-                    KnobInstallationManualFragmentParams(macAddr = args.params.macAddr, isComeFromSettings = true)
+                    KnobInstallationManualFragmentParams(macAddr = params.macAddr, isComeFromSettings = true)
                 )
             )
         }
@@ -164,7 +165,7 @@ class DeviceDetailsFragment :
             when(it.itemId){
                 R.id.menuDeviceSetting -> {
                     navigateSafe(DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToDeviceSettingsFragment(
-                        DeviceSettingsFragmentParams(macAddr = args.params.macAddr)
+                        DeviceSettingsFragmentParams(macAddr = params.macAddr)
                     ))
                     true
                 }
@@ -190,7 +191,7 @@ class DeviceDetailsFragment :
                 R.drawable.ic_pause -> {
                     binding.btnPauseResumeTimer.setImageResource(R.drawable.ic_play)
                     binding.btnPauseResumeTimer.tag = R.drawable.ic_play
-                    timeJob?.cancel()
+                    timerJob?.cancel()
                     viewModel.pauseTimer(time)
                 }
                 R.drawable.ic_play -> {
@@ -221,12 +222,12 @@ class DeviceDetailsFragment :
     private val time
         get() = (lastTime.minus(System.currentTimeMillis()) / 1000).toInt()
 
-    private var timeJob: Job? = null
+    private var timerJob: Job? = null
 
     private fun activeTimer(){
-        lastTime = viewModel.pref.getTimer(args.params.macAddr)
-        timeJob?.cancel()
-        timeJob = viewLifecycleScope.launch {
+        timerJob?.cancel()
+        timerJob = viewLifecycleScope.launch {
+            lastTime = IO { viewModel.pref.getTimer(params.macAddr) }
             Log.d(TAG, "Current time: ${System.currentTimeMillis()}")
             Log.d(TAG,"Last time: $lastTime")
             Log.d(TAG, "activeTimer: $time")
@@ -248,7 +249,7 @@ class DeviceDetailsFragment :
                 binding.timerCard.animateInvisible()
                 binding.btnTimer.visible()
             } else if(viewModel.isPauseEnabled.apply { log("isPauseEnabled") }) {
-                viewModel.pref.getPauseTime(args.params.macAddr).let { (hr, min, sec) ->
+                viewModel.pref.getPauseTime(params.macAddr).let { (hr, min, sec) ->
                     binding.btnPauseResumeTimer.tag = R.drawable.ic_play
                     binding.btnPauseResumeTimer.setImageResource(R.drawable.ic_play)
                     binding.btnTimer.invisible()
@@ -304,7 +305,7 @@ class DeviceDetailsFragment :
                 it.log("currentKnob")
                 knobView.setupKnob(it)
             }
-            mainViewModel.getKnobStateByMac(args.params.macAddr).collectWithLifecycleStateIn{knob ->
+            mainViewModel.getKnobStateByMac(params.macAddr).collectWithLifecycleStateIn{knob ->
                 knob.log("getKnobStateByMac")
                 val batteryLevel = knob.battery
                 viewModel.isSafetyLockOn = knob.knobSetSafetyMode.orFalse()
@@ -313,7 +314,7 @@ class DeviceDetailsFragment :
                     changeBurnerStatus(it)
 //                    if(knob.mountingSurface != null && mainViewModel.userInfo.value.stoveKnobMounting != knob.mountingSurface.type){
 //                        viewModel.isEnable.value = false
-//                        changeBurnerStatus(it, BurnerState.Off( mainViewModel.getOffAngleByMac(args.params.macAddr).orZero()))
+//                        changeBurnerStatus(it, BurnerState.Off( mainViewModel.getOffAngleByMac(params.macAddr).orZero()))
 //                    }
                     binding.knobView.setKnobPosition(it.toFloat())
                 }

@@ -4,6 +4,8 @@ import com.ome.app.domain.model.network.response.UserResponse
 
 
 interface PreferencesProvider {
+    val utils : SharedPreferenceUtils
+
     fun saveUserData(user: UserResponse?)
 
     fun getUserData(): UserResponse

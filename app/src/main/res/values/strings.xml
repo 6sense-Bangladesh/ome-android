@@ -245,6 +245,8 @@
     <string name="password">Password</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="knob_already_exists">A knob already exists in this position.</string>
+    <string name="retry">Retry</string>
+    <string name="retrying">Retrying..</string>
 
 
 </resources>

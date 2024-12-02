@@ -23,6 +23,7 @@ class MetalPlateInstallationFragment :
     override val viewModel: MetalPlateInstallationViewModel by viewModels()
 
     private val args by navArgs<MetalPlateInstallationFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun setupUI() {
         binding.shaftIv.loadDrawable(R.drawable.knob_unplug)
@@ -33,7 +34,7 @@ class MetalPlateInstallationFragment :
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
         binding.continueBtn.setOnClickListener {
-            if(args.params.selectedKnobPosition == -1) {
+            if(params.selectedKnobPosition == -1) {
                 navigateSafe(
                     MetalPlateInstallationFragmentDirections.actionMetalPlateInstallationFragmentToSelectBurnerFragment(
                         SelectBurnerFragmentParams()
@@ -43,7 +44,7 @@ class MetalPlateInstallationFragment :
             else{
                 navigateSafe(
                     MetalPlateInstallationFragmentDirections.actionMetalPlateInstallationFragmentToQrCodeScannerFragment(
-                        QrCodeScannerParams(selectedKnobPosition = args.params.selectedKnobPosition)
+                        QrCodeScannerParams(selectedKnobPosition = params.selectedKnobPosition)
                     )
                 )
             }

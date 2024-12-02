@@ -20,6 +20,7 @@ class StoveSetupPhotoFragment :
     ) {
 
     private val args by navArgs<StoveSetupPhotoFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,7 +44,7 @@ class StoveSetupPhotoFragment :
             binding.takePhoto.revertAnimation()
             navigateSafe(
                 StoveSetupPhotoFragmentDirections.actionStoveSetupPhotoFragmentToStoveSetupBurnersFragment(
-                    StoveSetupBurnersArgs(brand = args.params.brand, type = args.params.type)
+                    StoveSetupBurnersArgs(brand = params.brand, type = params.type)
                 )
             )
         }

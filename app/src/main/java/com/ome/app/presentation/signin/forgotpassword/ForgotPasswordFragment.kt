@@ -23,6 +23,7 @@ class ForgotPasswordFragment :
     override val viewModel: ForgotPasswordViewModel by viewModels()
 
     private val args by navArgs<ForgotPasswordFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

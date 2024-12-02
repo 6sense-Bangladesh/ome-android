@@ -29,6 +29,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
     override val viewModel: QrCodeScannerViewModel by viewModels()
 
     private val args by navArgs<QrCodeScannerFragmentArgs>()
+    val params by lazy { args.params }
 
 //    private lateinit var codeScanner: CodeScanner
 
@@ -44,7 +45,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
 
     override fun setupUI() {
         checkPermission()
-        viewModel.stovePosition = args.params.selectedKnobPosition
+        viewModel.stovePosition = params.selectedKnobPosition
         initQrCodeScanner()
     }
 

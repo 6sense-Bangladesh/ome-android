@@ -6,6 +6,9 @@ import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import com.ome.app.domain.model.network.response.UserResponse
 import com.ome.app.domain.model.network.websocket.MacAddress
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class PreferencesProviderImpl(context: Context) : PreferencesProvider {
@@ -20,6 +23,9 @@ class PreferencesProviderImpl(context: Context) : PreferencesProvider {
 
     private val sharedPreferences =
         context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
+
+    override val utils: SharedPreferenceUtils
+        get() = SharedPreferenceUtils(sharedPreferences)
 
     override fun saveUserData(user: UserResponse?) = if (user == null) {
         sharedPreferences.edit().remove(USER_DATA_KEY).apply()
@@ -51,9 +57,11 @@ class PreferencesProviderImpl(context: Context) : PreferencesProvider {
     override fun getUserId(): String? = sharedPreferences.getString(USER_ID_KEY, "")
 
     override fun setTimer(macAddress: String, timeStamp: Long) {
-        getTimerMap().toMutableMap().apply {
-            put(macAddress, timeStamp)
-            sharedPreferences.edit().putString(TIMER_KEY, Gson().toJson(toMap())).apply()
+        CoroutineScope(Dispatchers.IO).launch{
+            getTimerMap().toMutableMap().apply {
+                put(macAddress, timeStamp)
+                sharedPreferences.edit().putString(TIMER_KEY, Gson().toJson(toMap())).apply()
+            }
         }
     }
 

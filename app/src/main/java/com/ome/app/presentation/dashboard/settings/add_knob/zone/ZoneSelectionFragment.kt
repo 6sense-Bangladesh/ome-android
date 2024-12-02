@@ -27,6 +27,7 @@ class ZoneSelectionFragment :
 
 
     private val args by navArgs<ZoneSelectionFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
@@ -46,9 +47,9 @@ class ZoneSelectionFragment :
                 navigateSafe(
                     ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(
                         DirectionSelectionFragmentParams(
-                            isComeFromSettings = args.params.isComeFromSettings,
+                            isComeFromSettings = params.isComeFromSettings,
                             isDualKnob = viewModel.isDualKnob,
-                            macAddress = args.params.macAddrs
+                            macAddress = params.macAddrs
                         )
                     )
                 )
@@ -73,9 +74,9 @@ class ZoneSelectionFragment :
                 navigateSafe(
                     ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
                         DeviceCalibrationFragmentParams(
-                            isComeFromSettings = args.params.isComeFromSettings,
+                            isComeFromSettings = params.isComeFromSettings,
                             isDualKnob = viewModel.isDualKnob,
-                            macAddress = args.params.macAddrs
+                            macAddress = params.macAddrs
                         )
                     )
                 )

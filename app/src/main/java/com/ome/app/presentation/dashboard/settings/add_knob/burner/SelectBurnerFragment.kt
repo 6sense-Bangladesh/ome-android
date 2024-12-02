@@ -19,9 +19,10 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
     override val viewModel: SelectBurnerViewModel by viewModels()
 
     private val args by navArgs<SelectBurnerFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun setupUI() {
-        viewModel.macAddress = args.params.macAddress
+        viewModel.macAddress = params.macAddress
         viewModel.loadData()
         mainViewModel.selectedBurnerIndex?.let {
             viewModel.selectedBurnerIndex = it
@@ -38,7 +39,7 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
         }
         binding.continueBtn.setBounceClickListener {
             viewModel.selectedBurnerIndex?.let {
-                if (args.params.isEditMode) {
+                if (params.isEditMode) {
                     showDialog(
                         title = getString(R.string.confirm_position),
                         positiveButtonText = getString(R.string.yes_continue),
@@ -56,7 +57,7 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
                         )
                     )
                 }
-            } ?: onError(if(args.params.isEditMode) getString(R.string.knob_is_already_in_this_position) else getString(R.string.please_select_burner_position))
+            } ?: onError(if(params.isEditMode) getString(R.string.knob_is_already_in_this_position) else getString(R.string.please_select_burner_position))
         }
     }
 

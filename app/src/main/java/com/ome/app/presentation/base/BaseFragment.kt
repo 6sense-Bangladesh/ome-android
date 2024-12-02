@@ -24,7 +24,7 @@ import com.ome.app.presentation.dashboard.settings.SettingsFragment
 import com.ome.app.presentation.launch.LaunchFragment
 import com.ome.app.presentation.signup.welcome.WelcomeFragment
 import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.popBackSafe
+import com.ome.app.utils.onBackPressedIgnoreCallback
 import com.ome.app.utils.subscribe
 import com.ome.app.utils.toast
 
@@ -96,13 +96,8 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                     is WelcomeFragment,
                     is MembersFragment,
                     is SettingsFragment,
-                    is LaunchFragment -> {
-                        activity?.finishAndRemoveTask()
-                    }
-
-                    else -> {
-                        popBackSafe()
-                    }
+                    is LaunchFragment -> activity?.finishAndRemoveTask()
+                    else -> onBackPressedIgnoreCallback()
                 }
             }
     }

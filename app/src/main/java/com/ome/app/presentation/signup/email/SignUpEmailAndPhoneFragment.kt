@@ -21,6 +21,7 @@ class SignUpEmailAndPhoneFragment :
     override val viewModel: SignUpEmailAndPhoneViewModel by viewModels()
 
     private val args by navArgs<SignUpEmailAndPhoneFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,8 +40,8 @@ class SignUpEmailAndPhoneFragment :
                 binding.phoneInput.getText().trim()
             )
         }
-        viewModel.firstName = args.params.firstName
-        viewModel.lastName = args.params.lastName
+        viewModel.firstName = params.firstName
+        viewModel.lastName = params.lastName
     }
 
 

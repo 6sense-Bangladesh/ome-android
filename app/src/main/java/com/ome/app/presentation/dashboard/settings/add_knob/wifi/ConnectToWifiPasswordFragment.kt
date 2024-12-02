@@ -22,13 +22,14 @@ class ConnectToWifiPasswordFragment :
     override val viewModel: ConnectToWifiPasswordViewModel by viewModels()
 
     private val args by navArgs<ConnectToWifiPasswordFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun setupUI() {
-        binding.ssidTv.text = args.params.ssid
+        binding.ssidTv.text = params.ssid
 
-        viewModel.macAddr = args.params.macAddr
-        viewModel.ssid = args.params.ssid
-        viewModel.securityType = args.params.securityType
+        viewModel.macAddr = params.macAddr
+        viewModel.ssid = params.ssid
+        viewModel.securityType = params.securityType
     }
 
     override fun setupListener() {
@@ -51,13 +52,13 @@ class ConnectToWifiPasswordFragment :
         }
 
         onDismissSuccessDialog = {
-            if (args.params.isEditMode) {
+            if (params.isEditMode) {
                 mainViewModel.getUserInfo()
                 popBackSafe(R.id.deviceSettingsFragment, false)
             } else {
                 navigateSafe(
                     ConnectToWifiPasswordFragmentDirections.actionConnectToWifiPasswordFragmentToKnobInstallationManualFragment(
-                        KnobInstallationManualFragmentParams(macAddr = args.params.macAddr)
+                        KnobInstallationManualFragmentParams(macAddr = params.macAddr)
                     )
                 )
             }

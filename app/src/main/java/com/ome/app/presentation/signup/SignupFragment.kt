@@ -8,10 +8,7 @@ import com.ome.app.domain.model.base.Validation
 import com.ome.app.domain.model.base.errorPassword
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.signup.password.AuthParams
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.setBounceClickListener
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -80,14 +77,15 @@ class SignupFragment : BaseFragment<SignupViewModel, FragmentSignupBinding>(
         }
         viewModel.validationSuccessFlow.collectWithLifecycle {
             if(it.isSuccessful) {
+                viewModel.pref.setTimer(Constants.VERIFICATION_KEY, Constants.TWO_MINUTES_MILLIS)
                 navigateSafe(SignupFragmentDirections.actionSignUpFragmentToVerificationFragment(
                     params = AuthParams(
                         firstName = viewModel.firstName,
                         lastName = viewModel.lastName,
                         email = viewModel.email,
-                        phone = viewModel.phone
+                        phone = viewModel.phone,
+                        currentPassword = viewModel.password
                     )
-
                 ))
             }
         }

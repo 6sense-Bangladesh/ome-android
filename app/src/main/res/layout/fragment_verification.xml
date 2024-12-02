@@ -233,7 +233,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginTop="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_25sdp"
         android:text="@string/need_help"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/otpLayout" />
@@ -244,19 +244,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:text="@string/resend_after_sec"
         app:layout_constraintBottom_toBottomOf="@+id/help"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/help" />
+        app:layout_constraintTop_toTopOf="@+id/help"
+        tools:text="@string/resend_after_sec" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnResend"
         style="@style/Widget.Material3.Button.OutlinedButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_32sdp"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:text="@string/resend_code"
         android:textColor="@color/black"
+        android:textSize="@dimen/_11sdp"
         android:visibility="invisible"
         app:cornerRadius="@dimen/_5sdp"
         app:layout_constraintBottom_toBottomOf="@+id/help"

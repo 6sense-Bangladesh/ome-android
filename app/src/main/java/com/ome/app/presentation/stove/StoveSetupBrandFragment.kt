@@ -17,9 +17,10 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
     override val viewModel: StoveSetupBrandViewModel by viewModels()
 
     private val args by navArgs<StoveSetupBrandFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun setupUI() {
-        if(args.params.isEditMode) {
+        if(params.isEditMode) {
             binding.continueBtn.text = getString(R.string.save)
             mainViewModel.userInfo.value.stoveMakeModel
         }else{
@@ -43,7 +44,7 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
             mainViewModel.stoveData.stoveMakeModel = viewModel.selectedBrand
             if(mainViewModel.stoveData.stoveMakeModel.isNullOrEmpty())
                 onError("Please select a brand")
-            else if(args.params.isEditMode)
+            else if(params.isEditMode)
                 viewModel.updateSelectedBrand(mainViewModel.userInfo.value.stoveId, onEnd= mainViewModel::getUserInfo)
             else{
                 navigateSafe(StoveSetupBrandFragmentDirections.actionStoveSetupBrandFragmentToStoveSetupTypeFragment(
@@ -60,7 +61,7 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
                 binding.continueBtn.startAnimation()
             else {
                 binding.continueBtn.revertAnimation()
-                if (args.params.isEditMode) {
+                if (params.isEditMode) {
                     toast(getString(R.string.stove_brand_changed))
                     onBackPressed()
                 }

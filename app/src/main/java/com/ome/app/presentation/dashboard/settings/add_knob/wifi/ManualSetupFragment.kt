@@ -23,9 +23,10 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
 
 
     private val args by navArgs<ManualSetupFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun setupUI() {
-        viewModel.macAddr = args.params.macAddrs
+        viewModel.macAddr = params.macAddrs
         viewModel.wifiHandler.setup(viewModel.macAddr).let {
             binding.mac1.text = it.first
             binding.mac2.text = it.second
@@ -59,8 +60,8 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
             navigateSafe(
                 ManualSetupFragmentDirections.actionManualSetupFragmentToWifiListFragment(
                     WifiListFragmentParams(
-                        isEditMode = args.params.isEditMode,
-                        macAddrs = args.params.macAddrs
+                        isEditMode = params.isEditMode,
+                        macAddrs = params.macAddrs
                     )
                 )
             )

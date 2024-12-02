@@ -22,17 +22,18 @@ class DeviceCalibrationConfirmationFragment :
     override val viewModel: DeviceCalibrationConfirmationViewModel by viewModels()
 
     private val args by navArgs<DeviceCalibrationConfirmationFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun setupUI() {
-        viewModel.isDualKnob = args.params.isDualKnob
-        viewModel.macAddress = args.params.macAddr
-        viewModel.rotationDir = args.params.rotateDir
-        viewModel.offAngle = args.params.offPosition
-        viewModel.highSingleAngle = args.params.highSinglePosition
-        viewModel.highDualAngle = args.params.highDualPosition
-        viewModel.mediumAngle = args.params.medPosition
-        viewModel.lowSingleAngle = args.params.lowSinglePosition
-        viewModel.lowDualAngle = args.params.lowDualPosition
+        viewModel.isDualKnob = params.isDualKnob
+        viewModel.macAddress = params.macAddr
+        viewModel.rotationDir = params.rotateDir
+        viewModel.offAngle = params.offPosition
+        viewModel.highSingleAngle = params.highSinglePosition
+        viewModel.highDualAngle = params.highDualPosition
+        viewModel.mediumAngle = params.medPosition
+        viewModel.lowSingleAngle = params.lowSinglePosition
+        viewModel.lowDualAngle = params.lowDualPosition
         binding.knobView.enableFullLabel()
 //        initLabels()
     }
@@ -112,7 +113,7 @@ class DeviceCalibrationConfirmationFragment :
         subscribe(viewModel.calibrationIsDoneLiveData) {
             navigateSafe(
                 DeviceCalibrationConfirmationFragmentDirections.actionDeviceCalibrationConfirmationFragmentToSetupCompleteFragment(
-                    args.params.isComeFromSettings
+                    params.isComeFromSettings
                 )
             )
         }

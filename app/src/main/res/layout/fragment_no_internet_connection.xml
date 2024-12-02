@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/no_internet_connection_background">
@@ -8,26 +9,59 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageView4"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
-        app:tint="@color/white"
+        android:layout_width="@dimen/_160sdp"
+        android:layout_height="@dimen/_160sdp"
         android:layout_marginTop="160dp"
         android:src="@drawable/ic_wifi_off"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
 
     <TextView
-        style="@style/Label.30sp"
+        android:id="@+id/descriptionTxt"
+        style="@style/Label.LargeExtra"
+        android:textSize="@dimen/_18sdp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:gravity="center"
         android:layout_marginTop="48dp"
+        android:gravity="center"
         android:text="@string/no_internet_connection"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/btnRetry"-->
+<!--        style="@style/Widget.Material3.Button.IconButton.Filled"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="@dimen/_40sdp"-->
+<!--        android:layout_marginTop="@dimen/margin_top_bar"-->
+<!--        android:backgroundTint="@color/white"-->
+<!--        android:paddingHorizontal="@dimen/_40sdp"-->
+<!--        android:text="@string/retry"-->
+<!--        android:textColor="@color/colorPrimary"-->
+<!--        android:textSize="@dimen/_12sdp"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/descriptionTxt"-->
+<!--        tools:visibility="visible" />-->
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/loadingProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_top_bar"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indicatorColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTxt"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

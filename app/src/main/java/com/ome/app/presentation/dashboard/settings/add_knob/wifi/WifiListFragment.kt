@@ -18,6 +18,7 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
     override val viewModel: WifiListViewModel by viewModels()
 
     private val args by navArgs<WifiListFragmentArgs>()
+    val params by lazy { args.params }
 
     private val adapter by lazy {
         NetworkItemAdapter(onClick = {
@@ -25,7 +26,7 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
                 WifiListFragmentDirections.actionWifiListFragmentToConnectToWifiPasswordFragment(
                     ConnectToWifiPasswordParams(
                         ssid = it.ssid, securityType = it.securityType,
-                        macAddr = viewModel.macAddr, isEditMode = args.params.isEditMode
+                        macAddr = viewModel.macAddr, isEditMode = params.isEditMode
                     )
                 )
             )
@@ -33,7 +34,7 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
     }
 
     override fun setupUI() {
-        viewModel.macAddr = args.params.macAddrs
+        viewModel.macAddr = params.macAddrs
         binding.recyclerView.adapter = adapter
 
     }

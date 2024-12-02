@@ -7,6 +7,7 @@ import android.text.method.LinkMovementMethod
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.google.gson.annotations.SerializedName
 import com.ome.app.R
 import com.ome.app.databinding.FragmentSignUpPasswordBinding
 import com.ome.app.presentation.base.BaseFragment
@@ -27,6 +28,7 @@ class SignUpPasswordFragment :
     override val viewModel: SignUpPasswordViewModel by viewModels()
 
     private val args by navArgs<SignUpPasswordFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,12 +47,12 @@ class SignUpPasswordFragment :
                 binding.confirmPassword.getText()
             )
         }
-        viewModel.email = args.params.email
-        viewModel.phone = args.params.phone
-        viewModel.code = args.params.code
-        viewModel.firstName = args.params.firstName
-        viewModel.lastName = args.params.lastName
-        viewModel.isForgotPassword = args.params.isForgotPassword
+        viewModel.email = params.email
+        viewModel.phone = params.phone
+        viewModel.code = params.code
+        viewModel.firstName = params.firstName
+        viewModel.lastName = params.lastName
+        viewModel.isForgotPassword = params.isForgotPassword
 
         binding.termsAndConditions.movementMethod = LinkMovementMethod.getInstance()
         binding.termsAndConditions.setLinkTextColor(Color.WHITE)
@@ -67,23 +69,27 @@ class SignUpPasswordFragment :
             }
         }
         subscribe(viewModel.signUpResultLiveData) {
-            showSuccessDialog(message = getString(R.string.confirmation_label_dialog, viewModel.email.applyMaskToEmail()), onDismiss = {
-                navigateSafe(
-                    SignUpPasswordFragmentDirections.actionSignUpPasswordFragmentToVerificationFragment(
-                        AuthParams(
-                            firstName = viewModel.firstName,
-                            lastName = viewModel.lastName,
-                            currentPassword = viewModel.currentPassword,
-                            email = viewModel.email,
-                            phone = viewModel.phone
+            showSuccessDialog(
+                message = getString(
+                    R.string.confirmation_label_dialog,
+                    viewModel.email.applyMaskToEmail()
+                ), onDismiss = {
+                    navigateSafe(
+                        SignUpPasswordFragmentDirections.actionSignUpPasswordFragmentToVerificationFragment(
+                            AuthParams(
+                                firstName = viewModel.firstName,
+                                lastName = viewModel.lastName,
+                                currentPassword = viewModel.currentPassword,
+                                email = viewModel.email,
+                                phone = viewModel.phone
+                            )
                         )
                     )
-                )
-            })
+                })
 
         }
 
-        subscribe(viewModel.passwordResetLiveData){
+        subscribe(viewModel.passwordResetLiveData) {
             showSuccessDialog(message = getString(R.string.password_reset), onDismiss = {
                 popBackSafe(R.id.signInFragment, false)
             })
@@ -94,11 +100,11 @@ class SignUpPasswordFragment :
 
 @Parcelize
 data class AuthParams(
-    val firstName: String = "",
-    val lastName: String = "",
-    val currentPassword: String = "",
-    val email: String = "",
-    val phone: String = "",
-    var code: String = "",
-    val isForgotPassword: Boolean = false
+    @SerializedName("first_name") val firstName: String = "",
+    @SerializedName("last_name") val lastName: String = "",
+    @SerializedName("current_password") val currentPassword: String = "",
+    @SerializedName("email") val email: String = "",
+    @SerializedName("phone") val phone: String = "",
+    @SerializedName("code") var code: String = "",
+    @SerializedName("is_forgot_password") val isForgotPassword: Boolean = false
 ) : Parcelable

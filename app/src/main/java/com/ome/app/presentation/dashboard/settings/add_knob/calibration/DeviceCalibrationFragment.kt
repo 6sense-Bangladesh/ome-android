@@ -22,11 +22,12 @@ class DeviceCalibrationFragment :
     override val viewModel: DeviceCalibrationViewModel by viewModels()
 
     private val args by navArgs<DeviceCalibrationFragmentArgs>()
+    val params by lazy { args.params }
 
     override fun setupUI() {
-        viewModel.macAddress = args.params.macAddress
-        viewModel.rotationDir = args.params.rotateDir
-        viewModel.isDualKnob = args.params.isDualKnob
+        viewModel.macAddress = params.macAddress
+        viewModel.rotationDir = params.rotateDir
+        viewModel.isDualKnob = params.isDualKnob
         if(viewModel.isDualKnob)
             binding.labelZone.text = getString(R.string.dual_zone_knob)
         else
@@ -67,7 +68,7 @@ class DeviceCalibrationFragment :
                 navigateSafe(
                     DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToDeviceCalibrationConfirmationFragment(
                         DeviceCalibrationConfirmationFragmentParams(
-                            isComeFromSettings = args.params.isComeFromSettings,
+                            isComeFromSettings = params.isComeFromSettings,
                             offPosition = viewModel.offAngle.orZero(),
                             lowSinglePosition = viewModel.lowSingleAngle.orZero(),
                             lowDualPosition = viewModel.lowDualAngle.orZero(),
@@ -75,7 +76,7 @@ class DeviceCalibrationFragment :
                             highSinglePosition = viewModel.highSingleAngle.orZero(),
                             highDualPosition = viewModel.highDualAngle.orZero(),
                             macAddr = viewModel.macAddress,
-                            isDualKnob = args.params.isDualKnob,
+                            isDualKnob = params.isDualKnob,
                             rotateDir = viewModel.rotationDir.orMinusOne()
                         )
                     )

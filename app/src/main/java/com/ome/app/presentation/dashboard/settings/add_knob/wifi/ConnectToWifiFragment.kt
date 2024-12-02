@@ -25,6 +25,7 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
     override val viewModel: ConnectToWifiViewModel by viewModels()
 
     private val args by navArgs<ConnectToWifiFragmentArgs>()
+    val params by lazy { args.params }
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -41,8 +42,8 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.isChangeWifiMode = args.params.isEditMode
-        viewModel.macAddrs = args.params.macAddrs
+        viewModel.isChangeWifiMode = params.isEditMode
+        viewModel.macAddrs = params.macAddrs
 
         binding.connectBtn.setOnClickListener { checkPermission() }
         binding.btnManual.setOnClickListener {
@@ -50,7 +51,7 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
                 ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToManualSetupFragment(
                     ManualSetupFragmentParams(
                         macAddrs = viewModel.macAddrs,
-                        isEditMode = args.params.isEditMode,
+                        isEditMode = params.isEditMode,
                     )
                 )
             )
