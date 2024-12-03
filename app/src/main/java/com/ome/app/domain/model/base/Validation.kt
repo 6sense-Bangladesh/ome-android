@@ -5,6 +5,7 @@ import com.google.android.material.textfield.TextInputLayout
 enum class Validation{
     OLD_PASSWORD,
     NEW_PASSWORD,
+    RE_PASSWORD,
     FIRST_NAME,
     LAST_NAME,
     ALL_FIELDS,

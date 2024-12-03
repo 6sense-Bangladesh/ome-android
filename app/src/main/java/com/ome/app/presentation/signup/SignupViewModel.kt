@@ -20,7 +20,7 @@ class SignupViewModel @Inject constructor(
     private val amplifyManager: AmplifyManager
 ) : BaseViewModel() {
 
-    val validationErrorFlow = MutableSharedFlow<Pair<Validation, String>>()
+    val validationErrorFlow = MutableSharedFlow<List<Pair<Validation, String>>>()
     val validationSuccessFlow = MutableSharedFlow<AmplifyResultValue>()
 
     var firstName = ""
@@ -37,6 +37,8 @@ class SignupViewModel @Inject constructor(
         password: String,
         confirmPassword: String
     ) {
+        val validationList = mutableListOf<Pair<Validation, String>>()
+
         this.firstName = firstName
         this.lastName = lastName
         this.email = email
@@ -46,80 +48,62 @@ class SignupViewModel @Inject constructor(
         val passValidator = password.isValidPasswordResult()
 
         launch(ioContext) {
-            when {
-                firstName.isBlank() -> {
-                    validationErrorFlow.emit(
-                        Pair(Validation.FIRST_NAME, DefaultValidation.REQUIRED)
+            if (firstName.isBlank()) {
+                validationList.add(Pair(Validation.FIRST_NAME, DefaultValidation.REQUIRED))
+            }
+            if (lastName.isBlank()) {
+                validationList.add(Pair(Validation.LAST_NAME, DefaultValidation.REQUIRED))
+            }
+            if (email.isBlank()) {
+                validationList.add(Pair(Validation.EMAIL, DefaultValidation.REQUIRED))
+            } else if (!email.isValidEmail()) {
+                validationList.add(
+                    Pair(
+                        Validation.EMAIL,
+                        DefaultValidation.INVALID_EMAIL
                     )
-                }
-
-                lastName.isBlank() -> {
-                    validationErrorFlow.emit(Pair(Validation.LAST_NAME, DefaultValidation.REQUIRED))
-                }
-
-                email.isBlank() -> {
-                    validationErrorFlow.emit(Pair(Validation.EMAIL, DefaultValidation.REQUIRED))
-                }
-
-                !email.isValidEmail() -> {
-                    validationErrorFlow.emit(
-                        Pair(
-                            Validation.EMAIL,
-                            DefaultValidation.INVALID_EMAIL
-                        )
+                )
+            }
+            if (phone.isNotBlank() && !PhoneNumberUtil.getInstance()
+                    .isValidNumber(PhoneNumberUtil.getInstance().parse(phone, "US"))
+            ) {
+                validationList.add(
+                    Pair(
+                        Validation.PHONE,
+                        DefaultValidation.INVALID_PHONE
                     )
-                }
-
-                phone.isNotBlank() && !PhoneNumberUtil.getInstance()
-                    .isValidNumber(PhoneNumberUtil.getInstance().parse(phone, "US")) -> {
-                    validationErrorFlow.emit(
-                        Pair(
-                            Validation.PHONE,
-                            DefaultValidation.INVALID_PHONE
-                        )
+                )
+            }
+            if (password.isBlank()) {
+                validationList.add(
+                    Pair(
+                        Validation.NEW_PASSWORD,
+                        DefaultValidation.REQUIRED
                     )
-                }
-
-                password.isBlank() -> {
-                    validationErrorFlow.emit(
-                        Pair(
-                            Validation.NEW_PASSWORD,
-                            DefaultValidation.REQUIRED
-                        )
+                )
+            } else if (passValidator is ResponseWrapper.Error) {
+                validationList.add(Pair(Validation.NEW_PASSWORD, passValidator.message))
+            }
+            if (confirmPassword.isBlank()) {
+                validationList.add(
+                    Pair(
+                        Validation.RE_PASSWORD,
+                        DefaultValidation.REQUIRED
                     )
-                }
-
-                passValidator is ResponseWrapper.Error -> {
-                    validationErrorFlow.emit(Pair(Validation.OLD_PASSWORD, passValidator.message))
-                }
-
-//                confirmPassValidator is ResponseWrapper.Error -> {
-//                    validationErrorFlow.emit(Pair(Validation.NEW_PASSWORD, confirmPassValidator.message))
-//                }
-
-                confirmPassword.isBlank() -> {
-                    validationErrorFlow.emit(
-                        Pair(
-                            Validation.NEW_PASSWORD,
-                            DefaultValidation.REQUIRED
-                        )
+                )
+            } else if (password != confirmPassword) {
+                validationList.add(
+                    Pair(
+                        Validation.RE_PASSWORD,
+                        "Passwords don't match."
                     )
-                }
-
-                password != confirmPassword -> {
-                    validationErrorFlow.emit(
-                        Pair(
-                            Validation.NEW_PASSWORD,
-                            "Passwords don't match."
-                        )
-                    )
-                }
-
-                else -> {
-                    validationSuccessFlow.emit(
-                        amplifyManager.signUp(email, password, phone)
-                    )
-                }
+                )
+            }
+            validationErrorFlow.emit(validationList)
+            if (validationList.isEmpty()) {
+                validationSuccessFlow.emit(
+                    amplifyManager.signUp(email, password, phone)
+                )
             }
         }
     }

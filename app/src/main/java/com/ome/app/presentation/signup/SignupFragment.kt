@@ -20,15 +20,17 @@ class SignupFragment : BaseFragment<SignupViewModel, FragmentSignupBinding>(
 
     override fun setupObserver() {
         super.setupObserver()
-        viewModel.validationErrorFlow.collectWithLifecycle {
-            when (it.first) {
-                Validation.FIRST_NAME -> binding.firstNameLayout.error = it.second
-                Validation.LAST_NAME -> binding.lastNameLayout.error = it.second
-                Validation.OLD_PASSWORD -> binding.passwordLayout.errorPassword = it.second
-                Validation.NEW_PASSWORD -> binding.retypePasswordLayout.errorPassword = it.second
-                Validation.EMAIL -> binding.emailLayout.error = it.second
-                Validation.PHONE -> binding.phoneInputLayout.error = it.second
-                else -> Unit
+        viewModel.validationErrorFlow.collectWithLifecycle {validationList->
+            validationList.forEach{
+                when (it.first) {
+                    Validation.FIRST_NAME -> binding.firstNameLayout.error = it.second
+                    Validation.LAST_NAME -> binding.lastNameLayout.error = it.second
+                    Validation.NEW_PASSWORD -> binding.passwordLayout.errorPassword = it.second
+                    Validation.RE_PASSWORD -> binding.retypePasswordLayout.errorPassword = it.second
+                    Validation.EMAIL -> binding.emailLayout.error = it.second
+                    Validation.PHONE -> binding.phoneInputLayout.error = it.second
+                    else -> Unit
+                }
             }
         }
     }
