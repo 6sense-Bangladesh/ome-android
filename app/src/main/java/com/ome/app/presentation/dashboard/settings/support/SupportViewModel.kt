@@ -15,6 +15,5 @@ class SupportViewModel @Inject constructor() : BaseViewModel() {
         "Other"
     )
 
-    var selectedTopic = ""
-    var supportEmail = "contact@inirv.com"
+    var selectedTopic = topicsArray.first()
 }

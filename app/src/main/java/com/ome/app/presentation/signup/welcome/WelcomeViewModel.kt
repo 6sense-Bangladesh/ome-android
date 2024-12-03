@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WelcomeViewModel @Inject constructor(
     private val amplifyManager: AmplifyManager,
-    private val preferencesProvider: PreferencesProvider,
+    private val pref: PreferencesProvider,
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 

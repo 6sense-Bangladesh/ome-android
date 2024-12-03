@@ -1,11 +1,7 @@
 package com.ome.app.presentation.dashboard.my_stove
 
-import android.os.Bundle
 import android.text.SpannableStringBuilder
-import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import com.ome.app.R
 import com.ome.app.databinding.FragmentMyStoveBinding
 import com.ome.app.domain.model.network.response.KnobDto
@@ -29,16 +25,6 @@ class MyStoveFragment :
     BaseFragment<ProfileViewModel, FragmentMyStoveBinding>(FragmentMyStoveBinding::inflate) {
 
     override val viewModel: ProfileViewModel by viewModels()
-    private var navController: NavController? = null
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val navHostFragment = activity?.supportFragmentManager?.findFragmentById(R.id.navHost) as? NavHostFragment
-        navController = navHostFragment?.navController
-//        binding.test.setOnClickListener {
-            //navController.navigate(MyStoveFragmentDirections.actionMyStoveFragmentToKnobWakeUpFragment(false))
-//        }
-    }
 
     override fun setupUI() {
         binding.apply {
@@ -52,7 +38,7 @@ class MyStoveFragment :
                 knobView.setBounceClickListener{
                     if(knobView.isKnobInAddState){
                         if(mainViewModel.userInfo.value.stoveSetupComplete.isTrue()) {
-                            navController?.navigateSafe(
+                            parentFragment?.navigateSafe(
                                 DashboardFragmentDirections.actionDashboardFragmentToKnobWakeUpFragment(
                                     KnobWakeUpParams(selectedKnobPosition = knobView.stovePosition)
                                 )
@@ -75,15 +61,13 @@ class MyStoveFragment :
         }
     }
 
-    private fun KnobView.setupKnob(knob: KnobDto, navController: NavController?) {
-        navController?.apply {
-            setBounceClickListener{
-                navController.navigate(
-                    DashboardFragmentDirections.actionDashboardFragmentToDeviceDetailsFragment(
-                        DeviceDetailsFragmentParams(knob.macAddr)
-                    )
+    private fun KnobView.setupKnob(knob: KnobDto) {
+        setBounceClickListener{
+            parentFragment?.navigateSafe(
+                DashboardFragmentDirections.actionDashboardFragmentToDeviceDetailsFragment(
+                    DeviceDetailsFragmentParams(knob.macAddr)
                 )
-            }
+            )
         }
         stovePosition = knob.stovePosition
         if(changeKnobStatus(knob)) {
@@ -157,9 +141,9 @@ class MyStoveFragment :
                 knobs.forEach { knob->
                     when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
                         StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS ->
-                            listOfFiveBurners.getOrNull(knob.stovePosition-1)?.setupKnob(knob, navController)
+                            listOfFiveBurners.getOrNull(knob.stovePosition-1)?.setupKnob(knob)
                         else ->
-                            listOfSixBurners.getOrNull(knob.stovePosition-1)?.setupKnob(knob, navController)
+                            listOfSixBurners.getOrNull(knob.stovePosition-1)?.setupKnob(knob)
                     }
                     mainViewModel.getKnobStateByMac(knob.macAddr).collectWithLifecycleStateIn {knobState ->
                         getKnobStateScope = this

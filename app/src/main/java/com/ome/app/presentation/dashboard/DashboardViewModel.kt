@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    val preferencesProvider: PreferencesProvider,
+    val pref: PreferencesProvider,
     val amplifyManager: AmplifyManager,
     val userRepository: UserRepository
 ) : BaseViewModel() {

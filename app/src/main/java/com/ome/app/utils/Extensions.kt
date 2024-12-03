@@ -332,6 +332,7 @@ inline fun <T, R> Flow<List<T>>.mapList(crossinline transform: suspend T.() -> R
  */
 fun Fragment.navigateSafe(@IdRes resId: Int, args: Bundle? = null, navOption: NavOptions? = null): Unit? {
     return try {
+        closeKeyboard()
         if (lifecycle.currentState == Lifecycle.State.RESUMED)
             findNavController().navigate(resId, args, navOption)
         else null
@@ -342,6 +343,7 @@ fun Fragment.navigateSafe(@IdRes resId: Int, args: Bundle? = null, navOption: Na
 }
 fun Fragment.navigateSafe(directions: NavDirections): Unit? {
     return try {
+        closeKeyboard()
         if (lifecycle.currentState == Lifecycle.State.RESUMED)
             findNavController().navigate(directions)
         else null
@@ -352,6 +354,7 @@ fun Fragment.navigateSafe(directions: NavDirections): Unit? {
 }
 fun Fragment.popBackSafe(@IdRes destinationId: Int? = null, inclusive: Boolean= true): Boolean? {
     return try {
+        closeKeyboard()
         findNavController().run {
             if (lifecycle.currentState == Lifecycle.State.RESUMED)
                 findNavController().popBackStack(destinationId ?: currentDestination!!.id, inclusive).orNull()
@@ -367,6 +370,7 @@ context(Fragment)
 fun NavController?.navigateSafe(@IdRes resId: Int, args: Bundle? = null, navOption: NavOptions? = null): Unit? {
     if(this == null) return null
     return try {
+        closeKeyboard()
         if (lifecycle.currentState == Lifecycle.State.RESUMED)
             navigate(resId, args, navOption)
         else null
@@ -379,6 +383,7 @@ context(Fragment)
 fun NavController?.navigateSafe(directions: NavDirections): Unit? {
     if(this == null) return null
     return try {
+        closeKeyboard()
         if (lifecycle.currentState == Lifecycle.State.RESUMED)
             navigate(directions)
         else null
@@ -423,7 +428,7 @@ fun Any?.log(tag: String = "TAG", hints: String = "") {
 }
 
 /**View Extension Function*/
-fun View.changeVisibility(isVisible: Boolean, useGone: Boolean = false) {
+fun View.changeVisibility(isVisible: Boolean, useGone: Boolean = true) {
     visibility = if (isVisible) View.VISIBLE else if (useGone) View.GONE else View.INVISIBLE
 }
 
@@ -1514,6 +1519,7 @@ fun Long.formatTime(): String {
 
 context(Fragment)
 fun OnBackPressedCallback.onBackPressedIgnoreCallback() {
+    closeKeyboard()
     isEnabled = false
     activity?.onBackPressedDispatcher?.onBackPressed()
     isEnabled = true
@@ -1521,13 +1527,14 @@ fun OnBackPressedCallback.onBackPressedIgnoreCallback() {
 
 context(FragmentActivity)
 fun OnBackPressedCallback.onBackPressedIgnoreCallback() {
+    closeKeyboard()
     isEnabled = false
     onBackPressedDispatcher.onBackPressed()
     isEnabled = true
 }
 
-@Suppress("UNUSED_PARAMETER")
 fun Fragment.onBackPressed(view: View? = null) {
+    view?.closeKeyboard()
     activity?.onBackPressedDispatcher?.onBackPressed()
 }
 

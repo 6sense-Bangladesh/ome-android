@@ -1,5 +1,6 @@
 package com.ome.app
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.SystemBarStyle
@@ -48,9 +49,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initFragment() {
-    }
-
+    @SuppressLint("RestrictedApi")
     private fun initNavigationGraph(startDestinationId: Int) {
         startDestinationId.log("initNavigationGraph")
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
@@ -59,15 +58,14 @@ class MainActivity : AppCompatActivity() {
         val graph = inflater.inflate(R.navigation.main_nav_graph)
         graph.setStartDestination(startDestinationId)
         navController.setGraph(graph, intent.extras)
-        if(navController.currentDestination?.id != startDestinationId){
+        if(navController.currentDestination?.id != startDestinationId && !viewModel.startDestinationInitialized){
             navController.navigate(startDestinationId, null,
-                 NavOptions.Builder()
-                     .apply {
-                         navController.currentDestination?.id?.let {
-                             setPopUpTo(it, true)
-                         }
-                     }.build()
-             )
+                 NavOptions.Builder().apply {
+                     navController.currentBackStack.value.firstOrNull()?.destination?.id?.let {
+                         setPopUpTo(it, true)
+                     }
+                 }.build()
+            )
         }
 //         if(tryGet { navController.graph } == null) {
 //            val graph = inflater.inflate(R.navigation.main_nav_graph)
@@ -79,6 +77,8 @@ class MainActivity : AppCompatActivity() {
 //             )
 //         }
         viewModel.isSplashScreenLoading = false
+        if(startDestinationId != R.id.noInternetConnectionFragment)
+            viewModel.startDestinationInitialized = true
     }
 
     private fun subscribeConnectionListener() {

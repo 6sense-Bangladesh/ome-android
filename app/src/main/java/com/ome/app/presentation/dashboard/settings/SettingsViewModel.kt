@@ -26,12 +26,16 @@ class SettingsViewModel @Inject constructor(
 
     val settingsList = savedStateHandle.getStateFlow("settingsList", defaultSettingOptions)
 
+    init {
+        loadSettings()
+    }
+
     fun loadSettings() = launch(ioContext) {
         stoveRepository.knobsFlow.collect { knobs ->
             val settings = defaultSettingOptions.toMutableList()
-            settings.addAll(knobs.toMutableList().apply { removeLastOrNull() }.map { it.toItemModel() })
+            settings.addAll(knobs.dropLast(1).map { it.toItemModel() })
             knobs.lastOrNull()?.toItemModel(false)?.let { settings.add(it) }
-            savedStateHandle["settingsList"] = settings
+            savedStateHandle["settingsList"] = settings.toList()
         }
     }
 

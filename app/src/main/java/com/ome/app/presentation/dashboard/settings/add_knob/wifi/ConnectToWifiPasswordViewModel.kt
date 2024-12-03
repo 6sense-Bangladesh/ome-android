@@ -21,7 +21,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     val wifiHandler: WifiHandler,
     val socketManager: SocketManager,
     val webSocketManager: WebSocketManager,
-    val preferencesProvider: PreferencesProvider,
+    val pref: PreferencesProvider,
     val resourceProvider: ResourceProvider,
     val stoveRepository: StoveRepository,
     private val connectionStatusListener: ConnectionStatusListener

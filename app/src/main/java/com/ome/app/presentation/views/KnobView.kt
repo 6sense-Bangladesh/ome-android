@@ -194,7 +194,8 @@ class KnobView @JvmOverloads constructor(
         if(calibration.isCalibrated)
             adjustKnobColorScale(calibration)
         binding.safetyLock.changeVisibility(knob.knobSetSafetyMode.orFalse())
-
+        if(knob.knobSetSafetyMode.isTrue())
+            setKnobPosition(calibration.offAngle.toFloat())
         knob.angle?.toFloat()?.let { setKnobPosition(it) }
         knob.battery?.let {
             changeBatteryState(batteryLevel = it)
@@ -205,7 +206,7 @@ class KnobView @JvmOverloads constructor(
         }
         return when{ (knob.battery != null && knob.battery <= 15) || calibration.isCalibrated.isFalse() ||
                 ( knob.connectStatus == ConnectionState.Online && knob.wifiStrengthPercentage in 0..35)||
-                knob.connectStatus != ConnectionState.Online  -> {
+                knob.connectStatus != ConnectionState.Online && knob.knobSetSafetyMode.isTrue()  -> {
                 hideLabel()
                 changeKnobState(KnobImageState.TRANSPARENT)
                 changeKnobProgressVisibility(false, calibration.rotation == Rotation.DUAL)
@@ -220,15 +221,17 @@ class KnobView @JvmOverloads constructor(
 
     fun changeKnobStatus(knob: KnobDto): Boolean {
         val cal = knob.calibration.toCalibration(knob.calibrated)
-
         if(cal.isCalibrated)
             adjustKnobColorScale(cal)
+        binding.safetyLock.changeVisibility(knob.safetyLock.orFalse())
+        if(knob.safetyLock)
+            setKnobPosition(knob.calibration.offAngle.toFloat())
         changeBatteryState(batteryLevel = knob.battery)
         if(changeConnectionState(knob.connectStatus.connectionState, knob.rssi.wifiStrengthPercentage, knob.battery))
             changeConfigurationState(isCalibrated = knob.calibrated)
         return when{ knob.battery <= 15 || knob.calibrated.isFalse() ||
                 ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) ||
-                knob.connectStatus.connectionState != ConnectionState.Online -> {
+                knob.connectStatus.connectionState != ConnectionState.Online && knob.safetyLock.isTrue() -> {
                 hideLabel()
                 changeKnobState(KnobImageState.TRANSPARENT)
                 changeKnobProgressVisibility(false, cal.rotation == Rotation.DUAL)
@@ -246,6 +249,9 @@ class KnobView @JvmOverloads constructor(
         stovePosition = knob.stovePosition
         val cal = knob.calibration.toCalibration(knob.calibrated)
         changeKnobProgressVisibility(true, cal.rotation == Rotation.DUAL)
+        binding.safetyLock.changeVisibility(knob.safetyLock.orFalse())
+        if(knob.safetyLock)
+            setKnobPosition(knob.calibration.offAngle.toFloat())
         if(cal.isCalibrated) {
             adjustKnobColorScale(cal)
             cal.zone1?.let { zone ->
@@ -262,7 +268,7 @@ class KnobView @JvmOverloads constructor(
         }
         return when{ knob.battery <= 15 || knob.calibrated.isFalse() ||
                 ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) ||
-                knob.connectStatus.connectionState != ConnectionState.Online -> {
+                knob.connectStatus.connectionState != ConnectionState.Online && knob.safetyLock.isTrue() -> {
                     changeKnobState(KnobImageState.TRANSPARENT)
                     false
                 }

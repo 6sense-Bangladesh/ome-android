@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val amplifyManager: AmplifyManager,
-    private val preferencesProvider: PreferencesProvider,
+    private val pref: PreferencesProvider,
     private val userRepository: UserRepository,
     private val stoveRepository: StoveRepository
 ) : BaseViewModel() {
@@ -65,12 +65,12 @@ class SignInViewModel @Inject constructor(
             val accessToken =
                 (authSession.session as AWSCognitoAuthSession).userPoolTokens.value?.accessToken
             logi("accessToken: $accessToken")
-            preferencesProvider.saveAccessToken(accessToken)
+            pref.saveAccessToken(accessToken)
 
             userAttributes.attributes?.forEach { attr ->
                 if (attr.key.keyString == "sub") {
                     logi("userId: ${attr.value}")
-                    preferencesProvider.saveUserId(attr.value)
+                    pref.saveUserId(attr.value)
                 }
             }
             when (val result = userRepository.getUserData()) {
@@ -78,6 +78,7 @@ class SignInViewModel @Inject constructor(
                 is ResponseWrapper.Success -> {
                     loadingLiveData.postValue(false)
                     stoveRepository.getAllKnobs()
+                    pref.saveUserData(result.value)
                     if (result.value.stoveSetupComplete.isFalse()){
                         destinationAfterSignInLiveData.postValue(R.id.action_signInFragment_to_welcomeFragment)
                         return@launch

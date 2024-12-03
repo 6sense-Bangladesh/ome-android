@@ -79,7 +79,7 @@ class SignupFragment : BaseFragment<SignupViewModel, FragmentSignupBinding>(
         }
         viewModel.validationSuccessFlow.collectWithLifecycle {
             if(it.isSuccessful) {
-                viewModel.pref.setTimer(Constants.VERIFICATION_KEY, Constants.TWO_MINUTES_MILLIS)
+                IO { viewModel.pref.setTimer(Constants.VERIFICATION_KEY, Constants.TWO_MINUTES_MILLIS) }
                 navigateSafe(SignupFragmentDirections.actionSignUpFragmentToVerificationFragment(
                     params = AuthParams(
                         firstName = viewModel.firstName,

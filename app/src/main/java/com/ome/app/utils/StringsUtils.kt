@@ -1,6 +1,6 @@
 package com.ome.app.utils
 
-fun String.applyMaskToEmail(): String = this.replace(
-    "(?<=.)[^@](?=[^@]*?@)|(?:(?<=@.)|(?!^)\\G(?=[^@]*$)).(?=.*\\.)".toRegex(),
+fun String.applyMaskToEmail(): String = replace(
+    "(?<=.)[^@](?=[^@]*?@)".toRegex(),
     "*"
 )

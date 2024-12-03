@@ -130,8 +130,9 @@ class DeviceDetailsFragment :
                     DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToDeviceCalibrationFragment(
                         DeviceCalibrationFragmentParams(
                             macAddress = params.macAddr,
-                            isDualKnob = true,
-                            isComeFromSettings = true
+                            isDualKnob = false,
+                            isComeFromSettings = true,
+                            rotateDir = 1
                         )
                     )
                 )
@@ -143,11 +144,12 @@ class DeviceDetailsFragment :
                             macAddr = params.macAddr,
                             isComeFromSettings = true,
                             offPosition = 0f,
-                            isDualKnob = true,
+                            isDualKnob = false,
                             lowSinglePosition = 100f,
                             highSinglePosition =160f,
                             lowDualPosition = 200f,
                             highDualPosition = 340f,
+                            rotateDir = 1
                         )
                     )
                 )
@@ -178,12 +180,19 @@ class DeviceDetailsFragment :
             else
                 stateBaseErrorDialog()
         }
+        if(BuildConfig.DEBUG){
+            binding.burnerSelection.setBounceClickListener {
+                showTimerDialog()
+            }
+        }
         binding.btnEditTimer.setBounceClickListener {
             val timer = time.toTimer()
             showTimerDialog(timer.first, timer.second, timer.third)
         }
         binding.btnStopTimer.setBounceClickListener {
-            binding.timerCard.animateInvisible()
+            binding.timerCard.animateInvisible{
+                binding.btnTimer.visible()
+            }
             viewModel.stopTimer()
         }
         binding.btnPauseResumeTimer.setBounceClickListener {
@@ -337,7 +346,7 @@ class DeviceDetailsFragment :
         changeKnobBasicStatus(knob)
         if(knob.calibrated.isFalse() && viewModel.currentKnob.value?.connectStatus.connectionState != ConnectionState.Offline){
             withDelay(700L){
-                binding.warningCard.animateVisible()
+                tryInMain { binding.warningCard.animateVisible() }
             }
         }
     }

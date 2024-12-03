@@ -118,12 +118,12 @@
         android:name="com.ome.app.presentation.signup.email.SignUpEmailAndPhoneFragment"
         android:label="SignUpEmailAndPasswordFragment">
         <action
-            android:id="@+id/action_signUpEmailAndPhoneFragment_to_signUpPasswordFragment"
-            app:destination="@id/signUpPasswordFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_signUpEmailAndPhoneFragment_to_signUpPasswordFragment"
+            app:destination="@id/signUpPasswordFragment"/>
         <argument
             android:name="params"
             app:argType="com.ome.app.presentation.signup.email.NameParams" />
@@ -133,12 +133,12 @@
         android:name="com.ome.app.presentation.signup.password.SignUpPasswordFragment"
         android:label="SignUpPasswordFragment">
         <action
-            android:id="@+id/action_signUpPasswordFragment_to_verificationFragment"
-            app:destination="@id/verificationFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_signUpPasswordFragment_to_verificationFragment"
+            app:destination="@id/verificationFragment" />
         <argument
             android:name="params"
             app:argType="com.ome.app.presentation.signup.password.AuthParams" />
@@ -152,22 +152,29 @@
             android:name="params"
             app:argType="com.ome.app.presentation.signup.password.AuthParams" />
         <action
-            android:id="@+id/action_signUpConfirmationFragment_to_signUpPasswordFragment"
-            app:destination="@id/signUpPasswordFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-        <action
-            android:id="@+id/action_signUpConfirmationFragment_to_welcomeFragment"
-            app:destination="@id/welcomeFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:launchSingleTop="true"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_verificationFragment_to_signUpPasswordFragment"
+            app:destination="@id/signUpPasswordFragment"/>
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:launchSingleTop="true"
             app:popUpTo="@+id/welcomeFragment"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="false"
+            android:id="@+id/action_verificationFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment"/>
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_verificationFragment_to_supportFragment"
+            app:destination="@id/supportFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -191,23 +198,23 @@
         android:label="WelcomeFragment"
         tools:layout="@layout/fragment_welcome">
         <action
-            android:id="@+id/action_welcomeFragment_to_stoveSetupBrandFragment"
-            app:destination="@id/stoveSetupBrandFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_welcomeFragment_to_stoveSetupBrandFragment"
+            app:destination="@id/stoveSetupBrandFragment" />
 
         <action
-            android:id="@+id/action_welcomeFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_welcomeFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment"
             app:launchSingleTop="true"
             app:popUpTo="@+id/mainNavGraph"
-            app:popUpToInclusive="true"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popUpToInclusive="true" />
 
     </fragment>
     <fragment
@@ -219,12 +226,12 @@
             android:name="params"
             app:argType="com.ome.app.presentation.stove.StoveSetupBrandArgs"/>
         <action
-            android:id="@+id/action_stoveSetupBrandFragment_to_stoveSetupTypeFragment"
-            app:destination="@id/stoveSetupTypeFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_stoveSetupBrandFragment_to_stoveSetupTypeFragment"
+            app:destination="@id/stoveSetupTypeFragment" />
     </fragment>
     <fragment
         android:id="@+id/stoveSetupTypeFragment"
@@ -236,12 +243,12 @@
             android:name="params"
             app:argType="com.ome.app.presentation.stove.StoveSetupTypeArgs"/>
         <action
-            android:id="@+id/actionStoveSetupTypeFragmentToStoveSetupPhotoFragment"
-            app:destination="@id/stoveSetupPhotoFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/actionStoveSetupTypeFragmentToStoveSetupPhotoFragment"
+            app:destination="@id/stoveSetupPhotoFragment" />
     </fragment>
     <fragment
         android:id="@+id/stoveSetupPhotoFragment"
@@ -252,12 +259,12 @@
             android:name="params"
             app:argType="com.ome.app.presentation.stove.StoveSetupPhotoArgs" />
         <action
-            android:id="@+id/action_stoveSetupPhotoFragment_to_stoveSetupBurnersFragment"
-            app:destination="@id/stoveSetupBurnersFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_stoveSetupPhotoFragment_to_stoveSetupBurnersFragment"
+            app:destination="@id/stoveSetupBurnersFragment" />
     </fragment>
     <fragment
         android:id="@+id/stoveSetupBurnersFragment"
@@ -268,12 +275,12 @@
             android:name="params"
             app:argType="com.ome.app.presentation.stove.StoveSetupBurnersArgs"/>
         <action
-            android:id="@+id/action_stoveSetupBurnersFragment_to_stoveSetupCompletedFragment"
-            app:destination="@id/stoveSetupCompletedFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_stoveSetupBurnersFragment_to_stoveSetupCompletedFragment"
+            app:destination="@id/stoveSetupCompletedFragment" />
     </fragment>
     <fragment
         android:id="@+id/stoveSetupCompletedFragment"

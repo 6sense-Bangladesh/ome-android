@@ -105,6 +105,7 @@ class DeviceViewModel @Inject constructor(
             offAngle?.also {
                 stoveRepository.startTurnOffTimer(
                     macAddress = macAddress,
+                    currentAngle = knobAngle.value?.toInt() ?: offAngle,
                     offAngle = offAngle,
                     second = totalSeconds
                 )

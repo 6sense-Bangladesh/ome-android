@@ -14,6 +14,7 @@ class DirectionSelectionViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val stoveRepository: StoveRepository
     ): BaseViewModel() {
+    var continueBtnClicked = false
 
     var clockwiseDir = -1
     var macAddress = ""

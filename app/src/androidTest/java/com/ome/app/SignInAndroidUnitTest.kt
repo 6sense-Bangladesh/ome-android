@@ -15,7 +15,7 @@ class SignInAndroidUnitTest {
     private lateinit var amplifyManager: AmplifyManager
     private lateinit var userRepository: UserRepository
     private lateinit var stoveRepository: StoveRepository
-    private lateinit var preferencesProvider: PreferencesProvider
+    private lateinit var pref: PreferencesProvider
 
     @Before
     fun setup(){

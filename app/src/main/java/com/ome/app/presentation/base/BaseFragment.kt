@@ -90,16 +90,16 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
 
     open fun handleBackPressEvent() {
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner) {
-                when (this@BaseFragment) {
-                    is ProfileFragment,
-                    is MyStoveFragment,
-                    is WelcomeFragment,
-                    is MembersFragment,
-                    is SettingsFragment,
-                    is LaunchFragment -> activity?.finishAndRemoveTask()
-                    else -> onBackPressedIgnoreCallback()
-                }
+            when (this@BaseFragment) {
+                is ProfileFragment,
+                is MyStoveFragment,
+                is WelcomeFragment,
+                is MembersFragment,
+                is SettingsFragment,
+                is LaunchFragment -> activity?.finishAndRemoveTask()
+                else -> onBackPressedIgnoreCallback()
             }
+        }
     }
 
 

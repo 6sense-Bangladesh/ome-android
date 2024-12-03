@@ -227,16 +227,19 @@
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/help"
-        style="@style/Title.Mini"
-        android:layout_width="0dp"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnHelp"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginTop="@dimen/_25sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_12sdp"
         android:text="@string/need_help"
+        android:textAppearance="@style/Title.Mini"
+        android:textColor="?colorControlNormal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/otpLayout" />
+
 
     <TextView
         android:id="@+id/resendText"
@@ -244,9 +247,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/help"
+        app:layout_constraintBottom_toBottomOf="@+id/btnHelp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/help"
+        app:layout_constraintTop_toTopOf="@+id/btnHelp"
         tools:text="@string/resend_after_sec" />
 
     <com.google.android.material.button.MaterialButton
@@ -260,9 +263,9 @@
         android:textSize="@dimen/_11sdp"
         android:visibility="invisible"
         app:cornerRadius="@dimen/_5sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/help"
+        app:layout_constraintBottom_toBottomOf="@+id/btnHelp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/help"
+        app:layout_constraintTop_toTopOf="@+id/btnHelp"
         app:strokeColor="@color/grayBlue" />
 
 

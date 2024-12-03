@@ -35,7 +35,7 @@ class DeviceCalibrationConfirmationFragment :
         viewModel.lowSingleAngle = params.lowSinglePosition
         viewModel.lowDualAngle = params.lowDualPosition
         binding.knobView.enableFullLabel()
-//        initLabels()
+        initLabels()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,13 +56,16 @@ class DeviceCalibrationConfirmationFragment :
 
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
-        binding.noBtn.setOnClickListener {
-            if (viewModel.currentCalibrationState.value == null) {
-                popBackSafe()
-            } else {
-                viewModel.triggerCurrentStepAgain()
-            }
+        binding.noBtn.setBounceClickListener{
+            popBackSafe()
         }
+//        binding.noBtn.setBounceClickListener {
+//            if (viewModel.currentCalibrationState.value == null) {
+//                popBackSafe()
+//            } else {
+//                viewModel.triggerCurrentStepAgain()
+//            }
+//        }
         binding.continueBtn.setBounceClickListener {
             if (viewModel.currentCalibrationState.value == null) {
                 showSuccessDialog(
@@ -99,10 +102,14 @@ class DeviceCalibrationConfirmationFragment :
     private fun initLabels() {
         viewModel.offAngle?.let { binding.knobView.setOffPosition(it) }
         viewModel.highSingleAngle?.let { binding.knobView.setHighSinglePosition(it) }
-        viewModel.highDualAngle?.let { binding.knobView.setHighDualPosition(it) }
-        viewModel.mediumAngle?.let { binding.knobView.setMediumPosition(it) }
         viewModel.lowSingleAngle?.let { binding.knobView.setLowSinglePosition(it) }
-        viewModel.lowDualAngle?.let { binding.knobView.setLowDualPosition(it) }
+        if(!params.isDualKnob) {
+            viewModel.mediumAngle?.let { binding.knobView.setMediumPosition(it) }
+        }
+        else {
+            viewModel.highDualAngle?.let { binding.knobView.setHighDualPosition(it) }
+            viewModel.lowDualAngle?.let { binding.knobView.setLowDualPosition(it) }
+        }
     }
 
     override fun setupObserver() {
@@ -129,14 +136,14 @@ class DeviceCalibrationConfirmationFragment :
             binding.knobView.stovePosition = it
         }
         viewModel.currentCalibrationState.collectWithLifecycle{ currentStep ->
-            when(currentStep){
-                CalibrationState.OFF -> viewModel.offAngle?.let { binding.knobView.setOffPosition(it) }
-                CalibrationState.HIGH_SINGLE -> viewModel.highSingleAngle?.let { binding.knobView.setHighSinglePosition(it) }
-                CalibrationState.HIGH_DUAL -> viewModel.highDualAngle?.let { binding.knobView.setHighDualPosition(it) }
-                CalibrationState.MEDIUM -> viewModel.mediumAngle?.let { binding.knobView.setMediumPosition(it) }
-                CalibrationState.LOW_SINGLE -> viewModel.lowSingleAngle?.let { binding.knobView.setLowSinglePosition(it) }
-                CalibrationState.LOW_DUAL -> viewModel.lowDualAngle?.let { binding.knobView.setLowDualPosition(it) }
-            }
+//            when(currentStep){
+//                CalibrationState.OFF -> viewModel.offAngle?.let { binding.knobView.setOffPosition(it) }
+//                CalibrationState.HIGH_SINGLE -> viewModel.highSingleAngle?.let { binding.knobView.setHighSinglePosition(it) }
+//                CalibrationState.HIGH_DUAL -> viewModel.highDualAngle?.let { binding.knobView.setHighDualPosition(it) }
+//                CalibrationState.MEDIUM -> viewModel.mediumAngle?.let { binding.knobView.setMediumPosition(it) }
+//                CalibrationState.LOW_SINGLE -> viewModel.lowSingleAngle?.let { binding.knobView.setLowSinglePosition(it) }
+//                CalibrationState.LOW_DUAL -> viewModel.lowDualAngle?.let { binding.knobView.setLowDualPosition(it) }
+//            }
 
             if (viewModel.isDualKnob) {
                 when (currentStep) {

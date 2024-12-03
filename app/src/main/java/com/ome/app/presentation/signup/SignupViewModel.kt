@@ -57,47 +57,22 @@ class SignupViewModel @Inject constructor(
             if (email.isBlank()) {
                 validationList.add(Pair(Validation.EMAIL, DefaultValidation.REQUIRED))
             } else if (!email.isValidEmail()) {
-                validationList.add(
-                    Pair(
-                        Validation.EMAIL,
-                        DefaultValidation.INVALID_EMAIL
-                    )
-                )
+                validationList.add(Pair(Validation.EMAIL, DefaultValidation.INVALID_EMAIL))
             }
             if (phone.isNotBlank() && !PhoneNumberUtil.getInstance()
                     .isValidNumber(PhoneNumberUtil.getInstance().parse(phone, "US"))
             ) {
-                validationList.add(
-                    Pair(
-                        Validation.PHONE,
-                        DefaultValidation.INVALID_PHONE
-                    )
-                )
+                validationList.add(Pair(Validation.PHONE, DefaultValidation.INVALID_PHONE))
             }
             if (password.isBlank()) {
-                validationList.add(
-                    Pair(
-                        Validation.NEW_PASSWORD,
-                        DefaultValidation.REQUIRED
-                    )
-                )
+                validationList.add(Pair(Validation.NEW_PASSWORD, DefaultValidation.REQUIRED))
             } else if (passValidator is ResponseWrapper.Error) {
                 validationList.add(Pair(Validation.NEW_PASSWORD, passValidator.message))
             }
             if (confirmPassword.isBlank()) {
-                validationList.add(
-                    Pair(
-                        Validation.RE_PASSWORD,
-                        DefaultValidation.REQUIRED
-                    )
-                )
+                validationList.add(Pair(Validation.RE_PASSWORD, DefaultValidation.REQUIRED))
             } else if (password != confirmPassword) {
-                validationList.add(
-                    Pair(
-                        Validation.RE_PASSWORD,
-                        "Passwords don't match."
-                    )
-                )
+                validationList.add(Pair(Validation.RE_PASSWORD, "Passwords doesn't match."))
             }
             validationErrorFlow.emit(validationList)
             if (validationList.isEmpty()) {

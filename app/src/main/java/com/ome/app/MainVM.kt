@@ -1,6 +1,5 @@
 package com.ome.app
 
-import android.os.Bundle
 import androidx.lifecycle.SavedStateHandle
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.ome.app.data.ConnectionStatusListener
@@ -18,11 +17,7 @@ import com.ome.app.domain.model.network.websocket.MacAddress
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.presentation.base.SingleLiveEvent
-import com.ome.app.utils.isFalse
-import com.ome.app.utils.loge
-import com.ome.app.utils.logi
-import com.ome.app.utils.orMinusOne
+import com.ome.app.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -35,14 +30,14 @@ import kotlin.time.Duration.Companion.seconds
 @HiltViewModel
 class MainVM @Inject constructor(
     private val amplifyManager: AmplifyManager,
-    private val preferencesProvider: PreferencesProvider,
+    private val pref: PreferencesProvider,
     private val userRepository: UserRepository,
     private val stoveRepository: StoveRepository,
     val webSocketManager: WebSocketManager,
     private val savedStateHandle: SavedStateHandle,
     val connectionStatusListener: ConnectionStatusListener
 ) : BaseViewModel() {
-    var userInfo = savedStateHandle.getStateFlow("userInfo", preferencesProvider.getUserData())
+    var userInfo = savedStateHandle.getStateFlow("userInfo", pref.getUserData())
     var knobState =
         savedStateHandle.getStateFlow("knobState", mutableMapOf<MacAddress, KnobState>())
     var knobs = savedStateHandle.getStateFlow("knobs", listOf<KnobDto>())
@@ -53,7 +48,10 @@ class MainVM @Inject constructor(
         else
             defaultErrorLiveData.postValue(throwable.message)
     }
-    val startDestinationInitialized = SingleLiveEvent<Pair<Int, Bundle?>>()
+    var startDestinationInitialized : Boolean
+        get() = savedStateHandle["startDestinationInitialized"] ?: false
+        set(value) { savedStateHandle["startDestinationInitialized"] = value }
+
     val startDestination = savedStateHandle.getStateFlow<Int?>("startDestination", null)
 
     val socketConnected = MutableSharedFlow<Boolean>()
@@ -69,6 +67,8 @@ class MainVM @Inject constructor(
         launch(ioContext) {
             val oldKnobListSize = userRepository.userFlow.value?.knobMacAddrs?.size.orMinusOne()
             userRepository.userFlow.filterNotNull().collect {
+                it.log("userFlow")
+                pref.saveUserData(it)
                 savedStateHandle["userInfo"] = it
                 if (oldKnobListSize != it.knobMacAddrs.size) {
                     savedStateHandle["knobs"] = emptyList<KnobDto>()
@@ -80,8 +80,8 @@ class MainVM @Inject constructor(
         launch(ioContext) {
             stoveRepository.knobsFlow.filterNotNull().collect { lst ->
                 savedStateHandle["knobs"] = lst
-                savedStateHandle["knobState"] =
-                    lst.associateByTo(mutableMapOf(), { it.macAddr }, { it.asKnobState }).toMap()
+                webSocketManager.knobState.value =
+                    lst.associateByTo(mutableMapOf(), { it.macAddr }, { it.asKnobState })
             }
         }
         launch(ioContext) {
@@ -158,17 +158,17 @@ class MainVM @Inject constructor(
                             if (accessToken != null && userAttributes.attributes != null) {
                                 userAttributes.attributes?.forEach { attr ->
                                     if (attr.key.keyString == "sub") {
-                                        preferencesProvider.saveUserId(attr.value)
+                                        pref.saveUserId(attr.value)
                                         logi("userId: $attr.value")
                                     }
                                 }
-                                preferencesProvider.saveAccessToken(accessToken)
+                                pref.saveAccessToken(accessToken)
 
                                 when (val result = userRepository.getUserData()) {
                                     is ResponseWrapper.Error -> {
                                         if (result.message.contains("Not found")) {
                                             amplifyManager.deleteUser()
-                                            preferencesProvider.clearData()
+                                            pref.clearData()
                                             savedStateHandle["startDestination"] = R.id.launchFragment
                                         } else {
                                             savedStateHandle["startDestination"] = R.id.dashboardFragment
@@ -200,7 +200,7 @@ class MainVM @Inject constructor(
         }
     }
 
-    fun connectToSocket(needStatus: Boolean = true) {
+    fun connectToSocket(needStatus: Boolean = false) {
         launch(ioContext) {
             webSocketManager.onSocketConnect = {
                 if (needStatus) {
@@ -215,13 +215,13 @@ class MainVM @Inject constructor(
             val knobs = stoveRepository.getAllKnobs()
             savedStateHandle["knobs"] = knobs.toList()
             try {
-                preferencesProvider.getUserId()?.let { userId ->
+                pref.getUserId()?.let { userId ->
                     if (knobs.isNotEmpty())
                         webSocketManager.initWebSocket(knobs, userId)
                 }
             } catch (e: Exception) {
                 if (needStatus) error("Error with socket connection.")
-                else connectToSocket(false)
+                else connectToSocket()
             }
         }
     }
@@ -229,9 +229,9 @@ class MainVM @Inject constructor(
     fun signOut(onEnd: () -> Unit) {
         launch(ioContext) {
             amplifyManager.signUserOut()
-            preferencesProvider.clearData()
+            pref.clearData()
             userRepository.userFlow.emit(null)
-            savedStateHandle.remove<UserResponse>("userInfo")
+            savedStateHandle["userInfo"] = UserResponse()
             amplifyManager.signOutFlow.emit(true)
             withContext(mainContext) {
                 onEnd()

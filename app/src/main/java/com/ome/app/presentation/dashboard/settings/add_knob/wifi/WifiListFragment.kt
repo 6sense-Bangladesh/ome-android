@@ -53,7 +53,7 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
         viewModel.wifiNetworksList.collectWithLifecycle {
             adapter.submitList(it)
             binding.scanAgainBtn.revertAnimation()
-            binding.notFoundLayout.changeVisibility(it.isEmpty(), true)
+            binding.notFoundLayout.changeVisibility(it.isEmpty())
         }
         viewModel.loadingFlow.collectWithLifecycle {
             if (it)

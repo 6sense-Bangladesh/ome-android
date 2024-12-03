@@ -34,7 +34,7 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(preferencesProvider: PreferencesProvider, @ApplicationContext context: Context): Retrofit {
+    fun provideRetrofit(pref: PreferencesProvider, @ApplicationContext context: Context): Retrofit {
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         val client: OkHttpClient =
@@ -42,9 +42,9 @@ object DataModule {
                 .addInterceptor(Interceptor { chain ->
                     val original = chain.request()
                     val request = original.newBuilder()
-                        .addHeader("x-inirv-auth", preferencesProvider.getAccessToken() ?: "")
+                        .addHeader("x-inirv-auth", pref.getAccessToken() ?: "")
                         .addHeader("x-inirv-vsn", "6")
-                        .addHeader("x-inirv-uid", preferencesProvider.getUserId() ?: "").build()
+                        .addHeader("x-inirv-uid", pref.getUserId() ?: "").build()
                     chain.proceed(request)
                 })
                 .addInterceptor(interceptor)

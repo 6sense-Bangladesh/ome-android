@@ -88,7 +88,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
             } ?: onError(getString(R.string.scan_again))
         }
         viewModel.loadingFlow.collectWithLifecycle{
-            binding.loadingLayout.container.changeVisibility(it, useGone = true)
+            binding.loadingLayout.container.changeVisibility(it)
         }
     }
 }

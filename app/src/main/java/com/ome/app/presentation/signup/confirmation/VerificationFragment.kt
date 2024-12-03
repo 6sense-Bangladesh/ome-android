@@ -30,17 +30,15 @@ class VerificationFragment :
     private val args by navArgs<VerificationFragmentArgs>()
     val params by lazy { args.params }
 
-    companion object{
-    }
-
     override fun setupUI() {
         binding.textLabel.text = getString(R.string.confirmation_label, params.email.applyMaskToEmail())
         startTimer()
     }
 
     override fun setupListener() {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.apply {
-            btnVerify.setOnClickListener {
+            btnVerify.setBounceClickListener {
                 binding.btnVerify.startAnimation()
                 viewModel.validateConfirmationCode(
                     otp1.text.toString() + otp2.text.toString() +
@@ -48,7 +46,10 @@ class VerificationFragment :
                             otp5.text.toString() + otp6.text.toString()
                 )
             }
-            btnResend.setOnClickListener {
+            btnHelp.setBounceClickListener {
+                navigateSafe(VerificationFragmentDirections.actionVerificationFragmentToSupportFragment())
+            }
+            btnResend.setBounceClickListener {
                 binding.loadingLayout.root.visible()
                 viewModel.resendCode(params.email.trim())
             }
@@ -149,9 +150,7 @@ class VerificationFragment :
             binding.btnVerify.revertAnimation()
             if (it) {
                 AmplifyManager.kotAuth = Amplify.Auth
-                navigateSafe(
-                    VerificationFragmentDirections.actionSignUpConfirmationFragmentToWelcomeFragment()
-                )
+                navigateSafe(VerificationFragmentDirections.actionVerificationFragmentToWelcomeFragment())
             }
 
         }
@@ -170,7 +169,7 @@ class VerificationFragment :
 
         subscribe(viewModel.codeValidationLiveData) {
             if (params.isForgotPassword) {
-                navigateSafe(VerificationFragmentDirections.actionSignUpConfirmationFragmentToSignUpPasswordFragment(
+                navigateSafe(VerificationFragmentDirections.actionVerificationFragmentToSignUpPasswordFragment(
                     params.apply { code = viewModel.code }
                 ))
             } else {

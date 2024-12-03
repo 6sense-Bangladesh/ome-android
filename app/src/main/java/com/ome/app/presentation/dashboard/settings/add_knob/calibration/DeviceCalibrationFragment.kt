@@ -5,12 +5,14 @@ import android.os.Parcelable
 import android.view.View
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceCalibrationBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 
@@ -45,10 +47,11 @@ class DeviceCalibrationFragment :
     }
 
     override fun setupListener() {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
+        binding.noBtn.setBounceClickListener(::onBackPressed)
         binding.continueBtn.setBounceClickListener {
             viewModel.setLabel()
         }
-        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
     }
 
 
@@ -81,6 +84,9 @@ class DeviceCalibrationFragment :
                         )
                     )
                 )
+                lifecycleScope.launch {
+                    viewModel.currentCalibrationState.emit(CalibrationState.OFF)
+                }
             }
         }
         viewModel.knobAngleFlow.collectWithLifecycle{
@@ -101,6 +107,12 @@ class DeviceCalibrationFragment :
             binding.knobView.stovePosition = it
         }
         viewModel.currentCalibrationState.collectWithLifecycle{ currentStep ->
+            val currentIndex = if (!params.isDualKnob)
+                viewModel.calibrationStatesSequenceSingleZone.indexOf(currentStep)
+            else
+                viewModel.calibrationStatesSequenceDualZone.indexOf(currentStep)
+            binding.noBtn.changeVisibility(currentIndex != 0)
+
             binding.knobView.hideLabel(currentStep)
             if (currentStep == CalibrationState.OFF) {
                 binding.labelTv.text =

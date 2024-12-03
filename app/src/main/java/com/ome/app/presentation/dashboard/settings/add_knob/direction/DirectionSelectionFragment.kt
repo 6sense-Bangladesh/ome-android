@@ -14,10 +14,8 @@ import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.orFalse
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
-import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class DirectionSelectionFragment :
@@ -51,12 +49,13 @@ class DirectionSelectionFragment :
             if(params.isEditMode)
                 viewModel.updateDirection(onEnd = mainViewModel::getAllKnobs)
             else {
+                viewModel.continueBtnClicked = true
                 binding.continueBtn.startAnimation()
                 if(!mainViewModel.webSocketManager.connected)
-                    mainViewModel.connectToSocket()
+                    mainViewModel.connectToSocket(true)
                 else {
                     lifecycleScope.launch {
-                        delay(3.seconds)
+//                        delay(3.seconds)
                         mainViewModel.socketConnected.emit(mainViewModel.webSocketManager.connected)
                     }
                 }
@@ -78,6 +77,7 @@ class DirectionSelectionFragment :
         mainViewModel.socketConnected.collectWithLifecycle {
             binding.continueBtn.revertAnimation()
             if(it) {
+                if(!viewModel.continueBtnClicked) return@collectWithLifecycle
                 navigateSafe(
                     DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
                         DeviceCalibrationFragmentParams(

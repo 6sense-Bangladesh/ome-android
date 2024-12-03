@@ -8,4 +8,5 @@ import javax.inject.Inject
 @HiltViewModel
 class ZoneSelectionViewModel @Inject constructor(): BaseViewModel() {
     var isDualKnob = false
+    var continueBtnClicked = false
 }

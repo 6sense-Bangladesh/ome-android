@@ -28,7 +28,7 @@ fun String.isValidPasswordResult(): ResponseWrapper<Boolean> {
     val isGraterThan8 = this.length > 8
     val isGraterThan25 = this.length > 25
 //    val hasSpecial = this.any { "!@#\$%^&*()-_=+[]{};:'\",.<>?/\\|`~".contains(it) }
-    return when{
+    return when {
         trim().isEmpty() -> ResponseWrapper.Error(DefaultValidation.REQUIRED)
         !hasUpper -> ResponseWrapper.Error("Doesn't contain uppercase letter.")
         !hasLower -> ResponseWrapper.Error("Doesn't contain lowercase letter.")

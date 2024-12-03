@@ -15,6 +15,7 @@ import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.Constants
+import com.ome.app.utils.IO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -126,7 +127,7 @@ class VerificationViewModel @Inject constructor(
 
     fun resendCode(email: String) = launch(ioContext) {
         val result = amplifyManager.resendSignUpCode(email)
-        pref.setTimer(Constants.VERIFICATION_KEY, Constants.TWO_MINUTES_MILLIS)
+        IO { pref.setTimer(Constants.VERIFICATION_KEY, Constants.TWO_MINUTES_MILLIS) }
         resendClickedResultLiveData.postValue(result)
     }
 }

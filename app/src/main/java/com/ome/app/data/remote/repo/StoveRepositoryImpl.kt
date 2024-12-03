@@ -129,12 +129,16 @@ class StoveRepositoryImpl(
 
     override suspend fun startTurnOffTimer(
         macAddress: String,
+        currentAngle: Int,
         offAngle: Int,
         second: Int
     ): BaseResponse {
         return respectErrorApiCall(coroutineContext) {
             stoveService.startSchedule(
-                params = ScheduleRequest(listOf(ScheduleRequest.KnobRotationPlan(offAngle, second))),
+                params = ScheduleRequest(listOf(
+                    ScheduleRequest.KnobRotationPlan(currentAngle, 0),
+                    ScheduleRequest.KnobRotationPlan(offAngle, second)
+                )),
                 macAddress = macAddress
             )
         }

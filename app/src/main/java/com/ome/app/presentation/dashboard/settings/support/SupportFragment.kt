@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.viewModels
 import com.ome.app.databinding.FragmentSupportBinding
 import com.ome.app.presentation.base.BaseFragment
+import com.ome.app.utils.Constants
 import com.ome.app.utils.onBackPressed
 
 class SupportFragment :
@@ -21,31 +22,20 @@ class SupportFragment :
             }
 
         binding.sendBtn.setOnClickListener {
-            if (binding.text.toString()
-                    .isNotEmpty() && viewModel.selectedTopic.isNotEmpty()
-            ) {
-                sendMessage()
-            }
+            startActivity(Intent.createChooser(Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse(
+                    "mailto:" + Uri.encode(Constants.SUPPORT_EMAIL) +
+                            "?subject=" + Uri.encode(viewModel.selectedTopic) +
+                            "&body=" + Uri.encode(binding.body.text.toString())
+                )
+            }, "Send mail..."))
         }
 
     }
 
     override fun setupUI() {
+        binding.autoShutOffSelector.setText(viewModel.selectedTopic)
         binding.autoShutOffSelector.setSimpleItems(viewModel.topicsArray.toTypedArray())
-    }
-
-    private fun sendMessage() =
-        startActivity(Intent.createChooser(Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse(
-                "mailto:" + Uri.encode(viewModel.supportEmail) +
-                        "?subject=" + Uri.encode(viewModel.selectedTopic) +
-                        "&body=" + Uri.encode(binding.text.text?.toString())
-            )
-        }, "Send mail..."))
-
-
-    override fun setupObserver() {
-        super.setupObserver()
     }
 
 }
