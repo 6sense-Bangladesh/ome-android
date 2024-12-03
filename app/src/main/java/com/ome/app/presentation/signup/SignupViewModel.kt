@@ -72,7 +72,7 @@ class SignupViewModel @Inject constructor(
             if (confirmPassword.isBlank()) {
                 validationList.add(Pair(Validation.RE_PASSWORD, DefaultValidation.REQUIRED))
             } else if (password != confirmPassword) {
-                validationList.add(Pair(Validation.RE_PASSWORD, "Passwords doesn't match."))
+                validationList.add(Pair(Validation.RE_PASSWORD, "Password doesn't match."))
             }
             validationErrorFlow.emit(validationList)
             if (validationList.isEmpty()) {

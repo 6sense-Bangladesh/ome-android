@@ -55,7 +55,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
-            app:destination="@id/forgotPasswordFragment" />
+            app:destination="@id/forgotPasswordEmailFragment" />
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -91,13 +91,6 @@
         android:label="SignUpFragment"
         tools:layout="@layout/fragment_signup">
         <action
-            android:id="@+id/action_SignUpFragment_to_signUpEmailAndPasswordFragment"
-            app:destination="@id/signUpEmailAndPhoneFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-        <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -117,27 +110,21 @@
         android:id="@+id/signUpEmailAndPhoneFragment"
         android:name="com.ome.app.presentation.signup.email.SignUpEmailAndPhoneFragment"
         android:label="SignUpEmailAndPasswordFragment">
-        <action
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            android:id="@+id/action_signUpEmailAndPhoneFragment_to_signUpPasswordFragment"
-            app:destination="@id/signUpPasswordFragment"/>
         <argument
             android:name="params"
             app:argType="com.ome.app.presentation.signup.email.NameParams" />
     </fragment>
     <fragment
-        android:id="@+id/signUpPasswordFragment"
-        android:name="com.ome.app.presentation.signup.password.SignUpPasswordFragment"
-        android:label="SignUpPasswordFragment">
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.ome.app.presentation.signup.password.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment"
+        tools:layout="@layout/fragment_forgot_password">
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            android:id="@+id/action_signUpPasswordFragment_to_verificationFragment"
+            android:id="@+id/action_forgotPasswordFragment_to_verificationFragment"
             app:destination="@id/verificationFragment" />
         <argument
             android:name="params"
@@ -156,8 +143,8 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            android:id="@+id/action_verificationFragment_to_signUpPasswordFragment"
-            app:destination="@id/signUpPasswordFragment"/>
+            android:id="@+id/action_verificationFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment"/>
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -177,11 +164,12 @@
             app:destination="@id/supportFragment" />
     </fragment>
     <fragment
-        android:id="@+id/forgotPasswordFragment"
-        android:name="com.ome.app.presentation.signin.forgotpassword.ForgotPasswordFragment"
-        android:label="ForgotPasswordFragment">
+        android:id="@+id/forgotPasswordEmailFragment"
+        android:name="com.ome.app.presentation.signin.forgotpassword.ForgotPasswordEmailFragment"
+        android:label="ForgotPasswordFragment"
+        tools:layout="@layout/fragment_forgot_password_email">
         <action
-            android:id="@+id/action_forgotPasswordFragment_to_verificationFragment"
+            android:id="@+id/action_forgotPasswordEmailFragment_to_verificationFragment"
             app:destination="@id/verificationFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"

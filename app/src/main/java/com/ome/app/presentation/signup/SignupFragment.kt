@@ -1,6 +1,5 @@
 package com.ome.app.presentation.signup
 
-import android.os.Parcelable
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import com.ome.app.databinding.FragmentSignupBinding
@@ -10,7 +9,6 @@ import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.signup.password.AuthParams
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class SignupFragment : BaseFragment<SignupViewModel, FragmentSignupBinding>(
@@ -96,14 +94,3 @@ class SignupFragment : BaseFragment<SignupViewModel, FragmentSignupBinding>(
         }
     }
 }
-
-
-@Parcelize
-data class SignupParams(
-    val firstName: String = "",
-    val lastName: String = "",
-    val email: String = "",
-    val phone: String = "",
-    val password: String = "",
-    val confirmPassword: String = ""
-) : Parcelable

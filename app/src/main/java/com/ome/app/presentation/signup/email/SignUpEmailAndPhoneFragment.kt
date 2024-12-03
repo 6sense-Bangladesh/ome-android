@@ -7,8 +7,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentSignUpEmailAndPasswordBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.signup.password.AuthParams
-import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.popBackSafe
 import com.ome.app.utils.subscribe
 import dev.chrisbanes.insetter.applyInsetter
@@ -48,16 +46,16 @@ class SignUpEmailAndPhoneFragment :
     override fun setupObserver() {
         super.setupObserver()
         subscribe(viewModel.emailAndPassValidationLiveData) {
-            navigateSafe(
-                SignUpEmailAndPhoneFragmentDirections.actionSignUpEmailAndPhoneFragmentToSignUpPasswordFragment(
-                    AuthParams(
-                        firstName = viewModel.firstName,
-                        lastName = viewModel.lastName,
-                        email = viewModel.email,
-                        phone = viewModel.phoneNumber
-                    )
-                )
-            )
+//            navigateSafe(
+//                SignUpEmailAndPhoneFragmentDirections.actionSignUpEmailAndPhoneFragmentToForgotPasswordFragment(
+//                    AuthParams(
+//                        firstName = viewModel.firstName,
+//                        lastName = viewModel.lastName,
+//                        email = viewModel.email,
+//                        phone = viewModel.phoneNumber
+//                    )
+//                )
+//            )
         }
     }
 }

@@ -169,7 +169,7 @@ class VerificationFragment :
 
         subscribe(viewModel.codeValidationLiveData) {
             if (params.isForgotPassword) {
-                navigateSafe(VerificationFragmentDirections.actionVerificationFragmentToSignUpPasswordFragment(
+                navigateSafe(VerificationFragmentDirections.actionVerificationFragmentToForgotPasswordFragment(
                     params.apply { code = viewModel.code }
                 ))
             } else {

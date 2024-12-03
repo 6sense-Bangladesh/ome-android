@@ -8,39 +8,29 @@ import com.ome.app.databinding.FragmentForgotPasswordEmailBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.signup.password.AuthParams
 import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.popBackSafe
+import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 
 
 @AndroidEntryPoint
-class ForgotPasswordFragment :
+class ForgotPasswordEmailFragment :
     BaseFragment<ForgotPasswordViewModel, FragmentForgotPasswordEmailBinding>(
         FragmentForgotPasswordEmailBinding::inflate
     ) {
 
     override val viewModel: ForgotPasswordViewModel by viewModels()
 
-    private val args by navArgs<ForgotPasswordFragmentArgs>()
+    private val args by navArgs<ForgotPasswordEmailFragmentArgs>()
     val params by lazy { args.params }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.backIv.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                padding(horizontal = true)
-                margin(top = true)
-            }
-        }
-        binding.backIv.setOnClickListener { popBackSafe() }
-        binding.continueBtn.setOnClickListener {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
+        binding.continueBtn.setBounceClickListener {
             binding.continueBtn.startAnimation()
-            viewModel.validateEmail(binding.email.getText())
-        }
-
-        binding.backToLoginBtn.setOnClickListener {
-            popBackSafe()
+            viewModel.validateEmail(binding.email.text.toString())
         }
 
     }
@@ -50,12 +40,12 @@ class ForgotPasswordFragment :
         subscribe(viewModel.forgotPasswordSuccess) {
             binding.continueBtn.revertAnimation()
             navigateSafe(
-                ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToVerificationFragment(
-                    AuthParams(isForgotPassword = true, email = binding.email.getText())
+                ForgotPasswordEmailFragmentDirections.actionForgotPasswordEmailFragmentToVerificationFragment(
+                    AuthParams(isForgotPassword = true, email = binding.email.text.toString())
                 )
             )
         }
-        subscribe(viewModel.loadingLiveData){
+        subscribe(viewModel.loadingLiveData) {
             binding.continueBtn.revertAnimation()
         }
         subscribe(viewModel.emailAndPassValidationLiveData) {
