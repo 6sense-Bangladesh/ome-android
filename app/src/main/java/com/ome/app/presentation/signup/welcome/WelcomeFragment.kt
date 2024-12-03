@@ -14,7 +14,6 @@ import com.ome.app.utils.onBackPressedIgnoreCallback
 import com.ome.app.utils.setBounceClickListener
 import com.ome.app.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
-import dev.chrisbanes.insetter.applyInsetter
 
 
 @AndroidEntryPoint
@@ -29,11 +28,6 @@ class WelcomeFragment :
         userName = mainViewModel.userInfo.value.firstName.toString()
         binding.congoUser.text = getString(R.string.congoUser, userName)
 
-        binding.startSetup.applyInsetter {
-            type(navigationBars = true, statusBars = true) {
-                margin(bottom = true)
-            }
-        }
         if (BuildConfig.DEBUG) {
             binding.iconDone.setBounceClickListener {
                 navigateSafe(R.id.stoveSetupCompletedFragment)
@@ -45,8 +39,6 @@ class WelcomeFragment :
                     StoveSetupBrandArgs()
                 )
             )
-//            binding.continueBtn.startAnimation()
-            viewModel.setup()
         }
 
         binding.skipSetup.setBounceClickListener {
@@ -60,9 +52,6 @@ class WelcomeFragment :
         super.setupObserver()
         subscribe(viewModel.loadingLiveData) {
             binding.startSetup.revertAnimation()
-        }
-        subscribe(viewModel.fetchUserDataStatus) {
-//            navigateSafe(R.id.action_welcomeFragment_to_stoveSetupBrandFragment)
         }
     }
 

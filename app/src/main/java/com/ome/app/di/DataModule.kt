@@ -77,11 +77,8 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideStoveRepository(
-        userService: StoveService,
-        webSocketManager: WebSocketManager
-    ): StoveRepository =
-        StoveRepositoryImpl(userService, webSocketManager)
+    fun provideStoveRepository(userService: StoveService): StoveRepository =
+        StoveRepositoryImpl(userService)
 
 
     @Provides

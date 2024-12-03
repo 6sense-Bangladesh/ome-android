@@ -249,7 +249,6 @@ class KnobView @JvmOverloads constructor(
         stovePosition = knob.stovePosition
         val cal = knob.calibration.toCalibration(knob.calibrated)
         changeKnobProgressVisibility(true, cal.rotation == Rotation.DUAL)
-        binding.safetyLock.changeVisibility(knob.safetyLock.orFalse())
         if(knob.safetyLock)
             setKnobPosition(knob.calibration.offAngle.toFloat())
         if(cal.isCalibrated) {

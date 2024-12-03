@@ -2,7 +2,6 @@ package com.ome.app.data.remote.repo
 
 import com.ome.app.BuildConfig
 import com.ome.app.data.remote.StoveService
-import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.NetworkCall.respectErrorApiCall
 import com.ome.app.domain.NetworkCall.safeApiCall
 import com.ome.app.domain.model.base.ResponseWrapper
@@ -14,8 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.coroutines.coroutineContext
 
 class StoveRepositoryImpl(
-    private val stoveService: StoveService,
-    private val webSocketManager: WebSocketManager
+    private val stoveService: StoveService
 ) : StoveRepository {
 
     override suspend fun createStove(params: StoveRequest): ResponseWrapper<StoveResponse> {

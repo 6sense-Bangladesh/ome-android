@@ -1,6 +1,5 @@
 package com.ome.app.presentation.signup
 
-import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
@@ -10,6 +9,7 @@ import com.ome.app.domain.model.base.Validation
 import com.ome.app.domain.model.base.isValidPasswordResult
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.utils.isValidEmail
+import com.ome.app.utils.isValidPhoneUS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
@@ -59,9 +59,7 @@ class SignupViewModel @Inject constructor(
             } else if (!email.isValidEmail()) {
                 validationList.add(Pair(Validation.EMAIL, DefaultValidation.INVALID_EMAIL))
             }
-            if (phone.isNotBlank() && !PhoneNumberUtil.getInstance()
-                    .isValidNumber(PhoneNumberUtil.getInstance().parse(phone, "US"))
-            ) {
+            if (phone.isNotBlank() && !phone.isValidPhoneUS()) {
                 validationList.add(Pair(Validation.PHONE, DefaultValidation.INVALID_PHONE))
             }
             if (password.isBlank()) {

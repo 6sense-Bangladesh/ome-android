@@ -1,8 +1,6 @@
 package com.ome.app.utils
 
 import android.util.Patterns
-import com.google.i18n.phonenumbers.NumberParseException
-import com.google.i18n.phonenumbers.PhoneNumberUtil
 
 object FieldsValidator {
 
@@ -19,14 +17,8 @@ object FieldsValidator {
 
     fun validatePhone(phone: String): Pair<Boolean, String> {
         if (phone.isNotEmpty()) {
-            val phoneUtil = PhoneNumberUtil.getInstance()
-            try {
-                if (!phoneUtil.isValidNumber(phoneUtil.parse(phone, "US"))
-                ) {
-                    return false to "Only U.S. phone numbers are supported at this time."
-                }
-            } catch (e: NumberParseException) {
-                return false to "NumberParseException was thrown: $e"
+            if (!phone.isValidPhoneUS()) {
+                return false to "Only U.S. phone numbers are supported at this time."
             }
         }
         return true to "Success"

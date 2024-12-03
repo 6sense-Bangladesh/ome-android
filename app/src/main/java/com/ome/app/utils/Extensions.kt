@@ -870,21 +870,26 @@ inline fun <T> Collection<T>?.isNotEmpty(next: (List<T>) -> Unit): Collection<T>
     return this
 }
 
-fun String.isValidPhoneBD(): Boolean {
-    val phoneNumberRegexBd = "^(?:\\+?88)?01[13-9]\\d{8}\$".toRegex()
-    return this.contains(phoneNumberRegexBd)
-}
-
 fun String?.isBanglaText() = this == null || matches("[\\u0980-\\u09FF\\s,।_/-]+".toRegex())
 
 fun String?.isValidEmail() =
     this == null || isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
+fun String.isValidPhoneBD(): Boolean {
+    val phoneNumberRegexBd = "^(?:\\+?88)?01[3-9]\\d{8}$".toRegex()
+    return matches(phoneNumberRegexBd)
+}
+
+fun String.isValidPhoneUS(): Boolean {
+    val usPhoneNumberRegex = """^(?:\+?1[-. ]?)?\(?([2-9][0-8][0-9])\)?[-. ]?([2-9][0-9]{2})[-. ]?([0-9]{4})$""".toRegex()
+    return matches(usPhoneNumberRegex)
+}
+
 fun String.isValidPassword(): Boolean {
-    val hasUpper = this.any { it.isUpperCase() }
-    val hasLower = this.any { it.isLowerCase() }
-    val hasNumber = this.any { it.isDigit() }
-    val isGraterThan8 = this.length >= 8
+    val hasUpper = any { it.isUpperCase() }
+    val hasLower = any { it.isLowerCase() }
+    val hasNumber = any { it.isDigit() }
+    val isGraterThan8 = length >= 8
 //    val hasSpecial = this.any { "!@#\$%^&*()-_=+[]{};:'\",.<>?/\\|`~".contains(it) }
     return hasUpper && hasLower && hasNumber && isGraterThan8
 }

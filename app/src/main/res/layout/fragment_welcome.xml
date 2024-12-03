@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="false"
+    android:fitsSystemWindows="true"
     tools:context=".presentation.signup.welcome.WelcomeFragment">
 
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:layout_margin="@dimen/_12sdp"
         android:id="@+id/iconDone"
         android:layout_width="@dimen/_36sdp"
         android:layout_height="@dimen/_36sdp"
+        android:layout_margin="@dimen/_12sdp"
         android:background="@color/colorPrimary"
         android:src="@drawable/ic_done_small"
         app:layout_constraintBottom_toTopOf="@+id/congoUser"
@@ -29,7 +29,7 @@
         android:layout_marginEnd="@dimen/margin_horizontal"
         android:layout_marginBottom="@dimen/_48sdp"
         android:gravity="center"
-        android:text="@string/congoUser"
+        tools:text="@string/congoUser"
         app:layout_constraintBottom_toTopOf="@+id/materialTextView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:gravity="center"
-        android:text="Start Setting Up Stove"
+        android:text="@string/start_setting_up_stove"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_horizontal"
         android:gravity="center"
-        android:text="Set up your stove, install Smart Knobs, and calibrate to control it remotely in minutes."
+        android:text="@string/set_up_your_stove"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialTextView4" />

@@ -52,6 +52,10 @@ class VerificationFragment :
             btnResend.setBounceClickListener {
                 binding.loadingLayout.root.visible()
                 viewModel.resendCode(params.email.trim())
+                listOf(otp1,otp2,otp3,otp4,otp5,otp6).forEach {
+                    it.setText("")
+                }
+//                btnVerify.requestFocus()
             }
             listOf(otp1,otp2,otp3,otp4,otp5,otp6).forEach {
                 ViewCompat.setOnReceiveContentListener(it, arrayOf("text/*"),
@@ -194,14 +198,15 @@ class VerificationFragment :
             lastTime = IO { viewModel.pref.getTimer(Constants.VERIFICATION_KEY) }
             binding.apply {
                 if(time > 0) {
-                    btnResend.gone()
+                    btnResend.invisible()
                     resendText.visible()
+                    resendText.requestFocus()
                 }
                 while(time >= 0){
                     resendText.text = getString(R.string.resend_after_sec, time.toTimer())
                     delay(1.seconds)
                 }
-                resendText.gone()
+                resendText.invisible()
                 btnResend.visible()
             }
         }

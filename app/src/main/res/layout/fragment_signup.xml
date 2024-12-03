@@ -53,7 +53,8 @@
                     android:hint="@string/first_name"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:nextFocusForward="@id/lastName" />
+                    android:nextFocusForward="@id/lastName"
+                    android:textSize="@dimen/_12ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,7 +79,8 @@
                     android:hint="@string/last_name"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:nextFocusForward="@id/emailLayout" />
+                    android:nextFocusForward="@id/emailLayout"
+                    android:textSize="@dimen/_12ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -100,10 +102,11 @@
                     style="@style/Label.Large"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Email Address"
+                    android:hint="@string/email_address"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:nextFocusForward="@id/phoneInput" />
+                    android:nextFocusForward="@id/phoneInput"
+                    android:textSize="@dimen/_12ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -125,18 +128,21 @@
                     style="@style/Label.Large"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Phone Number (Optional)"
+                    android:hint="@string/phone_number_optional"
                     android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:nextFocusForward="@id/password" />
+                    android:nextFocusForward="@id/password"
+                    android:textSize="@dimen/_12ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/materialTextView5"
+                style="@style/Label.Mini"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_horizontal"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/password_rules"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -148,7 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_horizontal"
-                android:layout_marginTop="@dimen/margin_horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
                 app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
                 app:boxCornerRadiusBottomStart="@dimen/_8sdp"
                 app:boxCornerRadiusTopEnd="@dimen/_8sdp"
@@ -162,9 +168,10 @@
                     style="@style/Label.Large"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Password"
+                    android:hint="@string/password"
                     android:inputType="textPassword"
-                    android:nextFocusForward="@id/retypePassword" />
+                    android:nextFocusForward="@id/retypePassword"
+                    android:textSize="@dimen/_12ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -189,19 +196,32 @@
                     style="@style/Label.Large"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Retype Password"
+                    android:hint="@string/retype_password"
                     android:inputType="textPassword"
-                    android:nextFocusForward="@id/signInBtn" />
+                    android:nextFocusForward="@id/signInBtn"
+                    android:textSize="@dimen/_12ssp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/termsAndConditions"
+                style="@style/Label.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/by_clicking_continue"
+                app:layout_constraintTop_toBottomOf="@+id/retypePasswordLayout" />
+
             <com.apachat.loadingbutton.core.customViews.CircularProgressButton
-                android:id="@+id/signup_button"
+                android:id="@+id/btnSignUp"
                 style="@style/OmeButton.Blue"
                 android:text="@string/create_account"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/retypePasswordLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/termsAndConditions" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/materialTextView2"
@@ -210,11 +230,11 @@
                 android:layout_margin="@dimen/margin_horizontal"
                 android:gravity="center"
                 android:paddingTop="@dimen/margin_horizontal"
-                android:text="Already have an account?"
-                app:layout_constraintTop_toBottomOf="@+id/signup_button" />
+                android:text="@string/already_have_an_account"
+                app:layout_constraintTop_toBottomOf="@+id/btnSignUp" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/signin_button"
+                android:id="@+id/btnSignIn"
                 style="@style/OmeButton.Blue.Outline"
                 android:text="@string/sign_in"
                 android:translationY="-12dp"

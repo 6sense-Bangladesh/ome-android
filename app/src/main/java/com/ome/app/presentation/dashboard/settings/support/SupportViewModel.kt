@@ -11,6 +11,7 @@ class SupportViewModel @Inject constructor() : BaseViewModel() {
         "General Question",
         "Issue with Installation",
         "Issue with Connectivity",
+        "Issue with Authentication",
         "Issue with App",
         "Other"
     )

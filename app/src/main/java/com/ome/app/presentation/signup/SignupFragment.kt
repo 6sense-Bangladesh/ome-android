@@ -57,7 +57,7 @@ class SignupFragment : BaseFragment<SignupViewModel, FragmentSignupBinding>(
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
-        binding.signupButton.setBounceClickListener {
+        binding.btnSignUp.setBounceClickListener {
             viewModel.validateFields(
                 firstName = binding.firstName.text.toString(),
                 lastName = binding.lastName.text.toString(),
@@ -70,9 +70,9 @@ class SignupFragment : BaseFragment<SignupViewModel, FragmentSignupBinding>(
 
         viewModel.loadingFlow.collectWithLifecycle {
             if (it) {
-                binding.signupButton.startAnimation()
+                binding.btnSignUp.startAnimation()
             } else {
-                binding.signupButton.revertAnimation()
+                binding.btnSignUp.revertAnimation()
             }
         }
         viewModel.validationSuccessFlow.collectWithLifecycle {
@@ -89,7 +89,7 @@ class SignupFragment : BaseFragment<SignupViewModel, FragmentSignupBinding>(
                 ))
             }
         }
-        binding.signinButton.setBounceClickListener{
+        binding.btnSignIn.setBounceClickListener{
             navigateSafe(SignupFragmentDirections.actionSignUpFragmentToSignInFragment())
         }
     }

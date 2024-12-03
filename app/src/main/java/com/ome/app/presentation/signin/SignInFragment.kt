@@ -42,13 +42,6 @@ class SignInFragment :
         subscribe(viewModel.signInStatus) {
             if (it) viewModel.fetchUserData()
         }
-//        subscribe(viewModel.deleteStatus) {
-//            binding.deleteBtn.revertAnimation()
-//        }
-//
-//        subscribe(viewModel.loadingLiveData) {
-//            binding.btnSignIn.revertAnimation()
-//        }
 
         subscribe(viewModel.destinationAfterSignInLiveData){
             AmplifyManager.kotAuth = Amplify.Auth

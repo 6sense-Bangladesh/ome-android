@@ -148,10 +148,6 @@ dependencies {
     //noinspection GradleDependency
     implementation("com.amplifyframework:core-kotlin:0.22.8") //Don't upgrade this version
 
-    //Phone validator
-    implementation("com.googlecode.libphonenumber:libphonenumber:8.13.49")
-
-
     implementation("com.apachat:loadingbutton-android:1.0.11")
     implementation("com.jaredrummler:material-spinner:1.3.1")
 

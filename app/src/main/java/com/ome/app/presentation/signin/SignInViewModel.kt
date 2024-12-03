@@ -26,19 +26,7 @@ class SignInViewModel @Inject constructor(
 
     val signInStatus: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
-    val deleteStatus: SingleLiveEvent<Boolean> = SingleLiveEvent()
-
     val destinationAfterSignInLiveData = SingleLiveEvent<Int>()
-
-    fun deleteUser() = launch(ioContext) {
-        val result = amplifyManager.deleteUser()
-        if (result.isSuccessful) {
-            deleteStatus.postValue(true)
-        } else {
-            defaultErrorLiveData.postValue(result.authException?.message)
-            deleteStatus.postValue(false)
-        }
-    }
 
     fun signIn(username: String, password: String) = launch(ioContext) {
         if (username.isEmpty()) {

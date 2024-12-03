@@ -3,11 +3,8 @@ package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 import com.ome.app.R
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.local.KnobSocketMessageType
-import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.local.SocketManager
-import com.ome.app.data.remote.websocket.WebSocketManager
-import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.utils.MAIN
 import com.ome.app.utils.WifiHandler
@@ -18,12 +15,9 @@ import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class ConnectToWifiPasswordViewModel @Inject constructor(
-    val wifiHandler: WifiHandler,
-    val socketManager: SocketManager,
-    val webSocketManager: WebSocketManager,
-    val pref: PreferencesProvider,
-    val resourceProvider: ResourceProvider,
-    val stoveRepository: StoveRepository,
+    private val wifiHandler: WifiHandler,
+    private val socketManager: SocketManager,
+    private val resourceProvider: ResourceProvider,
     private val connectionStatusListener: ConnectionStatusListener
 ) : BaseViewModel() {
 
@@ -88,7 +82,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
         connectionStatusListener.shouldReactOnChanges = true
     }
 
-    var credentialFail = 0
+    private var credentialFail = 0
 
 
     private suspend fun handleWifiStatusMessage(message: String) {
