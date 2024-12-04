@@ -51,6 +51,7 @@ class SignupFragment : BaseFragment<SignupViewModel, FragmentSignupBinding>(
         }
         binding.phoneInput.doAfterTextChanged {
             binding.phoneInputLayout.error = null
+            it.log("phoneInput")
         }
         binding.password.doAfterTextChanged {
             binding.passwordLayout.errorPassword = null
