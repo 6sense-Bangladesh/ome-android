@@ -75,7 +75,7 @@ class WifiHandler(val context: Context) {
         password: String = PASSWORD
     ): Pair<Boolean, String?> {
         "Connecting to $currentSSID".log(TAG_)
-        return if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.TIRAMISU &&
+        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU &&
             ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
         ) false to "Location permission not granted"
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)

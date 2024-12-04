@@ -139,6 +139,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                         )
                     }else {
                         defaultErrorLiveData.postValue(resourceProvider.getString(R.string.incorrect_network_name_and_password))
+                        wifiReboot = 0
                     }
                 }
             }
