@@ -98,6 +98,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     }
 
     private var credentialFail = 0
+    private var wifiReboot = 0
 
 
     private suspend fun handleWifiStatusMessage(message: String) {
@@ -118,23 +119,27 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
             }
             "2" -> {
                 credentialFail++
-                if(credentialFail < 10) {
+                if(credentialFail < 12) {
                     delay(4.seconds)
                     sendMessage(KnobSocketMessageType.WIFI_STATUS)
-                }else if(credentialFail < 15) {
-                    sendMessage(KnobSocketMessageType.REBOOT)
-                    socketManager.stopClient()
-                    delay(5.seconds)
-                    connectToWifi()
-                    socketManager.connect()
-                    sendMessage(
-                        KnobSocketMessageType.TEST_WIFI,
-                        ssid = ssid,
-                        password = password,
-                        securityType = securityType
-                    )
-                }else {
-                    defaultErrorLiveData.postValue(resourceProvider.getString(R.string.incorrect_network_name_and_password))
+                }else if(credentialFail > 12) {
+                    credentialFail = 0
+                    wifiReboot++
+                    if(wifiReboot==0) {
+                        sendMessage(KnobSocketMessageType.REBOOT)
+                        socketManager.stopClient()
+                        delay(5.seconds)
+                        connectToWifi()
+                        socketManager.connect()
+                        sendMessage(
+                            KnobSocketMessageType.TEST_WIFI,
+                            ssid = ssid,
+                            password = password,
+                            securityType = securityType
+                        )
+                    }else {
+                        defaultErrorLiveData.postValue(resourceProvider.getString(R.string.incorrect_network_name_and_password))
+                    }
                 }
             }
             "1" -> {
