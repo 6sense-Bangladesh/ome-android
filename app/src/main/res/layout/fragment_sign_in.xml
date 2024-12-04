@@ -39,7 +39,7 @@
             android:autofillHints="emailAddress"
             android:hint="@string/email"
             android:imeOptions="actionNext"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:nextFocusForward="@id/lastName"
             android:textSize="@dimen/_12ssp" />
 

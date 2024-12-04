@@ -166,7 +166,7 @@ class MainVM @Inject constructor(
 
                                 when (val result = userRepository.getUserData()) {
                                     is ResponseWrapper.Error -> {
-                                        if (result.message.contains("Not found")) {
+                                        if (result.message.startsWith("Not found")) {
                                             amplifyManager.deleteUser()
                                             pref.clearData()
                                             savedStateHandle["startDestination"] = R.id.launchFragment

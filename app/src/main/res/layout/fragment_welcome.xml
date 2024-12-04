@@ -74,7 +74,7 @@
         android:id="@+id/startSetup"
         style="@style/OmeButton.Blue"
         android:fitsSystemWindows="true"
-        android:text="Start Set Up"
+        android:text="@string/start_set_up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

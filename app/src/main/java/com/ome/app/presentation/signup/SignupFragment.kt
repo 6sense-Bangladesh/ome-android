@@ -1,5 +1,6 @@
 package com.ome.app.presentation.signup
 
+import android.text.method.LinkMovementMethod
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import com.ome.app.databinding.FragmentSignupBinding
@@ -34,6 +35,11 @@ class SignupFragment : BaseFragment<SignupViewModel, FragmentSignupBinding>(
     }
 
     override fun setupUI() {
+        binding.termsAndConditions.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+    override fun setupListener() {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.firstName.doAfterTextChanged {
             binding.firstNameLayout.error = null
         }
@@ -52,11 +58,6 @@ class SignupFragment : BaseFragment<SignupViewModel, FragmentSignupBinding>(
         binding.retypePassword.doAfterTextChanged {
             binding.retypePasswordLayout.errorPassword = null
         }
-    }
-
-    override fun setupListener() {
-        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
-
         binding.btnSignUp.setBounceClickListener {
             viewModel.validateFields(
                 firstName = binding.firstName.text.toString(),

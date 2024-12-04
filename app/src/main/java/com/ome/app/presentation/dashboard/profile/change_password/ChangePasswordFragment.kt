@@ -24,6 +24,11 @@ class ChangePasswordFragment:  BaseFragment<ChangePasswordViewModel, FragmentCha
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.termsAndConditions.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+    override fun setupListener() {
+        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.continueBtn.setOnClickListener {
             viewModel.validatePassword(
                 binding.oldPassword.text.toString(),
@@ -36,11 +41,6 @@ class ChangePasswordFragment:  BaseFragment<ChangePasswordViewModel, FragmentCha
         binding.newPassword.doAfterTextChanged {
             binding.newPasswordLayout.error = null
         }
-
-        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
-
-        binding.termsAndConditions.movementMethod = LinkMovementMethod.getInstance()
-//        binding.termsAndConditions.setLinkTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
     }
 
     override fun setupObserver() {

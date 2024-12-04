@@ -81,6 +81,7 @@ class VerificationViewModel @Inject constructor(
                     saveUserData(result.value)
                     stoveRepository.getAllKnobs()
                     userRepository.getUserData()
+                    IO { pref.setTimer(Constants.VERIFICATION_KEY, 0) }
                     signUpConfirmationResultLiveData.postValue(true)
                 }
             }

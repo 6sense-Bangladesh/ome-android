@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_horizontal"
-                android:layout_marginTop="@dimen/margin_top_bar"
+                android:layout_marginTop="@dimen/_15sdp"
                 app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
                 app:boxCornerRadiusBottomStart="@dimen/_8sdp"
                 app:boxCornerRadiusTopEnd="@dimen/_8sdp"
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/email_address"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="textEmailAddress"
                     android:nextFocusForward="@id/phoneInput"
                     android:textSize="@dimen/_12ssp" />
 
@@ -209,7 +209,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:clickable="true"
                 android:focusable="true"
                 android:text="@string/by_clicking_continue"
@@ -224,12 +224,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/termsAndConditions" />
 
             <com.google.android.material.textview.MaterialTextView
+                style="@style/Label.Small"
                 android:id="@+id/materialTextView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_horizontal"
+                android:layout_marginHorizontal="@dimen/margin_horizontal"
                 android:gravity="center"
-                android:paddingTop="@dimen/margin_horizontal"
+                android:textColor="@color/gray"
+                android:layout_marginTop="@dimen/_25sdp"
                 android:text="@string/already_have_an_account"
                 app:layout_constraintTop_toBottomOf="@+id/btnSignUp" />
 
