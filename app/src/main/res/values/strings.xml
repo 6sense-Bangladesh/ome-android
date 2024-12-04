@@ -17,7 +17,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="enter_a_password">Enter a password</string>
     <string name="by_clicking_continue">By continuing, you agree to Ome\'s <a href="https://www.omekitchen.com/pages/terms">Terms of Service</a> and <a href="https://www.omekitchen.com/pages/privacy-policy"> Privacy Policy</a></string>
-    <string name="password_rules">Password must have 9 characters or more and contains at least 3 of the following types: uppercase, lowercase, and number.</string>
+    <string name="password_rules">Password must be 9 characters or more and contain at least 1 upper-case, 1 lower-case, &amp; 1 number.</string>
     <string name="check_email_for_code">Check email for code</string>
     <string name="confirmation_label">Enter the code we sent to your email address %1$s</string>
     <string name="confirmation_label_dialog">Confirmation code sent via email your email address %1$s</string>

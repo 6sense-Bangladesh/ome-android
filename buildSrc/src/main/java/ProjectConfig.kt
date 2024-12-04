@@ -7,7 +7,7 @@ object ProjectConfig {
     const val compileSdk = 35
     const val targetSdk = 35
 
-    const val versionCode = 22
+    const val versionCode = 23
     const val versionName = "1.0.032-ome-dev"
 
     val javaVersion = JavaVersion.VERSION_21
