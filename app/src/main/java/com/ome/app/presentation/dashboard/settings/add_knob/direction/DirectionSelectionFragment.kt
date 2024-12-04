@@ -2,7 +2,6 @@ package com.ome.app.presentation.dashboard.settings.add_knob.direction
 
 import android.os.Parcelable
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentDirectionSelectionBinding
 import com.ome.app.domain.model.state.Rotation
@@ -14,7 +13,6 @@ import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.orFalse
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
@@ -49,16 +47,26 @@ class DirectionSelectionFragment :
             if(params.isEditMode)
                 viewModel.updateDirection(onEnd = mainViewModel::getAllKnobs)
             else {
-                viewModel.continueBtnClicked = true
-                binding.continueBtn.startAnimation()
-                if(!mainViewModel.webSocketManager.connected)
-                    mainViewModel.connectToSocket(true)
-                else {
-                    lifecycleScope.launch {
-//                        delay(3.seconds)
-                        mainViewModel.socketConnected.emit(mainViewModel.webSocketManager.connected)
-                    }
-                }
+                navigateSafe(
+                    DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
+                        DeviceCalibrationFragmentParams(
+                            isComeFromSettings = params.isComeFromSettings,
+                            isDualKnob = params.isDualKnob,
+                            rotateDir = viewModel.clockwiseDir,
+                            macAddress = params.macAddress
+                        )
+                    )
+                )
+//                viewModel.continueBtnClicked = true
+//                binding.continueBtn.startAnimation()
+//                if(!mainViewModel.webSocketManager.connected)
+//                    mainViewModel.connectToSocket(true)
+//                else {
+//                    lifecycleScope.launch {
+////                        delay(3.seconds)
+//                        mainViewModel.socketConnected.emit(mainViewModel.webSocketManager.connected)
+//                    }
+//                }
             }
         }
         binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->

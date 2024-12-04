@@ -17,14 +17,19 @@ import com.ome.app.domain.model.network.websocket.MacAddress
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.utils.*
+import com.ome.app.utils.isFalse
+import com.ome.app.utils.log
+import com.ome.app.utils.logi
+import com.ome.app.utils.orMinusOne
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 
 @HiltViewModel
@@ -202,16 +207,16 @@ class MainVM @Inject constructor(
 
     fun connectToSocket(needStatus: Boolean = false) {
         launch(ioContext) {
-            webSocketManager.onSocketConnect = {
-                if (needStatus) {
-                    "onSocketConnect $it".loge()
-                    if (it) {
-                        delay(5.seconds)
-                        socketConnected.emit(true)
-                    } else
-                        socketConnected.emit(false)
-                }
-            }
+//            webSocketManager.onSocketConnect = {
+//                if (needStatus) {
+//                    "onSocketConnect $it".loge()
+//                    if (it) {
+//                        delay(5.seconds)
+//                        socketConnected.emit(true)
+//                    } else
+//                        socketConnected.emit(false)
+//                }
+//            }
             val knobs = stoveRepository.getAllKnobs()
             savedStateHandle["knobs"] = knobs.toList()
             try {

@@ -2,7 +2,6 @@ package com.ome.app.presentation.dashboard.settings.add_knob.zone
 
 import android.os.Parcelable
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentZoneSelectionBinding
 import com.ome.app.presentation.base.BaseFragment
@@ -13,7 +12,6 @@ import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
@@ -32,16 +30,25 @@ class ZoneSelectionFragment :
 
         binding.continueBtn.setBounceClickListener {
             if (viewModel.isDualKnob) {
-                viewModel.continueBtnClicked = true
-                binding.continueBtn.startAnimation()
-                if(!mainViewModel.webSocketManager.connected)
-                    mainViewModel.connectToSocket(true)
-                else {
-                    lifecycleScope.launch {
-//                        delay(3.seconds)
-                        mainViewModel.socketConnected.emit(mainViewModel.webSocketManager.connected)
-                    }
-                }
+                navigateSafe(
+                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
+                        DeviceCalibrationFragmentParams(
+                            isComeFromSettings = params.isComeFromSettings,
+                            isDualKnob = viewModel.isDualKnob,
+                            macAddress = params.macAddrs
+                        )
+                    )
+                )
+//                viewModel.continueBtnClicked = true
+//                binding.continueBtn.startAnimation()
+//                if(!mainViewModel.webSocketManager.connected)
+//                    mainViewModel.connectToSocket(true)
+//                else {
+//                    lifecycleScope.launch {
+////                        delay(3.seconds)
+//                        mainViewModel.socketConnected.emit(mainViewModel.webSocketManager.connected)
+//                    }
+//                }
             } else {
                 navigateSafe(
                     ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(
