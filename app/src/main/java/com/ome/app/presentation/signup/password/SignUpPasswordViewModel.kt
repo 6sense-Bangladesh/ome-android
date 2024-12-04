@@ -1,11 +1,15 @@
 package com.ome.app.presentation.signup.password
 
-import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
-import com.ome.app.utils.FieldsValidator
+import com.ome.app.domain.model.base.DefaultValidation
+import com.ome.app.domain.model.base.ResponseWrapper
+import com.ome.app.domain.model.base.Validation
+import com.ome.app.domain.model.base.isValidPasswordResult
+import com.ome.app.presentation.base.BaseViewModel
+import com.ome.app.presentation.base.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -13,8 +17,9 @@ class SignUpPasswordViewModel @Inject constructor(private val amplifyManager: Am
     BaseViewModel() {
 
     val validationSuccessLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
-    val signUpResultLiveData: SingleLiveEvent<AmplifyResultValue> = SingleLiveEvent()
     val passwordResetLiveData: SingleLiveEvent<AmplifyResultValue> = SingleLiveEvent()
+    val validationErrorFlow = MutableSharedFlow<List<Pair<Validation, String>>>()
+    val validationSuccessFlow = MutableSharedFlow<AmplifyResultValue>()
 
     var firstName = ""
     var lastName = ""
@@ -22,13 +27,9 @@ class SignUpPasswordViewModel @Inject constructor(private val amplifyManager: Am
     var code = ""
     var email = ""
     var currentPassword = ""
+    var retypePassword = ""
     var isForgotPassword = false
 
-
-    fun signUp() = launch(ioContext) {
-        val result = amplifyManager.signUp(email, currentPassword, phone)
-        signUpResultLiveData.postValue(result)
-    }
 
     fun confirmResetPassword() = launch(ioContext) {
         val result =
@@ -36,20 +37,32 @@ class SignUpPasswordViewModel @Inject constructor(private val amplifyManager: Am
         passwordResetLiveData.postValue(result)
     }
 
+    fun validateFields(currentPassword: String, retypePassword: String) {
+        this.currentPassword = currentPassword
+        this.retypePassword = retypePassword
 
-    fun resendCode() = launch(ioContext) {
-        val result = amplifyManager.resendSignUpCode(email)
-        signUpResultLiveData.postValue(result)
-    }
+        val validationList = mutableListOf<Pair<Validation, String>>()
 
-    fun validatePassword(password: String, confirmPassword: String) {
-        val result = FieldsValidator.validatePassword(password, confirmPassword)
-        if(result.first){
-            currentPassword = password
-            validationSuccessLiveData.setNewValue(true)
-        } else {
-            defaultErrorLiveData.setNewValue(result.second)
+        val passValidator = currentPassword.isValidPasswordResult()
+
+        launch(ioContext) {
+            if (currentPassword.isBlank()) {
+                validationList.add(Pair(Validation.NEW_PASSWORD, DefaultValidation.REQUIRED))
+            } else if (passValidator is ResponseWrapper.Error) {
+                validationList.add(Pair(Validation.NEW_PASSWORD, passValidator.message))
+            }
+
+            if (retypePassword.isBlank()) {
+                validationList.add(Pair(Validation.RE_PASSWORD, DefaultValidation.REQUIRED))
+            } else if (currentPassword != retypePassword) {
+                validationList.add(Pair(Validation.RE_PASSWORD, "Password doesn't match."))
+            }
+            validationErrorFlow.emit(validationList)
+            if (validationList.isEmpty()) {
+                validationSuccessFlow.emit(
+                    amplifyManager.confirmResetPassword(currentPassword, code)
+                )
+            }
         }
     }
-
 }
