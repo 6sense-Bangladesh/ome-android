@@ -20,7 +20,7 @@
     <string name="password_rules">Password must be 9 characters or more and contain at least 1 upper-case, 1 lower-case, &amp; 1 number.</string>
     <string name="check_email_for_code">Check email for code</string>
     <string name="confirmation_label">Enter the code we sent to your email address %1$s</string>
-    <string name="confirmation_label_dialog">Confirmation code sent via email your email address %1$s</string>
+    <string name="confirmation_label_dialog">Confirmation code has been sent to your email address: %1$s</string>
     <string name="verification_code">Verification Code</string>
     <string name="hyphen">-</string>
     <string name="zero">0</string>

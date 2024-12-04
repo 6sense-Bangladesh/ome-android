@@ -2,10 +2,8 @@ package com.ome.app.data.local
 
 import android.content.Context
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
-import com.ome.app.utils.TAG
 import com.ome.app.utils.log
 import com.ome.app.utils.loge
-import com.ome.app.utils.logi
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import okhttp3.ResponseBody
@@ -38,6 +36,7 @@ class SocketManager(
     companion object {
         private const val KNOB_IP_ADDRESS = "10.10.0.1"
         private const val KNOB_PORT = 8
+        private const val TAG = "KnobSocketLocal"
     }
 
     private var mOut: DataOutputStream? = null
@@ -53,7 +52,7 @@ class SocketManager(
 
     var messageReceived: (messageType: KnobSocketMessageType, message: String) -> Unit = { _, _ -> }
 
-    var onSocketConnect: () -> Unit = {}
+    var onSocketConnect: (Boolean) -> Unit = {}
 
     private var mRun = false
 
@@ -78,9 +77,9 @@ class SocketManager(
                 if (message == KnobSocketMessageType.TEST_WIFI || message == KnobSocketMessageType.SET_WIFI) {
                     finalMessage += " \"${params[0]}\" \"${params[1]}\" ${params[2]}"
                 }
+                "Sending: $finalMessage".log(TAG)
                 // Send the message
                 if (mOut != null) {
-                    logi("Sending: $finalMessage")
                     var data = encrypt(finalMessage)
 
                     // Pad data if needed
@@ -92,9 +91,9 @@ class SocketManager(
                     mOut?.write(data)
                     mOut?.flush()
                     lastMessageSent = message
-                }
+                } else reconnectSocket()
             } catch (e: Exception) {
-                "SocketException encountered: ${e.message}".loge(TAG)
+                "SocketException encountered: ${e.message}".log(TAG)
 //                reconnectSocket()  // Attempt to reconnect
 //                sendMessage(message, *params)  // Retry sending the message after reconnecting
             }
@@ -118,13 +117,12 @@ class SocketManager(
 
         val decryptedMessage = String(buffer.toByteArray().removePadding(), StandardCharsets.UTF_8)
         decryptedMessage.let {
-            logi("ResponseFrom: ${lastMessageSent.path} , Message: $it")
+            "ResponseFrom: ${lastMessageSent.path} , Message: $it".log(TAG)
             if (lastMessageSent == KnobSocketMessageType.GET_NETWORKS) {
                 networksFlow.value = parseNetworkList(it)
             }
             messageReceived(lastMessageSent, it)
         }
-        logi("BytesRead: $totalBytesRead")
     }
 
 
@@ -142,7 +140,7 @@ class SocketManager(
                 }
             }
         }
-        networksList.log("wifiNetworksList")
+        networksList.log("$TAG - wifiNetworksList")
 
 //        val regex = """\d+\s+\d+\s+-\d+\s+([A-F0-9:]{17})\s+\d+\s+(.*)""".toRegex()
 //
@@ -193,7 +191,7 @@ class SocketManager(
 
                 // Parse response body
                 val data = response.body()?.string()
-                data.log("scanForNetworks")
+                data.log("$TAG - scanForNetworks")
                 if (data != null) {
                     val strEntries = data.split(Regex("[{}]"))
                     for ((index, entry) in strEntries.withIndex()) {
@@ -249,10 +247,10 @@ class SocketManager(
                 socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
                 mOut = DataOutputStream(socket.getOutputStream())
                 mIn = DataInputStream(socket.getInputStream())
-                onSocketConnect()  // Call this to handle any setup needed on connect
+                onSocketConnect(true)  // Call this to handle any setup needed on connect
                 mRun = true
                 connected = true
-                logi("Reconnected successfully on attempt ${attempts + 1}")
+                "Reconnected successfully on attempt ${attempts + 1}".log(TAG)
 
                 // Start reading again
                 while (mRun) {
@@ -260,7 +258,7 @@ class SocketManager(
                 }
             } catch (e: Exception) {
                 attempts++
-                "Reconnect attempt $attempts failed: ${e.message}".loge(TAG)
+                "Reconnect attempt $attempts failed: ${e.message}".log(TAG)
                 delay(delayMillis)  // Wait before the next attempt
             }
         }
@@ -275,15 +273,15 @@ class SocketManager(
 
 
     fun connect(){
-        "Connect to socket".loge(TAG)
+        "Connect to socket".log(TAG)
         stopClient()
         try {
             socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
             mRun = true
             mOut = DataOutputStream(socket.getOutputStream())
             mIn = DataInputStream(socket.getInputStream())
-            onSocketConnect()
-            "Socket Connected".loge(TAG)
+            onSocketConnect(true)
+            "Socket Connected".log(TAG)
             while (mRun) {
                 read()
             }
@@ -295,7 +293,7 @@ class SocketManager(
         }
     }
 
-    private fun stopClient() {
+    fun stopClient() {
         mRun = false
         networksFlow.value = null
         try {

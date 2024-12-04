@@ -1,7 +1,6 @@
 package com.ome.app.data.remote.websocket
 
 import android.content.Context
-import android.util.Log
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.ome.app.BuildConfig
 import com.ome.app.domain.model.network.response.KnobDto
@@ -12,6 +11,7 @@ import com.ome.app.domain.model.network.websocket.MacAddress
 import com.ome.app.domain.model.state.*
 import com.ome.app.utils.FlowStreamAdapter
 import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
+import com.ome.app.utils.log
 import com.ome.app.utils.orMinusOne
 import com.ome.app.utils.tryInMain
 import com.tinder.scarlet.Scarlet
@@ -39,6 +39,10 @@ class WebSocketManager(
     var onSocketConnect: suspend (Boolean) -> Unit = {}
     var connected = false
 
+    companion object{
+        private const val TAG = "KnobSocketWeb"
+    }
+
 
 //    private val knobBatteryFlow: MutableStateFlow<KnobBattery?> = MutableStateFlow(null)
 //    private val knobConnectStatusFlow: MutableStateFlow<KnobConnectStatus?> = MutableStateFlow(null)
@@ -51,14 +55,14 @@ class WebSocketManager(
 
     suspend fun initWebSocket(knobs: List<KnobDto>, userId: String) {
         connected = false
-        val url = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=${knobs.map { knob -> knob.macAddr }.joinToString(separator = ",") { it }}&inirvUid=$userId"
+        val knobMacs = knobs.map { knob -> knob.macAddr }.joinToString(separator = ",")
+        val url = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=$knobMacs&inirvUid=$userId"
+        knobMacs.log("$TAG - initWebSocket")
         val knobStates= knobs.associateBy { it.macAddr }.mapValues { it.value.asKnobState }
         knobState.value = knobStates
 
         scarlet = Scarlet.Builder()
-            .webSocketFactory(
-                createHttpClient().newWebSocketFactory(url)
-            )
+            .webSocketFactory(createHttpClient().newWebSocketFactory(url))
             .addMessageAdapterFactory(GsonMessageAdapter.Factory())
             .addStreamAdapterFactory(FlowStreamAdapter.Factory)
             .build()
@@ -69,11 +73,10 @@ class WebSocketManager(
     }
 
 
-    private fun createHttpClient(
-    ): OkHttpClient {
+    private fun createHttpClient(): OkHttpClient {
         val client: OkHttpClient =
             OkHttpClient.Builder()
-                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
                 .addInterceptor(ChuckerInterceptor(context))
                 .addInterceptor(Interceptor { chain ->
                     val original = chain.request()
@@ -93,7 +96,7 @@ class WebSocketManager(
                 onSocketConnect(connected)
             }
             getKnobService()?.knobMessageEvent()?.collect {
-                Log.d("getKnobService", "subscribe: ${it.name} - ${it.name} ${it.value} ${it.macAddr}")
+                "getKnobService: ${it.name} - ${it.name} ${it.value} ${it.macAddr}".log(TAG)
                 val knobEntity = it.name.knobEntity
                 var needRefresh = true
                 when (knobEntity) {

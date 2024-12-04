@@ -77,8 +77,8 @@ class ConnectToWifiViewModel @Inject constructor(
                 delay(6.seconds)
             }
             connectionStatusListener.shouldReactOnChanges = false
-            val result = wifiHandler.connectToWifi()
-
+            val result = wifiHandler.connectToKnobHotspot()
+            result.log("connectToWifi")
             //Check whether device connected to wifi or not
             if (result.first) {
                 socketManager.connect()

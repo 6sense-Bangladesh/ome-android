@@ -24,6 +24,6 @@ class SignInAndroidUnitTest {
     @Test
     fun signInWithEmptyUserName_ReturnsFalse() {
         viewModel.signIn("", "password")
-        assertThat(viewModel.destinationAfterSignInLiveData.value).isNull()
+        assertThat(viewModel.destinationAfterSignFlow).isNull()
     }
 }

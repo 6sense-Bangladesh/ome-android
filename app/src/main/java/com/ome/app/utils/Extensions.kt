@@ -422,9 +422,9 @@ fun Fragment.requireApplication() = requireContext().applicationContext!!
 //    }
 //}
 
-fun Any?.log(tag: String = "TAG", hints: String = "") {
+fun Any?.log(tag: String = "TAG") {
     if (BuildConfig.DEBUG)
-        Log.i("log> '$tag'", "$hints: ${this?.javaClass?.name}: $this")
+        Log.d("log> '$tag'", "$tag - $this : ${this?.javaClass?.name?.split('.')?.lastOrNull() ?: ""}")
 }
 
 /**View Extension Function*/
