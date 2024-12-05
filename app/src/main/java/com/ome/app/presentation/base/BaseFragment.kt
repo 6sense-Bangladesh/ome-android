@@ -22,6 +22,7 @@ import com.ome.app.presentation.dashboard.my_stove.MyStoveFragment
 import com.ome.app.presentation.dashboard.profile.ProfileFragment
 import com.ome.app.presentation.dashboard.settings.SettingsFragment
 import com.ome.app.presentation.launch.LaunchFragment
+import com.ome.app.presentation.signup.confirmation.VerificationFragment
 import com.ome.app.presentation.signup.welcome.WelcomeFragment
 import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.onBackPressedIgnoreCallback
@@ -96,7 +97,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                 is WelcomeFragment,
                 is MembersFragment,
                 is SettingsFragment,
-                is LaunchFragment -> activity?.finishAndRemoveTask()
+                is LaunchFragment, is VerificationFragment -> activity?.finishAndRemoveTask()
                 else -> onBackPressedIgnoreCallback()
             }
         }

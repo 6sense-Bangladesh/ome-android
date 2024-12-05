@@ -7,6 +7,9 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentForgotPasswordEmailBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.signup.password.AuthParams
+import com.ome.app.utils.Constants
+import com.ome.app.utils.IO
+import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
@@ -37,8 +40,9 @@ class ForgotPasswordEmailFragment :
 
     override fun setupObserver() {
         super.setupObserver()
-        subscribe(viewModel.forgotPasswordSuccess) {
+        viewModel.forgotPasswordSuccess.collectWithLifecycle(){
             binding.continueBtn.revertAnimation()
+            IO { viewModel.pref.setTimer(Constants.VERIFICATION_KEY, Constants.TWO_MINUTES_MILLIS) }
             navigateSafe(
                 ForgotPasswordEmailFragmentDirections.actionForgotPasswordEmailFragmentToVerificationFragment(
                     AuthParams(isForgotPassword = true, email = binding.email.text.toString())

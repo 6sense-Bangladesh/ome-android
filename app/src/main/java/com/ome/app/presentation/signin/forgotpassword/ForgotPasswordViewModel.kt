@@ -1,24 +1,29 @@
 package com.ome.app.presentation.signin.forgotpassword
 
 import android.util.Patterns
+import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class ForgotPasswordViewModel @Inject constructor(val amplifyManager: AmplifyManager): BaseViewModel() {
+class ForgotPasswordViewModel @Inject constructor(
+    val amplifyManager: AmplifyManager,
+    val pref : PreferencesProvider
+): BaseViewModel() {
 
-    val forgotPasswordSuccess: SingleLiveEvent<AmplifyResultValue> = SingleLiveEvent()
+    val forgotPasswordSuccess=  MutableSharedFlow<AmplifyResultValue>()
     val emailAndPassValidationLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
 
     var email = ""
 
     fun forgotPassword()  = launch(ioContext) {
         val result = amplifyManager.resetPassword(email)
-        forgotPasswordSuccess.postValue(result)
+        forgotPasswordSuccess.emit(result)
     }
 
     fun validateEmail(email: String) {

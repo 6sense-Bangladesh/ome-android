@@ -36,7 +36,6 @@ class VerificationFragment :
     }
 
     override fun setupListener() {
-        binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.apply {
             btnVerify.setBounceClickListener {
                 binding.btnVerify.startAnimation()

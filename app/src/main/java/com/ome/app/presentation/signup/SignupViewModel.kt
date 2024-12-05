@@ -42,7 +42,7 @@ class SignupViewModel @Inject constructor(
         this.firstName = firstName
         this.lastName = lastName
         this.email = email
-        this.phone = "+1$phone"
+        this.phone = phone
         this.password = password
 
         val passValidator = password.isValidPasswordResult()
@@ -59,7 +59,7 @@ class SignupViewModel @Inject constructor(
             } else if (!email.isValidEmail()) {
                 validationList.add(Pair(Validation.EMAIL, DefaultValidation.INVALID_EMAIL))
             }
-            if (phone.isNotBlank() && !this@SignupViewModel.phone.isValidPhoneUS()) {
+            if (phone.isNotBlank() && !phone.isValidPhoneUS()) {
                 validationList.add(Pair(Validation.PHONE, DefaultValidation.INVALID_PHONE))
             }
             if (password.isBlank()) {
@@ -75,7 +75,8 @@ class SignupViewModel @Inject constructor(
             validationErrorFlow.emit(validationList)
             if (validationList.isEmpty()) {
                 validationSuccessFlow.emit(
-                    amplifyManager.signUp(email, password, this@SignupViewModel.phone)
+                    amplifyManager.signUp(email, password,
+                        if (phone.isNotBlank()) "+1$phone" else phone)
                 )
             }
         }

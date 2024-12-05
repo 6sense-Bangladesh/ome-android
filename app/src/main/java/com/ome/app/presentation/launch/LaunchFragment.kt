@@ -30,7 +30,7 @@ class LaunchFragment :
             lastTime = IO { viewModel.pref.getTimer(Constants.VERIFICATION_KEY) }
             val params = IO { viewModel.pref.utils.readObject<AuthParams>(PrefKeys.AUTH_PARAMS) }
             params.log("$time")
-            if (time > -120 && params != null)
+            if (time > 0 && params != null)
                 navigateSafe(LaunchFragmentDirections.actionLaunchFragmentToVerificationFragmentNoBack(params))
         }
     }
