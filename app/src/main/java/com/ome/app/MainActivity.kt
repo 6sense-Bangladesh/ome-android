@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +32,10 @@ class MainActivity : AppCompatActivity() {
             statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
             navigationBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
         )
+        if (BuildConfig.DEBUG){
+            Firebase.messaging.subscribeToTopic("test")
+        }
+//        dynamicRotation()
         viewModel.registerConnectionListener()
         setContentView(R.layout.activity_main)
         viewModel.initStartDestination()
