@@ -51,7 +51,7 @@ class WifiHandler(val context: Context) {
     var onConnectionChange: ((Boolean) -> Unit) = {}
     var isConnected = false
 
-    private var omeFail = false
+    var omeFail = false
 
     companion object {
         private const val TAG_ = "WifiHandler"
@@ -111,7 +111,7 @@ class WifiHandler(val context: Context) {
             }
 
             override fun onUnavailable() {
-                handleHotspotConnectionFailed(continuation)
+                continuation.handleHotspotConnectionFailed()
                 isConnected = false
                 onConnectionChange(false)
             }
@@ -183,7 +183,7 @@ class WifiHandler(val context: Context) {
 
             if (!enabled || !reconnected) {
                 context.unregisterReceiver(receiver)
-                handleHotspotConnectionFailed(continuation)
+                continuation.handleHotspotConnectionFailed()
             }
 
             continuation.invokeOnCancellation {
@@ -194,15 +194,13 @@ class WifiHandler(val context: Context) {
         }
     }
 
-    private fun handleHotspotConnectionFailed(continuation: CancellableContinuation<Pair<Boolean, String?>>) {
+    private fun CancellableContinuation<Pair<Boolean, String?>>.handleHotspotConnectionFailed() {
         "Connection failed for $currentSSID".log(TAG_)
-        if(!continuation.isActive) return
-        if (!omeFail) {
-            continuation.resume(false to null)
-            omeFail = true
+        if(!isActive) return
+        if (currentSSID == omeKnobSSID) {
+            resume(false to null)
         } else {
-            omeFail = false
-            continuation.resume(false to context.getString(R.string.unable_to_join_the_network, omeKnobSSID, inirvKnobSSID))
+            resume(false to this@WifiHandler.context.getString(R.string.unable_to_join_the_network, omeKnobSSID, inirvKnobSSID))
         }
         switchToOtherNetwork()
     }
