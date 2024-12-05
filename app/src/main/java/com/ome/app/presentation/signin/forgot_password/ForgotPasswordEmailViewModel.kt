@@ -1,4 +1,4 @@
-package com.ome.app.presentation.signin.forgotpassword
+package com.ome.app.presentation.signin.forgot_password
 
 import android.util.Patterns
 import com.ome.app.data.local.PreferencesProvider
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class ForgotPasswordViewModel @Inject constructor(
+class ForgotPasswordEmailViewModel @Inject constructor(
     val amplifyManager: AmplifyManager,
     val pref : PreferencesProvider
 ): BaseViewModel() {

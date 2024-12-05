@@ -1,32 +1,25 @@
-package com.ome.app.presentation.signup.password
+package com.ome.app.presentation.signin.forgot_password
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import com.google.gson.annotations.SerializedName
 import com.ome.app.R
 import com.ome.app.databinding.FragmentForgotPasswordBinding
 import com.ome.app.domain.model.base.Validation
 import com.ome.app.domain.model.base.errorPassword
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.popBackSafe
-import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.subscribe
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class ForgotPasswordFragment :
-    BaseFragment<SignUpPasswordViewModel, FragmentForgotPasswordBinding>(
+    BaseFragment<ForgotPasswordViewModel, FragmentForgotPasswordBinding>(
         FragmentForgotPasswordBinding::inflate
     ) {
 
-    override val viewModel: SignUpPasswordViewModel by viewModels()
+    override val viewModel: ForgotPasswordViewModel by viewModels()
 
     private val args by navArgs<ForgotPasswordFragmentArgs>()
     val params by lazy { args.params }
@@ -88,13 +81,4 @@ class ForgotPasswordFragment :
 
 }
 
-@Parcelize
-data class AuthParams(
-    @SerializedName("first_name") val firstName: String = "",
-    @SerializedName("last_name") val lastName: String = "",
-    @SerializedName("current_password") val currentPassword: String = "",
-    @SerializedName("email") val email: String = "",
-    @SerializedName("phone") val phone: String = "",
-    @SerializedName("code") var code: String = "",
-    @SerializedName("is_forgot_password") val isForgotPassword: Boolean = false
-) : Parcelable
+

@@ -1,4 +1,4 @@
-package com.ome.app.presentation.signup.password
+package com.ome.app.presentation.signin.forgot_password
 
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpPasswordViewModel @Inject constructor(private val amplifyManager: AmplifyManager) :
+class ForgotPasswordViewModel @Inject constructor(private val amplifyManager: AmplifyManager) :
     BaseViewModel() {
 
     val validationSuccessLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()

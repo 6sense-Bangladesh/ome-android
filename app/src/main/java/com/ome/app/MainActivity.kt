@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("RestrictedApi")
+        @SuppressLint("RestrictedApi")
     private fun initNavigationGraph(startDestinationId: Int) {
         startDestinationId.log("initNavigationGraph")
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment

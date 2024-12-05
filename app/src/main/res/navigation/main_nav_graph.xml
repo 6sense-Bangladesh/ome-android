@@ -116,7 +116,7 @@
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.ome.app.presentation.signup.password.ForgotPasswordFragment"
+        android:name="com.ome.app.presentation.signin.forgot_password.ForgotPasswordFragment"
         android:label="ForgotPasswordFragment"
         tools:layout="@layout/fragment_forgot_password">
         <action
@@ -128,7 +128,7 @@
             app:destination="@id/verificationFragment" />
         <argument
             android:name="params"
-            app:argType="com.ome.app.presentation.signup.password.AuthParams" />
+            app:argType="com.ome.app.presentation.launch.AuthParams" />
     </fragment>
     <fragment
         android:id="@+id/verificationFragment"
@@ -137,7 +137,7 @@
         tools:layout="@layout/fragment_verification">
         <argument
             android:name="params"
-            app:argType="com.ome.app.presentation.signup.password.AuthParams" />
+            app:argType="com.ome.app.presentation.launch.AuthParams" />
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -165,7 +165,7 @@
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordEmailFragment"
-        android:name="com.ome.app.presentation.signin.forgotpassword.ForgotPasswordEmailFragment"
+        android:name="com.ome.app.presentation.signin.forgot_password.ForgotPasswordEmailFragment"
         android:label="ForgotPasswordFragment"
         tools:layout="@layout/fragment_forgot_password_email">
         <action
@@ -177,7 +177,7 @@
             app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="params"
-            app:argType="com.ome.app.presentation.signup.password.AuthParams" />
+            app:argType="com.ome.app.presentation.launch.AuthParams" />
     </fragment>
 
     <fragment

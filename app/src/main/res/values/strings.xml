@@ -107,7 +107,7 @@
     <string name="manual_connect">Manual Connect</string>
     <string name="yes_let_s_connect">Yes, Let\'s Continue</string>
     <string name="permission_not_granted">Permission not granted</string>
-    <string name="unable_to_join_the_network">Unable to join the networks <b>\"%1$s\"</b> and <b>\"%2$s\"</b></string>
+    <string name="unable_to_connect">Unable to connect to the knob. Plug in the knob, then unplug it and try again</string>
     <string name="connect_to_your_wi_fi">Connect to your Wi-Fi</string>
     <string name="connect_your_phone_to_ome">Connect your phone to Ome</string>
     <string name="manual_setup1">Open Wi-Fi settings on your phone and select the network that says either:</string>

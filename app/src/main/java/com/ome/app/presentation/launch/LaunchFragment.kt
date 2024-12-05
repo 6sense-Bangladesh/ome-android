@@ -9,7 +9,6 @@ import com.ome.app.data.local.PrefKeys
 import com.ome.app.databinding.FragmentLaunchBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.base.EmptyViewModel
-import com.ome.app.presentation.signup.password.AuthParams
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -47,7 +46,9 @@ class LaunchFragment :
         if (BuildConfig.DEBUG) {
             binding.imageView7.setBounceClickListener {
                 viewModel.pref.setTimer(Constants.VERIFICATION_KEY, Constants.TWO_MINUTES_MILLIS)
-                navigateSafe(LaunchFragmentDirections.actionLaunchFragmentToVerificationFragment(AuthParams(email = "sdosf@jfd.df")))
+                navigateSafe(LaunchFragmentDirections.actionLaunchFragmentToVerificationFragment(
+                    AuthParams(email = "sdosf@jfd.df")
+                ))
             }
         }
     }

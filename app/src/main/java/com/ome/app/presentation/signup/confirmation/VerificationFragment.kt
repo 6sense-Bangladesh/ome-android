@@ -3,8 +3,10 @@ package com.ome.app.presentation.signup.confirmation
 import android.view.KeyEvent
 import androidx.core.view.OnReceiveContentListener
 import androidx.core.view.ViewCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.amplifyframework.kotlin.core.Amplify
 import com.ome.app.R
@@ -54,9 +56,21 @@ class VerificationFragment :
                 listOf(otp1,otp2,otp3,otp4,otp5,otp6).forEach {
                     it.setText("")
                 }
-//                btnVerify.requestFocus()
+//                btnVerify.setSelectionToLast()
             }
-            listOf(otp1,otp2,otp3,otp4,otp5,otp6).forEach {
+            val otpEditTexts = listOf(otp1,otp2,otp3,otp4,otp5,otp6)
+            otpEditTexts.toMutableList().apply { removeFirstOrNull() }.forEachIndexed { index, editText ->
+                editText.setOnFocusChangeListener { _, _ ->
+                    lifecycleScope.launch {
+                        delay(1.seconds)
+                        val targetIndex = (index downTo 0).find { otpEditTexts[it].length() != 0 } ?: 0
+                        if (editText.length() == 0 && editText.hasFocus()) {
+                            otpEditTexts[targetIndex].setSelectionToLast()
+                        }
+                    }
+                }
+            }
+            otpEditTexts.forEach {
                 ViewCompat.setOnReceiveContentListener(it, arrayOf("text/*"),
                     OnReceiveContentListener { _, payload ->
                         payload.source.log("payload.source")
@@ -82,65 +96,100 @@ class VerificationFragment :
             }
             otp1.doOnTextChanged { _, _, _, count ->
                 if (count == 1)
-                    otp2.requestFocus()
+                    otp2.setSelectionToLast()
             }
             otp2.doOnTextChanged { _, _, before, count ->
                 if (count == 1)
-                    otp3.requestFocus()
+                    otp3.setSelectionToLast()
                 else if (count < before)
-                    otp1.requestFocus()
+                    otp1.setSelectionToLast()
             }
             otp3.doOnTextChanged { _, _, before, count ->
                 if (count == 1)
-                    otp4.requestFocus()
+                    otp4.setSelectionToLast()
                 else if (count < before)
-                    otp2.requestFocus()
+                    otp2.setSelectionToLast()
             }
             otp4.doOnTextChanged { _, _, before, count ->
                 if (count == 1)
-                    otp5.requestFocus()
+                    otp5.setSelectionToLast()
                 else if (count < before)
-                    otp3.requestFocus()
+                    otp3.setSelectionToLast()
             }
             otp5.doOnTextChanged { _, _, before, count ->
                 if (count == 1)
-                    otp6.requestFocus()
+                    otp6.setSelectionToLast()
                 else if (count < before)
-                    otp4.requestFocus()
+                    otp4.setSelectionToLast()
             }
             otp6.doOnTextChanged { _, _, before, count ->
                 if (count < before)
-                    otp5.requestFocus()
+                    otp5.setSelectionToLast()
             }
 
+            otp1.doAfterTextChanged {
+                if (it?.length == 2){
+                    otp1.setText(it.first().toString())
+                    otp2.setText(it.last().toString())
+                    otp2.setSelectionToLast()
+                }
+            }
+
+            otp2.doAfterTextChanged {
+                if (it?.length == 2) {
+                    otp2.setText(it.first().toString())
+                    otp3.setText(it.last().toString())
+                    otp3.setSelectionToLast()
+                }
+            }
+            otp3.doAfterTextChanged {
+                if (it?.length == 2) {
+                    otp3.setText(it.first().toString())
+                    otp4.setText(it.last().toString())
+                    otp4.setSelectionToLast()
+                }
+            }
+            otp4.doAfterTextChanged {
+                if (it?.length == 2) {
+                    otp4.setText(it.first().toString())
+                    otp5.setText(it.last().toString())
+                    otp5.setSelectionToLast()
+                }
+            }
+            otp5.doAfterTextChanged {
+                if (it?.length == 2) {
+                    otp5.setText(it.first().toString())
+                    otp6.setText(it.last().toString())
+                    otp6.setSelectionToLast()
+                }
+            }
 
             otp2.setOnKeyListener { _, keyCode, _ ->
-                keyCode.log()
+                keyCode.log("onKey ${KeyEvent.KEYCODE_DEL}")
                 if (keyCode == KeyEvent.KEYCODE_DEL && otp2.selectionStart == 0)
-                    otp1.requestFocus()
+                    otp1.setSelectionToLast()
                 false
             }
             otp3.setOnKeyListener { _, keyCode, _ ->
                 if (keyCode == KeyEvent.KEYCODE_DEL && otp3.selectionStart == 0)
-                    otp2.requestFocus()
+                    otp2.setSelectionToLast()
                 false
             }
             otp4.setOnKeyListener { _, keyCode, _ ->
                 if (keyCode == KeyEvent.KEYCODE_DEL && otp4.selectionStart == 0)
-                    otp3.requestFocus()
+                    otp3.setSelectionToLast()
                 false
             }
             otp5.setOnKeyListener { _, keyCode, _ ->
                 if (keyCode == KeyEvent.KEYCODE_DEL && otp5.selectionStart == 0)
-                    otp4.requestFocus()
+                    otp4.setSelectionToLast()
                 false
             }
             otp6.setOnKeyListener { _, keyCode, _ ->
                 if (keyCode == KeyEvent.KEYCODE_DEL && otp6.selectionStart == 0)
-                    otp5.requestFocus()
+                    otp5.setSelectionToLast()
                 false
             }
-
         }
         onDismissErrorDialog = {
             binding.loadingLayout.root.gone()

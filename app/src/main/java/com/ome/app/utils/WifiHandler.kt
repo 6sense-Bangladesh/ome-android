@@ -131,6 +131,58 @@ class WifiHandler(val context: Context) {
             connectivityManager.bindProcessToNetwork(null)
         }
     }
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private suspend fun connectModern2(): Pair<Boolean, String?> = withContext(Dispatchers.IO) {
+        val suggestionOme = WifiNetworkSuggestion.Builder()
+            .setSsid(omeKnobSSID)
+            .setWpa2Passphrase(PASSWORD)
+            .setIsAppInteractionRequired(true) // Ensures a prompt for user approval
+            .build()
+        val suggestionInirv = WifiNetworkSuggestion.Builder()
+            .setSsid(inirvKnobSSID)
+            .setWpa2Passphrase(PASSWORD)
+            .setIsAppInteractionRequired(true) // Ensures a prompt for user approval
+            .build()
+
+        val suggestionsList = listOf(suggestionOme, suggestionInirv)
+
+        // Add the suggestions to the Wi-Fi manager
+        val result = wifiManager.addNetworkSuggestions(suggestionsList)
+        if (result != WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS) {
+            return@withContext false to "Failed to add network suggestion: $result"
+        }
+
+        // Wait for the device to connect to the network
+        suspendCancellableCoroutine<Pair<Boolean, String?>> { continuation ->
+            val receiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) {
+                    if (!continuation.isActive) return
+                    if (intent.action == WifiManager.ACTION_WIFI_NETWORK_SUGGESTION_POST_CONNECTION) {
+                        "Connected to".log(TAG_)
+                        context.unregisterReceiver(this)
+                        continuation.resume(true to null)
+                    }
+                }
+            }
+
+            context.registerReceiver(receiver, IntentFilter(WifiManager.ACTION_WIFI_NETWORK_SUGGESTION_POST_CONNECTION))
+
+            continuation.invokeOnCancellation {
+                runCatching {
+                    context.unregisterReceiver(receiver)
+                }
+            }
+            // Timeout for failure detection
+            CoroutineScope(coroutineContext).launch {
+                delay(10000) // Wait for 10 seconds
+                if (continuation.isActive) {
+                    context.unregisterReceiver(receiver)
+                    continuation.resume(false to context.getString(R.string.unable_to_connect))
+                }
+            }
+        }
+    }
+
 
     @Suppress("DEPRECATION")
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_WIFI_STATE])
@@ -200,17 +252,16 @@ class WifiHandler(val context: Context) {
         if (currentSSID == omeKnobSSID) {
             resume(false to null)
         } else {
-            resume(false to this@WifiHandler.context.getString(R.string.unable_to_join_the_network, omeKnobSSID, inirvKnobSSID))
+            resume(false to this@WifiHandler.context.getString(R.string.unable_to_connect))
         }
         switchToOtherNetwork()
     }
 
     @Suppress("DEPRECATION")
-    @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_WIFI_STATE])
     fun disconnect(ssid: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             connectivityManager.bindProcessToNetwork(null)
-        } else {
+        } else if(ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             try {
                 wifiManager.configuredNetworks?.forEach { network ->
                     if (network.SSID == "\"$ssid\"") {
@@ -221,15 +272,6 @@ class WifiHandler(val context: Context) {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }
-    }
-
-    fun isConnectedToSSID(ssid: String): Boolean {
-        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            wifiManager.connectionInfo?.ssid == "\"$ssid\""
-        } else {
-            // Not supported in Android 13+ without location permissions
-            throw UnsupportedOperationException("isConnectedToSSID is not supported on Android 13+")
         }
     }
 
@@ -247,7 +289,7 @@ class WifiHandler(val context: Context) {
                             omeFail = false
                             "Connection failed for $currentSSID".log(TAG_)
                             continuation.resume(false to
-                                    context.getString(R.string.unable_to_join_the_network, omeKnobSSID, inirvKnobSSID)
+                                    context.getString(R.string.unable_to_connect)
                             )
                         }
                     }
@@ -269,7 +311,7 @@ class WifiHandler(val context: Context) {
                                 }else{
                                     omeFail = false
                                     continuation.resume(false to
-                                            context.getString(R.string.unable_to_join_the_network, omeKnobSSID, inirvKnobSSID)
+                                            context.getString(R.string.unable_to_connect)
                                     )
                                 }
                                 switchToOtherNetwork()

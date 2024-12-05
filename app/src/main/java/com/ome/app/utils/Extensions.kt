@@ -196,6 +196,11 @@ val EditText.string: String
 val EditText.trimmedString: String
     get() = this.text.toString().trim()
 
+fun EditText.setSelectionToLast(){
+    requestFocus()
+    setSelection(text?.length.orZero())
+}
+
 
 /**Exception Extension Function*/
 val Exception.errorMessage: String

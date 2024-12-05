@@ -1,4 +1,4 @@
-package com.ome.app.presentation.signin.forgotpassword
+package com.ome.app.presentation.signin.forgot_password
 
 import android.os.Bundle
 import android.view.View
@@ -6,24 +6,18 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentForgotPasswordEmailBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.signup.password.AuthParams
-import com.ome.app.utils.Constants
-import com.ome.app.utils.IO
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.setBounceClickListener
-import com.ome.app.utils.subscribe
+import com.ome.app.presentation.launch.AuthParams
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class ForgotPasswordEmailFragment :
-    BaseFragment<ForgotPasswordViewModel, FragmentForgotPasswordEmailBinding>(
+    BaseFragment<ForgotPasswordEmailViewModel, FragmentForgotPasswordEmailBinding>(
         FragmentForgotPasswordEmailBinding::inflate
     ) {
 
-    override val viewModel: ForgotPasswordViewModel by viewModels()
+    override val viewModel: ForgotPasswordEmailViewModel by viewModels()
 
     private val args by navArgs<ForgotPasswordEmailFragmentArgs>()
     val params by lazy { args.params }
@@ -32,6 +26,7 @@ class ForgotPasswordEmailFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.continueBtn.setBounceClickListener {
+            closeKeyboard()
             binding.continueBtn.startAnimation()
             viewModel.validateEmail(binding.email.text.toString())
         }

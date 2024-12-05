@@ -7,7 +7,7 @@ import com.ome.app.databinding.FragmentSignupBinding
 import com.ome.app.domain.model.base.Validation
 import com.ome.app.domain.model.base.errorPassword
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.signup.password.AuthParams
+import com.ome.app.presentation.launch.AuthParams
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
