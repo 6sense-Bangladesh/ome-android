@@ -60,8 +60,8 @@ class ForgotPasswordFragment :
                 }
             }
         }
-        subscribe(viewModel.validationSuccessFlow){
-            if(it.isSuccessful) {
+        subscribe(viewModel.validationSuccessFlow) {
+            if (it.isSuccessful) {
                 showSuccessDialog(
                     message = getString(R.string.password_reset),
                     onDismiss = {
@@ -71,12 +71,16 @@ class ForgotPasswordFragment :
             }
         }
 
+        viewModel.loadingFlow.collectWithLifecycle {
+            if (it) binding.btnReset.startAnimation() else binding.btnReset.revertAnimation()
+        }
+
         //previous implementation of forgot password dialog and pop back
-      /*  subscribe(viewModel.passwordResetLiveData) {
-            showSuccessDialog(message = getString(R.string.password_reset), onDismiss = {
-                popBackSafe(R.id.signInFragment, false)
-            })
-        }*/
+        /*  subscribe(viewModel.passwordResetLiveData) {
+              showSuccessDialog(message = getString(R.string.password_reset), onDismiss = {
+                  popBackSafe(R.id.signInFragment, false)
+              })
+          }*/
     }
 
 }

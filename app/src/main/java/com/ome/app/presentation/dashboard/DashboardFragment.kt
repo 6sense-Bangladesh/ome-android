@@ -1,9 +1,14 @@
 package com.ome.app.presentation.dashboard
 
+import android.Manifest.permission
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.View
 import androidx.activity.addCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.ome.app.R
@@ -32,6 +37,24 @@ class DashboardFragment :
         ProfileFragment()
     )
 
+    // Declare the launcher at the top of your Activity/Fragment:
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { }
+
+    private fun askNotificationPermission() {
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +73,7 @@ class DashboardFragment :
     override fun setupObserver() {
         super.setupObserver()
         val menuItem = binding.topAppBar.menu?.findItem(R.id.menuLock)
-        mainViewModel.knobState.collectWithLifecycle {state ->
+        mainViewModel.knobState.collectWithLifecycle { state ->
             if (binding.dashboardViewPager.currentItem != 1) return@collectWithLifecycle
             if (state.toList().any { it.second.knobSetSafetyMode == true }) {
                 menuItem?.setIcon(R.drawable.ic_safety_lock)
@@ -64,6 +87,7 @@ class DashboardFragment :
     }
 
     override fun setupUI() {
+        askNotificationPermission()
         when (binding.dashboardViewPager.currentItem) {
             0 -> binding.topAppBar.title = getString(R.string.menu_settings)
             1 -> {
@@ -105,7 +129,8 @@ class DashboardFragment :
                 }
 
                 R.id.menuLock -> {
-                    mainViewModel.knobState.value.toList().any { it.second.knobSetSafetyMode == true }.also {
+                    mainViewModel.knobState.value.toList()
+                        .any { it.second.knobSetSafetyMode == true }.also {
                         showDialog(
                             title = if (it) getString(R.string.disable_safety_lock) else getString(R.string.enable_safety_lock),
                             onPositiveButtonClick = {
@@ -115,12 +140,15 @@ class DashboardFragment :
                                 if (it) getString(R.string.confirm_disable_safety_lock)
                                 else getString(R.string.confirm_enable_safety_lock)
                             ),
-                            positiveButtonText = if (it) getString(R.string.yes_disable) else getString(R.string.yes_enable),
+                            positiveButtonText = if (it) getString(R.string.yes_disable) else getString(
+                                R.string.yes_enable
+                            ),
                             negativeButtonText = getString(R.string.no_btn)
                         )
                     }
                     true
                 }
+
                 else -> false
             }
         }
