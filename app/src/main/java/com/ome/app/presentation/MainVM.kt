@@ -1,7 +1,8 @@
-package com.ome.app
+package com.ome.app.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
+import com.ome.app.R
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
@@ -174,18 +175,22 @@ class MainVM @Inject constructor(
                                         if (result.message.startsWith("Not found")) {
                                             amplifyManager.deleteUser()
                                             pref.clearData()
-                                            savedStateHandle["startDestination"] = R.id.launchFragment
+                                            savedStateHandle["startDestination"] =
+                                                R.id.launchFragment
                                         } else {
-                                            savedStateHandle["startDestination"] = R.id.dashboardFragment
+                                            savedStateHandle["startDestination"] =
+                                                R.id.dashboardFragment
                                         }
                                     }
 
                                     is ResponseWrapper.Success -> {
                                         if (result.value.stoveSetupComplete.isFalse()) {
-                                            savedStateHandle["startDestination"] = R.id.welcomeFragment
+                                            savedStateHandle["startDestination"] =
+                                                R.id.welcomeFragment
                                             return@launch
                                         }
-                                        savedStateHandle["startDestination"] = R.id.dashboardFragment
+                                        savedStateHandle["startDestination"] =
+                                            R.id.dashboardFragment
                                         connectToSocket()
                                     }
                                 }

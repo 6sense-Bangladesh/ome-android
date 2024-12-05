@@ -15,8 +15,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.ome.app.MainVM
 import com.ome.app.R
+import com.ome.app.presentation.MainVM
 import com.ome.app.presentation.dashboard.members.MembersFragment
 import com.ome.app.presentation.dashboard.my_stove.MyStoveFragment
 import com.ome.app.presentation.dashboard.profile.ProfileFragment

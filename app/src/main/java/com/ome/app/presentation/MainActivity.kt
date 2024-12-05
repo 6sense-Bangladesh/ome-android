@@ -1,4 +1,4 @@
-package com.ome.app
+package com.ome.app.presentation
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -12,6 +12,9 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
+import com.ome.app.BuildConfig
+import com.ome.app.MainNavGraphDirections
+import com.ome.app.R
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint

@@ -189,8 +189,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core:$mockito")
     testImplementation("org.mockito:mockito-inline:5.2.0")
 
-    implementation("com.simla.android.chucker:library:1.0.1")
-//    implementation("com.github.chuckerteam.chucker:library:4.0.0")
+    implementation("com.github.chuckerteam.chucker:library:4.0.0")
 //    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
 
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))

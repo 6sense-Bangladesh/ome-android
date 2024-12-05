@@ -8,7 +8,7 @@ import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.model.network.request.*
 import com.ome.app.domain.model.network.response.*
 import com.ome.app.domain.repo.StoveRepository
-import com.ome.app.dummyKnobs
+import com.ome.app.presentation.dummyKnobs
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.coroutines.coroutineContext
 

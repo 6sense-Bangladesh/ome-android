@@ -30,7 +30,7 @@
         android:theme="@style/Theme.App.Starting">
 
         <activity
-            android:name="com.ome.app.MainActivity"
+            android:name="com.ome.app.presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.App.Starting"
             android:windowSoftInputMode="adjustResize">
@@ -39,7 +39,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".utils.PushNotificationService"
+        <service android:name=".presentation.PushNotificationService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
