@@ -2,12 +2,15 @@ package com.ome.app.presentation
 
 import androidx.lifecycle.SavedStateHandle
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import com.ome.app.R
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.base.ResponseWrapper
+import com.ome.app.domain.model.network.request.CreateUserRequest
 import com.ome.app.domain.model.network.request.StoveRequest
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.network.response.UserResponse
@@ -29,6 +32,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -238,6 +242,11 @@ class MainVM @Inject constructor(
 
     fun signOut(onEnd: () -> Unit) {
         launch(ioContext) {
+            userRepository.updateUser(CreateUserRequest(
+                deviceTokens = userInfo.value.deviceTokens.toMutableList().apply {
+                    remove(Firebase.messaging.token.await())
+                }.distinct()
+            ))
             amplifyManager.signUserOut()
             pref.clearData()
             userRepository.userFlow.emit(null)

@@ -2,6 +2,8 @@ package com.ome.app.presentation.signup.confirmation
 
 import androidx.lifecycle.SavedStateHandle
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import com.ome.app.BuildConfig
 import com.ome.app.data.local.PrefKeys
 import com.ome.app.data.local.PreferencesProvider
@@ -18,6 +20,7 @@ import com.ome.app.utils.Constants
 import com.ome.app.utils.IO
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -61,13 +64,13 @@ class VerificationViewModel @Inject constructor(
         pref.getUserId()?.let {
             when (val result = userRepository.createUser(
                 CreateUserRequest(
-                    deviceTokens = listOf(),
+                    deviceTokens = listOf(Firebase.messaging.token.await()),
                     email = params.email,
                     firstName = params.firstName,
                     lastName = params.lastName,
                     phone = params.phone,
                     stoveOrientation = -1,
-                    uiAppType = "Android",
+                    uiAppType = "ANDROID",
                     uiAppVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
                     userId = it
                 )

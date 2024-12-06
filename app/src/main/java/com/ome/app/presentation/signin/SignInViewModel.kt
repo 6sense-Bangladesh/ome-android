@@ -1,12 +1,16 @@
 package com.ome.app.presentation.signin
 
 import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
+import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.domain.model.base.DefaultValidation
 import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.model.base.Validation
+import com.ome.app.domain.model.network.request.CreateUserRequest
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
@@ -16,6 +20,7 @@ import com.ome.app.utils.logi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -72,6 +77,13 @@ class SignInViewModel @Inject constructor(
                     }else error(result.message)
                 }
                 is ResponseWrapper.Success -> {
+                    userRepository.updateUser(CreateUserRequest(
+                        deviceTokens = result.value.deviceTokens.toMutableList().apply {
+                            add(Firebase.messaging.token.await())
+                        }.distinct(),
+                        uiAppType = "ANDROID",
+                        uiAppVersion = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})",
+                    ))
                     loadingLiveData.postValue(false)
                     stoveRepository.getAllKnobs()
                     pref.saveUserData(result.value)
