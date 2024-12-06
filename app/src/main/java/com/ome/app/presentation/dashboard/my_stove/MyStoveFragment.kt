@@ -10,7 +10,7 @@ import com.ome.app.domain.model.state.StoveOrientation
 import com.ome.app.domain.model.state.stoveOrientation
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.DashboardFragmentDirections
-import com.ome.app.presentation.dashboard.my_stove.device.DeviceDetailsFragmentParams
+import com.ome.app.presentation.dashboard.my_stove.device.DeviceFragmentParams
 import com.ome.app.presentation.dashboard.profile.ProfileViewModel
 import com.ome.app.presentation.dashboard.settings.add_knob.wake_up.KnobWakeUpParams
 import com.ome.app.presentation.views.KnobView
@@ -65,7 +65,7 @@ class MyStoveFragment :
         setBounceClickListener{
             parentFragment?.navigateSafe(
                 DashboardFragmentDirections.actionDashboardFragmentToDeviceDetailsFragment(
-                    DeviceDetailsFragmentParams(knob.macAddr)
+                    DeviceFragmentParams(knob.macAddr)
                 )
             )
         }

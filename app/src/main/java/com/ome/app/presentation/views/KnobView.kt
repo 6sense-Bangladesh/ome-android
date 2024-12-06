@@ -206,7 +206,7 @@ class KnobView @JvmOverloads constructor(
         }
         return when{ (knob.battery != null && knob.battery <= 15) || calibration.isCalibrated.isFalse() ||
                 ( knob.connectStatus == ConnectionState.Online && knob.wifiStrengthPercentage in 0..35)||
-                knob.knobSetSafetyMode.isTrue()  -> {
+                knob.knobSetSafetyMode.isTrue() || knob.connectStatus == ConnectionState.Offline || knob.connectStatus == ConnectionState.Charging  -> {
                 hideLabel()
                 changeKnobState(KnobImageState.TRANSPARENT)
                 changeKnobProgressVisibility(false, calibration.rotation == Rotation.DUAL)
@@ -231,7 +231,7 @@ class KnobView @JvmOverloads constructor(
             changeConfigurationState(isCalibrated = knob.calibrated)
         return when{ knob.battery <= 15 || knob.calibrated.isFalse() ||
                 ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) ||
-                knob.safetyLock.isTrue() -> {
+                knob.safetyLock.isTrue() || knob.connectStatus.connectionState == ConnectionState.Offline || knob.connectStatus.connectionState == ConnectionState.Charging  -> {
                 hideLabel()
                 changeKnobState(KnobImageState.TRANSPARENT)
                 changeKnobProgressVisibility(false, cal.rotation == Rotation.DUAL)
@@ -267,7 +267,7 @@ class KnobView @JvmOverloads constructor(
         }
         return when{ knob.battery <= 15 || knob.calibrated.isFalse() ||
                 ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) ||
-                knob.safetyLock.isTrue() -> {
+                knob.safetyLock.isTrue() || knob.connectStatus.connectionState == ConnectionState.Offline || knob.connectStatus.connectionState == ConnectionState.Charging  -> {
                     changeKnobState(KnobImageState.TRANSPARENT)
                     false
                 }
