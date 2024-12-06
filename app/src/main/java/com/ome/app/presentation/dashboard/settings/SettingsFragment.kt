@@ -7,7 +7,7 @@ import com.ome.app.databinding.FragmentSettingsBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.base.recycler.ItemModel
 import com.ome.app.presentation.dashboard.DashboardFragmentDirections
-import com.ome.app.presentation.dashboard.my_stove.device.DeviceSettingsFragmentParams
+import com.ome.app.presentation.dashboard.my_stove.device.DeviceFragmentParams
 import com.ome.app.presentation.dashboard.settings.adapter.SettingItemAdapter
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsKnobItemModel
@@ -67,7 +67,7 @@ class SettingsFragment :
             }
 
             is SettingsKnobItemModel -> {
-                parentFragment?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToDeviceSettingsFragment(DeviceSettingsFragmentParams(macAddr = item.macAddr)))
+                parentFragment?.navigateSafe(DashboardFragmentDirections.actionDashboardFragmentToDeviceSettingsFragment(DeviceFragmentParams(macAddr = item.macAddr)))
             }
         }
     }

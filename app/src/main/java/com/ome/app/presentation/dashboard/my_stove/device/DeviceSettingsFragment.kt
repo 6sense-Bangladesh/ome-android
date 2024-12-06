@@ -1,6 +1,5 @@
 package com.ome.app.presentation.dashboard.my_stove.device
 
-import android.os.Parcelable
 import android.text.SpannableStringBuilder
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -15,7 +14,6 @@ import com.ome.app.presentation.dashboard.settings.add_knob.direction.DirectionS
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiParams
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class DeviceSettingsFragment :
@@ -131,6 +129,3 @@ class DeviceSettingsFragment :
         }
     }
 }
-
-@Parcelize
-data class DeviceSettingsFragmentParams(val macAddr: String) : Parcelable

@@ -427,9 +427,10 @@ fun Fragment.requireApplication() = requireContext().applicationContext!!
 //    }
 //}
 
-fun Any?.log(tag: String = "TAG") {
+fun Any?.log(tag: String = "TAG"): Any? {
     if (BuildConfig.DEBUG)
         Log.d("log> '$tag'", "$tag - $this : ${this?.javaClass?.name?.split('.')?.lastOrNull() ?: ""}")
+    return this
 }
 
 /**View Extension Function*/
@@ -969,6 +970,10 @@ inline fun <T> tryInMain(crossinline data: suspend () -> T) =
 
 inline fun <T> T.applyIf(ifTrue: Boolean, block: T.() -> Unit): T {
     if (ifTrue) block.invoke(this)
+    return this
+}
+inline fun Boolean.ifTrue(block: Boolean.() -> Unit): Boolean {
+    if (this) block.invoke(true)
     return this
 }
 

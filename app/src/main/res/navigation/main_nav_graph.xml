@@ -423,7 +423,7 @@
         tools:layout="@layout/fragment_device_details" >
         <argument
             android:name="params"
-            app:argType="com.ome.app.presentation.dashboard.my_stove.device.DeviceDetailsFragmentParams" />
+            app:argType="com.ome.app.presentation.dashboard.my_stove.device.DeviceFragmentParams" />
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -461,7 +461,7 @@
         tools:layout="@layout/fragment_device_settings" >
         <argument
             android:name="params"
-            app:argType="com.ome.app.presentation.dashboard.my_stove.device.DeviceSettingsFragmentParams" />
+            app:argType="com.ome.app.presentation.dashboard.my_stove.device.DeviceFragmentParams" />
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"

@@ -1,6 +1,8 @@
 package com.ome.app.utils
 
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.CalibrationState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.abs
 
 object KnobAngleManager {
@@ -248,34 +250,52 @@ object KnobAngleManager {
         return angle
     }
 
-    fun processDualKnobResult2(
+    fun processDualKnobRotation(
+        initAngle: StateFlow<Int?>,
+        newAngle: Float,
+        offAngle: Int,
+        angleDualOffset: Int = 25
+    ): Float {
+        val old = initAngle.value ?: return newAngle
+        val secondDiv = normalizeAngle(offAngle + 180)
+        old.log("processDualKnobResult - $old initAngle, isFirstZone ${old.isInRange(offAngle, secondDiv)}")
+        return processDualKnobResult(
+            angleValue = newAngle,
+            firstDiv = offAngle,
+            secondDiv = secondDiv,
+            isFirstZone = old.isInRange(offAngle, secondDiv),
+            angleDualOffset = angleDualOffset,
+            offAngle = offAngle
+        )
+    }
+
+    fun processDualKnobResult(
         angleValue: Float,
         firstDiv: Int,
         secondDiv: Int,
         isFirstZone: Boolean,
-        angleDualOffset: Int
+        angleDualOffset: Int,
+        offAngle: Int =0,
     ): Float {
         // Normalize the input angle to the 0–360 range
         val normalizedAngle = normalizeAngle(angleValue)
-
+        println("normalizedAngle: $normalizedAngle, angleValue: $angleValue, firstDiv: $firstDiv, secondDiv: $secondDiv".log("processDualKnobResult"))
         return if (isFirstZone) {
             // If keeping between first and second division, apply the offset within the range
-            if (isAngleBetween(angleAlpha = firstDiv + angleDualOffset, angleBeta = secondDiv - angleDualOffset, angleTheta = normalizedAngle)) {
+            if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(firstDiv + angleDualOffset), angleBeta = normalizeAngle(secondDiv - angleDualOffset)).ifTrue { log("processDualKnobResult if") }) {
                 normalizedAngle.toFloat()
-            } else if (normalizedAngle > secondDiv) {
+            } else if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(firstDiv - angleDualOffset), angleBeta = normalizeAngle(firstDiv + 90)).ifTrue{ log("processDualKnobResult else if 1st") }) {
+                offAngle.toFloat()
+            } else //if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(secondDiv + angleDualOffset), angleBeta = normalizeAngle(secondDiv + 90)).ifTrue{ log("processDualKnobResult !else if 2nd") }) {
                 (secondDiv - angleDualOffset).toFloat()
-            } else {
-                (firstDiv + angleDualOffset).toFloat()
-            }
         } else {
-            // If not keeping between the divisions, ensure the angle stays in the second half
-            if (isAngleBetween(angleAlpha = secondDiv + angleDualOffset, angleBeta = firstDiv - angleDualOffset, angleTheta = normalizedAngle)) {
+            if (normalizedAngle.isInRange(angleAlpha = secondDiv + angleDualOffset, angleBeta = normalizeAngle(firstDiv - angleDualOffset)).ifTrue { log("processDualKnobResult !if") }) {
                 normalizedAngle.toFloat()
-            } else if (normalizedAngle < secondDiv) {
-                (secondDiv + angleDualOffset).toFloat()
-            } else {
-                (firstDiv - angleDualOffset).toFloat()
             }
+            else if (normalizedAngle.isInRange(angleAlpha = firstDiv + angleDualOffset, angleBeta = firstDiv + 90).ifTrue { log("processDualKnobResult !else if 1st") }) {
+                offAngle.toFloat()
+            } else //if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(firstDiv + 90), angleBeta = normalizeAngle( secondDiv + angleDualOffset)).ifTrue { log("processDualKnobResult !else if 2nd") }) {
+                (secondDiv + angleDualOffset).toFloat()
         }
     }
 
@@ -311,16 +331,35 @@ object KnobAngleManager {
 
         return (alpha < theta) && (theta < beta)
     }
+
+    /**
+     * Checks if an angle (angleTheta) is between two other angles (angleAlpha and angleBeta).
+     *
+     * @param angleAlpha The starting angle of the range.
+     * @param angleBeta The ending angle of the range.
+     * @return True if angleTheta is between angleAlpha and angleBeta, false otherwise.
+     */
+    private fun Int.isInRange(angleAlpha: Int, angleBeta: Int): Boolean {
+        // Normalize all angles
+        val alpha = normalizeAngle(angleAlpha)
+        val beta = normalizeAngle(angleBeta)
+        val theta = normalizeAngle(this)
+
+        return if (alpha <= beta) {
+            theta in alpha..beta
+        } else {
+            // Handles the case where the range wraps around 0 (e.g., 350° to 10°)
+            theta >= alpha || theta <= beta
+        }
+    }
 }
 
 fun main() {
     println(
-        KnobAngleManager.processDualKnobResult2(
-            angleValue = 30f,
-            firstDiv = 35,
-            secondDiv = 180,
-            isFirstZone = false,
-            angleDualOffset = 31
+        KnobAngleManager.processDualKnobRotation(
+            initAngle = MutableStateFlow(320),
+            newAngle = 160F,
+            offAngle = 0
         )
     )
 }

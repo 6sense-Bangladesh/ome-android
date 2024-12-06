@@ -77,7 +77,7 @@ abstract class BaseCalibrationViewModel(
 //            angleDualOffset = angleDualOffset
 //        )
 
-        val result = KnobAngleManager.processDualKnobResult2(
+        val result = KnobAngleManager.processDualKnobResult(
             angleValue = value,
             firstDiv = firstDiv,
             secondDiv = secondDiv,

@@ -56,9 +56,11 @@ class DeviceDetailsFragment :
         activeTimer()
         binding.apply {
             name.text = context?.getString(R.string.burner_, viewModel.stovePosition)
-            knobView.doOnRotationChange(doRotate = viewModel.isEnable)
-//                .debounce(700)
-                .collectWithLifecycle { rotation ->
+            knobView.doOnRotationChange(
+                doRotate = viewModel.isEnable,
+                initAngle = viewModel.initAngle,
+                calibration = viewModel.currentKnob.value?.calibration?.toCalibration(viewModel.currentKnob.value?.calibrated),
+            ).collectWithLifecycle { rotation ->
                     Log.d(TAG, "doOnRotationChange: $rotation ${viewModel.isEnable.value}")
                     if(viewModel.isEnable.value) {
                         viewModel.changeKnobAngle(rotation)
@@ -167,7 +169,7 @@ class DeviceDetailsFragment :
             when(it.itemId){
                 R.id.menuDeviceSetting -> {
                     navigateSafe(DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToDeviceSettingsFragment(
-                        DeviceSettingsFragmentParams(macAddr = params.macAddr)
+                        DeviceFragmentParams(macAddr = params.macAddr)
                     ))
                     true
                 }
@@ -321,6 +323,8 @@ class DeviceDetailsFragment :
                 batteryPercentage.text = batteryLevel?.addPercentage().orEmpty()
                 knob.angle?.toInt()?.let {
                     changeBurnerStatus(it)
+                    if(viewModel.initAngle.value == null)
+                        viewModel.initAngle.value = it
 //                    if(knob.mountingSurface != null && mainViewModel.userInfo.value.stoveKnobMounting != knob.mountingSurface.type){
 //                        viewModel.isEnable.value = false
 //                        changeBurnerStatus(it, BurnerState.Off( mainViewModel.getOffAngleByMac(params.macAddr).orZero()))
@@ -355,6 +359,8 @@ class DeviceDetailsFragment :
         states.minByOrNull { abs(it.level - currentAngle) }?.apply {
             binding.statusBurner.applyState()  // Let the state apply its specific styles
             viewModel.isEnable.value = type != BurnerState.State.Off
+            if(type == BurnerState.State.Off)
+                viewModel.initAngle.value = null
         }
     }
 
@@ -424,4 +430,4 @@ class DeviceDetailsFragment :
 }
 
 @Parcelize
-data class DeviceDetailsFragmentParams(val macAddr: String) : Parcelable
+data class DeviceFragmentParams(val macAddr: String) : Parcelable

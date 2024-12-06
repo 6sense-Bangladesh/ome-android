@@ -31,6 +31,7 @@ class DeviceViewModel @Inject constructor(
 ) : BaseViewModel() {
     var stovePosition: Int  = -1
     val isEnable = MutableStateFlow(false)
+    val initAngle = MutableStateFlow<Int?>(null)
     val showTimer = MutableSharedFlow<Unit>()
     var isSafetyLockOn = false
 

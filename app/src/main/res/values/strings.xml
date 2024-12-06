@@ -255,6 +255,8 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="start_set_up">Start Set Up</string>
     <string name="enter_your_email_address">Enter your email address that is used to create your account</string>
+    <string name="new_password">New Password</string>
+    <string name="reset_password">Reset Password</string>
 
 
 </resources>

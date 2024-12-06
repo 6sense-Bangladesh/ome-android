@@ -206,7 +206,7 @@ class KnobView @JvmOverloads constructor(
         }
         return when{ (knob.battery != null && knob.battery <= 15) || calibration.isCalibrated.isFalse() ||
                 ( knob.connectStatus == ConnectionState.Online && knob.wifiStrengthPercentage in 0..35)||
-                knob.connectStatus != ConnectionState.Online && knob.knobSetSafetyMode.isTrue()  -> {
+                knob.knobSetSafetyMode.isTrue()  -> {
                 hideLabel()
                 changeKnobState(KnobImageState.TRANSPARENT)
                 changeKnobProgressVisibility(false, calibration.rotation == Rotation.DUAL)
@@ -231,7 +231,7 @@ class KnobView @JvmOverloads constructor(
             changeConfigurationState(isCalibrated = knob.calibrated)
         return when{ knob.battery <= 15 || knob.calibrated.isFalse() ||
                 ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) ||
-                knob.connectStatus.connectionState != ConnectionState.Online && knob.safetyLock.isTrue() -> {
+                knob.safetyLock.isTrue() -> {
                 hideLabel()
                 changeKnobState(KnobImageState.TRANSPARENT)
                 changeKnobProgressVisibility(false, cal.rotation == Rotation.DUAL)
@@ -267,7 +267,7 @@ class KnobView @JvmOverloads constructor(
         }
         return when{ knob.battery <= 15 || knob.calibrated.isFalse() ||
                 ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) ||
-                knob.connectStatus.connectionState != ConnectionState.Online && knob.safetyLock.isTrue() -> {
+                knob.safetyLock.isTrue() -> {
                     changeKnobState(KnobImageState.TRANSPARENT)
                     false
                 }
@@ -397,7 +397,11 @@ class KnobView @JvmOverloads constructor(
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    fun doOnRotationChange(doRotate: StateFlow<Boolean>) = callbackFlow{
+    fun doOnRotationChange(
+        doRotate: StateFlow<Boolean>,
+        initAngle: StateFlow<Int?>,
+        calibration: Calibration?,
+    ) = callbackFlow{
 
         binding.knobProgressRotation.setOnTouchListener { v, event ->
             when(event.action){
@@ -429,7 +433,9 @@ class KnobView @JvmOverloads constructor(
 
             Log.d(TAG, "setOnTouchListener: $angle")
             if(doRotate.value) {
-                setKnobPosition(angle)
+                val processedAngle = KnobAngleManager.processDualKnobRotation(initAngle = initAngle, newAngle = angle, offAngle = calibration?.offAngle.orZero())
+                Log.e(TAG, "doOnRotationChange: processedAngle $processedAngle, angle $angle, offAngle $calibration.offAngle, initAngle ${initAngle.value}")
+                setKnobPosition(if(calibration?.rotation == Rotation.DUAL) processedAngle else angle)
                 performSmallHaptic()
             }
             true
