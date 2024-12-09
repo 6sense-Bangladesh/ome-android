@@ -41,7 +41,7 @@ class OmeApplication : SingletonImageLoader.Factory, Application() {
             } else {
                 R.raw.amplifyconfigurationprod
             }
-            AWSMobileClient.getInstance().initialize(this, AWSConfiguration(applicationContext, configJSON,"us-east-2"),object : Callback<UserStateDetails>{
+            AWSMobileClient.getInstance().initialize(applicationContext, AWSConfiguration(applicationContext, configJSON,"us-east-2_28KzdRE3z"),object : Callback<UserStateDetails>{
                 override fun onResult(result: UserStateDetails?) {
                     log("result: $result")
                 }

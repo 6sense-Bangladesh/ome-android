@@ -19,10 +19,17 @@ class PushNotificationService : FirebaseMessagingService() {
                 NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
             notificationManager?.createNotificationChannel(notificationChannel)
         }*/
-        pinpointManager = PinpointManager(PinpointConfiguration(
-            applicationContext,
-            AWSMobileClient.getInstance(),
-            AWSConfiguration(applicationContext) ))
+        runCatching {
+            pinpointManager = PinpointManager(
+                PinpointConfiguration(
+                    applicationContext,
+                    AWSMobileClient.getInstance(),
+                    AWSConfiguration(applicationContext)
+                )
+            )
+        }.onFailure {
+            it.printStackTrace()
+        }
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -31,7 +38,8 @@ class PushNotificationService : FirebaseMessagingService() {
 
         Log.d(TAG, "From: ${remoteMessage.from}")
         // Check if the message contains data
-        remoteMessage.data.isNotEmpty().let { Log.d(TAG, "Message data payload: " + remoteMessage.data) }
+        remoteMessage.data.isNotEmpty()
+            .let { Log.d(TAG, "Message data payload: " + remoteMessage.data) }
 
         // Check if the message contains a notification payload
         remoteMessage.notification?.let { Log.d(TAG, "Message Notification Body: ${it.body}") }
@@ -53,7 +61,9 @@ class PushNotificationService : FirebaseMessagingService() {
         NotificationDetails.builder().from(remoteMessage.from)
             .mapData(remoteMessage.data)
             .intentAction(NotificationClient.FCM_INTENT_ACTION)
-            .build().run { pinpointManager.pinpointContext.notificationClient.handleNotificationReceived(this) }
+            .build().run {
+                pinpointManager.pinpointContext.notificationClient.handleNotificationReceived(this)
+            }
 
     }
 
