@@ -12,15 +12,16 @@ object ProjectConfig {
 
     val javaVersion = JavaVersion.VERSION_21
 
-    var IS_INTERNAL_TESTING = false
+    /** Don't change this field before the final release. 'WILL' will be mad. */
+    var IS_INTERNAL_TESTING = true
 
     const val BASE_URL_DEV = "\"https://app-dev.api.omekitchen.com\""
     const val BASE_URL_SANDBOX = "\"https://app-sandbox.api.omekitchen.com\""
     const val BASE_URL_LIVE = "\"https://app.api.omekitchen.com\""
-    val BASE_URL_DEBUG = if(IS_INTERNAL_TESTING) BASE_URL_DEV else BASE_URL_LIVE
+    val BASE_URL = if(IS_INTERNAL_TESTING) BASE_URL_DEV else BASE_URL_LIVE
 
     const val BASE_WS_URL_DEV = "\"wss://app-ws-dev.api.omekitchen.com\""
     const val BASE_WS_URL_SANDBOX = "\"wss://app-ws-sandbox.api.omekitchen.com\""
     const val BASE_WS_URL_LIVE = "\"wss://app-ws.api.omekitchen.com\""
-    val BASE_WS_URL_DEBUG = if(IS_INTERNAL_TESTING) BASE_WS_URL_DEV else BASE_WS_URL_LIVE
+    val BASE_WS_URL = if(IS_INTERNAL_TESTING) BASE_WS_URL_DEV else BASE_WS_URL_LIVE
 }

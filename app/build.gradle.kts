@@ -43,8 +43,8 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL_DEBUG)
-            buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL_DEBUG)
+            buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL)
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL)
         }
 
         create("demo") {
@@ -61,8 +61,8 @@ android {
         release {
             isMinifyEnabled = false
             isDebuggable = false
-            buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL_LIVE)
-            buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL_LIVE)
+            buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL)
+            buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL)
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
