@@ -1,5 +1,6 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 
+import android.content.Context
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -24,6 +25,12 @@ class SetupCompleteFragment :
         if(args.isComeFromSettings){
             binding.setupAnotherKnobBtn.makeGone()
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainViewModel.selectedDirection = null
+        mainViewModel.selectedDualZone = null
     }
 
     override fun setupListener() {

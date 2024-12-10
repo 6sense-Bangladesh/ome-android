@@ -32,8 +32,8 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
     var currentStepTriggerCount = 0
 
 
-    override fun handleDualKnobUpdated(value: Float) {
-        knobAngleFlow.value = value
+    override fun handleDualKnobUpdated(angle: Float) {
+        knobAngleFlow.value = angle
     }
 
     fun triggerCurrentStepAgain() = launch(ioContext) {
@@ -108,6 +108,9 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                     setCalibration()
                     calibrationIsDoneLiveData.postValue(true)
                 }
+                CalibrationState.MOVE_OFF -> {
+
+                }
                 CalibrationState.HIGH_SINGLE -> {
                     mediumAngle?.let {
                         stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
@@ -148,6 +151,9 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
 //                        }
 //                        currentCalibrationState.value = CalibrationState.HIGH_SINGLE
 //                    }
+                }
+                CalibrationState.MOVE_OFF -> {
+
                 }
                 null -> {
                     highSingleAngle?.let {

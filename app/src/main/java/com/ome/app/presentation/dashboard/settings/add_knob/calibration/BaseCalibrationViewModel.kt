@@ -9,6 +9,7 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
+import com.ome.app.utils.KnobAngleManager.isRightZone
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.mapNotNull
@@ -42,21 +43,25 @@ abstract class BaseCalibrationViewModel(
 
     var firstDiv: Int = 0
     var secondDiv: Int = 0
-    var isFirstZone: Boolean = true
+
+    val isZoneStartFromRight: Boolean
+        get() = initAngle.isRightZone(firstDiv) ?: false
 
     var rotationDir: Int? = null
 
     val angleOffset = 15
     private val angleDualOffset = 31
 
-    val calibrationStatesSequenceSingleZone = arrayListOf(
+    val initAngle = MutableStateFlow<Int?>(null)
+
+    val calibrationStatesSequenceSingleZone = listOf(
         CalibrationState.OFF,
         CalibrationState.HIGH_SINGLE,
         CalibrationState.MEDIUM,
         CalibrationState.LOW_SINGLE
     )
 
-    val calibrationStatesSequenceDualZone = arrayListOf(
+    val calibrationStatesSequenceDualZone2 = arrayListOf(
         CalibrationState.OFF,
         CalibrationState.HIGH_SINGLE,
         CalibrationState.LOW_SINGLE,
@@ -64,55 +69,51 @@ abstract class BaseCalibrationViewModel(
         CalibrationState.LOW_DUAL
     )
 
+    val calibrationStatesSequenceDualZone: List<CalibrationState>
+        get() = buildList {
+            add(CalibrationState.OFF)
+            addAll(if (isZoneStartFromRight) listOf(
+                CalibrationState.HIGH_SINGLE,
+                CalibrationState.LOW_SINGLE,
+                CalibrationState.HIGH_DUAL,
+                CalibrationState.LOW_DUAL
+            )else listOf(
+                CalibrationState.HIGH_DUAL,
+                CalibrationState.LOW_DUAL,
+                CalibrationState.HIGH_SINGLE,
+                CalibrationState.LOW_SINGLE
+            ))
+        }
 
-    open fun handleDualKnobUpdated(value: Float) {
 
-//        val result = KnobAngleManager.processDualKnobResult(
-//            angleValue = value,
-//            firstDiv = firstDiv,
-//            secondDiv = secondDiv,
-//            currentStepAngle = labelLiveData.value?.second?.toInt(),
-//            currSetPosition = currSetPosition,
-//            highSingleAngle = highSingleAngle,
-//            angleDualOffset = angleDualOffset
-//        )
-
-        val result = KnobAngleManager.processDualKnobResult(
-            angleValue = value,
-            firstDiv = firstDiv,
-            secondDiv = secondDiv,
-            isFirstZone = isFirstZone,
-            angleDualOffset = angleDualOffset
-        )
-        knobAngleFlow.value = result
-
+    open fun handleDualKnobUpdated(angle: Float) {
+        if(initAngle.value == null || offAngle == null)
+            initAngle.value = angle.toInt()
+        knobAngleFlow.value = if (isDualKnob) {
+            offAngle?.let {
+                KnobAngleManager.processDualKnobResult(
+                    initAngle = initAngle,
+                    newAngle = angle,
+                    firstDiv = firstDiv,
+                    angleDualOffset = angleDualOffset,
+                    offAngle = it.toInt()
+                )
+            } ?: angle
+        } else angle
     }
 
     fun initSubscriptions() {
         launch(ioContext) {
             webSocketManager.knobAngleFlow.filter { it?.macAddr == macAddress }.collect {
                 it?.let {
-                    val angle = it.value.toFloat()
-                    if (!isDualKnob) {
-                        knobAngleFlow.value = angle
-                    } else {
-                        if (offAngle != null) handleDualKnobUpdated(angle)
-                        else knobAngleFlow.value = angle
-                    }
-
+                    handleDualKnobUpdated(it.value.toFloat())
                 }
             }
         }
         launch(ioContext) {
             stoveRepository.knobsFlow.mapNotNull { dto -> dto.find { it.macAddr == macAddress } }.stateIn(viewModelScope).collect { foundKnob ->
                 if (webSocketManager.knobAngleFlow.value == null) {
-                    val angle = foundKnob.angle.toFloat()
-                    if (!isDualKnob) {
-                        knobAngleFlow.value = angle
-                    } else {
-                        if (offAngle != null) handleDualKnobUpdated(angle)
-                        else knobAngleFlow.value = angle
-                    }
+                    handleDualKnobUpdated(foundKnob.angle.toFloat())
                 }
                 zoneLiveData.postValue(foundKnob.stovePosition)
             }

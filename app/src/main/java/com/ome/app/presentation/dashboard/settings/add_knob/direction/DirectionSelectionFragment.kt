@@ -28,15 +28,26 @@ class DirectionSelectionFragment :
 
     override fun setupUI() {
         viewModel.macAddress = params.macAddress
-        mainViewModel.getKnobByMac(viewModel.macAddress)?.let {
-            viewModel.calRequest = it.calibration.toSetCalibrationRequest()
-            viewModel.calibrated = it.calibrated.orFalse()
-            viewModel.clockwiseDir = it.calibration.rotationDir
-            when(it.calibration.rotationDir.rotation){
-                Rotation.CLOCKWISE -> binding.clockWise.isChecked = true
-                Rotation.COUNTER_CLOCKWISE -> binding.counterClockWise.isChecked = true
-                else -> Unit
+        if(params.isComeFromSettings) {
+            mainViewModel.getKnobByMac(viewModel.macAddress)?.let {
+                viewModel.calRequest = it.calibration.toSetCalibrationRequest()
+                viewModel.calibrated = it.calibrated.orFalse()
+                viewModel.clockwiseDir = it.calibration.rotationDir
+                changeRotationState(it.calibration.rotationDir)
             }
+        }else{
+            mainViewModel.selectedDirection?.let {
+                viewModel.clockwiseDir = it
+                changeRotationState(it)
+            }
+        }
+    }
+
+    private fun changeRotationState(it: Int) {
+        when (it.rotation) {
+            Rotation.CLOCKWISE -> binding.clockWise.isChecked = true
+            Rotation.COUNTER_CLOCKWISE -> binding.counterClockWise.isChecked = true
+            else -> Unit
         }
     }
 
@@ -47,6 +58,7 @@ class DirectionSelectionFragment :
             if(params.isEditMode)
                 viewModel.updateDirection(onEnd = mainViewModel::getAllKnobs)
             else {
+                mainViewModel.selectedDirection = viewModel.clockwiseDir
                 navigateSafe(
                     DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
                         DeviceCalibrationFragmentParams(

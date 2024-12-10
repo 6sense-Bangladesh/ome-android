@@ -95,7 +95,7 @@ class DeviceCalibrationFragment :
 
         subscribe(viewModel.labelLiveData) {
             when (it.first) {
-                CalibrationState.OFF -> binding.knobView.setOffPosition(it.second)
+                CalibrationState.OFF, CalibrationState.MOVE_OFF -> binding.knobView.setOffPosition(it.second)
                 CalibrationState.LOW_SINGLE -> binding.knobView.setLowSinglePosition(it.second)
                 CalibrationState.MEDIUM -> binding.knobView.setMediumPosition(it.second)
                 CalibrationState.HIGH_SINGLE -> binding.knobView.setHighSinglePosition(it.second)

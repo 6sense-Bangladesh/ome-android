@@ -257,29 +257,27 @@ object KnobAngleManager {
         angleDualOffset: Int = 25
     ): Float {
         val old = initAngle.value ?: return newAngle
-        val secondDiv = normalizeAngle(offAngle + 180)
-        old.log("processDualKnobResult - $old initAngle, isFirstZone ${old.isInRange(offAngle, secondDiv)}")
         return processDualKnobResult(
-            angleValue = newAngle,
+            initAngle = initAngle,
+            newAngle = newAngle,
             firstDiv = offAngle,
-            secondDiv = secondDiv,
-            isFirstZone = old.isInRange(offAngle, secondDiv),
             angleDualOffset = angleDualOffset,
             offAngle = offAngle
         )
     }
 
     fun processDualKnobResult(
-        angleValue: Float,
+        initAngle: StateFlow<Int?>,
+        newAngle: Float,
         firstDiv: Int,
-        secondDiv: Int,
-        isFirstZone: Boolean,
         angleDualOffset: Int,
-        offAngle: Int =0,
+        offAngle: Int,
     ): Float {
+        val secondDiv = normalizeAngle(offAngle + 180)
         // Normalize the input angle to the 0–360 range
-        val normalizedAngle = normalizeAngle(angleValue)
-        println("normalizedAngle: $normalizedAngle, angleValue: $angleValue, firstDiv: $firstDiv, secondDiv: $secondDiv".log("processDualKnobResult"))
+        val isFirstZone = initAngle.isRightZone(offAngle) ?: return newAngle
+        val normalizedAngle = normalizeAngle(newAngle)
+        println("normalizedAngle: $normalizedAngle, angleValue: $newAngle, firstDiv: $firstDiv, secondDiv: $secondDiv".log("processDualKnobResult"))
         return if (isFirstZone) {
             // If keeping between first and second division, apply the offset within the range
             if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(firstDiv + angleDualOffset), angleBeta = normalizeAngle(secondDiv - angleDualOffset)).ifTrue { log("processDualKnobResult if") }) {
@@ -298,6 +296,10 @@ object KnobAngleManager {
                 (secondDiv + angleDualOffset).toFloat()
         }
     }
+
+    fun StateFlow<Int?>.isRightZone(
+        offAngle: Int,
+    ): Boolean? = value?.isInRange(offAngle, normalizeAngle(offAngle + 180))
 
 
     /**

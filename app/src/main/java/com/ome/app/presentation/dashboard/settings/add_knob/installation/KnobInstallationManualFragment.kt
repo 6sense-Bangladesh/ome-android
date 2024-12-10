@@ -1,8 +1,10 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.installation
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import android.text.method.LinkMovementMethod
+import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
@@ -32,6 +34,13 @@ class KnobInstallationManualFragment :
     override fun setupUI() {
         binding.shaftIv.loadDrawable(R.drawable.knob_plug)
         mainViewModel.connectToSocket()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.d("TAG", "onAttach: ${mainViewModel.selectedDualZone} : ${mainViewModel.selectedDirection}")
+        mainViewModel.selectedDirection = null
+        mainViewModel.selectedDualZone = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

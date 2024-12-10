@@ -156,6 +156,13 @@ class DeviceDetailsFragment :
                     )
                 )
             }
+            binding.name.setBounceClickListener {
+                navigateSafe(
+                    DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToKnobInstallationManualFragment(
+                        KnobInstallationManualFragmentParams(macAddr = params.macAddr, isComeFromSettings = false)
+                    )
+                )
+            }
         }
         binding.warningCard.setBounceClickListener {
             navigateSafe(

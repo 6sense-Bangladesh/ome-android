@@ -25,10 +25,21 @@ class ZoneSelectionFragment :
     private val args by navArgs<ZoneSelectionFragmentArgs>()
     val params by lazy { args.params }
 
+    override fun setupUI() {
+        mainViewModel.selectedDualZone?.let {
+            if(it)
+                binding.dualZone.isChecked = true
+            else
+                binding.singleZone.isChecked = true
+
+        }
+    }
+
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
         binding.continueBtn.setBounceClickListener {
+            mainViewModel.selectedDualZone = viewModel.isDualKnob
             if (viewModel.isDualKnob) {
                 navigateSafe(
                     ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(

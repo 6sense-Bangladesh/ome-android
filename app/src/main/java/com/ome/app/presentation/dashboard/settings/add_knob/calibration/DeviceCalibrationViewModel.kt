@@ -95,6 +95,9 @@ class DeviceCalibrationViewModel @Inject constructor(
                                     } ?: error("Something went wrong")
                                 }
                             }
+                            CalibrationState.MOVE_OFF -> {
+
+                            }
                             CalibrationState.LOW_SINGLE -> {
                                 lowSingleAngle = angle
                                 Log.i(TAG, "setLabel: calibration is done")
@@ -160,12 +163,12 @@ class DeviceCalibrationViewModel @Inject constructor(
             if (currentIndex == calibrationStatesSequenceDualZone.size - 1) {
                 calibrationIsDoneLiveData.postValue(true)
             } else {
-                currentCalibrationState.value =(calibrationStatesSequenceDualZone[currentIndex + 1])
-                when(currentCalibrationState.value){
-                    CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> isFirstZone = false
-                    CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE, CalibrationState.OFF -> isFirstZone = true
-                    else -> Unit
-                }
+                currentCalibrationState.value = calibrationStatesSequenceDualZone[currentIndex + 1]
+//                when(currentCalibrationState.value){
+//                    CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> isFirstZone = false
+//                    CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE, CalibrationState.OFF -> isFirstZone = true
+//                    else -> Unit
+//                }
             }
         }
     }
@@ -185,7 +188,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                 calibrationStatesSequenceDualZone.getOrNull(currentIndex - 1)
 
             when (step) {
-                CalibrationState.OFF -> offAngle = null
+                CalibrationState.OFF, CalibrationState.MOVE_OFF -> offAngle = null
                 CalibrationState.LOW_SINGLE -> lowSingleAngle = null
                 CalibrationState.MEDIUM -> mediumAngle = null
                 CalibrationState.HIGH_SINGLE -> highSingleAngle = null
@@ -201,6 +204,7 @@ class DeviceCalibrationViewModel @Inject constructor(
 
 enum class CalibrationState(val positionName: String) {
     OFF("Off"),
+    MOVE_OFF("Off"),
     HIGH_SINGLE("High"),
     MEDIUM("Medium"),
     LOW_SINGLE("Low"),

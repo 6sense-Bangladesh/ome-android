@@ -72,6 +72,8 @@ class MainVM @Inject constructor(
     var stoveData = StoveRequest()
 
     var selectedBurnerIndex: Int? = null
+    var selectedDirection: Int? = null
+    var selectedDualZone: Boolean? = null
 
     init {
         launch(ioContext) {
