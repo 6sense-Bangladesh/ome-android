@@ -12,7 +12,7 @@ object ProjectConfig {
 
     val javaVersion = JavaVersion.VERSION_21
 
-    /** Don't change this field before the final release. 'WILL' will be mad. */
+    /** Don't change this field before the final release. `WILL` will be mad. */
     var IS_INTERNAL_TESTING = true
 
     const val BASE_URL_DEV = "\"https://app-dev.api.omekitchen.com\""
