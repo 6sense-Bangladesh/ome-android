@@ -126,7 +126,7 @@ class DeviceDetailsFragment :
     }
 
     override fun setupListener() {
-        if(BuildConfig.DEBUG){
+        if(BuildConfig.IS_INTERNAL_TESTING){
             binding.tvLevel.setBounceClickListener {
                 navigateSafe(
                     DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToDeviceCalibrationFragment(
@@ -189,7 +189,7 @@ class DeviceDetailsFragment :
             else
                 stateBaseErrorDialog()
         }
-        if(BuildConfig.DEBUG){
+        if(BuildConfig.IS_INTERNAL_TESTING){
             binding.burnerSelection.setBounceClickListener {
                 showTimerDialog()
             }

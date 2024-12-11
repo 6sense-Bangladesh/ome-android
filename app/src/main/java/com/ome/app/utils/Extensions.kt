@@ -300,7 +300,7 @@ fun <T> Flow<T?>.collectWithLifecycle(
 }
 
 /**Flow collect from Fragment on` lifecycleScope` if `isAdded` and `RESUMED` */
-context(Fragment)
+context(LifecycleOwner)
 fun <T> Flow<T?>.collectWithLifecycleNoRepeat(
     context: CoroutineContext = EmptyCoroutineContext,
     minActiveState: Lifecycle.State = Lifecycle.State.CREATED,
@@ -308,7 +308,7 @@ fun <T> Flow<T?>.collectWithLifecycleNoRepeat(
 ) {
     lifecycleScope.launch(context) {
         filterNotNull().collect { value ->
-            if (isAdded && lifecycle.currentState.isAtLeast(minActiveState))
+            if (lifecycle.currentState.isAtLeast(minActiveState))
                 block(value)
         }
     }
@@ -418,7 +418,7 @@ fun Fragment.requireApplication() = requireContext().applicationContext!!
 
 
 //fun Any?.logJson(tag: String = "TAG") {
-//    if (BuildConfig.DEBUG) {
+//    if (BuildConfig.IS_INTERNAL_TESTING) {
 //        Log.i("log> '$tag'", "${this?.javaClass?.name}")
 //        if (this is String)
 //            com.orhanobut.logger.Logger.json(this)
@@ -428,7 +428,7 @@ fun Fragment.requireApplication() = requireContext().applicationContext!!
 //}
 
 fun Any?.log(tag: String = "TAG"): Any? {
-    if (BuildConfig.DEBUG)
+    if (BuildConfig.IS_INTERNAL_TESTING)
         Log.d("log> '$tag'", "$tag - $this : ${this?.javaClass?.name?.split('.')?.lastOrNull() ?: ""}")
     return this
 }
@@ -1509,7 +1509,7 @@ fun Fragment.dpToPx(dp: Float): Int {
 }
 
 fun Any.loge(tag: String = "log>") {
-    if (BuildConfig.DEBUG) {
+    if (BuildConfig.IS_INTERNAL_TESTING) {
         val stackTraceElement = Throwable().stackTrace.firstOrNull()
         val fullClassName = stackTraceElement?.className
         val fileName = stackTraceElement?.fileName

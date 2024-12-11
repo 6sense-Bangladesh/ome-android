@@ -122,7 +122,7 @@
     <string name="something_went_wrong_when_setting_the_knob">Something went wrong when setting the knob\'s Wi-Fi, please try again.</string>
     <string name="connection_success">Congratulations! Your knob is now connected to your Wi-Fi.</string>
     <string name="replace_knob_top">Replace Knob Top</string>
-    <string name="replace_knob_label">Once, Wi-Fi connection is successful, re-attach the Knob Top to the Knob Bottom and continue.</string>
+    <string name="replace_knob_label">Re-attach the Knob Top to the Knob Bottom and continue.</string>
     <string name="confirm_that_you_have_completed_part_2">Confirm that you have completed Part 2. The knob should now be installed on your stove!</string>
     <string name="configure_knob">Configure Knob</string>
     <string name="direction_label">In what direction does your knob rotate when you turn it on?</string>

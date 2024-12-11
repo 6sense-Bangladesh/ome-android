@@ -29,7 +29,7 @@ class OmeApplication : SingletonImageLoader.Factory, Application() {
 
     override fun onCreate() {
         super.onCreate()
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.IS_INTERNAL_TESTING) {
             LifecykleLog.initialize(this)
             LifecykleLog.requireAnnotation = false
         }

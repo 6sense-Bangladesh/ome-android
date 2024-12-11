@@ -81,7 +81,7 @@ class StoveSetupBurnersFragment :
             handleButtonClick(it)
             viewModel.stoveOrientation = StoveOrientation.TWO_BURNERS_VERTICAL
         }
-        if(BuildConfig.DEBUG){
+        if(BuildConfig.IS_INTERNAL_TESTING){
             binding.titleTv.setBounceClickListener {
                 navigateSafe(StoveSetupBurnersFragmentDirections.actionStoveSetupBurnersFragmentToStoveSetupCompletedFragment())
             }

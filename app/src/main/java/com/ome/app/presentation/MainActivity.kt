@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
             navigationBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
         )
-        if (BuildConfig.DEBUG){ Firebase.messaging.subscribeToTopic("test") }
+        if (BuildConfig.IS_INTERNAL_TESTING){ Firebase.messaging.subscribeToTopic("test") }
 //        dynamicRotation()
         viewModel.registerConnectionListener()
         setContentView(R.layout.activity_main)
@@ -50,13 +50,13 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         inAppUpdate.onResume()
-        viewModel.startDestination.collectWithLifecycle {
+        viewModel.startDestination.collectWithLifecycleNoRepeat {
             it.log("startDestination")
             initNavigationGraph(it)
         }
     }
 
-        @SuppressLint("RestrictedApi")
+    @SuppressLint("RestrictedApi")
     private fun initNavigationGraph(startDestinationId: Int) {
         startDestinationId.log("initNavigationGraph")
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment

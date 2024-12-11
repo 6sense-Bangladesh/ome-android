@@ -28,7 +28,7 @@ class ProfileFragment :
     }
 
     override fun setupListener() {
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.IS_INTERNAL_TESTING) {
             binding.deleteAccount.makeVisible()
             binding.deleteAccount.setBounceClickListener {
                 showDialog(

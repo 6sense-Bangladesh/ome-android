@@ -3,7 +3,7 @@ package com.ome.app.utils
 import android.util.Log
 import com.ome.app.BuildConfig
 
-var LOGGING_ENABLED = BuildConfig.DEBUG
+var LOGGING_ENABLED = BuildConfig.IS_INTERNAL_TESTING
 
 fun Any.loge(msg: String?) {
     if (LOGGING_ENABLED) {

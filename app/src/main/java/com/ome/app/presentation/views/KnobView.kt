@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.util.SparseArray
 import android.view.MotionEvent
+import android.view.View
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import androidx.annotation.DrawableRes
@@ -460,7 +461,9 @@ class KnobView @JvmOverloads constructor(
             super.onRestoreInstanceState(state.superState)
             state.childrenStates?.let { childrenStates ->
                 for (i in 0 until childCount) {
-                    getChildAt(i).restoreHierarchyState(childrenStates)
+                    val child = getChildAt(i) ?: continue
+                    if (child.id == View.NO_ID) child.id = View.generateViewId()
+                    child.restoreHierarchyState(childrenStates)
                 }
             } ?: super.onRestoreInstanceState(state)
         } else super.onRestoreInstanceState(state)
@@ -479,9 +482,7 @@ class KnobView @JvmOverloads constructor(
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
-            childrenStates?.let {
-                out.writeSparseArray(it)
-            }
+            out.writeSparseArray(childrenStates ?: SparseArray())
         }
 
         private constructor(parcel: Parcel, parent: SavedState) : this(parent) {

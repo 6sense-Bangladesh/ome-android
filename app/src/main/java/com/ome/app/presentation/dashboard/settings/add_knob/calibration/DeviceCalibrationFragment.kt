@@ -7,11 +7,13 @@ import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceCalibrationBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
@@ -51,6 +53,16 @@ class DeviceCalibrationFragment :
         binding.noBtn.setBounceClickListener(::onBackPressed)
         binding.continueBtn.setBounceClickListener {
             viewModel.setLabel()
+        }
+        if(BuildConfig.IS_INTERNAL_TESTING){
+            binding.knobView.doOnRotationChange(
+                doRotate = MutableStateFlow(true),
+                initAngle = viewModel.initAngle,
+                calibration = null
+            ).collectWithLifecycle {
+                it.log("doOnRotationChange")
+                viewModel.knobAngleFlow.value = it
+            }
         }
     }
 

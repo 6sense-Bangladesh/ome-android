@@ -122,7 +122,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 if(credentialFail < 12) {
                     delay(4.seconds)
                     sendMessage(KnobSocketMessageType.WIFI_STATUS)
-                }else if(credentialFail > 12) {
+                }else{
                     credentialFail = 0
                     if(wifiReboot==0) {
                         wifiReboot++

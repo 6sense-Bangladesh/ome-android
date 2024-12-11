@@ -9,14 +9,16 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentConnectToWifiBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConnectToWifiBinding>(
@@ -28,32 +30,20 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
     val params by lazy { args.params }
 
     private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            val permissionDenied = permissions.any { !it.value }
-            if (permissionDenied) {
-                binding.connectBtn.startAnimation()
-                viewModel.connectToWifi()
-            }
+        val allPermissionsGranted = permissions.all { it.value }
+        allPermissionsGranted.log("allPermissionsGranted, connectClicked: ${viewModel.connectClicked}")
+        if (allPermissionsGranted && viewModel.connectClicked) {
+            binding.connectBtn.startAnimation()
+            viewModel.connectToWifi()
         }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.isChangeWifiMode = params.isEditMode
-        viewModel.macAddrs = params.macAddrs
-
-        binding.connectBtn.setOnClickListener { checkPermission() }
-        binding.btnManual.setOnClickListener {
-            navigateSafe(
-                ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToManualSetupFragment(
-                    ManualSetupFragmentParams(
-                        macAddrs = viewModel.macAddrs,
-                        isEditMode = params.isEditMode,
-                    )
-                )
-            )
+        lifecycleScope.launch {
+            delay(1.2.seconds)
+            checkPermission()
         }
-
-        viewModel.initListeners()
-        viewModel.setupWifi()
     }
 
     private fun checkPermission() {
@@ -83,7 +73,7 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
         // Launch permission request for missing permissions
         if (missingPermissions.isNotEmpty())
             permissionLauncher.launch(missingPermissions.toTypedArray())
-        else {
+        else if(viewModel.connectClicked){
             binding.connectBtn.startAnimation()
             viewModel.connectToWifi()
         }
@@ -91,6 +81,21 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
 
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
+
+        binding.connectBtn.setBounceClickListener {
+            viewModel.connectClicked = true
+            checkPermission()
+        }
+        binding.btnManual.setBounceClickListener {
+            navigateSafe(
+                ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToManualSetupFragment(
+                    ManualSetupFragmentParams(
+                        macAddrs = params.macAddrs,
+                        isEditMode = params.isEditMode,
+                    )
+                )
+            )
+        }
 
         onDismissErrorDialog = {
             binding.connectBtn.revertAnimation()
@@ -104,8 +109,8 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
             navigateSafe(
                 ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToWifiListFragment(
                     WifiListFragmentParams(
-                        macAddrs = viewModel.macAddrs,
-                        isEditMode = viewModel.isChangeWifiMode,
+                        macAddrs = params.macAddrs,
+                        isEditMode = params.isEditMode,
                     )
                 )
             )

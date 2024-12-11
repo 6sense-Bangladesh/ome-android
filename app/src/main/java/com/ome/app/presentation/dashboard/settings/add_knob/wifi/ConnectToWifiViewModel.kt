@@ -1,11 +1,13 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
+import androidx.lifecycle.SavedStateHandle
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.local.KnobSocketMessageType
 import com.ome.app.data.local.SocketManager
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.utils.WifiHandler
+import com.ome.app.utils.isNotEmpty
 import com.ome.app.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -17,21 +19,26 @@ import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class ConnectToWifiViewModel @Inject constructor(
-    val wifiHandler: WifiHandler,
-    val socketManager: SocketManager,
-    val stoveRepository: StoveRepository,
-    private val connectionStatusListener: ConnectionStatusListener
+    private val wifiHandler: WifiHandler,
+    private val socketManager: SocketManager,
+    private val stoveRepository: StoveRepository,
+    private val savedStateHandle: SavedStateHandle,
+    connectionStatusListener: ConnectionStatusListener
 ) : BaseViewModel() {
 
-    var macAddrs = ""
-    var isChangeWifiMode = false
+    val params by lazy { ConnectToWifiFragmentArgs.fromSavedStateHandle(savedStateHandle).params }
+
+    var connectClicked = false
 
     val wifiConnectedFlow = MutableSharedFlow<Unit>()
 
     private var getListTryCount = 0
 
     init {
-        launch(ioContext) {
+        connectionStatusListener.shouldReactOnChanges = false
+        setupWifi()
+        initListeners()
+        launch(ioContext, showLoading = false) {
             socketManager.networksFlow.filterNotNull().collect { list ->
                 list.log("wifiNetworksList")
                 if (list.isNotEmpty() || getListTryCount > 0) {
@@ -46,16 +53,16 @@ class ConnectToWifiViewModel @Inject constructor(
     }
 
 
-    fun setupWifi() {
-        if (macAddrs.isNotEmpty()) {
-            wifiHandler.setup(macAddrs)
+    private fun setupWifi() {
+        params.macAddrs.isNotEmpty {
+            wifiHandler.setup(it)
         }
     }
 
-    fun initListeners(){
+    private fun initListeners(){
         socketManager.messageReceived = { type, message ->
             if (type == KnobSocketMessageType.GET_MAC) {
-                if (message == macAddrs) {
+                if (message == params.macAddrs) {
                     sendMessage(KnobSocketMessageType.GET_NETWORKS)
                 }
             }
@@ -71,19 +78,19 @@ class ConnectToWifiViewModel @Inject constructor(
 
 
     fun connectToWifi(){
+        connectClicked = false
         launch(ioContext){
-            if(isChangeWifiMode){
-                stoveRepository.clearWifi(macAddrs)
+            if(params.isEditMode){
+                stoveRepository.clearWifi(params.macAddrs)
                 delay(6.seconds)
             }
-            connectionStatusListener.shouldReactOnChanges = false
             val result = wifiHandler.connectToKnobHotspot()
             result.log("connectToWifi")
             //Check whether device connected to wifi or not
             if (result.first) {
                 socketManager.connect()
             } else {
-                result.second?.let { message ->
+                result.second?.also { message ->
                     error(message)
                 } ?: connectToWifi()
             }

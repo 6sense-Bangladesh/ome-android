@@ -43,7 +43,7 @@ class LaunchFragment :
             navigateSafe(LaunchFragmentDirections.actionLaunchFragmentToSignInFragment())
         }
 
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.IS_INTERNAL_TESTING) {
             binding.imageView7.setBounceClickListener {
                 viewModel.pref.setTimer(Constants.VERIFICATION_KEY, Constants.TWO_MINUTES_MILLIS)
                 navigateSafe(LaunchFragmentDirections.actionLaunchFragmentToVerificationFragment(

@@ -10,6 +10,7 @@ import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDashboardBinding
@@ -23,6 +24,9 @@ import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressedIgnoreCallback
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 
 @AndroidEntryPoint
@@ -44,21 +48,19 @@ class DashboardFragment :
 
     private fun askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // Directly ask for the permission
-                requestPermissionLauncher.launch(permission.POST_NOTIFICATIONS)
-            }
-        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(requireContext(), permission.POST_NOTIFICATIONS)
+            != PackageManager.PERMISSION_GRANTED
+        ) requestPermissionLauncher.launch(permission.POST_NOTIFICATIONS)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initBottomNavigation()
+        lifecycleScope.launch {
+            delay(1.2.seconds)
+            askNotificationPermission()
+        }
     }
 
     override fun handleBackPressEvent() {
@@ -87,7 +89,6 @@ class DashboardFragment :
     }
 
     override fun setupUI() {
-        askNotificationPermission()
         when (binding.dashboardViewPager.currentItem) {
             0 -> binding.topAppBar.title = getString(R.string.menu_settings)
             1 -> {

@@ -28,7 +28,7 @@ class WelcomeFragment :
         userName = mainViewModel.userInfo.value.firstName.toString()
         binding.congoUser.text = getString(R.string.congoUser, userName)
 
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.IS_INTERNAL_TESTING) {
             binding.iconDone.setBounceClickListener {
                 navigateSafe(R.id.stoveSetupCompletedFragment)
             }
