@@ -25,8 +25,6 @@
         android:layout_marginTop="@dimen/margin_top_bar"
         android:justificationMode="inter_word"
         android:text="@string/remove_the_Knob"
-        app:layout_constraintEnd_toEndOf="@+id/appCompatImageView"
-        app:layout_constraintStart_toStartOf="@+id/appCompatImageView"
         app:layout_constraintTop_toBottomOf="@+id/topAppBar"
         tools:targetApi="26" />
 
@@ -44,21 +42,13 @@
         tools:src="@tools:sample/backgrounds/scenic" />
 
 
-    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/continueBtn"
         style="@style/OmeButton.Blue"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginBottom="64dp"
-        android:gravity="center"
         android:text="@string/continue_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatImageView"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

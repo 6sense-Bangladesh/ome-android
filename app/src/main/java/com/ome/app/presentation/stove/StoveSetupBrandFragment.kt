@@ -2,6 +2,7 @@ package com.ome.app.presentation.stove
 
 import android.os.Parcelable
 import android.widget.AdapterView
+import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
@@ -70,6 +71,7 @@ class StoveSetupBrandFragment : BaseFragment<StoveSetupBrandViewModel, FragmentS
     }
 }
 
+@Keep
 @Parcelize
 data class StoveSetupBrandArgs(
     val isEditMode: Boolean = false

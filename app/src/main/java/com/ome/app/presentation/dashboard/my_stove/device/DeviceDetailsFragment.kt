@@ -2,6 +2,7 @@ package com.ome.app.presentation.dashboard.my_stove.device
 
 import android.os.Parcelable
 import android.util.Log
+import androidx.annotation.Keep
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -436,5 +437,6 @@ class DeviceDetailsFragment :
 
 }
 
+@Keep
 @Parcelize
 data class DeviceFragmentParams(val macAddr: String) : Parcelable

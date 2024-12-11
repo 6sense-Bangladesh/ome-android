@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import androidx.activity.addCallback
+import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -155,6 +156,7 @@ class DeviceCalibrationFragment :
     }
 }
 
+@Keep
 @Parcelize
 data class DeviceCalibrationFragmentParams(
     val isComeFromSettings: Boolean = false,

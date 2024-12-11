@@ -1,9 +1,10 @@
 package com.ome.app.presentation.launch
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
-
+@Keep
 @Parcelize
 data class AuthParams(
     @SerializedName("first_name") val firstName: String = "",

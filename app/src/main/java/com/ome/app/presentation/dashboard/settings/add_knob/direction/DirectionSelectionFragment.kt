@@ -1,6 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.direction
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentDirectionSelectionBinding
@@ -122,6 +123,7 @@ class DirectionSelectionFragment :
     }
 }
 
+@Keep
 @Parcelize
 data class DirectionSelectionFragmentParams(
     val isComeFromSettings: Boolean = false,

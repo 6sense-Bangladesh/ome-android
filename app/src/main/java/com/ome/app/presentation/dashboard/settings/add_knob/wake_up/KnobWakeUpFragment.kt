@@ -1,6 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wake_up
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentKnobWakeUpBinding
@@ -41,6 +42,7 @@ class KnobWakeUpFragment : BaseFragment<KnobWakeUpViewModel, FragmentKnobWakeUpB
 
 }
 
+@Keep
 @Parcelize
 data class KnobWakeUpParams(
     val selectedKnobPosition: Int = -1

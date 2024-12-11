@@ -7,6 +7,7 @@ import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
+import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
@@ -71,6 +72,7 @@ class KnobInstallationManualFragment :
     }
 }
 
+@Keep
 @Parcelize
 data class KnobInstallationManualFragmentParams(
     val isComeFromSettings: Boolean = false,

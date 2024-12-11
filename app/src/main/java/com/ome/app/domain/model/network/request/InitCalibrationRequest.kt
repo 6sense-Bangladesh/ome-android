@@ -1,3 +1,9 @@
 package com.ome.app.domain.model.network.request
 
-data class InitCalibrationRequest(val offAngle: Int, val rotationDir: Int)
+import com.google.gson.annotations.SerializedName
+
+data class InitCalibrationRequest(
+    @SerializedName("calibrationId")
+    val offAngle: Int,
+    @SerializedName("rotationDir")
+    val rotationDir: Int)

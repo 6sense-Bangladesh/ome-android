@@ -1,6 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -78,6 +79,7 @@ class ConnectToWifiPasswordFragment :
     }
 }
 
+@Keep
 @Parcelize
 data class ConnectToWifiPasswordParams(
     val isEditMode: Boolean = true,

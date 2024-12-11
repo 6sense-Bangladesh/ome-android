@@ -3,6 +3,7 @@ package com.ome.app.presentation.signup.email
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentSignUpEmailAndPasswordBinding
@@ -60,6 +61,7 @@ class SignUpEmailAndPhoneFragment :
     }
 }
 
+@Keep
 @Parcelize
 data class NameParams(
     val firstName: String = "",

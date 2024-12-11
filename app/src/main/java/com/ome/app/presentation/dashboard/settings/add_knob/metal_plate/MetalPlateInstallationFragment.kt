@@ -1,6 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.metal_plate
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
@@ -53,6 +54,7 @@ class MetalPlateInstallationFragment :
     }
 }
 
+@Keep
 @Parcelize
 data class MetalPlateInstallationParams(
     val selectedKnobPosition: Int = -1

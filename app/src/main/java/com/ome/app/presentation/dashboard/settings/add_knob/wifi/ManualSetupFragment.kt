@@ -1,6 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -78,6 +79,7 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
     }
 }
 
+@Keep
 @Parcelize
 data class ManualSetupFragmentParams(
     val isEditMode: Boolean = false,

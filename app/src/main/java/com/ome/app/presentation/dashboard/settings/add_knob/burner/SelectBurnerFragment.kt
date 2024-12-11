@@ -2,6 +2,7 @@ package com.ome.app.presentation.dashboard.settings.add_knob.burner
 
 import android.os.Parcelable
 import android.text.SpannableStringBuilder
+import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
@@ -86,7 +87,7 @@ class SelectBurnerFragment : BaseFragment<SelectBurnerViewModel, FragmentSelectB
 
     }
 }
-
+@Keep
 @Parcelize
 data class SelectBurnerFragmentParams(
     val isEditMode: Boolean = false,

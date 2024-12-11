@@ -64,6 +64,7 @@ class WebSocketManager(
         scarlet = Scarlet.Builder()
             .webSocketFactory(createHttpClient().newWebSocketFactory(url))
             .addMessageAdapterFactory(GsonMessageAdapter.Factory())
+//            .addStreamAdapterFactory(CoroutinesStreamAdapterFactory())
             .addStreamAdapterFactory(FlowStreamAdapter.Factory)
             .build()
         CoroutineScope(coroutineContext).launch {

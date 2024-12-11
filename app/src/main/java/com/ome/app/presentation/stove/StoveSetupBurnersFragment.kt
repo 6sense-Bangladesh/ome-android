@@ -2,6 +2,7 @@ package com.ome.app.presentation.stove
 
 import android.os.Parcelable
 import android.view.View
+import androidx.annotation.Keep
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -144,6 +145,7 @@ class StoveSetupBurnersFragment :
     }
 }
 
+@Keep
 @Parcelize
 data class StoveSetupBurnersArgs(
     val brand: String = "",

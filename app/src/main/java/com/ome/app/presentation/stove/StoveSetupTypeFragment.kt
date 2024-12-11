@@ -1,6 +1,7 @@
 package com.ome.app.presentation.stove
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
@@ -169,6 +170,7 @@ class StoveSetupTypeFragment :
     }
 }
 
+@Keep
 @Parcelize
 data class StoveSetupTypeArgs(
     val brand: String = "",

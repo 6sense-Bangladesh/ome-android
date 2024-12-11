@@ -1,6 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.zone
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentZoneSelectionBinding
@@ -105,6 +106,7 @@ class ZoneSelectionFragment :
 }
 
 
+@Keep
 @Parcelize
 data class ZoneSelectionFragmentParams(
     val isComeFromSettings: Boolean = true,

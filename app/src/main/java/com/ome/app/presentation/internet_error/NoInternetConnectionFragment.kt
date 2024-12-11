@@ -1,6 +1,7 @@
 package com.ome.app.presentation.internet_error
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
@@ -66,5 +67,6 @@ class NoInternetConnectionFragment :
     }
 }
 
+@Keep
 @Parcelize
 data class NoInternetConnectionFragmentParams(val showRetryButton: Boolean = false) : Parcelable

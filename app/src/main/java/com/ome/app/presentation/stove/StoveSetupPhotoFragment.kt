@@ -3,6 +3,7 @@ package com.ome.app.presentation.stove
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import androidx.annotation.Keep
 import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentStoveSetupPhotoBinding
@@ -73,5 +74,6 @@ class StoveSetupPhotoFragment :
     }
 }
 
+@Keep
 @Parcelize
 data class StoveSetupPhotoArgs(val brand: String, val type: StoveType) : Parcelable

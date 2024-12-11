@@ -1,6 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.data.local.KnobSocketMessageType
@@ -64,7 +65,7 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
 
     }
 }
-
+@Keep
 @Parcelize
 data class WifiListFragmentParams(
     val isEditMode: Boolean = true,

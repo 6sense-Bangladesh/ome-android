@@ -1,9 +1,11 @@
 package com.ome.app.domain.model.network.request
 
+import com.google.gson.annotations.SerializedName
+
 data class Zone(
-    val highAngle: Int,
-    val lowAngle: Int,
-    val mediumAngle: Int,
-    val zoneName: String,
-    val zoneNumber: Int
+    @SerializedName("highAngle") val highAngle: Int,
+    @SerializedName("lowAngle") val lowAngle: Int,
+    @SerializedName("mediumAngle") val mediumAngle: Int,
+    @SerializedName("zoneName") val zoneName: String,
+    @SerializedName("zoneNumber") val zoneNumber: Int
 )

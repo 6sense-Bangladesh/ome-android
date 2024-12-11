@@ -43,8 +43,12 @@ android {
 
     buildTypes {
         debug {
+//            isMinifyEnabled = true
+//            isShrinkResources = true
+            isDebuggable = true
             buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL)
             buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL)
+//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
 
         create("demo") {
@@ -59,7 +63,8 @@ android {
         }
 
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             isDebuggable = false
             buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL)
             buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL)
@@ -184,10 +189,6 @@ dependencies {
     val truth = "1.1.5"
     testImplementation("com.google.truth:truth:$truth")
     androidTestImplementation("com.google.truth:truth:$truth")
-
-    val mockito = "5.14.2"
-    testImplementation("org.mockito:mockito-core:$mockito")
-    testImplementation("org.mockito:mockito-inline:5.2.0")
 
     implementation("com.github.chuckerteam.chucker:library:4.0.0")
 //    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
