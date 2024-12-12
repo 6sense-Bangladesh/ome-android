@@ -30,7 +30,7 @@ class SettingsViewModel @Inject constructor(
         loadSettings()
     }
 
-    fun loadSettings() = launch(ioContext) {
+    private fun loadSettings() = launch(ioContext) {
         stoveRepository.knobsFlow.collect { knobs ->
             val settings = defaultSettingOptions.toMutableList()
             settings.addAll(knobs.dropLast(1).map { it.toItemModel() })

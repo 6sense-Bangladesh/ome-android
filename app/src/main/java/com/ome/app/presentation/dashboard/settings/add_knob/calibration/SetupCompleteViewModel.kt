@@ -6,5 +6,4 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class SetupCompleteViewModel @Inject constructor(): BaseViewModel() {
-}
+class SetupCompleteViewModel @Inject constructor(): BaseViewModel()

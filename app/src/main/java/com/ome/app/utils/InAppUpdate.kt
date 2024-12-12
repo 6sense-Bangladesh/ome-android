@@ -31,7 +31,7 @@ class InAppUpdate(private val activity: ComponentActivity, private val onEnd : (
         private var appUpdateManager: AppUpdateManager? = null
         private var isImmediateUpdateStarted = false
     }
-    private val localVersionCode get() = BuildConfig.VERSION_CODE
+    private val localVersionCode = BuildConfig.VERSION_CODE
     private var playVersionCode = 0
 
     private val updateFlowResultLauncher =

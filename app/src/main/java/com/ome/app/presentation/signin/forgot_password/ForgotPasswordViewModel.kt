@@ -16,8 +16,7 @@ import javax.inject.Inject
 class ForgotPasswordViewModel @Inject constructor(private val amplifyManager: AmplifyManager) :
     BaseViewModel() {
 
-    val validationSuccessLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
-    val passwordResetLiveData: SingleLiveEvent<AmplifyResultValue> = SingleLiveEvent()
+    private val passwordResetLiveData: SingleLiveEvent<AmplifyResultValue> = SingleLiveEvent()
     val validationErrorFlow = MutableSharedFlow<List<Pair<Validation, String>>>()
     val validationSuccessFlow = MutableSharedFlow<AmplifyResultValue>()
 
@@ -26,16 +25,9 @@ class ForgotPasswordViewModel @Inject constructor(private val amplifyManager: Am
     var phone = ""
     var code = ""
     var email = ""
-    var currentPassword = ""
-    var retypePassword = ""
-    var isForgotPassword = false
+    private var currentPassword = ""
+    private var retypePassword = ""
 
-
-    fun confirmResetPassword() = launch(ioContext) {
-        val result =
-            amplifyManager.confirmResetPassword(password = currentPassword, confirmationCode = code)
-        passwordResetLiveData.postValue(result)
-    }
 
     fun validateFields(currentPassword: String, retypePassword: String) {
         this.currentPassword = currentPassword

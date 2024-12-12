@@ -66,11 +66,7 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideSocketManager(
-        @ApplicationContext context: Context,
-        retrofit: Retrofit
-    ): SocketManager =
-        SocketManager(context, retrofit)
+    fun provideSocketManager(@ApplicationContext context: Context): SocketManager = SocketManager(context)
 
     @Provides
     @Singleton

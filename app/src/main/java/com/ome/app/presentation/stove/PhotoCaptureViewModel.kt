@@ -1,7 +1,6 @@
 package com.ome.app.presentation.stove
 
 import android.graphics.Bitmap
-import android.net.Uri
 import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
@@ -20,7 +19,6 @@ class PhotoCaptureViewModel @Inject constructor(val userRepository: UserReposito
 
     private var fileName = "shaft"
 
-    var currentContentUri: Uri? = null
     var currentFile: File? = null
 
     val imageUploadedLiveData = SingleLiveEvent<Boolean>()
@@ -56,14 +54,6 @@ class PhotoCaptureViewModel @Inject constructor(val userRepository: UserReposito
         val oldList2 =_photoThumbList.value.toMutableList()
         oldList2.removeAt(position)
         _photoThumbList.value = oldList2
-    }
-
-    fun removeAllPhoto() {
-        _photoList.value.forEach {
-            it.delete()
-        }
-        _photoList.value = mutableListOf()
-        _photoThumbList.value = mutableListOf()
     }
 
     fun clearList() {

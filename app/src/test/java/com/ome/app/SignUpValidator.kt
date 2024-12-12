@@ -12,7 +12,7 @@ data class MockUser(
 )
 
 object SignUpValidator {
-    val userDB = listOf(
+    private val userDB = listOf(
         MockUser(
             firstName = "John",
             lastName = "Doe",

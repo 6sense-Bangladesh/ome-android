@@ -67,10 +67,9 @@ fun Context.savePhotoToExternalStorage(name: String, bmp: Bitmap?): Uri? {
 
 
 fun getPath(context: Context?, uri: Uri): String? {
-    val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
 
     // DocumentProvider
-    if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+    if (DocumentsContract.isDocumentUri(context, uri)) {
         // ExternalStorageProvider
         if (isExternalStorageDocument(uri)) {
             val docId = DocumentsContract.getDocumentId(uri)
@@ -92,12 +91,10 @@ fun getPath(context: Context?, uri: Uri): String? {
             val split = docId.split(":").toTypedArray()
             val type = split[0]
             var contentUri: Uri? = null
-            if ("image" == type) {
-                contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            } else if ("video" == type) {
-                contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-            } else if ("audio" == type) {
-                contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            when (type) {
+                "image" -> contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                "video" -> contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                "audio" -> contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
             }
             val selection = "_id=?"
             val selectionArgs = arrayOf(
@@ -128,8 +125,8 @@ fun getDataColumn(
             null
         )
         if (cursor != null && cursor.moveToFirst()) {
-            val column_index = cursor.getColumnIndexOrThrow(column)
-            return cursor.getString(column_index)
+            val columnIndex = cursor.getColumnIndexOrThrow(column)
+            return cursor.getString(columnIndex)
         }
     } finally {
         cursor?.close()

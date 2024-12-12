@@ -17,8 +17,8 @@ import kotlin.time.Duration.Companion.seconds
 @HiltViewModel
 class ManualSetupViewModel @Inject constructor(
     val networkManager: NetworkManager,
-    val socketManager: SocketManager,
-    private val connectionStatusListener: ConnectionStatusListener
+    private val socketManager: SocketManager,
+    connectionStatusListener: ConnectionStatusListener
 ) : BaseViewModel() {
 
     var macAddr = ""

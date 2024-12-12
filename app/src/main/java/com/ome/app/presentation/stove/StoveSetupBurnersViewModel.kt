@@ -4,7 +4,6 @@ import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.model.network.request.StoveRequest
 import com.ome.app.domain.model.state.StoveOrientation
 import com.ome.app.domain.repo.StoveRepository
-import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,12 +11,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StoveSetupBurnersViewModel @Inject constructor(
-    private val stoveRepository: StoveRepository,
-    private val userRepository: UserRepository
+    private val stoveRepository: StoveRepository
 ) : BaseViewModel() {
     var stoveOrientation: StoveOrientation? = null
     var brand = ""
-    var stoveAutoOffMins = 15
+    private var stoveAutoOffMins = 15
     var stoveType = ""
     var stoveKnobMounting = ""
 
@@ -37,35 +35,12 @@ class StoveSetupBurnersViewModel @Inject constructor(
         } ?: error("Please select burner type")
     }
 
-    fun createStove() {
-        launch(ioContext) {
-            stoveOrientation?.number?.let { number ->
-                val response = stoveRepository.createStove(
-                    com.ome.app.domain.model.network.request.StoveRequest(
-                        stoveAutoOffMins = stoveAutoOffMins,
-                        stoveGasOrElectric = stoveType,
-                        stoveMakeModel = brand,
-                        stoveOrientation = number,
-                        stoveKnobMounting = stoveKnobMounting,
-                        stoveSetupComplete = true
-                    )
-                )
-                if (response.isSuccess) {
-//                    userRepository.getUserData()
-                    createStoveLiveData.postValue(true)
-                } else {
-                    loadingLiveData.postValue(false)
-                }
-            } ?: error("Please select burner type")
-        }
-        //createStoveLiveData.postValue(true)
-    }
 
     fun updateUserStove(stoveId: String) {
         launch(ioContext) {
             stoveOrientation?.number?.let { number ->
                 val response = stoveRepository.updateStove(
-                    com.ome.app.domain.model.network.request.StoveRequest(
+                    StoveRequest(
                         stoveAutoOffMins = stoveAutoOffMins,
                         stoveGasOrElectric = stoveType,
                         stoveMakeModel = brand,

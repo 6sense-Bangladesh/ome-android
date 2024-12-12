@@ -49,7 +49,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/materialTextView3"
         style="@style/Label.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,15 +59,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialTextView4" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/skipSetup"
-        style="@style/OmeButton.Blue.Outline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Skip for Now"
-        app:layout_constraintBottom_toTopOf="@+id/startSetup"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/skipSetup"-->
+<!--        style="@style/OmeButton.Blue.Outline"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Skip for Now"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/startSetup"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/startSetup"

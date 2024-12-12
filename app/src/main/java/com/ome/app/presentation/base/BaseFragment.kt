@@ -17,7 +17,6 @@ import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ome.app.R
 import com.ome.app.presentation.MainVM
-import com.ome.app.presentation.dashboard.members.MembersFragment
 import com.ome.app.presentation.dashboard.my_stove.MyStoveFragment
 import com.ome.app.presentation.dashboard.profile.ProfileFragment
 import com.ome.app.presentation.dashboard.settings.SettingsFragment
@@ -95,7 +94,6 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                 is ProfileFragment,
                 is MyStoveFragment,
                 is WelcomeFragment,
-                is MembersFragment,
                 is SettingsFragment,
                 is LaunchFragment, is VerificationFragment -> activity?.finishAndRemoveTask()
                 else -> onBackPressedIgnoreCallback()

@@ -71,10 +71,6 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
             requestPermissionLauncher.launch(Manifest.permission.CAMERA)
 
 
-    override fun onPause() {
-//        codeScanner.releaseResources()
-        super.onPause()
-    }
 
     override fun setupObserver() {
         super.setupObserver()
@@ -89,7 +85,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
             } ?: onError(getString(R.string.scan_again))
         }
         viewModel.loadingFlow.collectWithLifecycle{
-            binding.loadingLayout.container.changeVisibility(it)
+            binding.loadingLayout.root.changeVisibility(it)
         }
     }
 }

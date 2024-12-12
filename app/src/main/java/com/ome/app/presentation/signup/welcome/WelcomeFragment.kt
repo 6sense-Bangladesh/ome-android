@@ -41,9 +41,9 @@ class WelcomeFragment :
             )
         }
 
-        binding.skipSetup.setBounceClickListener {
-            navigateSafe(R.id.action_welcomeFragment_to_dashboardFragment)
-        }
+//        binding.skipSetup.setBounceClickListener {
+//            navigateSafe(R.id.action_welcomeFragment_to_dashboardFragment)
+//        }
 
     }
 

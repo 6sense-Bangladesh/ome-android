@@ -35,7 +35,7 @@ class ForgotPasswordEmailFragment :
 
     override fun setupObserver() {
         super.setupObserver()
-        viewModel.forgotPasswordSuccess.collectWithLifecycle(){
+        viewModel.forgotPasswordSuccess.collectWithLifecycle {
             binding.continueBtn.revertAnimation()
             IO { viewModel.pref.setTimer(Constants.VERIFICATION_KEY, Constants.TWO_MINUTES_MILLIS) }
             navigateSafe(

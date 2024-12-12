@@ -5,5 +5,4 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MetalPlateInstallationViewModel @Inject constructor() : BaseViewModel() {
-}
+class MetalPlateInstallationViewModel @Inject constructor() : BaseViewModel()

@@ -105,7 +105,7 @@ open class RecyclerDelegationAdapter(
         addItem(index, item)
     }
 
-    fun addItem(index: Int, item: ItemModel) {
+    private fun addItem(index: Int, item: ItemModel) {
         items.add(index, item)
         notifyItemInserted(index)
     }

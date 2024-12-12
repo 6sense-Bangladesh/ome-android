@@ -7,11 +7,10 @@
     tools:context=".presentation.launch.LaunchFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imageView5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_background_new"
+        android:src="@drawable/ic_background"
         android:translationY="-150dp" />
 
     <com.google.android.material.card.MaterialCardView
@@ -34,12 +33,11 @@
         android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_70sdp"
         android:layout_marginTop="@dimen/_28sdp"
-        android:src="@drawable/ome_logo_transparent"
+        android:src="@drawable/ome_logo_black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/materialCardView2" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/materialTextView"
         style="@style/Label.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,7 +48,6 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"

@@ -99,7 +99,7 @@ android {
     }
     packaging {
         resources {
-            pickFirsts += setOf("META-INF/INDEX.LIST", "META-INF/io.netty.versions.properties")
+            pickFirsts += setOf("META-INF/INDEX.LIST", "META-INF/io.netty.versions.properties", "META-INF/versions/9/OSGI-INF/MANIFEST.MF")
         }
     }
 }
@@ -113,11 +113,11 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
 
     //DI
-    implementation("com.google.dagger:hilt-android:2.52")
+    implementation("com.google.dagger:hilt-android:2.53.1")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
-    ksp("com.google.dagger:hilt-compiler:2.52")
+    ksp("com.google.dagger:hilt-compiler:2.53.1")
 
     //Navigation
     val nav = "2.8.4"
@@ -130,7 +130,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:$retrofit2")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-    val cameraX = "1.5.0-alpha03"
+    val cameraX = "1.5.0-alpha04"
     implementation("androidx.camera:camera-core:$cameraX")
     implementation("androidx.camera:camera-camera2:$cameraX")
     implementation("androidx.camera:camera-lifecycle:$cameraX")
@@ -165,7 +165,7 @@ dependencies {
     //Splash screen API
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-    implementation("dev.chrisbanes.insetter:insetter:0.6.1")
+//    implementation("dev.chrisbanes.insetter:insetter:0.6.1")
 
     val scarlet = "0.1.12"
     implementation("com.tinder.scarlet:scarlet:$scarlet")
@@ -183,7 +183,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     //google truth
 
-    val truth = "1.1.5"
+    val truth = "1.4.4"
     testImplementation("com.google.truth:truth:$truth")
     androidTestImplementation("com.google.truth:truth:$truth")
 
@@ -192,7 +192,7 @@ dependencies {
     else
         implementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
 
-    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-messaging:24.1.0")
 
@@ -201,7 +201,7 @@ dependencies {
 
     implementation("com.github.chesire:lifecyklelog:3.1.1")
 
-    val coil = "3.0.3"
+    val coil = "3.0.4"
     implementation("io.coil-kt.coil3:coil:$coil")
     implementation("io.coil-kt.coil3:coil-network-okhttp:$coil")
     implementation("io.coil-kt.coil3:coil-gif:$coil")

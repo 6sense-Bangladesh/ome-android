@@ -1,4 +1,0 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/ome_gradient_button_unpressed_color" android:state_enabled="true"/>
-    <item android:alpha="0.12" android:drawable="@drawable/ome_gradient_button_pressed_color" />
-</selector>

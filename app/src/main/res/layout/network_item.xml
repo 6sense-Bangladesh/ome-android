@@ -13,7 +13,6 @@
     tools:ignore="UnusedAttribute">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/wifiIv"
         android:layout_width="@dimen/_18sdp"
         android:layout_height="@dimen/_18sdp"
         android:src="@drawable/ic_wifi" />
@@ -29,7 +28,6 @@
         tools:text="@tools:sample/full_names" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/networkTypeIv"
         android:layout_width="@dimen/_18sdp"
         android:layout_height="@dimen/_18sdp"
         android:src="@drawable/ic_lock" />

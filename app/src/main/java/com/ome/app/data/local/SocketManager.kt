@@ -5,11 +5,7 @@ import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.N
 import com.ome.app.utils.log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
-import okhttp3.ResponseBody
 import org.bouncycastle.jce.provider.BouncyCastleProvider
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.http.GET
 import java.io.ByteArrayOutputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -21,16 +17,7 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 
-class SocketManager(
-    val context: Context,
-    retrofit: Retrofit
-) {
-    interface SocketService{
-        @GET("http://10.10.0.1/start_scan.cgi")
-        suspend fun scanForNetworks(): Response<ResponseBody>
-    }
-
-    private val socketService: SocketService = retrofit.create(SocketService::class.java)
+class SocketManager(val context: Context) {
 
     companion object {
         private const val KNOB_IP_ADDRESS = "10.10.0.1"
@@ -66,10 +53,6 @@ class SocketManager(
         vararg params: String = arrayOf()
     ){
         withContext(Dispatchers.IO) {
-//        if (lastMessageSent == KnobSocketMessage.GET_NETWORKS2) {
-//            scanForNetworks()
-//            return@withContext
-//        }
             try {
                 // Prepare the message
                 var finalMessage = message.path
@@ -153,37 +136,6 @@ class SocketManager(
         }
         return filteredArray.map { it.toByte() }.toByteArray()
     }
-
-    private suspend fun scanForNetworks(): List<NetworkItemModel> {
-        val networksList = mutableListOf<NetworkItemModel>()
-        try {
-            val response = socketService.scanForNetworks()
-            if(response.isSuccessful){
-
-                // Parse response body
-                val data = response.body()?.string()
-                data.log("$TAG - scanForNetworks")
-                if (data != null) {
-                    val strEntries = data.split(Regex("[{}]"))
-                    for ((index, entry) in strEntries.withIndex()) {
-                        if (index % 2 != 0) {
-                            val entries = entry.split("\"")
-                            networksList.add(NetworkItemModel(
-                                ssid = entries[3],
-                                securityType = entries[11]
-                            ))
-                        }
-                    }
-                    networksFlow.emit(networksList.toList())
-                }
-            }
-        }catch (e: Exception){
-            e.printStackTrace()
-        }
-        return networksList
-    }
-
-
 
     private fun encrypt(message: String): ByteArray {
         val cipher = Cipher.getInstance("AES/CBC/ZeroBytePadding")
@@ -286,6 +238,7 @@ enum class KnobSocketMessageType(val path: String) {
 }
 
 fun main() {
+    //demo
     fun parseNetworkList(message: String): List<NetworkItemModel> {
         val networksList = arrayListOf<NetworkItemModel>()
 

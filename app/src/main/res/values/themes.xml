@@ -3,7 +3,7 @@
     <style name="Theme.OmeApp" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/gradient_mid_unpressed_color</item>
+        <item name="colorPrimaryVariant">@color/blueDeep</item>
         <item name="colorOnPrimary">@color/white</item>
 
         <item name="colorSurfaceContainerHigh">@color/white</item>
@@ -13,7 +13,7 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/colorPrimary</item>
         <item name="colorSecondaryContainer">@color/colorPrimaryTrans</item>
-        <item name="colorSecondaryVariant">@color/gradient_mid_unpressed_color</item>
+        <item name="colorSecondaryVariant">@color/blueDeep</item>
         <item name="colorOnSecondary">@color/white</item>
         <item name="colorShadowDark">@color/white</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>

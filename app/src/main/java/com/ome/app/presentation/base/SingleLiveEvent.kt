@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 
 import java.util.concurrent.atomic.AtomicBoolean
 
-public class SingleLiveEvent<T> : MutableLiveData<T>() {
+class SingleLiveEvent<T> : MutableLiveData<T>() {
 
     private companion object {
         private const val TAG = "SingleLiveEvent"
@@ -37,7 +37,7 @@ public class SingleLiveEvent<T> : MutableLiveData<T>() {
     }
 
     @MainThread
-    public fun call() {
+    fun call() {
         value = null
     }
 }

@@ -6,7 +6,6 @@ import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.signin.SignInViewModel
-import org.junit.Before
 import org.junit.Test
 
 class SignInAndroidUnitTest {
@@ -17,9 +16,6 @@ class SignInAndroidUnitTest {
     private lateinit var stoveRepository: StoveRepository
     private lateinit var pref: PreferencesProvider
 
-    @Before
-    fun setup(){
-    }
 
     @Test
     fun signInWithEmptyUserName_ReturnsFalse() {

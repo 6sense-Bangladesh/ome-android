@@ -62,7 +62,6 @@
             app:strokeWidth="0dp" />
 
         <Button
-            android:id="@+id/hiddenSpace"
             android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:visibility="invisible" />

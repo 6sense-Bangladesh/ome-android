@@ -1,6 +1,5 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.direction
 
-import androidx.lifecycle.SavedStateHandle
 import com.ome.app.domain.model.network.request.KnobRequest
 import com.ome.app.domain.model.network.request.SetCalibrationRequest
 import com.ome.app.domain.repo.StoveRepository
@@ -11,7 +10,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DirectionSelectionViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
     private val stoveRepository: StoveRepository
     ): BaseViewModel() {
     var continueBtnClicked = false

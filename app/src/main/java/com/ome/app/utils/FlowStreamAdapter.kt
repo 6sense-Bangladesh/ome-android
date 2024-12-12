@@ -11,7 +11,7 @@ import java.lang.reflect.Type
 
 class FlowStreamAdapter<T> : StreamAdapter<T, Flow<T>> {
     @OptIn(DelicateCoroutinesApi::class)
-    override fun adapt(stream: Stream<T>) = callbackFlow<T> {
+    override fun adapt(stream: Stream<T>) = callbackFlow {
         stream.start(object : Stream.Observer<T> {
             override fun onComplete() {
                 close()

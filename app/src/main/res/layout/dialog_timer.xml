@@ -54,7 +54,6 @@
                         tools:targetApi="Q" />
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/pickerHourCard"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_gravity="center"
@@ -101,7 +100,6 @@
                         tools:targetApi="Q" />
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/pickerMinCard"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_gravity="center"
@@ -148,7 +146,6 @@
                         tools:targetApi="Q" />
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/pickerSecCard"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_gravity="center"

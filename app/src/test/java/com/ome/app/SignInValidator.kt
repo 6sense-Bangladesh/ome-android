@@ -4,7 +4,7 @@ object SignInValidator {
     data class MockUser(val userEmail: String, val password: String)
 
 
-    val mockUserDB = listOf(
+    private val mockUserDB = listOf(
         MockUser("jmaessmith@gmail.com", "123456"),
         MockUser("clerknight@gmail.com", "123456"),
         MockUser("theodore.roosevelt@altostrat.com", "123")

@@ -30,9 +30,6 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     var securityType = ""
     var password = ""
 
-    private var rebootRetries = 0
-
-
     fun initListeners() {
         socketManager.messageReceived = { type, message ->
             launch(ioContext){
@@ -59,13 +56,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                             delay(3.seconds)
                             sendMessage(KnobSocketMessageType.REBOOT)
                             socketManager.stopClient()
-//                        withDelay(2000) {
-//                            disconnectFromNetwork()
-//                        }
-//                        successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
-//                        loadingLiveData.postValue(false)
-//                        disconnectFromNetwork()
-                            delay(3.seconds)
+                            disconnectFromNetwork()
                             successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
                             loadingLiveData.postValue(false)
                         } else {

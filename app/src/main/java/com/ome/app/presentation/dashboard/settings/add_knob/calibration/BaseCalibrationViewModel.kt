@@ -44,7 +44,7 @@ abstract class BaseCalibrationViewModel(
     var firstDiv: Int = 0
     var secondDiv: Int = 0
 
-    val isZoneStartFromRight: Boolean
+    private val isZoneStartFromRight: Boolean
         get() = initAngle.isRightZone(firstDiv) ?: false
 
     var rotationDir: Int? = null

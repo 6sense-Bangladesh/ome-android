@@ -3,12 +3,12 @@ package com.ome.app.presentation.dashboard.settings.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ome.app.R
 import com.ome.app.databinding.SettingsItemBinding
 import com.ome.app.databinding.SettingsTitleItemBinding
+import com.ome.app.presentation.base.recycler.DefaultDiffItemCallback
 import com.ome.app.presentation.base.recycler.ItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.DeviceSettingsItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsItemModel
@@ -20,7 +20,7 @@ import com.ome.app.utils.toast
 
 
 class SettingItemAdapter(private val onClick: (ItemModel) -> Unit) :
-    ListAdapter<ItemModel, RecyclerView.ViewHolder>(COMPARATOR) {
+    ListAdapter<ItemModel, RecyclerView.ViewHolder>(DefaultDiffItemCallback<ItemModel>()) {
 
     inner class ViewHolderItem(
         private val binding: SettingsItemBinding,
@@ -94,12 +94,4 @@ class SettingItemAdapter(private val onClick: (ItemModel) -> Unit) :
             }
         }
     }
-
-    companion object {
-        private val COMPARATOR = object : DiffUtil.ItemCallback<ItemModel>() {
-            override fun areItemsTheSame(oldItem: ItemModel, newItem: ItemModel): Boolean = oldItem == newItem
-            override fun areContentsTheSame(oldItem: ItemModel, newItem: ItemModel): Boolean = false
-        }
-    }
-
 }

@@ -3,6 +3,7 @@ package com.ome.app.data.remote.websocket
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.ome.app.BuildConfig
+import com.ome.app.data.local.NetworkManager.Companion.wifiStrengthPercentage
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.network.response.asKnobState
 import com.ome.app.domain.model.network.websocket.KnobAngle
@@ -10,7 +11,6 @@ import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.network.websocket.MacAddress
 import com.ome.app.domain.model.state.*
 import com.ome.app.utils.*
-import com.ome.app.data.local.NetworkManager.Companion.wifiStrengthPercentage
 import com.tinder.scarlet.Scarlet
 import com.tinder.scarlet.messageadapter.gson.GsonMessageAdapter
 import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
@@ -34,25 +34,15 @@ class WebSocketManager(
     val knobAngleFlow: MutableStateFlow<KnobAngle?> = MutableStateFlow(null)
 
     var onSocketConnect: suspend (Boolean) -> Unit = {}
-    var connected = false
+    private var connected = false
 
     companion object{
         private const val TAG = "KnobSocketWeb"
     }
 
-
-//    private val knobBatteryFlow: MutableStateFlow<KnobBattery?> = MutableStateFlow(null)
-//    private val knobConnectStatusFlow: MutableStateFlow<KnobConnectStatus?> = MutableStateFlow(null)
-//    private val knobConnectIpAddrFlow: MutableStateFlow<KnobConnectIpAddr?> = MutableStateFlow(null)
-//    private val knobFirmwareVersionFlow: MutableStateFlow<KnobFirmwareVersion?> = MutableStateFlow(null)
-//    private val knobMountingSurfaceFlow: MutableStateFlow<KnobMountingSurface?> = MutableStateFlow(null)
-//    private val knobReportedScheduleStopFlow: MutableStateFlow<KnobReportedScheduleStop?> = MutableStateFlow(null)
-//    private val knobRssiFlow: MutableStateFlow<KnobRssi?> = MutableStateFlow(null)
-//    private val knobTemperatureFlow: MutableStateFlow<KnobTemperature?> = MutableStateFlow(null)
-
     suspend fun initWebSocket(knobs: List<KnobDto>, userId: String) {
         connected = false
-        val knobMacs = knobs.map { knob -> knob.macAddr }.joinToString(separator = ",")
+        val knobMacs = knobs.joinToString(separator = ",") { knob -> knob.macAddr }
         val url = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=$knobMacs&inirvUid=$userId"
         knobMacs.log("$TAG - initWebSocket")
         val knobStates= knobs.associateBy { it.macAddr }.mapValues { it.value.asKnobState }

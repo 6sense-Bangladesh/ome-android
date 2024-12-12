@@ -91,7 +91,6 @@
         tools:text="Ome456" />
 
     <TextView
-        android:id="@+id/manualLabelTv2"
         style="@style/Label.Medium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

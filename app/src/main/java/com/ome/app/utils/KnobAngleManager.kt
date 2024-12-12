@@ -256,7 +256,6 @@ object KnobAngleManager {
         offAngle: Int,
         angleDualOffset: Int = 25
     ): Float {
-        val old = initAngle.value ?: return newAngle
         return processDualKnobResult(
             initAngle = initAngle,
             newAngle = newAngle,

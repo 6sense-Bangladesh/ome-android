@@ -21,15 +21,15 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
 //    var currentCalibrationStateLiveData = SingleLiveEvent<CalibrationState?>().apply { postValue(null) }
     var currentCalibrationState = MutableStateFlow<CalibrationState?>(null)
 
-    var firstConfirmationPageLiveData = SingleLiveEvent<Boolean>()
+    private var firstConfirmationPageLiveData = SingleLiveEvent<Boolean>()
 
 
     val calibrationIsDoneLiveData = SingleLiveEvent<Boolean>()
     val previousScreenTriggered = SingleLiveEvent<Boolean>()
 
 
-    var offTriggerCount = 0
-    var currentStepTriggerCount = 0
+    private var offTriggerCount = 0
+    private var currentStepTriggerCount = 0
 
 
     override fun handleDualKnobUpdated(angle: Float) {

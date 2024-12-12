@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:fitsSystemWindows="true"
     tools:context=".presentation.stove.StoveSetupPhotoFragment">
 
@@ -54,10 +53,10 @@
         style="@style/OmeButton.Blue.Outline"
         android:text="@string/retake"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/takePhoto"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/takePhoto"

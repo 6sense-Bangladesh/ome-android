@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:fitsSystemWindows="true"
     tools:context=".presentation.stove.StoveSetupBurnersFragment">
 
@@ -27,9 +26,7 @@
         android:textColor="?colorControlNormal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topAppBar" />  
-    
-
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
 
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -117,13 +114,13 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginBottom="@dimen/_14sdp"
-        android:visibility="gone"
-        tools:visibility="visible"
         android:text="@string/warning_can_t_change"
         android:textColor="@color/redDeep"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/continueBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/continueBtn"/>
+        tools:visibility="visible" />
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/continueBtn"
