@@ -3,7 +3,6 @@ package com.ome.app.data.local
 import android.content.Context
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
 import com.ome.app.utils.log
-import com.ome.app.utils.loge
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import okhttp3.ResponseBody
@@ -141,34 +140,6 @@ class SocketManager(
             }
         }
         networksList.log("$TAG - wifiNetworksList")
-
-//        val regex = """\d+\s+\d+\s+-\d+\s+([A-F0-9:]{17})\s+\d+\s+(.*)""".toRegex()
-//
-//        regex.findAll(message).forEach { matchResult ->
-//            matchResult.groupValues.getOrNull(2)?.trim()?.let {
-//                it.isNotEmpty { ssid ->
-//                    networksList.add(NetworkItemModel(ssid = ssid, securityType = "WPA2"))
-//                }
-//            }
-//        }
-//        val list = message.split("#")
-//        list.forEach { item ->
-//            item.log("scanForNetworks2")
-//            if (item.isNotEmpty()) {
-//
-//                val network =
-//                    item.substring(33, item.length).replace("\\r", "").replace("\\n", "").trim()
-//                if (networksList.firstOrNull { networkItem -> networkItem.ssid == network } != null) {
-//                    return@forEach
-//                }
-//                networksList.add(
-//                    NetworkItemModel(
-//                        ssid = network,
-//                        securityType = "WPA2"
-//                    )
-//                )
-//            }
-//        }
         return networksList.distinctBy { it.ssid }
     }
 
@@ -236,7 +207,7 @@ class SocketManager(
         return cipher.doFinal(encrypted)
     }
 
-    private fun reconnectSocket(retryCount: Int = 3, delayMillis: Long = 2000) = CoroutineScope(Dispatchers.IO).launch {
+    private fun reconnectSocket(retryCount: Int = 2, delayMillis: Long = 2000) = CoroutineScope(Dispatchers.IO).launch {
         var attempts = 0
         var connected = false
 
@@ -259,15 +230,11 @@ class SocketManager(
             } catch (e: Exception) {
                 attempts++
                 "Reconnect attempt $attempts failed: ${e.message}".log(TAG)
+                if (!connected && attempts == retryCount)
+                    onSocketConnect(false)
                 delay(delayMillis)  // Wait before the next attempt
             }
         }
-//
-//        if (!connected) {
-//            loge("Failed to reconnect after $retryCount attempts.")
-//            logi("ResponseFrom: ${lastMessageSent.path} , Message: failed")
-//            throw ConnectException("Unable to reconnect to socket after multiple attempts.")
-//        }
     }
 
 
@@ -286,7 +253,7 @@ class SocketManager(
                 read()
             }
         } catch (e: Exception) {
-            e.loge(TAG)
+            e.log(TAG)
             // Handle the connection error
             reconnectSocket()  // Attempt to reconnect
 //            throw ConnectException("Error with socket connection.")

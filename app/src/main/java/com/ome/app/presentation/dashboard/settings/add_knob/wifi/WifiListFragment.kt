@@ -56,13 +56,6 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
             binding.scanAgainBtn.revertAnimation()
             binding.notFoundLayout.changeVisibility(it.isEmpty())
         }
-        viewModel.loadingFlow.collectWithLifecycle {
-            if (it)
-                binding.scanAgainBtn.startAnimation()
-            else
-                binding.scanAgainBtn.revertAnimation()
-        }
-
     }
 }
 @Keep

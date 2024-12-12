@@ -165,9 +165,6 @@ dependencies {
     //Splash screen API
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-    //wifi
-    implementation("io.github.thanosfisherman.wifiutils:wifiutils:1.6.6")
-
     implementation("dev.chrisbanes.insetter:insetter:0.6.1")
 
     val scarlet = "0.1.12"
@@ -190,8 +187,10 @@ dependencies {
     testImplementation("com.google.truth:truth:$truth")
     androidTestImplementation("com.google.truth:truth:$truth")
 
-    implementation("com.github.chuckerteam.chucker:library:4.0.0")
-//    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
+    if(ProjectConfig.IS_INTERNAL_TESTING)
+        implementation("com.github.chuckerteam.chucker:library:4.0.0")
+    else
+        implementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
 
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
     implementation("com.google.firebase:firebase-crashlytics")

@@ -66,7 +66,7 @@ object KnobAngleManager {
         }
         val mediumAngle = ((hAngle + lAngle) / 2) % 360
 
-        logi("highAngle: $highAngle, lowAngle: $lowAngle, result: $mediumAngle")
+        log("highAngle: $highAngle, lowAngle: $lowAngle, result: $mediumAngle")
 
         return mediumAngle
     }
@@ -86,7 +86,7 @@ object KnobAngleManager {
     /**
      * Processes the result of a dual knob interaction, adjusting the angle value based on various conditions.
      *
-     * This function handles the logic for adjusting the angle of a dual knob control, ensuring it stays within
+     * This function handles the logc for adjusting the angle of a dual knob control, ensuring it stays within
      * defined boundaries and behaves correctly based on the current setting and other parameters.
      *
      * @param angleValue The initial angle value from the knob interaction.
@@ -111,7 +111,7 @@ object KnobAngleManager {
         var firstBorder: Int
         var secBorder: Int
 
-        // Handle logic for even set position with a current step angle
+        // Handle logc for even set position with a current step angle
         if (currSetPosition % 2 == 0 && currentStepAngle != null) {
             // Determine the borders based on the current step angle's position
             if (isAngleBetween(
@@ -187,7 +187,7 @@ object KnobAngleManager {
                 }
             }
         } else {
-            // Handle logic for odd settings or when there's no current step angle
+            // Handle logc for odd settings or when there's no current step angle
             // Determine the borders based on the angle's position
             if (isAngleBetween(
                     angleAlpha = normalizeAngle(angle = firstDiv - 1),
@@ -215,7 +215,7 @@ object KnobAngleManager {
                 angle = secBorder.toFloat()
             }
 
-            // Handle specific logic for setting 3
+            // Handle specific logc for setting 3
             if (currSetPosition == 3) {
                 // Adjust borders and angle based on highSingleAngle
                 if (isAngleBetween(

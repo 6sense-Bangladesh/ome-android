@@ -16,7 +16,7 @@ import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.utils.isFalse
 import com.ome.app.utils.isValidEmail
-import com.ome.app.utils.logi
+import com.ome.app.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -59,12 +59,12 @@ class SignInViewModel @Inject constructor(
         if (authSession.session is AWSCognitoAuthSession) {
             val accessToken =
                 (authSession.session as AWSCognitoAuthSession).userPoolTokens.value?.accessToken
-            logi("accessToken: $accessToken")
+            log("accessToken: $accessToken")
             pref.saveAccessToken(accessToken)
 
             userAttributes.attributes?.forEach { attr ->
                 if (attr.key.keyString == "sub") {
-                    logi("userId: ${attr.value}")
+                    log("userId: ${attr.value}")
                     pref.saveUserId(attr.value)
                 }
             }

@@ -54,7 +54,7 @@ class SignInFragment :
         }
         viewModel.destinationAfterSignFlow.collectWithLifecycle {
             AmplifyManager.kotAuth = Amplify.Auth
-            //connect to web socket after successful login instantly
+            //connect to web socket after successful logn instantly
             mainViewModel.connectToSocket()
             navigateSafe(it)
         }

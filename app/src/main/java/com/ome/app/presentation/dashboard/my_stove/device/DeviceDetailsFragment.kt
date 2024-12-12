@@ -11,6 +11,7 @@ import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.DialogTimerBinding
 import com.ome.app.databinding.FragmentDeviceDetailsBinding
+import com.ome.app.domain.TAG
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.state.*
 import com.ome.app.presentation.base.BaseFragment

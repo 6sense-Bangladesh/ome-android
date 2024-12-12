@@ -1,13 +1,17 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import androidx.lifecycle.SavedStateHandle
+import com.ome.app.R
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.local.KnobSocketMessageType
+import com.ome.app.data.local.NetworkManager
+import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.local.SocketManager
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.utils.WifiHandler
+import com.ome.app.utils.isFalse
 import com.ome.app.utils.isNotEmpty
+import com.ome.app.utils.isTrue
 import com.ome.app.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -19,10 +23,11 @@ import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class ConnectToWifiViewModel @Inject constructor(
-    private val wifiHandler: WifiHandler,
+    private val networkManager: NetworkManager,
     private val socketManager: SocketManager,
     private val stoveRepository: StoveRepository,
     private val savedStateHandle: SavedStateHandle,
+    private val resourceProvider: ResourceProvider,
     connectionStatusListener: ConnectionStatusListener
 ) : BaseViewModel() {
 
@@ -55,7 +60,7 @@ class ConnectToWifiViewModel @Inject constructor(
 
     private fun setupWifi() {
         params.macAddrs.isNotEmpty {
-            wifiHandler.setup(it)
+            networkManager.setup(it)
         }
     }
 
@@ -68,7 +73,13 @@ class ConnectToWifiViewModel @Inject constructor(
             }
         }
         socketManager.onSocketConnect = {
-            sendMessage(KnobSocketMessageType.GET_MAC)
+            it.isTrue{
+                launch {
+                    sendMessage(KnobSocketMessageType.GET_MAC)
+                }
+            }.isFalse{
+                defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
+            }
         }
     }
 
@@ -84,7 +95,7 @@ class ConnectToWifiViewModel @Inject constructor(
                 stoveRepository.clearWifi(params.macAddrs)
                 delay(6.seconds)
             }
-            val result = wifiHandler.connectToKnobHotspot()
+            val result = networkManager.connectToKnobHotspot()
             result.log("connectToWifi")
             //Check whether device connected to wifi or not
             if (result.first) {

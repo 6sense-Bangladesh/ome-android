@@ -3,7 +3,7 @@ package com.ome.app.di
 import android.content.Context
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.ConnectionStatusListenerImpl
-import com.ome.app.utils.WifiHandler
+import com.ome.app.data.local.NetworkManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +24,6 @@ object UtilsModule {
     @Singleton
     fun provideWifiManager(
         @ApplicationContext context: Context
-    ): WifiHandler = WifiHandler(context)
+    ): NetworkManager = NetworkManager(context)
 
 }

@@ -2,12 +2,12 @@ package com.ome.app.domain.model.network.response
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.ome.app.data.local.Rssi
 import com.ome.app.domain.model.network.request.SetCalibrationRequest
 import com.ome.app.domain.model.network.request.Zone
 import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.state.*
-import com.ome.app.utils.Rssi
-import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
+import com.ome.app.data.local.NetworkManager.Companion.wifiStrengthPercentage
 import com.ome.app.utils.isFalse
 import com.ome.app.utils.orFalse
 import kotlinx.parcelize.Parcelize

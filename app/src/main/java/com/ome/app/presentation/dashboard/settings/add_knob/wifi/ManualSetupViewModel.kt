@@ -2,28 +2,29 @@ package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.local.KnobSocketMessageType
+import com.ome.app.data.local.NetworkManager
 import com.ome.app.data.local.SocketManager
 import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.utils.WifiHandler
 import com.ome.app.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class ManualSetupViewModel @Inject constructor(
-    val wifiHandler: WifiHandler,
+    val networkManager: NetworkManager,
     val socketManager: SocketManager,
     private val connectionStatusListener: ConnectionStatusListener
 ) : BaseViewModel() {
 
-    suspend fun isConnectedToKnobHotspot(): Boolean = wifiHandler.isConnectedToKnobHotspot()
-
     var macAddr = ""
+    private var socketConnected = false
 
-    val wifiConnectedFlow = MutableSharedFlow<Unit>()
+    val wifiConnectedFlow = MutableSharedFlow<Boolean>()
 
     private var getListTryCount = 0
 
@@ -32,31 +33,48 @@ class ManualSetupViewModel @Inject constructor(
         launch(ioContext) {
             socketManager.networksFlow.filterNotNull().collect { list ->
                 list.log("wifiNetworksList")
-                if (list.isNotEmpty() || getListTryCount > 0) {
-                    wifiConnectedFlow.emit(Unit)
+                if (list.isNotEmpty() || getListTryCount > 1) {
+                    wifiConnectedFlow.emit(true)
                 }else{
                     getListTryCount++
                     delay(500)
-                    getNetworks()
+                    sendMessage(KnobSocketMessageType.GET_NETWORKS)
                 }
             }
         }
     }
 
-    fun connectToSocket() = launch(ioContext) {
-        socketManager.connect()
+    fun connectToSocket(){
+        launch {
+            delay(1.minutes)
+            if(!socketConnected)
+                wifiConnectedFlow.emit(false)
+        }
+        launch(ioContext) {
+            delay(5.seconds)
+            socketManager.connect()
+        }
     }
 
     fun initListeners() = launch(ioContext) {
         socketManager.onSocketConnect = {
-            getNetworks()
+            socketConnected = it
+            if(it)
+                sendMessage(KnobSocketMessageType.GET_MAC)
+            else
+                wifiConnectedFlow.tryEmit(false)
         }
         socketManager.messageReceived = { type, message ->
-
+            if (type == KnobSocketMessageType.GET_MAC) {
+                if (message == macAddr)
+                    sendMessage(KnobSocketMessageType.GET_NETWORKS)
+                else
+                    wifiConnectedFlow.tryEmit(false)
+            }
         }
     }
 
-    private fun getNetworks() = launch(ioContext) {
-        socketManager.sendMessage(KnobSocketMessageType.GET_NETWORKS)
+    private fun sendMessage(message: KnobSocketMessageType) = launch(ioContext) {
+        socketManager.sendMessage(message)
     }
 }

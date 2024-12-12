@@ -850,15 +850,17 @@ fun Map<String, Any?>.toBundle(): Bundle {
 }
 
 fun Boolean.toYesNo() = if (this) "YES" else "NO"
-fun Boolean?.isTrue() = this != null && this
+fun Boolean?.isTrue() = this == true
 fun Boolean?.isFalse() = this == null || !this
 
-inline fun <R> Boolean?.isTrue(next: () -> R): R? {
-    return if (isTrue()) next() else null
+inline fun Boolean?.isTrue(next: () -> Unit): Boolean? {
+    if (isTrue()) next()
+    return this
 }
 
-inline fun <R> Boolean?.isNotTrue(next: () -> R): R? {
-    return if (!isTrue()) next() else null
+inline fun Boolean?.isFalse(next: () -> Unit): Boolean? {
+    if (isFalse()) next()
+    return this
 }
 
 inline fun String?.isNotEmpty(next: (String) -> Unit): String? {
@@ -1453,8 +1455,6 @@ val FragmentActivity?.keyboardState: StateFlow<Triple<Boolean, Int, Insets>>
 
         return keyboardState
     }
-
-val Any.TAG: String get() = this::class.java.simpleName
 
 
 //fun isConnectedToInternet(): Boolean {

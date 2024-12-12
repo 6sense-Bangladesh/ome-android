@@ -23,7 +23,6 @@ import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.utils.isFalse
 import com.ome.app.utils.log
-import com.ome.app.utils.logi
 import com.ome.app.utils.orMinusOne
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -166,12 +165,12 @@ class MainVM @Inject constructor(
                             val accessToken =
                                 it.userPoolTokens.value?.accessToken
 
-                            logi("accessToken: $accessToken")
+                            log("accessToken: $accessToken")
                             if (accessToken != null && userAttributes.attributes != null) {
                                 userAttributes.attributes?.forEach { attr ->
                                     if (attr.key.keyString == "sub") {
                                         pref.saveUserId(attr.value)
-                                        logi("userId: $attr.value")
+                                        log("userId: $attr.value")
                                     }
                                 }
                                 pref.saveAccessToken(accessToken)

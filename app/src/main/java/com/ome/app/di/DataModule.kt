@@ -15,6 +15,7 @@ import com.ome.app.data.remote.repo.UserRepositoryImpl
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
+import com.ome.app.utils.applyIf
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,9 +47,10 @@ object DataModule {
                         .addHeader("x-inirv-vsn", "6")
                         .addHeader("x-inirv-uid", pref.getUserId() ?: "").build()
                     chain.proceed(request)
-                })
-                .addInterceptor(interceptor)
-                .addInterceptor(ChuckerInterceptor(context))
+                }).applyIf(BuildConfig.IS_INTERNAL_TESTING){
+                    addInterceptor(interceptor)
+                    addInterceptor(ChuckerInterceptor(context))
+                }
                 .build()
 
         return Retrofit.Builder()

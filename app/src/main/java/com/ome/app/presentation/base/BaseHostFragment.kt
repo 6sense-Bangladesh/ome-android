@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
-import com.ome.app.utils.logd
+import com.ome.app.utils.log
 
 
 abstract class BaseHostFragment<VM : BaseViewModel, VB : ViewBinding>(
@@ -17,7 +17,7 @@ abstract class BaseHostFragment<VM : BaseViewModel, VB : ViewBinding>(
 
     private val destinationChangedListener =
         NavController.OnDestinationChangedListener { controller, destination, _ ->
-            logd("Destination changed in inner graph, graphId: ${controller.graph.id}, destinationId: $destination")
+            log("Destination changed in inner graph, graphId: ${controller.graph.id}, destinationId: $destination")
             viewModel.currentDestination.value = destination
             mainViewModel.currentDestination.value = destination
         }

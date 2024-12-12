@@ -11,8 +11,8 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.DeviceSettingsItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsTitleItemModel
-import com.ome.app.utils.TAG
-import com.ome.app.utils.logi
+import com.ome.app.domain.TAG
+import com.ome.app.utils.log
 import com.ome.app.utils.toTimer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -64,7 +64,7 @@ class DeviceViewModel @Inject constructor(
         launch(ioContext, showLoading = false) {
             webSocketManager.knobAngleFlow.filter { it?.macAddr == macAddress }.collect {
                 it?.let {
-                    logi("angle ViewModel ${it.value.toFloat()}")
+                    log("angle ViewModel ${it.value.toFloat()}")
                     knobAngle.value = it.value.toFloat()
                 }
             }

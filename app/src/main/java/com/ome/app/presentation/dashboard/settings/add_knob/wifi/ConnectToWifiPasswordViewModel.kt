@@ -3,11 +3,13 @@ package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 import com.ome.app.R
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.local.KnobSocketMessageType
+import com.ome.app.data.local.NetworkManager
 import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.local.SocketManager
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.utils.MAIN
-import com.ome.app.utils.WifiHandler
+import com.ome.app.utils.isFalse
+import com.ome.app.utils.isTrue
 import com.ome.app.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -17,7 +19,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class ConnectToWifiPasswordViewModel @Inject constructor(
-    private val wifiHandler: WifiHandler,
+    private val networkManager: NetworkManager,
     private val socketManager: SocketManager,
     private val resourceProvider: ResourceProvider,
     private val connectionStatusListener: ConnectionStatusListener
@@ -75,7 +77,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
             }
         }
         var connectJob : Job? = null
-        wifiHandler.onConnectionChange = {
+        networkManager.onConnectionChange = {
             if(connectJob == null && !it) {
                 connectJob = launch(ioContext) {
                     connectToWifi()
@@ -85,15 +87,19 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
             }
         }
         socketManager.onSocketConnect = {
-            launch {
-                testWifi(password)
+            it.isTrue{
+                launch {
+                    testWifi(password)
+                }
+            }.isFalse{
+                defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
             }
         }
     }
 
     private suspend fun disconnectFromNetwork(){
         delay(3.seconds)
-        MAIN { wifiHandler.disconnectFromNetwork() }
+        MAIN { networkManager.disconnectFromKnobHotspot() }
         connectionStatusListener.shouldReactOnChanges = true
     }
 
@@ -170,7 +176,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     private suspend fun connectToWifi(){
         "connectToWifi".log("WifiHandler")
         connectionStatusListener.shouldReactOnChanges = false
-        val result = wifiHandler.connectToKnobHotspot()
+        val result = networkManager.connectToKnobHotspot()
 
         //Check whether device connected to wifi or not
         if (result.first) {
@@ -183,7 +189,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     }
 
     fun testWifi(pass: String) = launch(ioContext) {
-        if(wifiHandler.isConnected) {
+        if(networkManager.isConnected) {
             credentialFail = 0
             password = pass
             sendMessage(

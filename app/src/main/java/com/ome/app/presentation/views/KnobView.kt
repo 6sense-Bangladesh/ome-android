@@ -16,7 +16,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.ParcelCompat
 import androidx.core.view.setMargins
 import com.ome.app.R
+import com.ome.app.data.local.NetworkManager.Companion.wifiStrengthPercentage
 import com.ome.app.databinding.KnobViewLayoutBinding
+import com.ome.app.domain.TAG
 import com.ome.app.domain.model.network.response.Calibration
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.network.websocket.KnobState
@@ -26,7 +28,6 @@ import com.ome.app.domain.model.state.connectionState
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.CalibrationState
 import com.ome.app.utils.*
 import com.ome.app.utils.KnobAngleManager.normalizeAngle
-import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
@@ -74,7 +75,7 @@ class KnobView @JvmOverloads constructor(
 //        val rotationSafeAngle = if (rotateClockwise) angle else angle - 360
         val rotationSafeAngle = angle
         if(rotationSafeAngle != mCurrAngle){
-            logi("angle KnobView $rotationSafeAngle")
+            "angle KnobView $rotationSafeAngle".log()
             animateCircle(mCurrAngle, rotationSafeAngle)
         }
     }

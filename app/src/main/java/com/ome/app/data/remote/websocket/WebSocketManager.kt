@@ -9,11 +9,8 @@ import com.ome.app.domain.model.network.websocket.KnobAngle
 import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.network.websocket.MacAddress
 import com.ome.app.domain.model.state.*
-import com.ome.app.utils.FlowStreamAdapter
-import com.ome.app.utils.WifiHandler.Companion.wifiStrengthPercentage
-import com.ome.app.utils.log
-import com.ome.app.utils.orMinusOne
-import com.ome.app.utils.tryInMain
+import com.ome.app.utils.*
+import com.ome.app.data.local.NetworkManager.Companion.wifiStrengthPercentage
 import com.tinder.scarlet.Scarlet
 import com.tinder.scarlet.messageadapter.gson.GsonMessageAdapter
 import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
@@ -77,8 +74,10 @@ class WebSocketManager(
     private fun createHttpClient(): OkHttpClient {
         val client: OkHttpClient =
             OkHttpClient.Builder()
-                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
-                .addInterceptor(ChuckerInterceptor(context))
+                .applyIf(BuildConfig.IS_INTERNAL_TESTING){
+                    addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
+                    addInterceptor(ChuckerInterceptor(context))
+                }
                 .addInterceptor(Interceptor { chain ->
                     val original = chain.request()
                     val request = original.newBuilder()

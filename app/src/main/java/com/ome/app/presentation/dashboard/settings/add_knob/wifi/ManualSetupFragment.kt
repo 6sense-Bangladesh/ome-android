@@ -28,7 +28,7 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
 
     override fun setupUI() {
         viewModel.macAddr = params.macAddrs
-        viewModel.wifiHandler.setup(viewModel.macAddr).let {
+        viewModel.networkManager.setup(viewModel.macAddr).let {
             binding.mac1.text = it.first
             binding.mac2.text = it.second
         }
@@ -39,16 +39,14 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.connectBtn.setOnClickListener {
             lifecycleScope.launch {
-                if (viewModel.isConnectedToKnobHotspot()) {
-                    binding.connectBtn.startAnimation()
-                    viewModel.connectToSocket()
-                } else {
-                    onError(getString(
-                            R.string.manual_connection_to_hotspot_error,
-                            viewModel.wifiHandler.omeKnobSSID,
-                            viewModel.wifiHandler.inirvKnobSSID
-                    ))
-                }
+                binding.connectBtn.startAnimation()
+                viewModel.connectToSocket()
+//                if (viewModel.isConnectedToKnobHotspot()) {
+//                    binding.connectBtn.startAnimation()
+//                    viewModel.connectToSocket()
+//                } else {
+//                    onError(getString(R.string.manual_connection_to_error))
+//                }
             }
         }
 
@@ -58,14 +56,16 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
         super.setupObserver()
         viewModel.wifiConnectedFlow.collectWithLifecycle{
             binding.connectBtn.revertAnimation()
-            navigateSafe(
-                ManualSetupFragmentDirections.actionManualSetupFragmentToWifiListFragment(
-                    WifiListFragmentParams(
-                        isEditMode = params.isEditMode,
-                        macAddrs = params.macAddrs
+            if(it){
+                navigateSafe(
+                    ManualSetupFragmentDirections.actionManualSetupFragmentToWifiListFragment(
+                        WifiListFragmentParams(
+                            isEditMode = params.isEditMode,
+                            macAddrs = params.macAddrs
+                        )
                     )
                 )
-            )
+            } else onError(getString(R.string.manual_connection_to_error))
         }
 
         subscribe(viewModel.loadingLiveData) {
