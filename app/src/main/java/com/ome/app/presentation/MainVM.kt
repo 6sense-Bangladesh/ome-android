@@ -232,7 +232,7 @@ class MainVM @Inject constructor(
             try {
                 pref.getUserId()?.let { userId ->
                     if (knobs.isNotEmpty())
-                        webSocketManager.initWebSocket(knobs, userId)
+                        webSocketManager.initKnobWebSocket(knobs, userId)
                 }
             } catch (e: Exception) {
                 if (needStatus) error("Error with socket connection.")
