@@ -7,7 +7,10 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.*
-import android.net.wifi.*
+import android.net.wifi.WifiConfiguration
+import android.net.wifi.WifiManager
+import android.net.wifi.WifiNetworkSpecifier
+import android.net.wifi.WifiNetworkSuggestion
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
@@ -46,7 +49,7 @@ class NetworkManager(val context: Context) {
     fun setup(macAddress: String): Pair<String, String> {
         omeKnobSSID = "Ome_Knob_${macAddress.takeLast(4)}"
         inirvKnobSSID = "Inirv_Knob_${macAddress.takeLast(4)}"
-        currentSSID = omeKnobSSID
+        currentSSID = inirvKnobSSID
         return omeKnobSSID to inirvKnobSSID
     }
 

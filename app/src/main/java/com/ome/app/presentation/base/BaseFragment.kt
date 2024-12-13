@@ -123,6 +123,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                 onDismiss()
                 dialog.cancel()
             }
+            .setOnDismissListener { onDismissSuccessDialog() }
             .show()
     }
 
@@ -162,6 +163,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                 onDismissErrorDialog()
                 dialog.cancel()
             }
+            .setOnDismissListener { onDismissErrorDialog() }
             .show()
     }
 
