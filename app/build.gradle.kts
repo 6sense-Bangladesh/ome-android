@@ -68,7 +68,7 @@ android {
             isDebuggable = false
             buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL)
             buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL)
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
     }

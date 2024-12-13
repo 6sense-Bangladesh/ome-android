@@ -42,7 +42,7 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launch {
-            delay(1.2.seconds)
+            delay(1.seconds)
             checkPermission()
         }
     }
