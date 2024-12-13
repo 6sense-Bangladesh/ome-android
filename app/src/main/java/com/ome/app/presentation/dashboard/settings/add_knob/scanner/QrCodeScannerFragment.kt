@@ -8,7 +8,6 @@ import androidx.annotation.Keep
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentQrCodeScannerBinding
 import com.ome.app.presentation.base.BaseFragment
@@ -29,31 +28,20 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
 ) {
     override val viewModel: QrCodeScannerViewModel by viewModels()
 
-    private val args by navArgs<QrCodeScannerFragmentArgs>()
-    val params by lazy { args.params }
-
-//    private lateinit var codeScanner: CodeScanner
-
     private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted)
-                Unit
-             else
-                onError(getString(R.string.permission_not_granted))
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) initQrCodeScanner()
+            else onError(getString(R.string.permission_not_granted))
         }
 
     override fun setupUI() {
         checkPermission()
-        viewModel.stovePosition = params.selectedKnobPosition
-        initQrCodeScanner()
     }
 
     private fun initQrCodeScanner() {
         lifecycleScope.launch {
-            val qr = binding.previewView.startQrScanner()
-            viewModel.checkKnobOwnership(qr)
+            val mac = binding.previewView.startQrScanner()
+            viewModel.checkKnobOwnership(mac)
         }
     }
 
@@ -66,15 +54,14 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
 
     private fun checkPermission() =
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)
-            Unit
+            initQrCodeScanner()
         else
             requestPermissionLauncher.launch(Manifest.permission.CAMERA)
 
 
-
     override fun setupObserver() {
         super.setupObserver()
-        viewModel.isKnobAddedFlow.collectWithLifecycle{
+        viewModel.isKnobAddedFlow.collectWithLifecycle {
             mainViewModel.getUserInfo()
             viewModel.macAddress?.let { mac ->
                 navigateSafe(QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
@@ -84,7 +71,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
                 } ?: onError(getString(R.string.scan_again))
             } ?: onError(getString(R.string.scan_again))
         }
-        viewModel.loadingFlow.collectWithLifecycle{
+        viewModel.loadingFlow.collectWithLifecycle {
             binding.loadingLayout.root.changeVisibility(it)
         }
     }

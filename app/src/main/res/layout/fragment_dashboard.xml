@@ -11,10 +11,10 @@
         android:id="@+id/topAppBar"
         style="@style/Widget.App.Toolbar"
         android:layout_width="match_parent"
-        app:title="@string/app_name"
-        app:menu="@menu/menu_dashboard"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_dashboard"
+        app:title="@string/app_name" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

@@ -3,6 +3,7 @@ package com.ome.app.domain.model.network.response
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import kotlin.random.Random
 
 @Parcelize
 data class UserResponse(
@@ -24,5 +25,14 @@ data class UserResponse(
     @SerializedName("stoveSetupComplete") val stoveSetupComplete: Boolean? = null,
     @SerializedName("uiAppType") val uiAppType: String? = null,
     @SerializedName("uiAppVersion") val uiAppVersion: String? = null
-) : Parcelable
+) : Parcelable{
+
+    override fun hashCode(): Int {
+        return System.nanoTime().toInt() + Random(100).nextInt()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return false
+    }
+}
 
