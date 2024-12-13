@@ -63,9 +63,9 @@ android {
         }
 
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
-            isDebuggable = false
+//            isMinifyEnabled = true
+//            isShrinkResources = true
+//            isDebuggable = false
             buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL)
             buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL)
 //            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
