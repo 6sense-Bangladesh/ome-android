@@ -10,10 +10,7 @@ import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
 import com.ome.app.utils.KnobAngleManager.isRightZone
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 
 abstract class BaseCalibrationViewModel(
     private val webSocketManager: WebSocketManager,
@@ -21,6 +18,8 @@ abstract class BaseCalibrationViewModel(
 ) : BaseViewModel() {
 
     val knobAngleFlow = MutableStateFlow<Float?>(null)
+    val calibrationIsDoneFlow = MutableSharedFlow<Unit>()
+
     val zoneLiveData = SingleLiveEvent<Int>()
 
     var labelLiveData = SingleLiveEvent<Pair<CalibrationState, Float>>()
@@ -84,6 +83,21 @@ abstract class BaseCalibrationViewModel(
                 CalibrationState.LOW_SINGLE
             ))
         }
+
+    val calibrationConfirmationStatesSingleZone = listOf(
+        CalibrationState.HIGH_SINGLE to highSingleAngle,
+        CalibrationState.MEDIUM to mediumAngle,
+        CalibrationState.LOW_SINGLE to lowSingleAngle,
+        CalibrationState.OFF to offAngle
+    )
+    val calibrationConfirmationStatesDualZone = listOf(
+        CalibrationState.HIGH_SINGLE to highSingleAngle,
+        CalibrationState.LOW_SINGLE to lowSingleAngle,
+        CalibrationState.MOVE_OFF to offAngle,
+        CalibrationState.LOW_DUAL to lowDualAngle,
+        CalibrationState.HIGH_DUAL to highDualAngle,
+        CalibrationState.OFF to offAngle
+    )
 
 
     open fun handleDualKnobUpdated(angle: Float) {
@@ -181,6 +195,7 @@ abstract class BaseCalibrationViewModel(
             }
             else error("Something went wrong")
         }
+        calibrationIsDoneFlow.tryEmit(Unit)
     }
 
 }

@@ -6,4 +6,5 @@ data class InitCalibrationRequest(
     @SerializedName("offAngle")
     val offAngle: Int,
     @SerializedName("rotationDir")
-    val rotationDir: Int)
+    val rotationDir: Int
+)

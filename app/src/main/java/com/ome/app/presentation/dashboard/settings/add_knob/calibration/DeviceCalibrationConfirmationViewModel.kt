@@ -24,7 +24,6 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
     private var firstConfirmationPageLiveData = SingleLiveEvent<Boolean>()
 
 
-    val calibrationIsDoneLiveData = SingleLiveEvent<Boolean>()
     val previousScreenTriggered = SingleLiveEvent<Boolean>()
 
 
@@ -103,95 +102,108 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
     fun nextStep() = launch(ioContext) {
 
         if (!isDualKnob) {
-            when (currentCalibrationState.value) {
-                CalibrationState.OFF -> {
-                    setCalibration()
-                    calibrationIsDoneLiveData.postValue(true)
-                }
-                CalibrationState.MOVE_OFF -> {
-
-                }
-                CalibrationState.HIGH_SINGLE -> {
-                    mediumAngle?.let {
-                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-                    }
-                    currentCalibrationState.value = CalibrationState.MEDIUM
-                }
-                CalibrationState.MEDIUM -> {
-                    lowSingleAngle?.let {
-                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-                    }
-                    currentCalibrationState.value = CalibrationState.LOW_SINGLE
-                }
-                CalibrationState.LOW_SINGLE -> {
-                    offAngle?.let {
-                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-                    }
-                    currentCalibrationState.value = CalibrationState.OFF
-                }
-                null -> {
-                    highSingleAngle?.let {
-                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-                    }
-                    currentCalibrationState.value = CalibrationState.HIGH_SINGLE
-                }
-                CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> Unit
+//            when (currentCalibrationState.value) {
+//                CalibrationState.OFF -> {
+//                    setCalibration()
+//                }
+//                CalibrationState.MOVE_OFF -> {
+//
+//                }
+//                CalibrationState.HIGH_SINGLE -> {
+//                    mediumAngle?.let {
+//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
+//                    }
+//                    currentCalibrationState.value = CalibrationState.MEDIUM
+//                }
+//                CalibrationState.MEDIUM -> {
+//                    lowSingleAngle?.let {
+//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
+//                    }
+//                    currentCalibrationState.value = CalibrationState.LOW_SINGLE
+//                }
+//                CalibrationState.LOW_SINGLE -> {
+//                    offAngle?.let {
+//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
+//                    }
+//                    currentCalibrationState.value = CalibrationState.OFF
+//                }
+//                null -> {
+//                    highSingleAngle?.let {
+//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
+//                    }
+//                    currentCalibrationState.value = CalibrationState.HIGH_SINGLE
+//                }
+//                CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> Unit
+//            }
+            currentCalibrationState.value = calibrationConfirmationStatesSingleZone.run {
+                getOrNull(indexOfFirst{ it.first == currentCalibrationState.value } + 1)?.apply {
+                    if(first == CalibrationState.OFF)
+                        setCalibration()
+                    else if(second != null)
+                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(second!!.toInt()), macAddress)
+                }?.first
             }
         } else {
-            when (currentCalibrationState.value) {
-                CalibrationState.OFF -> {
-                    setCalibration()
-                    calibrationIsDoneLiveData.postValue(true)
-//                    if (offTriggerCount > 1) {
-//                        setCalibration()
-//                        calibrationIsDoneLiveData.postValue(true)
-//                    } else {
-//                        highSingleAngle?.let {
-//                            stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-//                        }
-//                        currentCalibrationState.value = CalibrationState.HIGH_SINGLE
+//            when (currentCalibrationState.value) {
+//                CalibrationState.OFF -> {
+//                    setCalibration()
+//                    calibrationIsDoneLiveData.postValue(true)
+////                    if (offTriggerCount > 1) {
+////                        setCalibration()
+////                        calibrationIsDoneLiveData.postValue(true)
+////                    } else {
+////                        highSingleAngle?.let {
+////                            stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
+////                        }
+////                        currentCalibrationState.value = CalibrationState.HIGH_SINGLE
+////                    }
+//                }
+//                CalibrationState.MOVE_OFF -> {
+//
+//                }
+//                null -> {
+//                    highSingleAngle?.let {
+//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
 //                    }
-                }
-                CalibrationState.MOVE_OFF -> {
-
-                }
-                null -> {
-                    highSingleAngle?.let {
-                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-                    }
-                    currentCalibrationState.value = CalibrationState.HIGH_SINGLE
-                }
-                CalibrationState.HIGH_SINGLE -> {
-                    lowSingleAngle?.let {
-                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-                    }
+//                    currentCalibrationState.value = CalibrationState.HIGH_SINGLE
+//                }
+//                CalibrationState.HIGH_SINGLE -> {
+//                    lowSingleAngle?.let {
+//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
+//                    }
+////                    offTriggerCount++
+//                }
+//                CalibrationState.LOW_SINGLE -> {
+//                    highDualAngle?.let {
+//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
+//                    }
+//                    currentCalibrationState.value = CalibrationState.HIGH_DUAL
+//                }
+//                CalibrationState.HIGH_DUAL -> {
+//                    lowDualAngle?.let {
+//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
+//                    }
+//                    currentCalibrationState.value = CalibrationState.LOW_DUAL
+//                }
+//                CalibrationState.LOW_DUAL -> {
+//                    offAngle?.let {
+//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
+//                    }
 //                    offTriggerCount++
-                    currentCalibrationState.value = CalibrationState.LOW_SINGLE
-                }
-                CalibrationState.LOW_SINGLE -> {
-                    highDualAngle?.let {
-                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-                    }
-                    currentCalibrationState.value = CalibrationState.HIGH_DUAL
-                }
-                CalibrationState.HIGH_DUAL -> {
-                    lowDualAngle?.let {
-                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-                    }
-                    currentCalibrationState.value = CalibrationState.LOW_DUAL
-                }
-                CalibrationState.LOW_DUAL -> {
-                    offAngle?.let {
-                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-                    }
-                    offTriggerCount++
-                    currentCalibrationState.value = CalibrationState.OFF
-                }
-
-                CalibrationState.MEDIUM -> Unit
+//                    currentCalibrationState.value = CalibrationState.OFF
+//                }
+//                CalibrationState.MEDIUM -> Unit
+//            }
+            currentCalibrationState.value = calibrationConfirmationStatesDualZone.run {
+                getOrNull(indexOfFirst{ it.first == currentCalibrationState.value } + 1)?.apply {
+                    if(first == CalibrationState.OFF)
+                        setCalibration()
+                    else if(first != CalibrationState.LOW_DUAL && second != null)
+                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(second!!.toInt()), macAddress)
+                }?.first
             }
         }
-        currentStepTriggerCount = 0
+//        currentStepTriggerCount = 0
     }
 
 

@@ -4,12 +4,12 @@ import android.util.Log
 import com.ome.app.R
 import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.remote.websocket.WebSocketManager
+import com.ome.app.domain.TAG
 import com.ome.app.domain.model.network.request.InitCalibrationRequest
 import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
-import com.ome.app.domain.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -22,8 +22,6 @@ class DeviceCalibrationViewModel @Inject constructor(
 ) : BaseCalibrationViewModel(webSocketManager, stoveRepository) {
 
     var currentCalibrationState = MutableStateFlow<CalibrationState?>(CalibrationState.OFF)
-
-    val calibrationIsDoneLiveData = SingleLiveEvent<Boolean>()
 
     val previousScreenTriggered = SingleLiveEvent<Boolean>()
 
@@ -101,7 +99,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                             CalibrationState.LOW_SINGLE -> {
                                 lowSingleAngle = angle
                                 Log.i(TAG, "setLabel: calibration is done")
-                                calibrationIsDoneLiveData.postValue(true)
+                                calibrationIsDoneFlow.tryEmit(Unit)
                             }
                             CalibrationState.MEDIUM -> mediumAngle = angle
                             CalibrationState.HIGH_SINGLE -> highSingleAngle = angle
@@ -144,7 +142,6 @@ class DeviceCalibrationViewModel @Inject constructor(
         mediumAngle = null
         highSingleAngle = null
         highDualAngle = null
-        calibrationIsDoneLiveData.value = false
     }
 
 
@@ -153,7 +150,7 @@ class DeviceCalibrationViewModel @Inject constructor(
             val currentIndex =
                 calibrationStatesSequenceSingleZone.indexOf(currentCalibrationState.value)
             if (currentIndex == calibrationStatesSequenceSingleZone.size - 1) {
-                calibrationIsDoneLiveData.postValue(true)
+                calibrationIsDoneFlow.tryEmit(Unit)
             } else {
                 currentCalibrationState.value =(calibrationStatesSequenceSingleZone[currentIndex + 1])
             }
@@ -161,7 +158,7 @@ class DeviceCalibrationViewModel @Inject constructor(
             val currentIndex =
                 calibrationStatesSequenceDualZone.indexOf(currentCalibrationState.value)
             if (currentIndex == calibrationStatesSequenceDualZone.size - 1) {
-                calibrationIsDoneLiveData.postValue(true)
+                calibrationIsDoneFlow.tryEmit(Unit)
             } else {
                 currentCalibrationState.value = calibrationStatesSequenceDualZone[currentIndex + 1]
 //                when(currentCalibrationState.value){

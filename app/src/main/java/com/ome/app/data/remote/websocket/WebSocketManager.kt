@@ -6,15 +6,8 @@ import com.ome.app.BuildConfig
 import com.ome.app.data.local.NetworkManager.Companion.wifiStrengthPercentage
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.network.response.asKnobState
-import com.ome.app.domain.model.network.websocket.KnobAngle
-import com.ome.app.domain.model.network.websocket.KnobMessageEvent
-import com.ome.app.domain.model.network.websocket.KnobState
-import com.ome.app.domain.model.network.websocket.MacAddress
-import com.ome.app.domain.model.state.ConnectionState
-import com.ome.app.domain.model.state.KnobEntity
-import com.ome.app.domain.model.state.connectionState
-import com.ome.app.domain.model.state.knobEntity
-import com.ome.app.domain.model.state.mountingSurface
+import com.ome.app.domain.model.network.websocket.*
+import com.ome.app.domain.model.state.*
 import com.ome.app.utils.log
 import com.ome.app.utils.orMinusOne
 import com.ome.app.utils.tryInMain
@@ -26,11 +19,8 @@ import io.ktor.client.plugins.websocket.receiveDeserialized
 import io.ktor.client.plugins.websocket.webSocket
 import io.ktor.client.request.header
 import io.ktor.serialization.gson.GsonWebsocketContentConverter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
@@ -64,11 +54,6 @@ class WebSocketManager(private val context: Context) {
         knobState.value = knobStates
         withContext(Dispatchers.IO) {
             runCatching {
-                client.webSocket(
-                    urlString = ""
-                ){
-
-                }
                 client.webSocket(urlString = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=$knobMacs&inirvUid=$userId") {
                     while (this@webSocket.isActive){
                         receiveDeserialized<KnobMessageEvent>().also {

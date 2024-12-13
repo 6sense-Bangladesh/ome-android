@@ -79,27 +79,25 @@ class DeviceCalibrationFragment :
         subscribe(viewModel.previousScreenTriggered) {
             popBackSafe()
         }
-        subscribe(viewModel.calibrationIsDoneLiveData) {
-            if (it) {
-                navigateSafe(
-                    DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToDeviceCalibrationConfirmationFragment(
-                        DeviceCalibrationConfirmationFragmentParams(
-                            isComeFromSettings = params.isComeFromSettings,
-                            offPosition = viewModel.offAngle.orZero(),
-                            lowSinglePosition = viewModel.lowSingleAngle.orZero(),
-                            lowDualPosition = viewModel.lowDualAngle.orZero(),
-                            medPosition = viewModel.mediumAngle.orZero(),
-                            highSinglePosition = viewModel.highSingleAngle.orZero(),
-                            highDualPosition = viewModel.highDualAngle.orZero(),
-                            macAddr = viewModel.macAddress,
-                            isDualKnob = params.isDualKnob,
-                            rotateDir = viewModel.rotationDir.orMinusOne()
-                        )
+        viewModel.calibrationIsDoneFlow.collectWithLifecycle {
+            navigateSafe(
+                DeviceCalibrationFragmentDirections.actionDeviceCalibrationFragmentToDeviceCalibrationConfirmationFragment(
+                    DeviceCalibrationConfirmationFragmentParams(
+                        isComeFromSettings = params.isComeFromSettings,
+                        offPosition = viewModel.offAngle.orZero(),
+                        lowSinglePosition = viewModel.lowSingleAngle.orZero(),
+                        lowDualPosition = viewModel.lowDualAngle.orZero(),
+                        medPosition = viewModel.mediumAngle.orZero(),
+                        highSinglePosition = viewModel.highSingleAngle.orZero(),
+                        highDualPosition = viewModel.highDualAngle.orZero(),
+                        macAddr = viewModel.macAddress,
+                        isDualKnob = params.isDualKnob,
+                        rotateDir = viewModel.rotationDir.orMinusOne()
                     )
                 )
-                lifecycleScope.launch {
-                    viewModel.currentCalibrationState.emit(CalibrationState.OFF)
-                }
+            )
+            lifecycleScope.launch {
+                viewModel.currentCalibrationState.emit(CalibrationState.OFF)
             }
         }
         viewModel.knobAngleFlow.collectWithLifecycle{

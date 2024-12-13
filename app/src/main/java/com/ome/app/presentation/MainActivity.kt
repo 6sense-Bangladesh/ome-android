@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         inAppUpdate.onResume()
-        viewModel.startDestination.collectWithLifecycleNoRepeat {
+        viewModel.startDestination.collectWithLifecycle {
             it.log("startDestination")
             initNavigationGraph(it)
         }
@@ -93,8 +93,12 @@ class MainActivity : AppCompatActivity() {
             if (viewModel.connectionStatusListener.shouldReactOnChanges) {
                 when (status) {
                     ConnectionStatusListener.ConnectionStatusState.Default,
-                    ConnectionStatusListener.ConnectionStatusState.HasConnection,
                     ConnectionStatusListener.ConnectionStatusState.Dismissed -> Unit
+
+                    ConnectionStatusListener.ConnectionStatusState.HasConnection ->{
+                        if(!viewModel.isSplashScreenLoading)
+                            viewModel.connectToSocket()
+                    }
 
                     ConnectionStatusListener.ConnectionStatusState.NoConnection -> {
                         viewModel.startDestinationJob?.cancel()

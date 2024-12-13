@@ -45,7 +45,6 @@ android {
         debug {
 //            isMinifyEnabled = true
 //            isShrinkResources = true
-            isDebuggable = true
             buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL)
             buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL)
 //            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -63,12 +62,11 @@ android {
         }
 
         release {
-//            isMinifyEnabled = true
-//            isShrinkResources = true
-//            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL)
             buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL)
-//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
         }
     }
