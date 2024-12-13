@@ -22,7 +22,6 @@ import com.amplifyframework.kotlin.core.Amplify
 import com.chesire.lifecyklelog.LifecykleLog
 import com.ome.app.utils.log
 import dagger.hilt.android.HiltAndroidApp
-import java.lang.Exception
 
 @HiltAndroidApp
 class OmeApplication : SingletonImageLoader.Factory, Application() {
@@ -37,9 +36,9 @@ class OmeApplication : SingletonImageLoader.Factory, Application() {
             Amplify.addPlugin(AWSApiPlugin())
             Amplify.addPlugin(AWSCognitoAuthPlugin())
             val configJSON = if (BuildConfig.IS_INTERNAL_TESTING) {
-                R.raw.amplifyconfigurationdev
+                R.raw.amplify_configuration_dev
             } else {
-                R.raw.amplifyconfigurationprod
+                R.raw.amplify_configuration_prod
             }
             AWSMobileClient.getInstance().initialize(applicationContext, AWSConfiguration(applicationContext, configJSON,"us-east-2_28KzdRE3z"),object : Callback<UserStateDetails>{
                 override fun onResult(result: UserStateDetails?) {

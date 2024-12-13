@@ -34,7 +34,7 @@ class NetworkManager(val context: Context) {
     var isConnected = false
 
     companion object {
-        private const val TAG = "WifiHandler"
+        private const val TAG = "NetworkManager"
         private const val PASSWORD = "password"
         private const val MIN_RSSI = -100
         private const val MAX_RSSI = -50
