@@ -160,7 +160,7 @@ class DeviceCalibrationViewModel @Inject constructor(
                     calibrationIsDoneFlow.emit(Unit)
                 }
             } else {
-                currentCalibrationState.value =(calibrationStatesSequenceSingleZone[currentIndex + 1])
+                currentCalibrationState.value = calibrationStatesSequenceSingleZone[currentIndex + 1]
             }
         } else {
             val currentIndex =
@@ -171,11 +171,11 @@ class DeviceCalibrationViewModel @Inject constructor(
                 }
             } else {
                 currentCalibrationState.value = calibrationStatesSequenceDualZone[currentIndex + 1]
-//                when(currentCalibrationState.value){
-//                    CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> isFirstZone = false
-//                    CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE, CalibrationState.OFF -> isFirstZone = true
-//                    else -> Unit
-//                }
+                when(currentCalibrationState.value){
+                    CalibrationState.LOW_DUAL -> initAngle.value = null
+                    CalibrationState.LOW_SINGLE -> initAngle.value = null
+                    else -> Unit
+                }
             }
         }
     }

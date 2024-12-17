@@ -271,10 +271,11 @@ object KnobAngleManager {
         firstDiv: Int,
         angleDualOffset: Int,
         offAngle: Int,
+        isRightZone: Boolean? = null,
     ): Float {
         val secondDiv = normalizeAngle(offAngle + 180)
         // Normalize the input angle to the 0–360 range
-        val isFirstZone = initAngle.isRightZone(offAngle) ?: return newAngle
+        val isFirstZone = isRightZone ?: initAngle.isRightZone(offAngle) ?: return newAngle
         val normalizedAngle = normalizeAngle(newAngle)
         println("normalizedAngle: $normalizedAngle, angleValue: $newAngle, firstDiv: $firstDiv, secondDiv: $secondDiv".log("processDualKnobResult"))
         return if (isFirstZone) {

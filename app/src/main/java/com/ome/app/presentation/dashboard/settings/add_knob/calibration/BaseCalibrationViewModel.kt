@@ -100,18 +100,23 @@ abstract class BaseCalibrationViewModel(
     )
 
     open fun handleDualKnobUpdated(angle: Float) {
-        if(initAngle.value == null || offAngle == null)
+        if(initAngle.value == null || offAngle == null || lowSingleAngle == null || highSingleAngle == null)
             initAngle.value = angle.toInt()
+
         knobAngleFlow.value = if (isDualKnob) {
-            offAngle?.let {
+            if(offAngle != null && (highSingleAngle != null || lowSingleAngle != null)){
                 KnobAngleManager.processDualKnobResult(
-                    initAngle = initAngle,
+                    initAngle = MutableStateFlow(null),
                     newAngle = angle,
                     firstDiv = firstDiv,
                     angleDualOffset = angleDualOffset,
-                    offAngle = it.toInt()
+                    offAngle = offAngle!!.toInt(),
+                    isRightZone =
+                    if(lowSingleAngle != null && highSingleAngle != null) false
+                    else if(lowDualAngle != null && highDualAngle != null) true
+                    else null
                 )
-            } ?: angle
+            } else angle
         } else angle
     }
 
