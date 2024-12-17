@@ -9,7 +9,6 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
-import com.ome.app.utils.KnobAngleManager.isRightZone
 import kotlinx.coroutines.flow.*
 
 abstract class BaseCalibrationViewModel(
@@ -43,8 +42,7 @@ abstract class BaseCalibrationViewModel(
     var firstDiv: Int = 0
     var secondDiv: Int = 0
 
-    private val isZoneStartFromRight: Boolean
-        get() = initAngle.isRightZone(firstDiv) ?: false
+    var isZoneStartFromRight: Boolean = false
 
     var rotationDir: Int? = null
 
@@ -60,7 +58,7 @@ abstract class BaseCalibrationViewModel(
         CalibrationState.LOW_SINGLE
     )
 
-    val calibrationStatesSequenceDualZone2 = arrayListOf(
+    val calibrationStatesSequenceDualZone = arrayListOf(
         CalibrationState.OFF,
         CalibrationState.HIGH_SINGLE,
         CalibrationState.LOW_SINGLE,
@@ -68,7 +66,7 @@ abstract class BaseCalibrationViewModel(
         CalibrationState.LOW_DUAL
     )
 
-    val calibrationStatesSequenceDualZone: List<CalibrationState>
+    val calibrationStatesSequenceDualZone2: List<CalibrationState>
         get() = buildList {
             add(CalibrationState.OFF)
             addAll(if (isZoneStartFromRight) listOf(
@@ -100,8 +98,8 @@ abstract class BaseCalibrationViewModel(
     )
 
     open fun handleDualKnobUpdated(angle: Float) {
-        if(initAngle.value == null || offAngle == null || lowSingleAngle == null || highSingleAngle == null)
-            initAngle.value = angle.toInt()
+//        if(initAngle.value == null || offAngle == null || lowSingleAngle == null || highSingleAngle == null)
+//            initAngle.value = angle.toInt()
 
         knobAngleFlow.value = if (isDualKnob) {
             if(offAngle != null && (highSingleAngle != null || lowSingleAngle != null)){
@@ -112,8 +110,8 @@ abstract class BaseCalibrationViewModel(
                     angleDualOffset = angleDualOffset,
                     offAngle = offAngle!!.toInt(),
                     isRightZone =
-                    if(lowSingleAngle != null && highSingleAngle != null) false
-                    else if(lowDualAngle != null && highDualAngle != null) true
+                    if(lowSingleAngle != null || highSingleAngle != null) false
+                    else if(lowDualAngle != null || highDualAngle != null) true
                     else null
                 )
             } else angle
@@ -179,7 +177,7 @@ abstract class BaseCalibrationViewModel(
                                     lowSingleAngle!!.toInt()
                                 ),
                                 lowAngle = lowSingleAngle!!.toInt(),
-                                zoneName = "First",
+                                zoneName = if(isZoneStartFromRight) "First" else "Second",
                                 zoneNumber = 1
                             ),
                             Zone(
@@ -189,7 +187,7 @@ abstract class BaseCalibrationViewModel(
                                     lowDualAngle!!.toInt()
                                 ),
                                 lowAngle = lowDualAngle!!.toInt(),
-                                zoneName = "Second",
+                                zoneName = if(isZoneStartFromRight) "Second" else "First",
                                 zoneNumber = 2
                             )
                         )

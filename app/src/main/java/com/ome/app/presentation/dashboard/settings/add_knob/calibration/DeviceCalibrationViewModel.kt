@@ -10,8 +10,8 @@ import com.ome.app.domain.model.network.request.InitCalibrationRequest
 import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.SingleLiveEvent
-import com.ome.app.utils.KnobAngleManager
-import com.ome.app.utils.log
+import com.ome.app.utils.*
+import com.ome.app.utils.KnobAngleManager.isRightZone
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -58,7 +58,11 @@ class DeviceCalibrationViewModel @Inject constructor(
                             }
                             CalibrationState.LOW_SINGLE ->  lowSingleAngle = angle
                             CalibrationState.LOW_DUAL -> lowDualAngle = angle
-                            CalibrationState.HIGH_SINGLE -> highSingleAngle = angle
+                            CalibrationState.HIGH_SINGLE -> {
+                                initAngle.value = angle.toInt()
+                                isZoneStartFromRight = initAngle.isRightZone(offAngle?.toInt().orZero()).isTrue()
+                                highSingleAngle = angle
+                            }
                             CalibrationState.HIGH_DUAL -> highDualAngle = angle
                             else -> Unit
                         }
