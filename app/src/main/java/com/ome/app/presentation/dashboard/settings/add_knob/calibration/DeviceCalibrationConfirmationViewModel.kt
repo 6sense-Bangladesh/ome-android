@@ -203,7 +203,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
             else{
                 currentCalibrationState.value = calibrationConfirmationStatesDualZone.run {
                     getOrNull(indexOfFirst{ it.first == currentCalibrationState.value } + 1)?.apply {
-                        if(first != CalibrationState.LOW_DUAL && second != null)
+                        if(first != CalibrationState.LOW_SINGLE && second != null)
                             stoveRepository.changeKnobAngle(params = ChangeKnobAngle(second!!.toInt()), macAddress)
                     }?.first
                 }
