@@ -148,7 +148,7 @@ class DeviceCalibrationConfirmationFragment :
 //                CalibrationState.LOW_DUAL -> viewModel.lowDualAngle?.let { binding.knobView.setLowDualPosition(it) }
 //            }
 
-            currentStep.log("nextStep 2")
+            currentStep.log("nextStep current")
             if (viewModel.isDualKnob) {
                 when (currentStep) {
                     CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE -> {

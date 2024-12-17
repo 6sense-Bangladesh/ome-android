@@ -118,6 +118,7 @@ class DeviceCalibrationFragment :
             binding.knobView.stovePosition = it
         }
         viewModel.currentCalibrationState.collectWithLifecycle{ currentStep ->
+            currentStep.log("nextStep current")
             val currentIndex = if (!params.isDualKnob)
                 viewModel.calibrationStatesSequenceSingleZone.indexOf(currentStep)
             else
