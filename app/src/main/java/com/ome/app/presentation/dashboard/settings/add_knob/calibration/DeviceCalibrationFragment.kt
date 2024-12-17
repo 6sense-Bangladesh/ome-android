@@ -38,6 +38,10 @@ class DeviceCalibrationFragment :
         else
             binding.labelZone.text = getString(R.string.single_zone_knob)
         binding.knobView.enableFullLabel()
+        binding.labelZone.text = if(params.isDualKnob)
+            getString(R.string.dual_zone_knob)
+        else
+            getString(R.string.single_zone_knob)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
