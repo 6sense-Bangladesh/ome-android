@@ -137,13 +137,15 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
 //                }
 //                CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> Unit
 //            }
-            currentCalibrationState.value = calibrationConfirmationStatesSingleZone.run {
-                getOrNull(indexOfFirst{ it.first == currentCalibrationState.value } + 1)?.apply {
-                    if(first == CalibrationState.OFF)
-                        setCalibration()
-                    else if(second != null)
-                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(second!!.toInt()), macAddress)
-                }?.first
+            if(currentCalibrationState.value == CalibrationState.OFF)
+                setCalibration()
+            else{
+                currentCalibrationState.value = calibrationConfirmationStatesSingleZone.run {
+                    getOrNull(indexOfFirst{ it.first == currentCalibrationState.value } + 1)?.apply {
+                        if(second != null)
+                            stoveRepository.changeKnobAngle(params = ChangeKnobAngle(second!!.toInt()), macAddress)
+                    }?.first
+                }
             }
         } else {
 //            when (currentCalibrationState.value) {
@@ -196,14 +198,17 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
 //                }
 //                CalibrationState.MEDIUM -> Unit
 //            }
-            currentCalibrationState.value = calibrationConfirmationStatesDualZone.run {
-                getOrNull(indexOfFirst{ it.first == currentCalibrationState.value } + 1)?.apply {
-                    if(first == CalibrationState.OFF)
-                        setCalibration()
-                    else if(first != CalibrationState.LOW_DUAL && second != null)
-                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(second!!.toInt()), macAddress)
-                }?.first
+            if(currentCalibrationState.value == CalibrationState.OFF)
+                setCalibration()
+            else{
+                currentCalibrationState.value = calibrationConfirmationStatesDualZone.run {
+                    getOrNull(indexOfFirst{ it.first == currentCalibrationState.value } + 1)?.apply {
+                        if(first != CalibrationState.LOW_DUAL && second != null)
+                            stoveRepository.changeKnobAngle(params = ChangeKnobAngle(second!!.toInt()), macAddress)
+                    }?.first
+                }
             }
+
         }
 //        currentStepTriggerCount = 0
     }
