@@ -166,8 +166,8 @@ class DeviceCalibrationViewModel @Inject constructor(
                 val currentIndex =
                     calibrationStatesSequenceDualZone.indexOf(currentCalibrationState.value)
                 if (currentIndex == calibrationStatesSequenceDualZone.size - 1) {
-                    if(!isZoneStartFromRight)
-                        switchZone()
+//                    if(!isZoneStartFromRight)
+//                        switchZone()
                     calibrationIsDoneFlow.emit(Unit)
                 } else {
                     currentCalibrationState.value = calibrationStatesSequenceDualZone[currentIndex + 1]
