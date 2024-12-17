@@ -12,10 +12,7 @@ import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.model.network.request.CreateUserRequest
 import com.ome.app.domain.model.network.request.StoveRequest
-import com.ome.app.domain.model.network.response.KnobDto
-import com.ome.app.domain.model.network.response.UserResponse
-import com.ome.app.domain.model.network.response.asBurnerState
-import com.ome.app.domain.model.network.response.asKnobState
+import com.ome.app.domain.model.network.response.*
 import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.network.websocket.MacAddress
 import com.ome.app.domain.repo.StoveRepository
@@ -25,14 +22,11 @@ import com.ome.app.utils.isFalse
 import com.ome.app.utils.log
 import com.ome.app.utils.orMinusOne
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
@@ -108,8 +102,9 @@ class MainVM @Inject constructor(
         }
     }
 
-    fun getAllKnobs() {
+    fun getAllKnobs(delayMillis: Long = 0L) {
         launch(ioContext) {
+            delay(delayMillis)
             stoveRepository.getAllKnobs()
         }
     }
