@@ -267,6 +267,21 @@ object KnobAngleManager {
         )
     }
 
+    private var oldAngle = 0F
+    fun processDualKnob2ProtectOffOpposite(
+        newAngle: Float,
+        offAngle: Int,
+        angleDualOffset: Int,
+    ): Float {
+        val secondDiv = normalizeAngle(offAngle + 180)
+        val p1 = normalizeAngle(secondDiv - angleDualOffset)
+        val p2 = normalizeAngle(secondDiv + angleDualOffset)
+        return if(!newAngle.isInRange(p1, p2))
+            newAngle.also { oldAngle = it }
+        else
+            oldAngle
+    }
+
     fun processDualKnobResult(
         initAngle: StateFlow<Int?>,
         newAngle: Float,

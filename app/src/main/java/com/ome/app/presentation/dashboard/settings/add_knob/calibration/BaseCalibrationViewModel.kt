@@ -9,6 +9,7 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
+import com.ome.app.utils.KnobAngleManager.processDualKnob2ProtectOffOpposite
 import kotlinx.coroutines.flow.*
 
 abstract class BaseCalibrationViewModel(
@@ -67,22 +68,6 @@ abstract class BaseCalibrationViewModel(
         CalibrationState.LOW_DUAL
     )
 
-    val calibrationStatesSequenceDualZone2: List<CalibrationState>
-        get() = buildList {
-            add(CalibrationState.OFF)
-            addAll(if (isZoneStartFromRight) listOf(
-                CalibrationState.HIGH_SINGLE,
-                CalibrationState.LOW_SINGLE,
-                CalibrationState.HIGH_DUAL,
-                CalibrationState.LOW_DUAL
-            )else listOf(
-                CalibrationState.HIGH_DUAL,
-                CalibrationState.LOW_DUAL,
-                CalibrationState.HIGH_SINGLE,
-                CalibrationState.LOW_SINGLE
-            ))
-        }
-
     val calibrationConfirmationStatesSingleZone get() = listOf(
         CalibrationState.HIGH_SINGLE to highSingleAngle,
         CalibrationState.MEDIUM to mediumAngle,
@@ -103,7 +88,14 @@ abstract class BaseCalibrationViewModel(
 //            initAngle.value = angle.toInt()
 
         knobAngleFlow.value = if (isDualKnob) {
-            if(offAngle != null && highSingleAngle != null){
+            if(offAngle != null && highSingleAngle == null){
+                processDualKnob2ProtectOffOpposite(
+                    newAngle = angle,
+                    offAngle = offAngle!!.toInt(),
+                    angleDualOffset = angleDualOffset
+                )
+            }
+            else if(offAngle != null){
                 KnobAngleManager.processDualKnobResult(
                     initAngle = MutableStateFlow(null),
                     newAngle = angle,
