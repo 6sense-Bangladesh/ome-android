@@ -102,9 +102,8 @@ class MainVM @Inject constructor(
         }
     }
 
-    fun getAllKnobs(delayMillis: Long = 0L) {
+    fun getAllKnobs() {
         launch(ioContext) {
-            delay(delayMillis)
             stoveRepository.getAllKnobs()
         }
     }

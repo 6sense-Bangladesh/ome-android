@@ -90,11 +90,11 @@ abstract class BaseCalibrationViewModel(
         CalibrationState.OFF to offAngle
     )
     val calibrationConfirmationStatesDualZone get() = listOf(
-        CalibrationState.HIGH_SINGLE to highSingleAngle,
-        CalibrationState.LOW_SINGLE to lowSingleAngle,
-        CalibrationState.MOVE_OFF to offAngle,
-        CalibrationState.LOW_DUAL to lowDualAngle,
         CalibrationState.HIGH_DUAL to highDualAngle,
+        CalibrationState.LOW_DUAL to lowDualAngle,
+        CalibrationState.MOVE_OFF to offAngle,
+        CalibrationState.LOW_SINGLE to lowSingleAngle,
+        CalibrationState.HIGH_SINGLE to highSingleAngle,
         CalibrationState.OFF to offAngle
     )
 

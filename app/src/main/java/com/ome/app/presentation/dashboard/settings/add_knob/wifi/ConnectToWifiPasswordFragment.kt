@@ -53,7 +53,6 @@ class ConnectToWifiPasswordFragment :
         }
 
         onDismissSuccessDialog = {
-            mainViewModel.getAllKnobs(3000L)
             if (params.isEditMode) {
                 popBackSafe(R.id.deviceSettingsFragment, false)
             } else {
