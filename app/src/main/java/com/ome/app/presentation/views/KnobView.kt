@@ -136,6 +136,7 @@ class KnobView @JvmOverloads constructor(
         binding.offCl.makeVisible()
         binding.offCl.rotation = angle
         binding.offTv.rotation = -angle
+        binding.knobProgressSingleZone.rotation = angle
         if(doRotate)
             animateCircle(mCurrAngle, angle)
     }
