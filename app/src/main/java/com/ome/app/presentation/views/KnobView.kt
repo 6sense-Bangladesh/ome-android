@@ -310,19 +310,33 @@ class KnobView @JvmOverloads constructor(
             // Set the rotation to the off angle
             binding.knobProgressSingleZone.rotation = offAngle
         }
-        else if (cal.zone1 != null && cal.zone2 != null) {
-            if (cal.zone1.lowAngle < cal.zone1.highAngle)
-                binding.knobProgressFirstZone.scaleY = 1F
-            else
-                binding.knobProgressFirstZone.scaleY = -1F
-            if (cal.zone2.lowAngle > cal.zone2.highAngle)
-                binding.knobProgressSecondZone.scaleY = 1F
-            else
-                binding.knobProgressSecondZone.scaleY = -1F
+     else if (cal.zone1 != null && cal.zone2 != null) {
+    // Zone 1
+    val offAngle = normalizeAngle(cal.offAngle.toFloat())
+    val lowAngle1 = normalizeAngle(cal.zone1.lowAngle.toFloat())
+    val highAngle1 = normalizeAngle(cal.zone1.highAngle.toFloat())
 
-            binding.knobProgressFirstZone.rotation = cal.offAngle.toFloat()
-            binding.knobProgressSecondZone.rotation = cal.offAngle.toFloat()
-        }
+    // Calculate the shortest angular distance between lowAngle and highAngle
+    val distanceToLow1 = calculateAngularDistance(offAngle, lowAngle1)
+    val distanceToHigh1 = calculateAngularDistance(offAngle, highAngle1)
+
+    // Compare which angle (low or high) is closer to the off angle
+    binding.knobProgressFirstZone.scaleY = if (distanceToLow1 < distanceToHigh1) 1F else -1F
+
+    binding.knobProgressFirstZone.rotation = offAngle
+
+    // Zone 2
+    val lowAngle2 = normalizeAngle(cal.zone2.lowAngle.toFloat())
+    val highAngle2 = normalizeAngle(cal.zone2.highAngle.toFloat())
+
+    // Calculate the shortest angular distance between lowAngle and highAngle
+    val distanceToLow2 = calculateAngularDistance(offAngle, lowAngle2)
+    val distanceToHigh2 = calculateAngularDistance(offAngle, highAngle2)
+
+    // Compare which angle (low or high) is closer to the off angle
+    binding.knobProgressSecondZone.scaleY = if (distanceToLow2 < distanceToHigh2) 1F else -1F
+
+    binding.knobProgressSecondZone.rotation = offAngle }
     }
 
     private fun normalizeAngle(angle: Float): Float {
