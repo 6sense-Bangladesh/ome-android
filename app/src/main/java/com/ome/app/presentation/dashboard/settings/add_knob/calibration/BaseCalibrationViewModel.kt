@@ -84,13 +84,13 @@ abstract class BaseCalibrationViewModel(
             ))
         }
 
-    val calibrationConfirmationStatesSingleZone = listOf(
+    val calibrationConfirmationStatesSingleZone get() = listOf(
         CalibrationState.HIGH_SINGLE to highSingleAngle,
         CalibrationState.MEDIUM to mediumAngle,
         CalibrationState.LOW_SINGLE to lowSingleAngle,
         CalibrationState.OFF to offAngle
     )
-    val calibrationConfirmationStatesDualZone = listOf(
+    val calibrationConfirmationStatesDualZone get() = listOf(
         CalibrationState.HIGH_SINGLE to highSingleAngle,
         CalibrationState.LOW_SINGLE to lowSingleAngle,
         CalibrationState.MOVE_OFF to offAngle,
@@ -98,7 +98,6 @@ abstract class BaseCalibrationViewModel(
         CalibrationState.HIGH_DUAL to highDualAngle,
         CalibrationState.OFF to offAngle
     )
-
 
     open fun handleDualKnobUpdated(angle: Float) {
         if(initAngle.value == null || offAngle == null)
