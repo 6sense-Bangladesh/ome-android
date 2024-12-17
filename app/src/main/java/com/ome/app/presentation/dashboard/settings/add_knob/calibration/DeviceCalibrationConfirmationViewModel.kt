@@ -6,6 +6,7 @@ import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.network.request.ChangeKnobAngle
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.SingleLiveEvent
+import com.ome.app.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -102,6 +103,7 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
     fun nextStep() = launch(ioContext) {
 
         if (!isDualKnob) {
+            currentCalibrationState.value.log("nextStep")
             when (currentCalibrationState.value) {
                 CalibrationState.OFF -> {
                     setCalibration()
@@ -122,10 +124,10 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
                     currentCalibrationState.value = CalibrationState.LOW_SINGLE
                 }
                 CalibrationState.LOW_SINGLE -> {
+                    currentCalibrationState.value = CalibrationState.OFF
                     offAngle?.let {
                         stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
                     }
-                    currentCalibrationState.value = CalibrationState.OFF
                 }
                 null -> {
                     highSingleAngle?.let {

@@ -195,7 +195,7 @@ abstract class BaseCalibrationViewModel(
             }
             else error("Something went wrong")
         }
-        calibrationIsDoneFlow.tryEmit(Unit)
+        calibrationIsDoneFlow.emit(Unit)
     }
 
 }
