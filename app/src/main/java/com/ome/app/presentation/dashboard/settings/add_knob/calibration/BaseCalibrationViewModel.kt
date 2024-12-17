@@ -43,6 +43,7 @@ abstract class BaseCalibrationViewModel(
     var secondDiv: Int = 0
 
     var isZoneStartFromRight: Boolean = false
+    var isRightZone: Boolean = false
 
     var rotationDir: Int? = null
 
@@ -102,17 +103,17 @@ abstract class BaseCalibrationViewModel(
 //            initAngle.value = angle.toInt()
 
         knobAngleFlow.value = if (isDualKnob) {
-            if(offAngle != null && (highSingleAngle != null || lowSingleAngle != null)){
+            if(offAngle != null && ((highSingleAngle != null && isZoneStartFromRight) || (lowSingleAngle != null && !isZoneStartFromRight))){
                 KnobAngleManager.processDualKnobResult(
                     initAngle = MutableStateFlow(null),
                     newAngle = angle,
                     firstDiv = firstDiv,
                     angleDualOffset = angleDualOffset,
                     offAngle = offAngle!!.toInt(),
-                    isRightZone =
-                    if(lowSingleAngle != null || highSingleAngle != null) false
-                    else if(lowDualAngle != null || highDualAngle != null) true
-                    else null
+                    isRightZone = isRightZone
+//                    if(lowSingleAngle != null || highSingleAngle != null) false
+//                    else if(lowDualAngle != null || highDualAngle != null) true
+//                    else null
                 )
             } else angle
         } else angle
