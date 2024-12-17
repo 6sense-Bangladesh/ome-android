@@ -178,7 +178,7 @@ abstract class BaseCalibrationViewModel(
                                     lowSingleAngle!!.toInt()
                                 ),
                                 lowAngle = lowSingleAngle!!.toInt(),
-                                zoneName = if(isZoneStartFromRight) "First" else "Second",
+                                zoneName = "First",
                                 zoneNumber = 1
                             ),
                             Zone(
@@ -188,7 +188,7 @@ abstract class BaseCalibrationViewModel(
                                     lowDualAngle!!.toInt()
                                 ),
                                 lowAngle = lowDualAngle!!.toInt(),
-                                zoneName = if(isZoneStartFromRight) "Second" else "First",
+                                zoneName = "Second",
                                 zoneNumber = 2
                             )
                         )
@@ -199,6 +199,11 @@ abstract class BaseCalibrationViewModel(
             else error("Something went wrong")
         }
         calibrationIsDoneFlow.emit(Unit)
+    }
+
+    fun switchZone() {
+        lowSingleAngle = lowDualAngle.also { lowDualAngle = lowSingleAngle }
+        highSingleAngle = highDualAngle.also { highDualAngle = highSingleAngle }
     }
 
 }

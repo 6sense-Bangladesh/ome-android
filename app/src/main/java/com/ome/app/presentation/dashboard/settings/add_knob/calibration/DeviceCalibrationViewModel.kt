@@ -1,11 +1,8 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 
-import android.util.Log
-import androidx.lifecycle.viewModelScope
 import com.ome.app.R
 import com.ome.app.data.local.ResourceProvider
 import com.ome.app.data.remote.websocket.WebSocketManager
-import com.ome.app.domain.TAG
 import com.ome.app.domain.model.network.request.InitCalibrationRequest
 import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.repo.StoveRepository
@@ -14,7 +11,6 @@ import com.ome.app.utils.*
 import com.ome.app.utils.KnobAngleManager.isRightZone
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -104,20 +100,17 @@ class DeviceCalibrationViewModel @Inject constructor(
                                     } ?: error("Something went wrong")
                                 }
                             }
-                            CalibrationState.MOVE_OFF -> {
-
-                            }
-                            CalibrationState.LOW_SINGLE -> {
-                                lowSingleAngle = angle
-                                Log.i(TAG, "setLabel: calibration is done")
-                                viewModelScope.launch {
-                                    calibrationIsDoneFlow.emit(Unit)
-                                }
-                            }
+                            CalibrationState.LOW_SINGLE -> lowSingleAngle = angle
+//                                Log.i(TAG, "setLabel: calibration is done")
+//                                viewModelScope.launch {
+//                                    calibrationIsDoneFlow.emit(Unit)
+//                                }
+//                            }
                             CalibrationState.MEDIUM -> mediumAngle = angle
                             CalibrationState.HIGH_SINGLE -> highSingleAngle = angle
                             CalibrationState.HIGH_DUAL -> highDualAngle = angle
                             CalibrationState.LOW_DUAL -> lowDualAngle = angle
+                            else -> Unit
                         }
                         labelLiveData.postValue(step to angle)
                         nextStep()
@@ -159,30 +152,30 @@ class DeviceCalibrationViewModel @Inject constructor(
 
 
     private fun nextStep() {
-        currentCalibrationState.value.log("nextStep")
-        if (!isDualKnob) {
-            val currentIndex =
-                calibrationStatesSequenceSingleZone.indexOf(currentCalibrationState.value)
-            if (currentIndex == calibrationStatesSequenceSingleZone.size - 1) {
-                viewModelScope.launch {
+        launch {
+            currentCalibrationState.value.log("nextStep")
+            if (!isDualKnob) {
+                val currentIndex =
+                    calibrationStatesSequenceSingleZone.indexOf(currentCalibrationState.value)
+                if (currentIndex == calibrationStatesSequenceSingleZone.size - 1) {
                     calibrationIsDoneFlow.emit(Unit)
+                } else {
+                    currentCalibrationState.value = calibrationStatesSequenceSingleZone[currentIndex + 1]
                 }
             } else {
-                currentCalibrationState.value = calibrationStatesSequenceSingleZone[currentIndex + 1]
-            }
-        } else {
-            val currentIndex =
-                calibrationStatesSequenceDualZone.indexOf(currentCalibrationState.value)
-            if (currentIndex == calibrationStatesSequenceDualZone.size - 1) {
-                viewModelScope.launch {
+                val currentIndex =
+                    calibrationStatesSequenceDualZone.indexOf(currentCalibrationState.value)
+                if (currentIndex == calibrationStatesSequenceDualZone.size - 1) {
+                    if(!isZoneStartFromRight)
+                        switchZone()
                     calibrationIsDoneFlow.emit(Unit)
-                }
-            } else {
-                currentCalibrationState.value = calibrationStatesSequenceDualZone[currentIndex + 1]
-                when(currentCalibrationState.value){
-                    CalibrationState.LOW_DUAL -> initAngle.value = null
-                    CalibrationState.LOW_SINGLE -> initAngle.value = null
-                    else -> Unit
+                } else {
+                    currentCalibrationState.value = calibrationStatesSequenceDualZone[currentIndex + 1]
+                    when(currentCalibrationState.value){
+                        CalibrationState.LOW_DUAL -> initAngle.value = null
+                        CalibrationState.LOW_SINGLE -> initAngle.value = null
+                        else -> Unit
+                    }
                 }
             }
         }
