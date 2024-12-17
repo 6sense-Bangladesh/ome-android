@@ -18,15 +18,17 @@ object KnobAngleManager {
     ): Boolean {
         if (calibrationState == CalibrationState.LOW_SINGLE) {
             if (highSingleAngle != null && mediumAngle != null) {
-                if (highSingleAngle > mediumAngle) {
-                    if (angle in mediumAngle..highSingleAngle) {
-                        return false
-                    }
-                } else {
-                    if (angle in highSingleAngle..mediumAngle) {
-                        return false
-                    }
-                }
+                if(angle.isInRange(highSingleAngle, mediumAngle))
+                    return false
+//                if (highSingleAngle > mediumAngle) {
+//                    if (angle in mediumAngle..highSingleAngle) {
+//                        return false
+//                    }
+//                } else {
+//                    if (angle in highSingleAngle..mediumAngle) {
+//                        return false
+//                    }
+//                }
             }
         }
         offAngle?.let { if (abs(angle - it) < angleOffset) return false }
@@ -341,7 +343,7 @@ object KnobAngleManager {
      * @param angleBeta The ending angle of the range.
      * @return True if angleTheta is between angleAlpha and angleBeta, false otherwise.
      */
-    private fun Int.isInRange(angleAlpha: Int, angleBeta: Int): Boolean {
+    private fun Number.isInRange(angleAlpha: Number, angleBeta: Number): Boolean {
         // Normalize all angles
         val alpha = normalizeAngle(angleAlpha)
         val beta = normalizeAngle(angleBeta)
