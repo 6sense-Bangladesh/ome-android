@@ -103,7 +103,7 @@ abstract class BaseCalibrationViewModel(
 //            initAngle.value = angle.toInt()
 
         knobAngleFlow.value = if (isDualKnob) {
-            if(offAngle != null && ((highSingleAngle != null && isZoneStartFromRight) || (lowSingleAngle != null && !isZoneStartFromRight))){
+            if(offAngle != null && highSingleAngle != null){
                 KnobAngleManager.processDualKnobResult(
                     initAngle = MutableStateFlow(null),
                     newAngle = angle,
