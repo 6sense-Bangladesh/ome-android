@@ -151,15 +151,15 @@ class DeviceCalibrationConfirmationFragment :
             currentStep.log("nextStep current")
             if (viewModel.isDualKnob) {
                 when (currentStep) {
-                    CalibrationState.HIGH_SINGLE, CalibrationState.LOW_SINGLE -> {
+                    CalibrationState.HIGH_SINGLE -> {
                         binding.labelTv.text =
                             getString(R.string.calibration_confirmation_dual_label, currentStep.positionName, "First").asHtml
                     }
-                    CalibrationState.HIGH_DUAL-> {
+                    CalibrationState.LOW_SINGLE -> {
                         binding.labelTv.text =
-                            getString(R.string.calibration_confirmation_dual_label, currentStep.positionName, "Second").asHtml
+                            getString(R.string.calibration_confirmation_dual_label, currentStep.positionName, "First").asHtml
                     }
-                    CalibrationState.LOW_DUAL -> {
+                    CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> {
                         binding.labelTv.text =
                             getString(R.string.device_calibration_dual_label, currentStep.positionName, "Second").asHtml
                     }
