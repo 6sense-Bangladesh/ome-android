@@ -102,47 +102,47 @@ class DeviceCalibrationConfirmationViewModel @Inject constructor(
     fun nextStep() = launch(ioContext) {
 
         if (!isDualKnob) {
-//            when (currentCalibrationState.value) {
-//                CalibrationState.OFF -> {
-//                    setCalibration()
-//                }
-//                CalibrationState.MOVE_OFF -> {
-//
-//                }
-//                CalibrationState.HIGH_SINGLE -> {
-//                    mediumAngle?.let {
-//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-//                    }
-//                    currentCalibrationState.value = CalibrationState.MEDIUM
-//                }
-//                CalibrationState.MEDIUM -> {
-//                    lowSingleAngle?.let {
-//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-//                    }
-//                    currentCalibrationState.value = CalibrationState.LOW_SINGLE
-//                }
-//                CalibrationState.LOW_SINGLE -> {
-//                    offAngle?.let {
-//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-//                    }
-//                    currentCalibrationState.value = CalibrationState.OFF
-//                }
-//                null -> {
-//                    highSingleAngle?.let {
-//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
-//                    }
-//                    currentCalibrationState.value = CalibrationState.HIGH_SINGLE
-//                }
-//                CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> Unit
-//            }
-            currentCalibrationState.value = calibrationConfirmationStatesSingleZone.run {
-                getOrNull(indexOfFirst{ it.first == currentCalibrationState.value } + 1)?.apply {
-                    if(first == CalibrationState.OFF)
-                        setCalibration()
-                    else if(second != null)
-                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(second!!.toInt()), macAddress)
-                }?.first
+            when (currentCalibrationState.value) {
+                CalibrationState.OFF -> {
+                    setCalibration()
+                }
+                CalibrationState.MOVE_OFF -> {
+
+                }
+                CalibrationState.HIGH_SINGLE -> {
+                    mediumAngle?.let {
+                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
+                    }
+                    currentCalibrationState.value = CalibrationState.MEDIUM
+                }
+                CalibrationState.MEDIUM -> {
+                    lowSingleAngle?.let {
+                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
+                    }
+                    currentCalibrationState.value = CalibrationState.LOW_SINGLE
+                }
+                CalibrationState.LOW_SINGLE -> {
+                    offAngle?.let {
+                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
+                    }
+                    currentCalibrationState.value = CalibrationState.OFF
+                }
+                null -> {
+                    highSingleAngle?.let {
+                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(it.toInt()), macAddress)
+                    }
+                    currentCalibrationState.value = CalibrationState.HIGH_SINGLE
+                }
+                CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> Unit
             }
+//            currentCalibrationState.value = calibrationConfirmationStatesSingleZone.run {
+//                getOrNull(indexOfFirst{ it.first == currentCalibrationState.value } + 1)?.apply {
+//                    if(first == CalibrationState.OFF)
+//                        setCalibration()
+//                    else if(second != null)
+//                        stoveRepository.changeKnobAngle(params = ChangeKnobAngle(second!!.toInt()), macAddress)
+//                }?.first
+//            }
         } else {
 //            when (currentCalibrationState.value) {
 //                CalibrationState.OFF -> {
