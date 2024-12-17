@@ -5,20 +5,18 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.websocket.WebSocketManager
+import com.ome.app.domain.TAG
 import com.ome.app.domain.model.network.request.ChangeKnobAngle
+import com.ome.app.domain.model.network.request.KnobRequest
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.DeviceSettingsItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsTitleItemModel
-import com.ome.app.domain.TAG
 import com.ome.app.utils.log
 import com.ome.app.utils.toTimer
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 
@@ -91,11 +89,12 @@ class DeviceViewModel @Inject constructor(
 
     fun deleteKnob() {
         launch(ioContext) {
+            stoveRepository.updateKnobInfo(
+                params = KnobRequest(calibrated = false, safetyLock = false),
+                macAddress = macAddress
+            )
             stoveRepository.deleteKnob(macAddress)
-            webSocketManager.knobState.value = webSocketManager.knobState.value.toMutableMap().apply {
-                remove(macAddress)
-            }.toMap()
-            stoveRepository.getAllKnobs()
+            stoveRepository.knobsFlow.value = stoveRepository.knobsFlow.value.filter { it.macAddr != macAddress }
         }
     }
 
