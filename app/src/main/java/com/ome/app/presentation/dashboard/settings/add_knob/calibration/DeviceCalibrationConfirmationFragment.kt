@@ -157,11 +157,11 @@ class DeviceCalibrationConfirmationFragment :
                     }
                     CalibrationState.LOW_SINGLE -> {
                         binding.labelTv.text =
-                            getString(R.string.calibration_confirmation_dual_label, currentStep.positionName, "First").asHtml
+                            getString(R.string.device_calibration_dual_label, currentStep.positionName, "First").asHtml
                     }
                     CalibrationState.HIGH_DUAL, CalibrationState.LOW_DUAL -> {
                         binding.labelTv.text =
-                            getString(R.string.device_calibration_dual_label, currentStep.positionName, "Second").asHtml
+                            getString(R.string.calibration_confirmation_dual_label, currentStep.positionName, "Second").asHtml
                     }
                     else -> {
                         binding.labelTv.text =
