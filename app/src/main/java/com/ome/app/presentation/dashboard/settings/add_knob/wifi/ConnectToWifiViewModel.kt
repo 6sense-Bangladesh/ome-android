@@ -3,16 +3,10 @@ package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 import androidx.lifecycle.SavedStateHandle
 import com.ome.app.R
 import com.ome.app.data.ConnectionStatusListener
-import com.ome.app.data.local.KnobSocketMessageType
-import com.ome.app.data.local.NetworkManager
-import com.ome.app.data.local.ResourceProvider
-import com.ome.app.data.local.SocketManager
+import com.ome.app.data.local.*
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.utils.isFalse
-import com.ome.app.utils.isNotEmpty
-import com.ome.app.utils.isTrue
-import com.ome.app.utils.log
+import com.ome.app.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -42,7 +36,6 @@ class ConnectToWifiViewModel @Inject constructor(
     init {
         connectionStatusListener.shouldReactOnChanges = false
         setupWifi()
-        initListeners()
         launch(ioContext, showLoading = false) {
             socketManager.networksFlow.filterNotNull().collect { list ->
                 list.log("wifiNetworksList")
@@ -64,7 +57,7 @@ class ConnectToWifiViewModel @Inject constructor(
         }
     }
 
-    private fun initListeners(){
+    fun initListeners(){
         socketManager.messageReceived = { type, message ->
             if (type == KnobSocketMessageType.GET_MAC) {
                 if (message == params.macAddrs) {

@@ -2,13 +2,9 @@ package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import com.ome.app.R
 import com.ome.app.data.ConnectionStatusListener
-import com.ome.app.data.local.KnobSocketMessageType
-import com.ome.app.data.local.NetworkManager
-import com.ome.app.data.local.ResourceProvider
-import com.ome.app.data.local.SocketManager
+import com.ome.app.data.local.*
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.utils.MAIN
-import com.ome.app.utils.isFalse
 import com.ome.app.utils.isTrue
 import com.ome.app.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,6 +25,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     var ssid = ""
     var securityType = ""
     var password = ""
+    private var setWifiSuccess = false
 
     fun initListeners() {
         socketManager.messageReceived = { type, message ->
@@ -53,6 +50,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                     }
                     KnobSocketMessageType.SET_WIFI -> {
                         if (message == "ok") {
+                            setWifiSuccess = true
                             delay(3.seconds)
                             sendMessage(KnobSocketMessageType.REBOOT)
                             socketManager.stopClient()
@@ -69,8 +67,9 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
         }
         var connectJob : Job? = null
         networkManager.onConnectionChange = {
-            if(connectJob == null && !it) {
+            if(connectJob == null && !it && !setWifiSuccess) {
                 connectJob = launch(ioContext) {
+                    delay(2.seconds)
                     connectToWifi()
                     socketManager.connect()
                     connectJob = null
@@ -82,9 +81,10 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 launch {
                     testWifi(password)
                 }
-            }.isFalse{
-                defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
             }
+//                .isFalse{
+//                defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
+//            }
         }
     }
 
@@ -95,7 +95,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     }
 
     private var credentialFail = 0
-    private var wifiReboot = 0
+    private var wifiRebootTried = false
 
 
     private suspend fun handleWifiStatusMessage(message: String) {
@@ -117,15 +117,16 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
             "2" -> {
                 credentialFail++
                 if(credentialFail < 12) {
-                    delay(4.seconds)
+                    delay(3.seconds)
                     sendMessage(KnobSocketMessageType.WIFI_STATUS)
                 }else{
                     credentialFail = 0
-                    if(wifiReboot==0) {
-                        wifiReboot++
+                    if(!wifiRebootTried) {
+                        setWifiSuccess = false
+                        wifiRebootTried = true
                         sendMessage(KnobSocketMessageType.REBOOT)
                         socketManager.stopClient()
-                        delay(5.seconds)
+                        delay(4.seconds)
                         connectToWifi()
                         socketManager.connect()
                         sendMessage(
@@ -136,7 +137,12 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                         )
                     }else {
                         defaultErrorLiveData.postValue(resourceProvider.getString(R.string.incorrect_network_name_and_password))
-                        wifiReboot = 0
+                        wifiRebootTried = false
+                        sendMessage(KnobSocketMessageType.REBOOT)
+                        socketManager.stopClient()
+                        delay(4.seconds)
+                        connectToWifi()
+                        socketManager.connect()
                     }
                 }
             }
@@ -180,6 +186,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     }
 
     fun testWifi(pass: String) = launch(ioContext) {
+        setWifiSuccess = false
         if(networkManager.isConnected) {
             credentialFail = 0
             password = pass

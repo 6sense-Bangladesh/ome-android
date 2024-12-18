@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.Firebase
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainVM by viewModels()
 
     private val inAppUpdate = InAppUpdate(this)
+    private var navController : NavController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +47,12 @@ class MainActivity : AppCompatActivity() {
         subscribe(viewModel.defaultErrorLiveData){
             toast(it)
         }
+        viewModel.socketError.collectWithLifecycle {
+            runCatching {
+                navController?.popBackStack(R.id.connectToWifiFragment, false)
+                toast(getString(R.string.something_went_wrong_when_setting_the_knob))
+            }
+        }
     }
 
     override fun onResume() {
@@ -61,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         startDestinationId.log("initNavigationGraph")
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
         val navController = navHostFragment.navController
+        this@MainActivity.navController = navController
         val inflater = navController.navInflater
         val graph = inflater.inflate(R.navigation.main_nav_graph)
         graph.setStartDestination(startDestinationId)

@@ -44,6 +44,7 @@ class MainVM @Inject constructor(
     var knobState =
         savedStateHandle.getStateFlow("knobState", mutableMapOf<MacAddress, KnobState>())
     var knobs = savedStateHandle.getStateFlow("knobs", listOf<KnobDto>())
+    var socketError = MutableSharedFlow<Unit>()
 
     override var defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
         if (isSplashScreenLoading)
@@ -70,16 +71,17 @@ class MainVM @Inject constructor(
 
     init {
         launch(ioContext) {
-            val oldKnobListSize = userRepository.userFlow.value?.knobMacAddrs?.size.orMinusOne()
+            var oldKnobList = userRepository.userFlow.value?.knobMacAddrs
             userRepository.userFlow.filterNotNull().collect {
                 it.log("userFlow")
                 pref.saveUserData(it)
                 savedStateHandle["userInfo"] = it
-                if (oldKnobListSize != it.knobMacAddrs.size) {
+                if (oldKnobList?.toSet() != it.knobMacAddrs.toSet()) {
+                    oldKnobList = it.knobMacAddrs
                     savedStateHandle["knobs"] = emptyList<KnobDto>()
                     stoveRepository.knobsFlow.value = emptyList()
+                    stoveRepository.getAllKnobs()
                 }
-                stoveRepository.getAllKnobs()
             }
         }
         launch(ioContext) {

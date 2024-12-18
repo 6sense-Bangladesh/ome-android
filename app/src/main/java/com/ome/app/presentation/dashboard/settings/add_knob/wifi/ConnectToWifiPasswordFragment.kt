@@ -31,10 +31,10 @@ class ConnectToWifiPasswordFragment :
         viewModel.macAddr = params.macAddr
         viewModel.ssid = params.ssid
         viewModel.securityType = params.securityType
+        viewModel.initListeners()
     }
 
     override fun setupListener() {
-        viewModel.initListeners()
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.password.doAfterTextChanged {
             binding.passwordLayout.error = null
