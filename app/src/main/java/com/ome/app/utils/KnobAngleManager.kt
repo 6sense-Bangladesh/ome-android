@@ -371,6 +371,24 @@ object KnobAngleManager {
             theta >= alpha || theta <= beta
         }
     }
+
+    fun calculateSweepAngle(startAngle: Int, endAngle: Int): Int {
+        return normalizeAngle(endAngle - startAngle)
+    }
+
+    fun isAngleWithinSweep(angle: Int, startAngle: Int, endAngle: Int): Boolean {
+        val sweepAngle = calculateSweepAngle(startAngle, endAngle)
+        val normalizedAngle = normalizeAngle(angle - startAngle)
+        return normalizedAngle in 0..sweepAngle
+    }
+
+     fun calculateAngularDistance(angle1: Int, angle2: Int): Int {
+        var distance = abs(angle2 - angle1)
+        if (distance > 180) {
+            distance = 360 - distance
+        }
+        return distance
+     }
 }
 
 fun main() {

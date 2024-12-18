@@ -30,7 +30,6 @@ import com.ome.app.utils.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlin.math.abs
 import kotlin.math.atan2
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -284,89 +283,41 @@ class KnobView @JvmOverloads constructor(
         if (cal.rotation != Rotation.DUAL) {
             val zone = cal.zone1 ?: return
 
-            // Normalize angles to 0-360 range
-            val offAngle = normalizeAngle(cal.offAngle.toFloat())
-            val lowAngle = normalizeAngle(zone.lowAngle.toFloat())
-            val highAngle = normalizeAngle(zone.highAngle.toFloat())
-
-            // Calculate sweep angle
-            val sweepAngle = calculateSweepAngle(lowAngle, highAngle)
-
             // Calculate midpoint angle
-            val midpointAngle = normalizeAngle(lowAngle + sweepAngle / 2f)
+            val midpointAngle = KnobAngleManager.normalizeAngle(
+                (zone.lowAngle + zone.highAngle) / 2f
+            )
+
 
             // Determine scaleX
-            binding.knobProgressSingleZone.scaleX = if (isAngleWithinSweep(offAngle, lowAngle, highAngle)) {
-                if (calculateAngularDistance(offAngle, lowAngle) < calculateAngularDistance(offAngle, midpointAngle)) {
+            binding.knobProgressSingleZone.scaleX = if (KnobAngleManager.isAngleWithinSweep(cal.offAngle, zone.lowAngle, zone.highAngle)) {
+                if (KnobAngleManager.calculateAngularDistance(cal.offAngle, zone.lowAngle) < KnobAngleManager.calculateAngularDistance(cal.offAngle, midpointAngle))
                     1F // Closer to lowAngle side of midpoint
-                } else {
+                else
                     -1F // Closer to highAngle side of midpoint
-                }
             } else {
                 // Default behavior for offAngle outside sweep angle (e.g., maintain previous scaleX)
                 binding.knobProgressSingleZone.scaleX // Or 1F, or -1F, depending on your desired default
             }
 
             // Set the rotation to the off angle
-            binding.knobProgressSingleZone.rotation = offAngle
+            binding.knobProgressSingleZone.rotation = cal.offAngle.toFloat()
         }
-     else if (cal.zone1 != null && cal.zone2 != null) {
-    // Zone 1
-    val offAngle = normalizeAngle(cal.offAngle.toFloat())
-    val lowAngle1 = normalizeAngle(cal.zone1.lowAngle.toFloat())
-    val highAngle1 = normalizeAngle(cal.zone1.highAngle.toFloat())
+        else if (cal.zone1 != null && cal.zone2 != null) {
+            // Calculate the shortest angular distance between lowAngle and highAngle
+            val distanceToLow1 = KnobAngleManager.calculateAngularDistance(cal.offAngle, cal.zone1.lowAngle)
+            val distanceToHigh1 = KnobAngleManager.calculateAngularDistance(cal.offAngle, cal.zone1.highAngle)
+            // Calculate the shortest angular distance between lowAngle and highAngle
+            val distanceToLow2 = KnobAngleManager.calculateAngularDistance(cal.offAngle, cal.zone2.lowAngle)
+            val distanceToHigh2 = KnobAngleManager.calculateAngularDistance(cal.offAngle, cal.zone2.highAngle)
 
-    // Calculate the shortest angular distance between lowAngle and highAngle
-    val distanceToLow1 = calculateAngularDistance(offAngle, lowAngle1)
-    val distanceToHigh1 = calculateAngularDistance(offAngle, highAngle1)
+            // Compare which angle (low or high) is closer to the off angle
+            binding.knobProgressFirstZone.scaleY = if (distanceToLow1 < distanceToHigh1) 1F else -1F
+            binding.knobProgressSecondZone.scaleY = if (distanceToLow2 < distanceToHigh2) 1F else -1F
 
-    // Compare which angle (low or high) is closer to the off angle
-    binding.knobProgressFirstZone.scaleY = if (distanceToLow1 < distanceToHigh1) 1F else -1F
-
-    binding.knobProgressFirstZone.rotation = offAngle
-
-    // Zone 2
-    val lowAngle2 = normalizeAngle(cal.zone2.lowAngle.toFloat())
-    val highAngle2 = normalizeAngle(cal.zone2.highAngle.toFloat())
-
-    // Calculate the shortest angular distance between lowAngle and highAngle
-    val distanceToLow2 = calculateAngularDistance(offAngle, lowAngle2)
-    val distanceToHigh2 = calculateAngularDistance(offAngle, highAngle2)
-
-    // Compare which angle (low or high) is closer to the off angle
-    binding.knobProgressSecondZone.scaleY = if (distanceToLow2 < distanceToHigh2) 1F else -1F
-
-    binding.knobProgressSecondZone.rotation = offAngle }
-    }
-
-    private fun normalizeAngle(angle: Float): Float {
-        var normalizedAngle = angle % 360f
-        if (normalizedAngle < 0) {
-            normalizedAngle += 360f
+            binding.knobProgressFirstZone.rotation = cal.offAngle.toFloat()
+            binding.knobProgressSecondZone.rotation = cal.offAngle.toFloat()
         }
-        return normalizedAngle
-    }
-
-    private fun calculateSweepAngle(startAngle: Float, endAngle: Float): Float {
-        var sweepAngle = endAngle - startAngle
-        if (sweepAngle < 0) {
-            sweepAngle += 360f
-        }
-        return sweepAngle
-    }
-
-    private fun isAngleWithinSweep(angle: Float, startAngle: Float, endAngle: Float): Boolean {
-        val sweepAngle = calculateSweepAngle(startAngle, endAngle)
-        val normalizedAngle = normalizeAngle(angle - startAngle)
-        return normalizedAngle >= 0 && normalizedAngle <= sweepAngle
-    }
-
-    private fun calculateAngularDistance(angle1: Float, angle2: Float): Float {
-        var distance = abs(angle2 - angle1)
-        if (distance > 180) {
-            distance = 360 - distance
-        }
-        return distance
     }
 
     fun changeWiFiState(wifiStrengthPercentage: Int) {
@@ -500,7 +451,7 @@ class KnobView @JvmOverloads constructor(
             var angle = Math.toDegrees(atan2(deltaY.toDouble(), deltaX.toDouble())).toFloat() + 90
 
             // Adjust angle to be in the 0–360 range
-            angle = normalizeAngle(angle).toFloat()
+            angle = KnobAngleManager.normalizeAngle(angle).toFloat()
             if (angle < 0)  angle += 360f
             else if (angle > 360)  angle -= 360f
 
