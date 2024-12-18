@@ -112,15 +112,19 @@ class StoveRepositoryImpl(
         }
     }
 
-    override suspend fun setSafetyLockOn(macAddress: String): BaseResponse {
-        return respectErrorApiCall(coroutineContext) {
-            stoveService.setSafetyLockOn(macAddress)
+    override suspend fun setSafetyLockOn(vararg macAddress: String) {
+        respectErrorApiCall(coroutineContext) {
+            macAddress.forEach {
+                stoveService.setSafetyLockOn(it)
+            }
         }
     }
 
-    override suspend fun setSafetyLockOff(macAddress: String): BaseResponse {
-        return respectErrorApiCall(coroutineContext) {
-            stoveService.setSafetyLockOff(macAddress)
+    override suspend fun setSafetyLockOff(vararg macAddress: String) {
+        respectErrorApiCall(coroutineContext) {
+            macAddress.forEach {
+                stoveService.setSafetyLockOff(it)
+            }
         }
     }
 

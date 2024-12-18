@@ -18,8 +18,8 @@ interface StoveRepository {
     suspend fun deleteKnob(macAddress: String): BaseResponse
     suspend fun updateKnobInfo(params: KnobRequest, macAddress: String): CreateKnobResponse
     suspend fun clearWifi(macAddress: String): BaseResponse
-    suspend fun setSafetyLockOn(macAddress: String): BaseResponse
-    suspend fun setSafetyLockOff(macAddress: String): BaseResponse
+    suspend fun setSafetyLockOn(vararg macAddress: String)
+    suspend fun setSafetyLockOff(vararg macAddress: String)
     suspend fun startTurnOffTimer(macAddress: String, currentAngle: Int, offAngle: Int, second: Int): BaseResponse
     suspend fun stopTimer(macAddress: String): BaseResponse
     suspend fun pauseTimer(macAddress: String): BaseResponse
