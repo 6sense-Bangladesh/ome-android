@@ -19,10 +19,7 @@ import com.ome.app.presentation.dashboard.my_stove.MyStoveFragment
 import com.ome.app.presentation.dashboard.profile.ProfileFragment
 import com.ome.app.presentation.dashboard.settings.SettingsFragment
 import com.ome.app.presentation.views.ViewPagerAdapter
-import com.ome.app.utils.changeVisibility
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.onBackPressedIgnoreCallback
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -86,20 +83,34 @@ class DashboardFragment :
         mainViewModel.loadingFlow.collectWithLifecycle {
             binding.loadingLayout.root.changeVisibility(it)
         }
+        subscribe(mainViewModel.loadingLiveData) {
+            binding.pullToRefresh.isRefreshing = it
+        }
     }
 
     override fun setupUI() {
         when (binding.dashboardViewPager.currentItem) {
-            0 -> binding.topAppBar.title = getString(R.string.menu_settings)
+            0 -> {
+                binding.topAppBar.title = getString(R.string.menu_settings)
+                binding.pullToRefresh.isEnabled = false
+            }
             1 -> {
                 binding.topAppBar.title = getString(R.string.app_name)
                 binding.topAppBar.menu?.setGroupVisible(R.id.group_my_stove, true)
+                binding.pullToRefresh.isEnabled = true
             }
 
             2 -> {
                 binding.topAppBar.title = getString(R.string.menu_profile)
                 binding.topAppBar.menu?.setGroupVisible(R.id.group_profile, true)
+                binding.pullToRefresh.isEnabled = false
             }
+        }
+    }
+
+    override fun setupListener() {
+        binding.pullToRefresh.setOnRefreshListener {
+            mainViewModel.getAllKnobs()
         }
     }
 
@@ -163,6 +174,7 @@ class DashboardFragment :
                         binding.topAppBar.menu?.setGroupVisible(R.id.group_profile, false)
                         binding.topAppBar.menu?.setGroupVisible(R.id.group_my_stove, false)
                         binding.bottomNavigation.selectedItemId = R.id.menuSettings
+                        binding.pullToRefresh.isEnabled = false
                     }
 
                     1 -> {
@@ -170,6 +182,7 @@ class DashboardFragment :
                         binding.topAppBar.menu?.setGroupVisible(R.id.group_profile, false)
                         binding.topAppBar.menu?.setGroupVisible(R.id.group_my_stove, true)
                         binding.bottomNavigation.selectedItemId = R.id.menuMyStove
+                        binding.pullToRefresh.isEnabled = true
                     }
 
                     2 -> {
@@ -177,6 +190,7 @@ class DashboardFragment :
                         binding.topAppBar.menu?.setGroupVisible(R.id.group_my_stove, false)
                         binding.topAppBar.menu?.setGroupVisible(R.id.group_profile, true)
                         binding.bottomNavigation.selectedItemId = R.id.menuProfile
+                        binding.pullToRefresh.isEnabled = false
                     }
                 }
             }

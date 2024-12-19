@@ -15,22 +15,32 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/menu_dashboard"
         app:title="@string/app_name" />
-
-    <androidx.core.widget.NestedScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/pullToRefresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
         app:layout_constraintTop_toBottomOf="@+id/topAppBar">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/dashboardViewPager"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fillViewport="true"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
-            app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
+            app:layout_constraintTop_toBottomOf="@+id/topAppBar">
 
-    </androidx.core.widget.NestedScrollView>
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/dashboardViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+                app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"

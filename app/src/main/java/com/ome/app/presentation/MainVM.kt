@@ -106,8 +106,9 @@ class MainVM @Inject constructor(
     }
 
     fun getAllKnobs() {
-        launch(ioContext) {
+        launch(ioContext, false) {
             stoveRepository.getAllKnobs()
+            loadingLiveData.postValue(false)
         }
     }
 
