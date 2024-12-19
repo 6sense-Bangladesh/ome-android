@@ -59,7 +59,7 @@ class QrCodeScannerViewModel @Inject constructor(
                 macAddress = macAddress!!
             )
             stoveRepository.updateKnobInfo(
-                params = KnobRequest(calibrated = false, safetyLock = false),
+                params = KnobRequest(calibrated = false),
                 macAddress = macAddress!!
             )
             isKnobAddedFlow.value = Unit
@@ -76,7 +76,7 @@ class QrCodeScannerViewModel @Inject constructor(
         if (stoveRepository.knobsFlow.value.any { it.stovePosition == params.selectedKnobPosition })
             error(resourceProvider.getString(R.string.knob_already_exists))
         stoveRepository.updateKnobInfo(
-            params = KnobRequest(stovePosition = params.selectedKnobPosition, calibrated = false, safetyLock = false),
+            params = KnobRequest(stovePosition = params.selectedKnobPosition, calibrated = false),
             macAddress = mac
         )
         isKnobAddedFlow.value = Unit

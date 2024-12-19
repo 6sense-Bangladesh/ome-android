@@ -6,7 +6,5 @@ data class KnobRequest(
     @SerializedName("stovePosition")
     val stovePosition: Int? = null,
     @SerializedName("calibrated")
-    val calibrated: Boolean? = null,
-    @SerializedName("safetyLock")
-    val safetyLock: Boolean? = null,
+    val calibrated: Boolean? = null
 )

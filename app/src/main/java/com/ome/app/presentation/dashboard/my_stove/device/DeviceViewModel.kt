@@ -90,9 +90,10 @@ class DeviceViewModel @Inject constructor(
     fun deleteKnob() {
         launch(ioContext) {
             stoveRepository.updateKnobInfo(
-                params = KnobRequest(calibrated = false, safetyLock = false),
+                params = KnobRequest(calibrated = false),
                 macAddress = macAddress
             )
+            stoveRepository.setSafetyLockOff(macAddress)
             stoveRepository.deleteKnob(macAddress)
             stoveRepository.knobsFlow.value = stoveRepository.knobsFlow.value.filter { it.macAddr != macAddress }
         }
