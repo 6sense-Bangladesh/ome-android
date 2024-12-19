@@ -108,7 +108,6 @@ class MainVM @Inject constructor(
     fun getAllKnobs() {
         launch(ioContext, false) {
             stoveRepository.getAllKnobs()
-            loadingLiveData.postValue(false)
         }
     }
 
@@ -223,27 +222,17 @@ class MainVM @Inject constructor(
     }
 
     fun connectToSocket(needStatus: Boolean = false) {
-        launch(ioContext) {
-//            webSocketManager.onSocketConnect = {
-//                if (needStatus) {
-//                    "onSocketConnect $it".loge()
-//                    if (it) {
-//                        delay(5.seconds)
-//                        socketConnected.emit(true)
-//                    } else
-//                        socketConnected.emit(false)
-//                }
-//            }
+        launch(ioContext, needStatus) {
             val knobs = stoveRepository.getAllKnobs()
             savedStateHandle["knobs"] = knobs.toList()
+            loadingLiveData.postValue(false)
             try {
                 pref.getUserId()?.let { userId ->
                     if (knobs.isNotEmpty())
                         webSocketManager.initKnobWebSocket(knobs, userId)
                 }
             } catch (e: Exception) {
-                if (needStatus) error("Error with socket connection.")
-                else connectToSocket()
+                connectToSocket()
             }
         }
     }

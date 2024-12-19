@@ -14,11 +14,11 @@ import com.ome.app.utils.tryInMain
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.plugins.websocket.WebSockets
-import io.ktor.client.plugins.websocket.receiveDeserialized
-import io.ktor.client.plugins.websocket.webSocket
+import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.header
 import io.ktor.serialization.gson.GsonWebsocketContentConverter
+import io.ktor.websocket.CloseReason
+import io.ktor.websocket.close
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import okhttp3.OkHttpClient
@@ -47,6 +47,8 @@ class WebSocketManager(private val context: Context) {
         install(DefaultRequest) { header("x-inirv-vsn", "6") }
     }
 
+    private var webSocketJob: DefaultClientWebSocketSession? = null
+
     suspend fun initKnobWebSocket(knobs: List<KnobDto>, userId: String) {
         tryInMain { delay(1.2.minutes) ; onSocketConnect(connected) }
         val knobMacs = knobs.joinToString(separator = ",") { knob -> knob.macAddr }
@@ -54,7 +56,9 @@ class WebSocketManager(private val context: Context) {
         knobState.value = knobStates
         withContext(Dispatchers.IO) {
             runCatching {
+                webSocketJob?.close(CloseReason(CloseReason.Codes.NORMAL, "Closing connection"))
                 client.webSocket(urlString = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=$knobMacs&inirvUid=$userId") {
+                    webSocketJob = this
                     while (this@webSocket.isActive){
                         receiveDeserialized<KnobMessageEvent>().also {
                             "getKnobService: ${it.name} - ${it.name} ${it.value} ${it.macAddr}".log(TAG)

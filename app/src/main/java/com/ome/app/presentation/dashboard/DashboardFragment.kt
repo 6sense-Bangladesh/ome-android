@@ -110,7 +110,7 @@ class DashboardFragment :
 
     override fun setupListener() {
         binding.pullToRefresh.setOnRefreshListener {
-            mainViewModel.getAllKnobs()
+            mainViewModel.connectToSocket()
         }
     }
 
