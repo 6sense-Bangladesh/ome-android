@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             navigationBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
         )
         if (BuildConfig.IS_INTERNAL_TESTING){ Firebase.messaging.subscribeToTopic("test") }
-//        dynamicRotation()
+        dynamicRotation()
         viewModel.registerConnectionListener()
         setContentView(R.layout.activity_main)
         viewModel.initStartDestination()
