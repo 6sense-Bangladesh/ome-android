@@ -6,15 +6,13 @@ import com.ome.app.utils.log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.bouncycastle.jce.provider.BouncyCastleProvider
-import java.io.ByteArrayOutputStream
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.InputStream
+import java.io.*
 import java.net.Socket
 import java.nio.charset.StandardCharsets
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+import kotlin.coroutines.coroutineContext
 
 
 class SocketManager(val context: Context) {
@@ -52,7 +50,7 @@ class SocketManager(val context: Context) {
         message: KnobSocketMessageType,
         vararg params: String = arrayOf()
     ){
-        withContext(Dispatchers.IO) {
+        withContext(coroutineContext) {
             try {
                 // Prepare the message
                 var finalMessage = message.path
@@ -73,7 +71,8 @@ class SocketManager(val context: Context) {
                     mOut?.write(data)
                     mOut?.flush()
                     lastMessageSent = message
-                } else reconnectSocket()
+                } else onSocketConnect(false)
+            //else reconnectSocket()
             } catch (e: Exception) {
                 "SocketException encountered: ${e.message}".log(TAG)
 //                reconnectSocket()  // Attempt to reconnect
@@ -205,7 +204,9 @@ class SocketManager(val context: Context) {
                 read()
             }
         } catch (e: Exception) {
-            e.log(TAG)
+            e.log(TAG + "connect")
+            stopClient()
+            onSocketConnect(false)
             // Handle the connection error
             reconnectSocket()  // Attempt to reconnect
 //            throw ConnectException("Error with socket connection.")

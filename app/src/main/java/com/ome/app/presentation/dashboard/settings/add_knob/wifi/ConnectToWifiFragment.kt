@@ -80,6 +80,10 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
         }
     }
 
+    override fun setupUI() {
+        viewModel.initListeners()
+    }
+
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 

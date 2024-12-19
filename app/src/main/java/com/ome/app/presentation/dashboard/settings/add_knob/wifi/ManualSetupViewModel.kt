@@ -1,9 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import com.ome.app.data.ConnectionStatusListener
-import com.ome.app.data.local.KnobSocketMessageType
-import com.ome.app.data.local.NetworkManager
-import com.ome.app.data.local.SocketManager
+import com.ome.app.data.local.*
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +16,7 @@ import kotlin.time.Duration.Companion.seconds
 class ManualSetupViewModel @Inject constructor(
     val networkManager: NetworkManager,
     private val socketManager: SocketManager,
+    private val resourceProvider: ResourceProvider,
     connectionStatusListener: ConnectionStatusListener
 ) : BaseViewModel() {
 

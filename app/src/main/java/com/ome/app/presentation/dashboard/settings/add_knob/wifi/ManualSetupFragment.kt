@@ -8,10 +8,7 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentManualSetupBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.subscribe
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -32,10 +29,10 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
             binding.mac1.text = it.first
             binding.mac2.text = it.second
         }
+        viewModel.initListeners()
     }
 
     override fun setupListener() {
-        viewModel.initListeners()
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
         binding.connectBtn.setOnClickListener {
             lifecycleScope.launch {

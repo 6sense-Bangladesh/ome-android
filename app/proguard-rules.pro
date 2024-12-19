@@ -56,3 +56,6 @@
 
 # Keep Google Guava classes
 -keep class com.google.common.reflect.**{*;}
+
+-keep class org.bouncycastle.** { *; }
+-keepclassmembers class org.bouncycastle.** { *; }

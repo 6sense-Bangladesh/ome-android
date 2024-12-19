@@ -40,6 +40,7 @@ class VerificationFragment :
     override fun setupListener() {
         binding.apply {
             btnVerify.setBounceClickListener {
+                closeKeyboard()
                 binding.btnVerify.startAnimation()
                 viewModel.validateConfirmationCode(
                     otp1.text.toString() + otp2.text.toString() +
