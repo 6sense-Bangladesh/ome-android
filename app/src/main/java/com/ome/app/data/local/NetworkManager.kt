@@ -22,6 +22,7 @@ class NetworkManager(val context: Context) {
 
     private var omeKnobSSID = ""
     private var inirvKnobSSID = ""
+    private var lastKnownSSID: String? = null
     var currentSSID = ""
 
     var onConnectionChange: ((Boolean) -> Unit) = {}
@@ -41,6 +42,7 @@ class NetworkManager(val context: Context) {
     }
 
     fun setup(macAddress: String): Pair<String, String> {
+        lastKnownSSID = null
         omeKnobSSID = "Ome_Knob_${macAddress.takeLast(4)}"
         inirvKnobSSID = "Inirv_Knob_${macAddress.takeLast(4)}"
         currentSSID = omeKnobSSID
@@ -85,6 +87,7 @@ class NetworkManager(val context: Context) {
                 if (!continuation.isActive) return
                 connectivityManager.bindProcessToNetwork(network)
                 "Connected to $currentSSID".log(TAG)
+                lastKnownSSID = currentSSID
                 continuation.resume(true to null)
                 isConnected = true
                 onConnectionChange(true)
@@ -206,6 +209,7 @@ class NetworkManager(val context: Context) {
                         if (networkInfo?.isConnected == true && connectedSsid == "\"$ssid\"") {
                             context.unregisterReceiver(this)
                             "Connected to $currentSSID".log(TAG)
+                            lastKnownSSID = currentSSID
                             continuation.resume(true to null)
                         }
                     }
@@ -264,11 +268,11 @@ class NetworkManager(val context: Context) {
     }
 
     private fun switchToOtherNetwork() {
-        currentSSID = if (currentSSID == inirvKnobSSID) {
-            omeKnobSSID
-        } else {
-            inirvKnobSSID
-        }
+        currentSSID = lastKnownSSID
+            ?: if (currentSSID == inirvKnobSSID)
+                omeKnobSSID
+            else
+                inirvKnobSSID
     }
 
 }

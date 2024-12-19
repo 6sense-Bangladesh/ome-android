@@ -4,6 +4,8 @@ import com.ome.app.presentation.dashboard.settings.add_knob.calibration.Calibrat
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 object KnobAngleManager {
 
@@ -18,17 +20,10 @@ object KnobAngleManager {
     ): Boolean {
         if (calibrationState == CalibrationState.LOW_SINGLE) {
             if (highSingleAngle != null && mediumAngle != null) {
-                if(angle.isInRange(highSingleAngle, mediumAngle))
+                if(angle.isInRangeShortagePath(highSingleAngle, mediumAngle) && offAngle?.isInRangeShortagePath(highSingleAngle, mediumAngle).isFalse() )
                     return false
-//                if (highSingleAngle > mediumAngle) {
-//                    if (angle in mediumAngle..highSingleAngle) {
-//                        return false
-//                    }
-//                } else {
-//                    if (angle in highSingleAngle..mediumAngle) {
-//                        return false
-//                    }
-//                }
+                else if(!angle.isInRangeShortagePath(highSingleAngle, mediumAngle) && angle.isInRangeClockwise(highSingleAngle, mediumAngle) && offAngle?.isInRangeShortagePath(highSingleAngle, mediumAngle).isTrue())
+                    return false
             }
         }
         offAngle?.let { if (abs(angle - it) < angleOffset) return false }
@@ -371,6 +366,42 @@ object KnobAngleManager {
             theta >= alpha || theta <= beta
         }
     }
+
+    private fun Number.isInRangeClockwise(angleAlpha: Number, angleBeta: Number): Boolean {
+        val alpha = normalizeAngle(min(angleAlpha.toInt(), angleBeta.toInt()))
+        val beta = normalizeAngle(max(angleAlpha.toInt(), angleBeta.toInt()))
+
+        return isInRange(alpha, beta)
+    }
+    private fun Number.isInRangeShortagePath(angleAlpha: Number, angleBeta: Number, useShortPath: Boolean = true): Boolean {
+        // Normalize all angles to the range [0, 360)
+        val alpha = normalizeAngle(angleAlpha)
+        val beta = normalizeAngle(angleBeta)
+        val theta = normalizeAngle(this)
+
+        // Calculate the clockwise and counterclockwise distance
+        val clockwiseDistance = (beta - alpha + 360) % 360
+        val counterClockwiseDistance = (alpha - beta + 360) % 360
+
+        return if (useShortPath) {
+            // Shortest path based on the shortest distance
+            if (clockwiseDistance <= counterClockwiseDistance) {
+                // Shortest path is clockwise
+                if (alpha <= beta) theta in alpha..beta else theta >= alpha || theta <= beta
+            } else {
+                // Shortest path is counterclockwise
+                if (beta <= alpha) theta in beta..alpha else theta >= beta || theta <= alpha
+            }
+        } else {
+            // If we are not using the shortest path, just check clockwise range
+            if (alpha <= beta) {
+                theta in alpha..beta
+            } else {
+                theta >= alpha || theta <= beta
+            }
+        }
+    }
+
 
     fun calculateSweepAngle(startAngle: Int, endAngle: Int): Int {
         return normalizeAngle(endAngle - startAngle)
