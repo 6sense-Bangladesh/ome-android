@@ -2,6 +2,7 @@ package com.ome.app.data.local
 
 import android.content.Context
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
+import com.ome.app.utils.isTrue
 import com.ome.app.utils.log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +14,7 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import kotlin.coroutines.coroutineContext
+import kotlin.time.Duration.Companion.minutes
 
 
 class SocketManager(val context: Context) {
@@ -75,7 +77,7 @@ class SocketManager(val context: Context) {
             //else reconnectSocket()
             } catch (e: Exception) {
                 "SocketException encountered: ${e.message}".log(TAG)
-//                reconnectSocket()  // Attempt to reconnect
+                reconnectSocket()  // Attempt to reconnect
 //                sendMessage(message, *params)  // Retry sending the message after reconnecting
             }
         }
@@ -158,32 +160,42 @@ class SocketManager(val context: Context) {
         return cipher.doFinal(encrypted)
     }
 
-    private fun reconnectSocket(retryCount: Int = 2, delayMillis: Long = 2000) = CoroutineScope(Dispatchers.IO).launch {
-        var attempts = 0
-        var connected = false
+    private fun reconnectSocket(retryCount: Int = 2, initialDelayMillis: Long = 1000){
+        CoroutineScope(Dispatchers.IO).launch {
+            var attempts = 0
+            var connected = false
+            var delayMillis = initialDelayMillis
 
-        while (attempts < retryCount && !connected) {
-            stopClient()
-            try {
-                // Attempt to reconnect
-                socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
-                mOut = DataOutputStream(socket.getOutputStream())
-                mIn = DataInputStream(socket.getInputStream())
-                onSocketConnect(true)  // Call this to handle any setup needed on connect
-                mRun = true
-                connected = true
-                "Reconnected successfully on attempt ${attempts + 1}".log(TAG)
+            while (attempts < retryCount && !connected) {
+                stopClient()
+                try {
+                    // Attempt to reconnect
+                    socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
+                    mOut = DataOutputStream(socket.getOutputStream())
+                    mIn = DataInputStream(socket.getInputStream())
+                    onSocketConnect(true)  // Call this to handle any setup needed on connect
+                    mRun = true
+                    connected = true
+                    "Reconnected successfully on attempt ${attempts + 1}".log(TAG)
+//                    sendMessage(lastMessageSent)
 
-                // Start reading again
-                while (mRun) {
-                    read()
+                    // Start reading again
+                    while (mRun) {
+                        read()
+                    }
+                } catch (e: Exception) {
+                    attempts++
+                    "Reconnect attempt $attempts failed: ${e.message}".log(TAG)
+                    if (!connected && attempts == retryCount)
+                        onSocketConnect(false)
+                    if(e.message?.contains("reset").isTrue() || e.message?.contains("closed").isTrue()) {
+                        messageReceived(lastMessageSent, "reset")
+                        stopClient()
+                        break
+                    }
+                    delay(delayMillis)  // Wait before the next attempt
+                    delayMillis = minOf(delayMillis * 2, 1.minutes.inWholeMilliseconds) // Exponential backoff with a maximum delay
                 }
-            } catch (e: Exception) {
-                attempts++
-                "Reconnect attempt $attempts failed: ${e.message}".log(TAG)
-                if (!connected && attempts == retryCount)
-                    onSocketConnect(false)
-                delay(delayMillis)  // Wait before the next attempt
             }
         }
     }
@@ -224,6 +236,8 @@ class SocketManager(val context: Context) {
         }finally {
             mIn = null
             mOut = null
+            socket = Socket()
+
         }
     }
 

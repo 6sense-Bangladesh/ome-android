@@ -1,10 +1,7 @@
 package com.ome.app.data
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
+import android.net.*
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.ome.app.utils.log
@@ -15,8 +12,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 interface ConnectionStatusListener {
-    val connectionStatusFlow: StateFlow<ConnectionStatusState>
 
+    var isConnected: Boolean
+    var shouldReactOnChanges: Boolean
+    val connectionStatusFlow: StateFlow<ConnectionStatusState>
     var failureNavigationFlow: MutableSharedFlow<Throwable>
 
     fun registerListener()
@@ -26,14 +25,13 @@ interface ConnectionStatusListener {
     enum class ConnectionStatusState {
         Default, HasConnection, NoConnection, Dismissed
     }
-
-    var shouldReactOnChanges: Boolean
 }
 
 class ConnectionStatusListenerImpl(
     private val context: Context
 ) : ConnectionStatusListener {
 
+    override var isConnected: Boolean = isNetworkAvailable()
     override var shouldReactOnChanges: Boolean = true
 
     override var failureNavigationFlow: MutableSharedFlow<Throwable> = MutableSharedFlow(
@@ -44,9 +42,9 @@ class ConnectionStatusListenerImpl(
     override val connectionStatusFlow =
         MutableStateFlow(ConnectionStatusListener.ConnectionStatusState.Default)
 
-    private val connectivityManager by lazy {
+    private val connectivityManager =
         ContextCompat.getSystemService(context.applicationContext, ConnectivityManager::class.java)
-    }
+
     private val networkRequest = NetworkRequest.Builder()
         .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
         .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
@@ -58,6 +56,7 @@ class ConnectionStatusListenerImpl(
     private val networkCallback by lazy {
         object : ConnectivityManager.NetworkCallback() {
             override fun onLost(network: Network) {
+                isConnected = false
                 if (connectionStatusFlow.value != ConnectionStatusListener.ConnectionStatusState.Dismissed) {
                     connectionStatusFlow.tryEmit(
                         ConnectionStatusListener.ConnectionStatusState.NoConnection
@@ -67,6 +66,7 @@ class ConnectionStatusListenerImpl(
 
             override fun onAvailable(network: Network) {
                 log("Network available")
+                isConnected = true
                 connectionStatusFlow.tryEmit(
                     ConnectionStatusListener.ConnectionStatusState.HasConnection
                 )

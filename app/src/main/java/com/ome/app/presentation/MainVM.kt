@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 
 @HiltViewModel
@@ -107,6 +108,19 @@ class MainVM @Inject constructor(
     fun getAllKnobs() {
         launch(ioContext) {
             stoveRepository.getAllKnobs()
+        }
+    }
+
+    fun getAllKnobsUntilNotEmpty() {
+        launch(ioContext) {
+            while (stoveRepository.knobsFlow.value.isEmpty()) {
+                if(!connectionStatusListener.isConnected) {
+                    delay(1.seconds)
+                    continue
+                }
+                stoveRepository.getAllKnobs()
+                delay(1.seconds)
+            }
         }
     }
 

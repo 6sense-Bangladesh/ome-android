@@ -4,12 +4,11 @@ import com.ome.app.R
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.local.*
 import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.utils.MAIN
-import com.ome.app.utils.isTrue
-import com.ome.app.utils.log
+import com.ome.app.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.yield
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -29,20 +28,14 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
 
     fun initListeners() {
         socketManager.messageReceived = { type, message ->
-            launch(ioContext){
+            launch(ioContext) {
                 when (type) {
-//                    KnobSocketMessageType.REBOOT -> {
-//                        rebootRetries++
-//                        if (rebootRetries < 3)
-//                            sendMessage(KnobSocketMessageType.REBOOT)
-//                        else
-//                            defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
-////                    successMessageLiveData.postValue(resourceProvider.getString(R.string.connection_success))
-////                    loadingLiveData.postValue(false)
-//                    }
                     KnobSocketMessageType.TEST_WIFI -> {
                         if (message == "ok") {
                             sendMessage(KnobSocketMessageType.WIFI_STATUS)
+                        } else if (message == "reset") {
+                            delay(2.seconds)
+                            socketManager.connect()
                         }
                     }
                     KnobSocketMessageType.WIFI_STATUS -> {
@@ -51,6 +44,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                     KnobSocketMessageType.SET_WIFI -> {
                         if (message == "ok") {
                             setWifiSuccess = true
+                            clearListeners()
                             delay(3.seconds)
                             sendMessage(KnobSocketMessageType.REBOOT)
                             socketManager.stopClient()
@@ -65,27 +59,35 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 }
             }
         }
-        var connectJob : Job? = null
+        var connectJob: Job? = null
         networkManager.onConnectionChange = {
-            if(connectJob == null && !it && !setWifiSuccess) {
+            if (connectJob == null && !it && !setWifiSuccess) {
                 connectJob = launch(ioContext) {
                     delay(2.seconds)
                     connectToWifi()
-                    socketManager.connect()
                     connectJob = null
                 }
             }
         }
         socketManager.onSocketConnect = {
-            it.isTrue{
-                launch {
+            launch(ioContext) {
+                yield()
+                it.isTrue {
                     testWifi(password)
                 }
-            }
 //                .isFalse{
-//                defaultErrorLiveData.postValue(resourceProvider.getString(R.string.something_went_wrong_when_setting_the_knob))
-//            }
+//                    delay(1.seconds)
+//                    if(!networkManager.isConnected)
+//                        connectToWifi()
+//                }
+            }
         }
+    }
+
+    fun clearListeners() {
+        socketManager.messageReceived = {_,_ -> }
+        networkManager.onConnectionChange = {}
+        socketManager.onSocketConnect = {}
     }
 
     private suspend fun disconnectFromNetwork(){
@@ -113,10 +115,12 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 // Something went wrong and we'll need to try again with new credentials or something
                 // We need to reset the process
                 defaultErrorLiveData.postValue(resourceProvider.getString(R.string.incorrect_network_name_and_password))
+                sendMessage(KnobSocketMessageType.REBOOT)
+                socketManager.stopClient()
             }
             "2" -> {
                 credentialFail++
-                if(credentialFail < 12) {
+                if (credentialFail < 10 && !wifiRebootTried || credentialFail < 5) {
                     delay(3.seconds)
                     sendMessage(KnobSocketMessageType.WIFI_STATUS)
                 }else{
@@ -128,7 +132,6 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                         socketManager.stopClient()
                         delay(4.seconds)
                         connectToWifi()
-                        socketManager.connect()
                         sendMessage(
                             KnobSocketMessageType.TEST_WIFI,
                             ssid = ssid,
@@ -140,9 +143,6 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                         wifiRebootTried = false
                         sendMessage(KnobSocketMessageType.REBOOT)
                         socketManager.stopClient()
-                        delay(4.seconds)
-                        connectToWifi()
-                        socketManager.connect()
                     }
                 }
             }
@@ -170,26 +170,29 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
 
     }
 
+    private var retry = 20
     private suspend fun connectToWifi(){
         "connectToWifi".log("WifiHandler")
         connectionStatusListener.shouldReactOnChanges = false
-        val result = networkManager.connectToKnobHotspot()
+        val result = tryGet { networkManager.connectToKnobHotspot() }
+
 
         //Check whether device connected to wifi or not
-        if (result.first) {
-            socketManager.connect()
-        } else {
-            result.second?.let { message ->
-                error(message)
-            } ?: connectToWifi()
+        while (result?.first.isFalse() && retry > 0 && !setWifiSuccess) {
+            delay(1.seconds)
+            connectToWifi()
+            retry--
         }
+        if(retry == 0)
+            error(resourceProvider.getString(R.string.incorrect_network_name_and_password))
+        else
+            socketManager.connect()
     }
 
     fun testWifi(pass: String) = launch(ioContext) {
-        setWifiSuccess = false
+        password = pass
         if(networkManager.isConnected) {
             credentialFail = 0
-            password = pass
             sendMessage(
                 type = KnobSocketMessageType.TEST_WIFI,
                 ssid = ssid,

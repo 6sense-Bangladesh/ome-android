@@ -2,15 +2,16 @@ package com.ome.app.domain.model.network.response
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.ome.app.data.local.NetworkManager.Companion.wifiStrengthPercentage
 import com.ome.app.data.local.Rssi
 import com.ome.app.domain.model.network.request.SetCalibrationRequest
 import com.ome.app.domain.model.network.request.Zone
 import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.state.*
-import com.ome.app.data.local.NetworkManager.Companion.wifiStrengthPercentage
 import com.ome.app.utils.isFalse
 import com.ome.app.utils.orFalse
 import kotlinx.parcelize.Parcelize
+import java.util.UUID
 
 @Parcelize
 data class KnobDto(
@@ -78,6 +79,14 @@ data class KnobDto(
             rotationDir = rotationDir,
             zones = zones.map { it.toZone() }
         )
+    }
+
+    override fun hashCode(): Int {
+        return UUID.randomUUID().hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return false
     }
 }
 

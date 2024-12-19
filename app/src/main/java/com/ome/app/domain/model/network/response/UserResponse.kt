@@ -3,7 +3,7 @@ package com.ome.app.domain.model.network.response
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
-import kotlin.random.Random
+import java.util.UUID
 
 @Parcelize
 data class UserResponse(
@@ -28,7 +28,7 @@ data class UserResponse(
 ) : Parcelable{
 
     override fun hashCode(): Int {
-        return System.nanoTime().toInt() + Random(100).nextInt()
+        return UUID.randomUUID().hashCode()
     }
 
     override fun equals(other: Any?): Boolean {
