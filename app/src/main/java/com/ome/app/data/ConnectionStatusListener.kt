@@ -28,7 +28,7 @@ interface ConnectionStatusListener {
 }
 
 class ConnectionStatusListenerImpl(
-    private val context: Context
+    context: Context
 ) : ConnectionStatusListener {
 
     override var isConnected: Boolean = isNetworkAvailable()
@@ -104,7 +104,7 @@ class ConnectionStatusListenerImpl(
     private fun isNetworkAvailable(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val nw = connectivityManager?.activeNetwork ?: return false
-            val actNw = connectivityManager?.getNetworkCapabilities(nw) ?: return false
+            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
             return when {
                 actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
                 actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
