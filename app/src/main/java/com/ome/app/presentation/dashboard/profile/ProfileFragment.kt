@@ -24,7 +24,7 @@ class ProfileFragment :
 
     @SuppressLint("SetTextI18n")
     override fun setupUI() {
-        binding.softwareVersion.text = "Software Version: ${BuildConfig.VERSION_NAME}"
+        binding.softwareVersion.text = "Software Version: ${BuildConfig.VERSION_NAME} (Build ${BuildConfig.VERSION_CODE})"
     }
 
     override fun setupListener() {
