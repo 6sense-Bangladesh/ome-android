@@ -55,6 +55,12 @@
         <item name="android:paddingEnd">@dimen/actionBarPaddingHorizontal</item>
     </style>
 
+    <style name="AppTheme.CustomMenuPopup" parent="Widget.Material3.PopupMenu">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="horizontalOffset">@dimen/_16sdp</item>
+    </style>
+
+
 
     <style name="Label.LargeExtra">
         <item name="android:textSize">@dimen/_15ssp</item>

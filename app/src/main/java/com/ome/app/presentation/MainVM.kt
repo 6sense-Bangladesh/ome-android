@@ -132,9 +132,9 @@ class MainVM @Inject constructor(
         }
     }
 
-    fun setSafetyLockOff() {
+    fun setSafetyLockOff(vararg macAddress: String = userRepository.userFlow.value?.knobMacAddrs?.toTypedArray().orEmpty()) {
         launch(ioContext) {
-            stoveRepository.setSafetyLockOff(*userRepository.userFlow.value?.knobMacAddrs?.toTypedArray().orEmpty())
+            stoveRepository.setSafetyLockOff(*macAddress)
             stoveRepository.getAllKnobs()
         }
     }
@@ -262,6 +262,7 @@ class MainVM @Inject constructor(
 
 /*
 val dummyKnobs = listOf(
+    //1
     KnobDto(
         angle = 200,
         battery = 30,
@@ -305,13 +306,14 @@ val dummyKnobs = listOf(
         updated = "explicari",
         userId = "enim"
     ),
+    //2
     KnobDto(
-        angle = 0,
+        angle = 50,
         battery = 70,
         batteryVolts = 4.5,
         calibrated = true,
         calibration = KnobDto.CalibrationDto(
-            offAngle = 0,
+            offAngle = 60,
             rotationDir = 2,
             zones = listOf(
                 KnobDto.CalibrationDto.ZoneDto(
@@ -348,13 +350,14 @@ val dummyKnobs = listOf(
         updated = "explicari",
         userId = "enim"
     ),
+    //3
     KnobDto(
         angle = 100,
         battery = 70,
         batteryVolts = 4.5,
         calibrated = true,
         calibration = KnobDto.CalibrationDto(
-            offAngle = 0,
+            offAngle = 100,
             rotationDir = 2,
             zones = listOf(
                 KnobDto.CalibrationDto.ZoneDto(
@@ -391,19 +394,21 @@ val dummyKnobs = listOf(
         updated = "explicari",
         userId = "enim"
     ),
+
+    //4 Off -> High -> Med -> Low
     KnobDto(
         angle = 50,
         battery = 90,
         batteryVolts = 4.5,
         calibrated = true,
         calibration = KnobDto.CalibrationDto(
-            offAngle = 0,
+            offAngle = 90,
             rotationDir = 1,
             zones = listOf(
                 KnobDto.CalibrationDto.ZoneDto(
-                    highAngle = 300,
-                    lowAngle = 100,
-                    mediumAngle = 200,
+                    highAngle = 40,
+                    lowAngle = 80,
+                    mediumAngle = 60,
                     zoneName = "Single",
                     zoneNumber = 1
                 )
@@ -427,6 +432,7 @@ val dummyKnobs = listOf(
         updated = "explicari",
         userId = "enim"
     ),
+    //5
     KnobDto(
         angle = 0,
         battery = 90,
@@ -437,14 +443,18 @@ val dummyKnobs = listOf(
             rotationDir = 1,
             zones = listOf(
                 KnobDto.CalibrationDto.ZoneDto(
-                    highAngle = 300,
-                    lowAngle = 100,
-                    mediumAngle = 200,
+                    highAngle = 30,
+                    lowAngle = 130,
+                    mediumAngle = 170,
                     zoneName = "Single",
                     zoneNumber = 1
                 )
             )
         ),
+//        highAngle = 40,
+//        lowAngle = 120,
+//        mediumAngle = 80,
+
         connectStatus = "online",
         firmwareVersion = "ceteros",
         gasOrElectric = "graeci",

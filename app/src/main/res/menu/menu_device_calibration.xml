@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_turn_off_safety_lock"
+        android:title="@string/turn_off_safety_lock_menu" />
+    <item
+        android:id="@+id/action_skip_calibration"
+        android:title="@string/skip_knob_calibration" />
+</menu>

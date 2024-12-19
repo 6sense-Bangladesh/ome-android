@@ -10,8 +10,10 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         style="@style/Widget.App.Toolbar"
+        app:popupTheme="@style/AppTheme.CustomMenuPopup"
         android:layout_width="match_parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_device_calibration"
         app:navigationIcon="@drawable/ic_back"
         app:title="@string/configure_knob" />
 

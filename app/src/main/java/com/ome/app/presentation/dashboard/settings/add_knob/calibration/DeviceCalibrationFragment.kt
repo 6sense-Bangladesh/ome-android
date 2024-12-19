@@ -8,6 +8,7 @@ import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceCalibrationBinding
@@ -68,6 +69,27 @@ class DeviceCalibrationFragment :
                 it.log("doOnRotationChange")
                 viewModel.knobAngleFlow.value = it
             }
+        }
+        binding.topAppBar.setOnMenuItemClickListener{ menu->
+           when(menu.itemId){
+                R.id.action_turn_off_safety_lock -> {
+                    mainViewModel.setSafetyLockOff(params.macAddress).also {
+                        Snackbar.make(requireContext(), binding.root, "Safety lock turned off", Snackbar.LENGTH_SHORT).show()
+                    }
+                    true
+                }
+                R.id.action_skip_calibration -> {
+                    popBackSafe(
+                        if (params.isComeFromSettings)
+                            R.id.deviceDetailsFragment
+                        else
+                            R.id.dashboardFragment
+                    )
+                    true
+                }
+
+               else -> false
+           }
         }
     }
 

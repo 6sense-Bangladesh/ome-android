@@ -202,6 +202,8 @@
     <string name="enter_your_email_address">Enter your email address that is used to create your account</string>
     <string name="new_password">New Password</string>
     <string name="reset_password">Reset Password</string>
+    <string name="turn_off_safety_lock_menu">Turn Off Safety Lock</string>
+    <string name="skip_knob_calibration">Skip Knob Calibration</string>
 
 
 </resources>
