@@ -48,13 +48,15 @@ class WebSocketManager(private val context: Context) {
     }
 
     private var webSocketJob: DefaultClientWebSocketSession? = null
+    private val webSocketScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     suspend fun initKnobWebSocket(knobs: List<KnobDto>, userId: String) {
         tryInMain { delay(1.2.minutes) ; onSocketConnect(connected) }
         val knobMacs = knobs.joinToString(separator = ",") { knob -> knob.macAddr }
         val knobStates = knobs.associateBy { it.macAddr }.mapValues { it.value.asKnobState }
         knobState.value = knobStates
-        withContext(Dispatchers.IO) {
+        webSocketScope.coroutineContext.cancelChildren() // Cancel child coroutines
+        webSocketScope.launch {
             runCatching {
                 webSocketJob?.close(CloseReason(CloseReason.Codes.NORMAL, "Closing connection"))
                 client.webSocket(urlString = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=$knobMacs&inirvUid=$userId") {

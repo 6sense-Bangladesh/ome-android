@@ -112,14 +112,14 @@ abstract class BaseCalibrationViewModel(
     }
 
     fun initSubscriptions() {
-        launch(ioContext) {
+        launch {
             webSocketManager.knobAngleFlow.filter { it?.macAddr == macAddress }.collect {
                 it?.let {
                     handleDualKnobUpdated(it.value.toFloat())
                 }
             }
         }
-        launch(ioContext) {
+        launch {
             stoveRepository.knobsFlow.mapNotNull { dto -> dto.find { it.macAddr == macAddress } }.stateIn(viewModelScope).collect { foundKnob ->
                 if (webSocketManager.knobAngleFlow.value == null) {
                     handleDualKnobUpdated(foundKnob.angle.toFloat())

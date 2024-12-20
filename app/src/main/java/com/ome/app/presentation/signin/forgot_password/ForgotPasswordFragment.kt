@@ -60,7 +60,7 @@ class ForgotPasswordFragment :
                 }
             }
         }
-        subscribe(viewModel.validationSuccessFlow) {
+        viewModel.validationSuccessFlow.collectWithLifecycle {
             if (it.isSuccessful) {
                 showSuccessDialog(
                     message = getString(R.string.password_reset),

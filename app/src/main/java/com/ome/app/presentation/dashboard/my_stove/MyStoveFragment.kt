@@ -11,7 +11,6 @@ import com.ome.app.domain.model.state.stoveOrientation
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.DashboardFragmentDirections
 import com.ome.app.presentation.dashboard.my_stove.device.DeviceFragmentParams
-import com.ome.app.presentation.dashboard.profile.ProfileViewModel
 import com.ome.app.presentation.dashboard.settings.add_knob.wake_up.KnobWakeUpParams
 import com.ome.app.presentation.views.KnobView
 import com.ome.app.utils.*
@@ -22,9 +21,9 @@ import kotlinx.coroutines.cancel
 
 @AndroidEntryPoint
 class MyStoveFragment :
-    BaseFragment<ProfileViewModel, FragmentMyStoveBinding>(FragmentMyStoveBinding::inflate) {
+    BaseFragment<MyStoveViewModel, FragmentMyStoveBinding>(FragmentMyStoveBinding::inflate) {
 
-    override val viewModel: ProfileViewModel by viewModels()
+    override val viewModel: MyStoveViewModel by viewModels()
 
     override fun setupUI() {
         binding.apply {
@@ -90,7 +89,7 @@ class MyStoveFragment :
 
     private fun initKnob(vararg knob : KnobView) {
         knob.forEach {
-            it.changeKnobState(KnobView.KnobImageState.ADD)
+            it.resetKnobState()
         }
     }
 
@@ -138,6 +137,18 @@ class MyStoveFragment :
             val listOfSixBurners = listOf(knob1, knob2, knob3, knob4, knob5, knob6)
             mainViewModel.knobs.collectWithLifecycle {knobs->
                 getKnobStateScope?.cancel()
+                val currentStovePositions = knobs.map { it.stovePosition }
+                currentStovePositions.log("stovePositions current")
+                viewModel.lastStovePositions.log("stovePositions last")
+                listOf(1,2,3,4,5,6).minus(currentStovePositions.toSet()).apply { log("stovePositions minus") }.forEach {
+                    when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
+                        StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS ->
+                            listOfFiveBurners.getOrNull(it-1)?.resetKnobState()
+                        else ->
+                            listOfSixBurners.getOrNull(it-1)?.resetKnobState()
+                    }
+                }
+                viewModel.lastStovePositions = currentStovePositions
                 knobs.forEach { knob->
                     when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
                         StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS ->

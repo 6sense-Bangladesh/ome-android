@@ -13,10 +13,7 @@ import com.ome.app.databinding.FragmentQrCodeScannerBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiParams
 import com.ome.app.presentation.views.code_scanner.startQrScanner
-import com.ome.app.utils.changeVisibility
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -62,7 +59,7 @@ class QrCodeScannerFragment : BaseFragment<QrCodeScannerViewModel, FragmentQrCod
     override fun setupObserver() {
         super.setupObserver()
         viewModel.isKnobAddedFlow.collectWithLifecycle {
-            mainViewModel.getUserInfo()
+            mainViewModel.getAllKnobs()
             viewModel.macAddress?.let { mac ->
                 navigateSafe(QrCodeScannerFragmentDirections.actionQrCodeScannerFragmentToConnectToWifiFragment(
                     ConnectToWifiParams(macAddrs = mac)

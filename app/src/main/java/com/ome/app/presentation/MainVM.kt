@@ -71,13 +71,13 @@ class MainVM @Inject constructor(
     var selectedDualZone: Boolean? = null
 
     init {
-        launch(ioContext) {
+        launch{
             var oldKnobList = userRepository.userFlow.value?.knobMacAddrs
             userRepository.userFlow.filterNotNull().collect {
                 it.log("userFlow")
                 pref.saveUserData(it)
                 savedStateHandle["userInfo"] = it
-                if (oldKnobList?.toSet() != it.knobMacAddrs.toSet()) {
+                if (oldKnobList != it.knobMacAddrs) {
                     oldKnobList = it.knobMacAddrs
                     savedStateHandle["knobs"] = emptyList<KnobDto>()
                     stoveRepository.knobsFlow.value = emptyList()
@@ -85,14 +85,14 @@ class MainVM @Inject constructor(
                 }
             }
         }
-        launch(ioContext) {
-            stoveRepository.knobsFlow.filterNotNull().collect { lst ->
+        launch {
+            stoveRepository.knobsFlow.collect { lst ->
                 savedStateHandle["knobs"] = lst
                 webSocketManager.knobState.value =
                     lst.associateByTo(mutableMapOf(), { it.macAddr }, { it.asKnobState })
             }
         }
-        launch(ioContext) {
+        launch{
             webSocketManager.knobState.collect {
                 savedStateHandle["knobState"] = it
             }
@@ -113,16 +113,18 @@ class MainVM @Inject constructor(
 
     fun getAllKnobsUntilNotEmpty() {
         launch(ioContext) {
-            while (stoveRepository.knobsFlow.value.isEmpty()) {
-                if(!connectionStatusListener.isConnected) {
+            while (true) {
+                if (!connectionStatusListener.isConnected) {
                     delay(1.seconds)
                     continue
                 }
-                stoveRepository.getAllKnobs()
+                if (stoveRepository.getAllKnobs().isNotEmpty())
+                    break
                 delay(1.seconds)
             }
         }
     }
+
 
     fun setSafetyLockOn() {
         launch(ioContext) {
@@ -224,7 +226,6 @@ class MainVM @Inject constructor(
     fun connectToSocket(needStatus: Boolean = false) {
         launch(ioContext, needStatus) {
             val knobs = stoveRepository.getAllKnobs()
-            savedStateHandle["knobs"] = knobs.toList()
             loadingLiveData.postValue(false)
             try {
                 pref.getUserId()?.let { userId ->

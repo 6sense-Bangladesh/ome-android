@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun subscribeConnectionListener() {
-        subscribe(viewModel.connectionStatusListener.connectionStatusFlow) { status ->
+        viewModel.connectionStatusListener.connectionStatusFlow.collectWithLifecycle { status ->
             if (viewModel.connectionStatusListener.shouldReactOnChanges) {
                 when (status) {
                     ConnectionStatusListener.ConnectionStatusState.Default,

@@ -148,6 +148,7 @@ class DeviceCalibrationViewModel @Inject constructor(
         mediumAngle = null
         highSingleAngle = null
         highDualAngle = null
+        currentCalibrationState.value = CalibrationState.OFF
     }
 
 

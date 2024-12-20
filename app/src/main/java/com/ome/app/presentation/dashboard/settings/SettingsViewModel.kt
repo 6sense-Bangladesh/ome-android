@@ -6,6 +6,7 @@ import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsTitleItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.toItemModel
+import com.ome.app.utils.log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -26,12 +27,10 @@ class SettingsViewModel @Inject constructor(
 
     val settingsList = savedStateHandle.getStateFlow("settingsList", defaultSettingOptions)
 
-    init {
-        loadSettings()
-    }
-
-    private fun loadSettings() = launch(ioContext) {
-        stoveRepository.knobsFlow.collect { knobs ->
+    fun loadSettings(){
+        log("loadSettings call")
+        stoveRepository.knobsFlow.value.let { knobs ->
+            knobs.log("loadSettings value")
             val settings = defaultSettingOptions.toMutableList()
             settings.addAll(knobs.dropLast(1).map { it.toItemModel() })
             knobs.lastOrNull()?.toItemModel(false)?.let { settings.add(it) }

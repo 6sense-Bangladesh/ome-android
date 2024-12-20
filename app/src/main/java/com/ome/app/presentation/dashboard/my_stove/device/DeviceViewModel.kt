@@ -59,7 +59,7 @@ class DeviceViewModel @Inject constructor(
 
 
     fun initSubscriptions() {
-        launch(ioContext, showLoading = false) {
+        launch(showLoading = false) {
             webSocketManager.knobAngleFlow.filter { it?.macAddr == macAddress }.collect {
                 it?.let {
                     log("angle ViewModel ${it.value.toFloat()}")
@@ -67,7 +67,7 @@ class DeviceViewModel @Inject constructor(
                 }
             }
         }
-        launch(ioContext, showLoading = false) {
+        launch(showLoading = false) {
             stoveRepository.knobsFlow.mapNotNull  { dto -> dto.find { it.macAddr == macAddress }}.collect { foundKnob ->
                 savedStateHandle["currentKnob"] = foundKnob
                 isSafetyLockOn = foundKnob.safetyLock

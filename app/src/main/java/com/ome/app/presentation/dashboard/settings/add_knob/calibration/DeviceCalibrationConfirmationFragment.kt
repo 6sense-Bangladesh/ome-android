@@ -1,5 +1,6 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
@@ -27,9 +28,14 @@ class DeviceCalibrationConfirmationFragment :
     private val args by navArgs<DeviceCalibrationConfirmationFragmentArgs>()
     val params by lazy { args.params }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        viewModel.macAddress = params.macAddr
+        viewModel.initSubscriptions()
+    }
+
     override fun setupUI() {
         viewModel.isDualKnob = params.isDualKnob
-        viewModel.macAddress = params.macAddr
         viewModel.rotationDir = params.rotateDir
         viewModel.offAngle = params.offPosition
         viewModel.highSingleAngle = params.highSinglePosition
@@ -47,9 +53,6 @@ class DeviceCalibrationConfirmationFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.firstConfirmationPageLiveData.postValue(true)
-        viewModel.initSubscriptions()
-//        viewModel.nextStep()
         if (viewModel.currentCalibrationState.value == null) {
             showSuccessDialog(
                 title = getString(R.string.warning),

@@ -1,5 +1,6 @@
 package com.ome.app.presentation.dashboard.my_stove.device
 
+import android.content.Context
 import android.text.SpannableStringBuilder
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -28,17 +29,21 @@ class DeviceSettingsFragment :
 
     override fun setupUI() {
         binding.apply {
-            viewModel.macAddress = params.macAddr
             viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
 //            name.text = params.name
             mainViewModel.knobs.value.find { it.macAddr == params.macAddr }?.let { knob ->
 //                knobView.setFontSize(18F)
             }
             recyclerView.adapter = adapter
-            viewModel.initSubscriptions()
             knobTv.text = getString(R.string.knob_, viewModel.stovePosition)
             macAddressTv.text = getString(R.string.knob_mac_addr_label, params.macAddr)
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        viewModel.macAddress = params.macAddr
+        viewModel.initSubscriptions()
     }
 
     override fun setupListener() {

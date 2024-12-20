@@ -160,7 +160,7 @@ class SocketManager(val context: Context) {
         return cipher.doFinal(encrypted)
     }
 
-    private fun reconnectSocket(retryCount: Int = 2, initialDelayMillis: Long = 1000){
+    private fun reconnectSocket(retryCount: Int = 2, initialDelayMillis: Long = 3000){
         CoroutineScope(Dispatchers.IO).launch {
             var attempts = 0
             var connected = false

@@ -1,5 +1,6 @@
 package com.ome.app.presentation.dashboard.my_stove.device
 
+import android.content.Context
 import android.os.Parcelable
 import android.util.Log
 import androidx.annotation.Keep
@@ -21,10 +22,7 @@ import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobIns
 import com.ome.app.presentation.views.KnobView
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.yield
+import kotlinx.coroutines.*
 import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
 import kotlin.time.Duration.Companion.seconds
@@ -48,11 +46,15 @@ class DeviceDetailsFragment :
             .create()
     }}
 
-    override fun setupUI() {
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
         viewModel.macAddress = params.macAddr
+        viewModel.initSubscriptions()
+    }
+
+    override fun setupUI() {
         viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
         binding.knobView.setFontSize(17F)
-        viewModel.initSubscriptions()
         val selectedColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
         setupTimer()
         activeTimer()
@@ -161,7 +163,7 @@ class DeviceDetailsFragment :
             binding.name.setBounceClickListener {
                 navigateSafe(
                     DeviceDetailsFragmentDirections.actionDeviceDetailsFragmentToKnobInstallationManualFragment(
-                        KnobInstallationManualFragmentParams(macAddr = params.macAddr, isComeFromSettings = false)
+                        KnobInstallationManualFragmentParams(macAddr = params.macAddr, isComeFromSettings = true)
                     )
                 )
             }
@@ -357,7 +359,7 @@ class DeviceDetailsFragment :
 
     private fun KnobView.setupKnob(knob: KnobDto) {
         changeKnobBasicStatus(knob)
-        if(knob.calibrated.isFalse() && viewModel.currentKnob.value?.connectStatus.connectionState != ConnectionState.Offline){
+        if(knob.calibrated.isFalse() && knob.connectStatus.connectionState != ConnectionState.Offline){
             withDelay(700L){
                 tryInMain { binding.warningCard.animateVisible() }
             }

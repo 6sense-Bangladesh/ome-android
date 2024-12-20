@@ -15,10 +15,7 @@ import com.ome.app.presentation.dashboard.settings.add_knob.wake_up.KnobWakeUpPa
 import com.ome.app.presentation.stove.StoveSetupBrandArgs
 import com.ome.app.presentation.stove.StoveSetupBurnersArgs
 import com.ome.app.presentation.stove.StoveSetupTypeArgs
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.isTrue
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.toast
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -33,6 +30,10 @@ class SettingsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = adapter
+    }
+
+    override fun setupUI() {
+        viewModel.loadSettings()
     }
 
     override fun setupObserver() {

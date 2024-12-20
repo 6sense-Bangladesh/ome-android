@@ -191,6 +191,20 @@ class KnobView @JvmOverloads constructor(
         binding.stovePositionTv.changeVisibility(knobImageState != KnobImageState.ADD)
     }
 
+    fun resetKnobState(){
+        changeKnobState(KnobImageState.ADD)
+        hideLabel()
+        binding.apply {
+            knobProgressFirstZone.gone()
+            knobProgressSecondZone.gone()
+            knobProgressSingleZone.gone()
+            notConfigured.gone()
+            connectionStatus.gone()
+            noBattery.gone()
+            safetyLock.gone()
+        }
+    }
+
     fun changeKnobState(knob: KnobState, calibration: Calibration): Boolean {
         if(calibration.isCalibrated)
             adjustKnobColorScale(calibration)
@@ -406,11 +420,21 @@ class KnobView @JvmOverloads constructor(
 
     private fun animateCircle(fromDeg: Float, toDeg: Float) {
         mCurrAngle = toDeg
+
+        // Calculate the shortest path
+        val diff = (toDeg - fromDeg) % 360
+        mCurrAngle = if (diff > 180)
+            fromDeg - (360 - diff) // Counter-clockwise
+        else if (diff < -180)
+            fromDeg + (360 + diff) // Clockwise
+        else  toDeg // Use the original toDeg
+
         val rotateAnimation = RotateAnimation(
-            fromDeg, toDeg,
+            fromDeg, mCurrAngle,
             RotateAnimation.RELATIVE_TO_SELF, 0.5F,
             RotateAnimation.RELATIVE_TO_SELF, 0.5F
         )
+        mCurrAngle = KnobAngleManager.normalizeAngle(mCurrAngle).toFloat()
         rotateAnimation.interpolator = LinearInterpolator()
 
         rotateAnimation.duration = ANIMATION_DURATION
@@ -429,7 +453,7 @@ class KnobView @JvmOverloads constructor(
 
         binding.knobProgressRotation.setOnTouchListener { v, event ->
             when(event.action){
-                MotionEvent.ACTION_UP -> trySend(mCurrAngle)
+                MotionEvent.ACTION_UP -> trySend(KnobAngleManager.normalizeAngle(mCurrAngle).toFloat())
             }
             // Get location of knobProgress on the screen
             val location = IntArray(2)

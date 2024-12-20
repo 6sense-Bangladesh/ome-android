@@ -38,7 +38,7 @@ class NoInternetConnectionFragment :
 
     override fun setupObserver() {
         super.setupObserver()
-        subscribe(viewModel.connectionStatusListener.connectionStatusFlow) { status ->
+        viewModel.connectionStatusListener.connectionStatusFlow.collectWithLifecycle { status ->
             when (status) {
                 ConnectionStatusListener.ConnectionStatusState.Default,
                 ConnectionStatusListener.ConnectionStatusState.HasConnection,

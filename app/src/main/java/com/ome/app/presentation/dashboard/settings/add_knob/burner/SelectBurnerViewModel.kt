@@ -24,8 +24,8 @@ class SelectBurnerViewModel @Inject constructor(
 
     val selectedIndexes=  MutableStateFlow<Triple<StoveOrientation, List<Int>, Int>?>(null)
 
-    fun loadData() = launch(ioContext, false) {
-        stoveRepository.knobsFlow.collect { knobs ->
+    fun loadData(){
+        stoveRepository.knobsFlow.value.let { knobs ->
             userRepository.userFlow.value?.stoveOrientation.stoveOrientation?.let { stoveOrientation ->
                 this@SelectBurnerViewModel.stoveOrientation = stoveOrientation
                 val editModeIndex = knobs.find {
