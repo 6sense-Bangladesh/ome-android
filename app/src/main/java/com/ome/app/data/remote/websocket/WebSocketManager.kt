@@ -58,8 +58,10 @@ class WebSocketManager(private val context: Context) {
         webSocketScope.coroutineContext.cancelChildren() // Cancel child coroutines
         webSocketScope.launch {
             runCatching {
-                webSocketJob?.close(CloseReason(CloseReason.Codes.NORMAL, "Closing connection"))
-                client.webSocket(urlString = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=$knobMacs&inirvUid=$userId") {
+                //closing previous connections
+                webSocketJob?.close(CloseReason(CloseReason.Codes.NORMAL, "Closing previous connections"))
+                //launching new connections
+                client.webSocket (urlString = "${BuildConfig.BASE_WEB_SOCKET_URL}?knobMacAddr=$knobMacs&inirvUid=$userId") {
                     webSocketJob = this
                     while (this@webSocket.isActive){
                         receiveDeserialized<KnobMessageEvent>().also {
