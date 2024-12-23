@@ -23,10 +23,7 @@ import com.ome.app.presentation.dashboard.settings.SettingsFragment
 import com.ome.app.presentation.launch.LaunchFragment
 import com.ome.app.presentation.signup.confirmation.VerificationFragment
 import com.ome.app.presentation.signup.welcome.WelcomeFragment
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.onBackPressedIgnoreCallback
-import com.ome.app.utils.subscribe
-import com.ome.app.utils.toast
+import com.ome.app.utils.*
 
 
 abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
@@ -37,6 +34,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
     protected val binding by viewBindingAlt(factory)
 
     protected val mainViewModel: MainVM by activityViewModels()
+    private var isErrorShowing = false
     protected var onDismissErrorDialog: () -> Unit = {}
     protected var onDismissSuccessDialog: () -> Unit = {}
     protected val isFromDeepLink by lazy { arguments?.containsKey(NavController.KEY_DEEP_LINK_INTENT) ?: false }
@@ -163,8 +161,13 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                 onDismissErrorDialog()
                 dialog.cancel()
             }
-            .setOnDismissListener { onDismissErrorDialog() }
-            .show()
+            .setOnDismissListener {
+                isErrorShowing = false
+                onDismissErrorDialog()
+            }.applyIf(!isErrorShowing){
+                show()
+                isErrorShowing = true
+            }
     }
 
 }

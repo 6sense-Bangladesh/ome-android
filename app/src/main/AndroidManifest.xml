@@ -51,8 +51,7 @@
 
         <!-- Trigger Google Play services to use mlkit barcode module. -->
         <meta-data
-            android:name="com.google.mlkit.vision.DEPENDENCIES"
-            android:value="barcode" />
+            android:name="com.google.mlkit.vision.DEPENDENCIES" android:value="barcode" />
 
         <!-- Trigger Google Play services to install the backported photo picker module. -->
         <!--suppress AndroidDomInspection -->
@@ -65,9 +64,15 @@
                 <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
             </intent-filter>
             <meta-data
-                android:name="photopicker_activity:0:required"
-                android:value="" />
+                android:name="photopicker_activity:0:required" android:value="" />
         </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stove_fill" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimary" />
 
     </application>
 

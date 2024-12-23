@@ -28,19 +28,20 @@ class SocketManager(val context: Context) {
     private var mOut: DataOutputStream? = null
     private var mIn: InputStream? = null
 
-    private val keyHexBytesArray =
-        intArrayOf(95, 198, 252, 116, 84, 55, 171, 199, 153, 89, 44, 208, 22, 251, 47, 161)
+    private val keyHexBytesArray = byteArrayOf(
+        95, -58, -4, 116, 84, 55, -85, -57, -103, 89, 44, -48, 22, -5, 47, -95
+    )
 
-
-    private val ivHexToBytesArray =
-        intArrayOf(210, 237, 136, 104, 145, 182, 212, 203, 4, 80, 198, 119, 194, 201, 38, 250)
+    private val ivHexToBytesArray = byteArrayOf(
+        -46, -19, -120, 104, -111, -74, -44, -53, 4, 80, -58, 119, -62, -55, 38, -6
+    )
 
 
     var messageReceived: (messageType: KnobSocketMessageType, message: String) -> Unit = { _, _ -> }
 
     var onSocketConnect: (Boolean) -> Unit = {}
 
-    private var mRun = false
+    var isConnected = false
 
     val networksFlow = MutableStateFlow<List<NetworkItemModel>?>(null)
 
@@ -59,9 +60,9 @@ class SocketManager(val context: Context) {
                 if (message == KnobSocketMessageType.TEST_WIFI || message == KnobSocketMessageType.SET_WIFI) {
                     finalMessage += " \"${params[0]}\" \"${params[1]}\" ${params[2]}"
                 }
-                "Sending: $finalMessage".log(TAG)
+                "Sending: $finalMessage, isConnected: $isConnected".log(TAG)
                 // Send the message
-                if (mOut != null) {
+                if (mOut != null && isConnected) {
                     var data = encrypt(finalMessage)
 
                     // Pad data if needed
@@ -73,9 +74,12 @@ class SocketManager(val context: Context) {
                     mOut?.write(data)
                     mOut?.flush()
                     lastMessageSent = message
+                    if(message == KnobSocketMessageType.REBOOT)
+                        stopClient()
                 } else onSocketConnect(false)
             //else reconnectSocket()
             } catch (e: Exception) {
+                isConnected = false
                 "SocketException encountered: ${e.message}".log(TAG)
                 reconnectSocket()  // Attempt to reconnect
 //                sendMessage(message, *params)  // Retry sending the message after reconnecting
@@ -142,8 +146,8 @@ class SocketManager(val context: Context) {
         val cipher = Cipher.getInstance("AES/CBC/ZeroBytePadding")
         cipher.init(
             Cipher.ENCRYPT_MODE,
-            SecretKeySpec(keyHexBytesArray.map { it.toByte() }.toByteArray(), "AES"),
-            IvParameterSpec(ivHexToBytesArray.map { it.toByte() }.toByteArray())
+            SecretKeySpec(keyHexBytesArray, "AES"),
+            IvParameterSpec(ivHexToBytesArray)
         )
 
         return cipher.doFinal(message.toByteArray())
@@ -153,8 +157,8 @@ class SocketManager(val context: Context) {
         val cipher = Cipher.getInstance("AES/CBC/ZeroBytePadding", BouncyCastleProvider())
         cipher.init(
             Cipher.DECRYPT_MODE,
-            SecretKeySpec(keyHexBytesArray.map { it.toByte() }.toByteArray(), "AES"),
-            IvParameterSpec(ivHexToBytesArray.map { it.toByte() }.toByteArray())
+            SecretKeySpec(keyHexBytesArray, "AES"),
+            IvParameterSpec(ivHexToBytesArray)
         )
 
         return cipher.doFinal(encrypted)
@@ -163,10 +167,9 @@ class SocketManager(val context: Context) {
     private fun reconnectSocket(retryCount: Int = 2, initialDelayMillis: Long = 3000){
         CoroutineScope(Dispatchers.IO).launch {
             var attempts = 0
-            var connected = false
             var delayMillis = initialDelayMillis
 
-            while (attempts < retryCount && !connected) {
+            while (attempts < retryCount && !isConnected) {
                 stopClient()
                 try {
                     // Attempt to reconnect
@@ -174,19 +177,20 @@ class SocketManager(val context: Context) {
                     mOut = DataOutputStream(socket.getOutputStream())
                     mIn = DataInputStream(socket.getInputStream())
                     onSocketConnect(true)  // Call this to handle any setup needed on connect
-                    mRun = true
-                    connected = true
+                    isConnected = true
                     "Reconnected successfully on attempt ${attempts + 1}".log(TAG)
 //                    sendMessage(lastMessageSent)
 
                     // Start reading again
-                    while (mRun) {
+                    while (isConnected) {
                         read()
                     }
                 } catch (e: Exception) {
                     attempts++
+                    isConnected = false
+                    if(lastMessageSent == KnobSocketMessageType.REBOOT) return@launch
                     "Reconnect attempt $attempts failed: ${e.message}".log(TAG)
-                    if (!connected && attempts == retryCount)
+                    if (!isConnected && attempts == retryCount)
                         onSocketConnect(false)
                     if(e.message?.contains("reset").isTrue() || e.message?.contains("closed").isTrue()) {
                         messageReceived(lastMessageSent, "reset")
@@ -203,30 +207,36 @@ class SocketManager(val context: Context) {
 
 
     fun connect(){
-        "Connect to socket".log(TAG)
-        stopClient()
-        try {
-            socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
-            mRun = true
-            mOut = DataOutputStream(socket.getOutputStream())
-            mIn = DataInputStream(socket.getInputStream())
-            onSocketConnect(true)
-            "Socket Connected".log(TAG)
-            while (mRun) {
-                read()
-            }
-        } catch (e: Exception) {
-            e.log(TAG + "connect")
+        "Connect to socket, isConnected: $isConnected".log(TAG)
+        if(!isConnected || socket.isClosed) {
             stopClient()
-            onSocketConnect(false)
-            // Handle the connection error
-            reconnectSocket()  // Attempt to reconnect
+            try {
+                socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
+                isConnected = true
+                lastMessageSent = KnobSocketMessageType.NONE
+                mOut = DataOutputStream(socket.getOutputStream())
+                mIn = DataInputStream(socket.getInputStream())
+                onSocketConnect(true)
+                "Socket Connected".log(TAG)
+                while (isConnected) {
+                    read()
+                }
+            } catch (e: Exception) {
+                isConnected = false
+                if(lastMessageSent == KnobSocketMessageType.REBOOT) return
+                e.log(TAG + "connect")
+                stopClient()
+                // Handle the connection error
+                reconnectSocket()  // Attempt to reconnect
 //            throw ConnectException("Error with socket connection.")
+            }
         }
+
     }
 
-    fun stopClient() {
-        mRun = false
+    private fun stopClient() {
+        "Stopping client".log(TAG)
+        isConnected = false
         networksFlow.value = null
         try {
             mOut?.flush()
@@ -236,14 +246,13 @@ class SocketManager(val context: Context) {
         }finally {
             mIn = null
             mOut = null
-            socket = Socket()
-
         }
     }
 
 }
 
 enum class KnobSocketMessageType(val path: String) {
+    NONE(""),
     GET_MAC("getmac"),
     WIFI_STATUS("getwifistatus"),
     TEST_WIFI("testwifi"),

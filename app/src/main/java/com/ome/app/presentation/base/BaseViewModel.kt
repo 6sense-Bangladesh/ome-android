@@ -1,10 +1,7 @@
 package com.ome.app.presentation.base
 
 import androidx.annotation.MainThread
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.navigation.NavDestination
 import com.amplifyframework.auth.AuthException
 import com.ome.app.data.remote.error
@@ -20,6 +17,7 @@ abstract class BaseViewModel: ViewModel() {
     val successMessageLiveData: SingleLiveEvent<String?> = SingleLiveEvent()
     val successToastFlow= MutableSharedFlow<String?>()
     val loadingFlow = MutableSharedFlow<Boolean>()
+    var isLoading = false
 
     val loadingLiveData: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val currentDestination = MutableStateFlow<NavDestination?>(null)
@@ -41,10 +39,16 @@ abstract class BaseViewModel: ViewModel() {
     ): Job {
         return viewModelScope.launch(dispatcher + coroutineExceptionHandler) {
             try {
-                if(showLoading) loadingFlow.emit(true)
+                if(showLoading) {
+                    loadingFlow.emit(true)
+                    isLoading = true
+                }
                 block()
             } finally {
-                if(showLoading) loadingFlow.emit(false)
+                if(showLoading) {
+                    loadingFlow.emit(false)
+                    isLoading = false
+                }
             }
         }
     }

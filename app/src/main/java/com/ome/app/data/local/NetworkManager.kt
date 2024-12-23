@@ -49,12 +49,18 @@ class NetworkManager(val context: Context) {
         return omeKnobSSID to inirvKnobSSID
     }
 
+    private fun isWifiEnabled(): Boolean {
+        val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        return wifiManager.isWifiEnabled
+    }
 
     suspend fun connectToKnobHotspot(
         ssid: String = currentSSID,
         password: String = PASSWORD
     ): Pair<Boolean, String?> {
         "Connecting to $currentSSID".log(TAG)
+        if(!isWifiEnabled())
+            error("Please turn on your Wi-Fi connection.")
         return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU &&
             ActivityCompat.checkSelfPermission(context,
                 Manifest.permission.ACCESS_FINE_LOCATION
