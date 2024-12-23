@@ -13,12 +13,6 @@ import com.google.firebase.messaging.RemoteMessage
 class PushNotificationService : FirebaseMessagingService() {
     private lateinit var pinpointManager: PinpointManager
     override fun onCreate() {
-        /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager = getSystemService(NotificationManager::class.java)
-            val notificationChannel =
-                NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
-            notificationManager?.createNotificationChannel(notificationChannel)
-        }*/
         runCatching {
             pinpointManager = PinpointManager(
                 PinpointConfiguration(
@@ -27,16 +21,10 @@ class PushNotificationService : FirebaseMessagingService() {
                     AWSConfiguration(applicationContext)
                 )
             )
-        }.onFailure {
-            it.printStackTrace()
         }
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        val title = remoteMessage.data["title"] ?: remoteMessage.notification?.title
-        val body = remoteMessage.data["body"] ?: remoteMessage.notification?.body
-
-        Log.d(TAG, "From: ${remoteMessage.from}")
         // Check if the message contains data
         remoteMessage.data.isNotEmpty()
             .let { Log.d(TAG, "Message data payload: " + remoteMessage.data) }

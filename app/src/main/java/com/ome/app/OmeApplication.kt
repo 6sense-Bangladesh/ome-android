@@ -54,7 +54,6 @@ class OmeApplication : SingletonImageLoader.Factory, Application() {
             Amplify.configure(config, applicationContext)
             Log.i("restManager", "Initialized Amplify")
         } catch (error: AmplifyException) {
-
             Log.i("iNirvApplication", "Hey we found an error: $error")
         }
 
