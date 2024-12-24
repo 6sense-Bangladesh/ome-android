@@ -160,11 +160,41 @@ class MyStoveFragment :
                         getKnobStateScope = this
                         if(knobState.angle == null) return@collectWithLifecycleStateIn
                         when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
-                            StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS ->
-                                listOfFiveBurners.getOrNull(knob.stovePosition-1)?.changeKnobState(knobState, knob.calibration.toCalibration(knob.calibrated))
-                            else ->
-                                listOfSixBurners.getOrNull(knob.stovePosition-1)?.changeKnobState(knobState, knob.calibration.toCalibration(knob.calibrated))
+                            StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
+                                listOfFiveBurners.getOrNull(knob.stovePosition - 1)
+                                    ?.apply{
+                                        changeKnobState(knobState, knob.calibration.toCalibration(knob.calibrated))
+                                        if(knobState.knobSetSafetyMode.isTrue())
+                                            setKnobPosition( knob.calibration.offAngle.toFloat())
+                                    }
+                            }
+                            else -> {
+                                listOfSixBurners.getOrNull(knob.stovePosition - 1)
+                                    ?.apply{
+                                        changeKnobState(knobState, knob.calibration.toCalibration(knob.calibrated))
+                                        if(knobState.knobSetSafetyMode.isTrue())
+                                            setKnobPosition( knob.calibration.offAngle.toFloat())
+                                    }
+                            }
                         }
+                        /*if(knobState.knobSetSafetyMode.isTrue()){
+//                            knob.calibration.offAngle.apply {
+//                                binding.knob1.
+//                                binding.knob2.setKnobPosition(this.toFloat())
+//                                binding.knob3.setKnobPosition(this.toFloat())
+//                                binding.knob4.setKnobPosition(this.toFloat())
+//                                binding.knob5.setKnobPosition(this.toFloat())
+//                                binding.knob6.setKnobPosition(this.toFloat())
+//                            }
+                            *//*viewModel.currentKnob.value?.calibration?.offAngle?.let {
+                                binding.knob1.setKnobPosition(it.toFloat())
+                                binding.knob2.setKnobPosition(it.toFloat())
+                                binding.knob3.setKnobPosition(it.toFloat())
+                                binding.knob4.setKnobPosition(it.toFloat())
+                                binding.knob5.setKnobPosition(it.toFloat())
+                                binding.knob6.setKnobPosition(it.toFloat())
+                            }*//*
+                        }*/
                     }
                 }
             }

@@ -81,6 +81,11 @@ class DeviceSettingsFragment :
 //        }
         viewModel.knobAngle.collectWithLifecycle { angle ->
             binding.knobView.setKnobPosition(angle)
+            if (viewModel.currentKnob.value?.safetyLock.isTrue()){
+                viewModel.currentKnob.value?.calibration?.offAngle?.toFloat()?.let {
+                    binding.knobView.setKnobPosition(it)
+                }
+            }
         }
 
         viewModel.isDualZone = mainViewModel.getKnobByMac(params.macAddr)?.calibration?.rotationDir == 2
