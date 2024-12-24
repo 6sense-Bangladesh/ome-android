@@ -80,10 +80,8 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                     delay(1.seconds * socketReconnect)
                     if(socketManager.isConnected)
                         testWifi()
-                    else {
-                        socketReconnect++
+                    else
                         connectToSocket()
-                    }
                 }
                 else{
                     delay(1.seconds * socketReconnect)
@@ -178,7 +176,6 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     }
     private suspend fun connectToWifi(){
         "socketReconnect $socketReconnect".log("connectToWifi")
-        socketReconnect++
         connectionStatusListener.shouldReactOnChanges = false
         if(networkManager.isConnected) {
             if(!socketManager.isConnected)
