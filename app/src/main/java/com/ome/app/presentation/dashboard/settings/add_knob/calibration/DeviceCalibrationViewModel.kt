@@ -198,12 +198,12 @@ class DeviceCalibrationViewModel @Inject constructor(
 
             when (step) {
                 CalibrationState.OFF, CalibrationState.MOVE_OFF -> offAngle = null
-                CalibrationState.LOW_SINGLE -> lowSingleAngle = null
-                CalibrationState.MEDIUM -> mediumAngle = null
-                CalibrationState.HIGH_SINGLE -> {
-                    highSingleAngle = null
+                CalibrationState.LOW_SINGLE -> {
+                    lowSingleAngle = null
                     isRightZone = isZoneStartFromRight
                 }
+                CalibrationState.MEDIUM -> mediumAngle = null
+                CalibrationState.HIGH_SINGLE -> highSingleAngle = null
                 CalibrationState.HIGH_DUAL -> highDualAngle = null
                 CalibrationState.LOW_DUAL -> lowDualAngle = null
                 null -> Unit

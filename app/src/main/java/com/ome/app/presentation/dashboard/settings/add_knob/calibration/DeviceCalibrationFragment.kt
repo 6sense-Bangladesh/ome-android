@@ -1,7 +1,9 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 
 import android.content.Context
+import android.os.Bundle
 import android.os.Parcelable
+import android.view.View
 import androidx.activity.addCallback
 import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
@@ -38,7 +40,6 @@ class DeviceCalibrationFragment :
     override fun setupUI() {
         viewModel.rotationDir = params.rotateDir
         viewModel.isDualKnob = params.isDualKnob
-        viewModel.clearData()
         if(viewModel.isDualKnob)
             binding.labelZone.text = getString(R.string.dual_zone_knob)
         else
@@ -48,6 +49,11 @@ class DeviceCalibrationFragment :
             getString(R.string.dual_zone_knob)
         else
             getString(R.string.single_zone_knob)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.clearData()
     }
 
     override fun setupListener() {
