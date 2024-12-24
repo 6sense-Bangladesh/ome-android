@@ -36,16 +36,16 @@ class ConnectToWifiPasswordFragment :
 
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
-        binding.wifiCode.doAfterTextChanged {
-            binding.wifiCodeLayout.error = null
+        binding.password.doAfterTextChanged {
+            binding.passwordLayout.error = null
         }
         binding.connectBtn.setBounceClickListener {
             closeKeyboard()
             binding.connectBtn.startAnimation()
-            binding.wifiCode.text.toString().let {
+            binding.password.text.toString().let {
                 if(it.isBlank()) {
                     binding.connectBtn.revertAnimation()
-                    binding.wifiCodeLayout.errorPassword = DefaultValidation.REQUIRED
+                    binding.passwordLayout.errorPassword = DefaultValidation.REQUIRED
                 }
                 else {
                     viewModel.socketReconnect = 0

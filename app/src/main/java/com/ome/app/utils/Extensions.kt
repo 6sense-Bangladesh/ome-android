@@ -959,7 +959,7 @@ inline fun <T> tryGet(data: () -> T): T? =
     }
 
 inline fun <T> tryInMain(crossinline data: suspend () -> T) =
-    CoroutineScope(Dispatchers.Main).launch {
+    CoroutineScope(Dispatchers.Main.immediate).launch {
         try {
             data()
         } catch (e: Exception) {

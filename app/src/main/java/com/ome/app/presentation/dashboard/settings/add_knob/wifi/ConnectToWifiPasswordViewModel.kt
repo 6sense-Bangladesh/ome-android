@@ -7,6 +7,7 @@ import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
@@ -64,31 +65,36 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
         }
         var connectJob: Job? = null
         networkManager.onConnectionChange = {
-            if (connectJob == null && !it && !setWifiSuccess && loadingLiveData.value != false) {
-                connectJob = launch(ioContext) {
-                    delay(2.seconds)
+            loadingLiveData.value.log("NetworkManager onConnectionChange loadingLiveData")
+            if (!it && !setWifiSuccess && loadingLiveData.value != false) {
+                connectJob?.cancel()
+                connectJob = launch(ioContext + SupervisorJob()) {
+                    delay(1.seconds * socketReconnect)
                     connectToWifi()
-                    connectJob = null
                 }
             }
         }
         socketManager.onSocketConnect = {
             launch(ioContext) {
                 if(it && socketReconnect > 0){
-                    delay(1.seconds)
+                    delay(1.seconds * socketReconnect)
                     if(socketManager.isConnected)
                         testWifi()
                     else {
                         socketReconnect++
-                        socketManager.connect()
+                        connectToSocket()
                     }
                 }
+                else{
+                    delay(1.seconds * socketReconnect)
+                    if(loadingLiveData.value == false) return@launch
+                    if(!networkManager.isConnected)
+                        connectToWifi()
+                    else if(socketReconnect > 0)
+                        connectToSocket()
+                }
             }
-//            else{
-//                delay(1.seconds)
-//                if(!networkManager.isConnected)
-//                    connectToWifi()
-//            }
+
         }
     }
 
@@ -165,7 +171,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     private var connectSocketJob : Job? = null
     private fun connectToSocket(){
         connectSocketJob?.cancel()
-        connectSocketJob = launch(ioContext){
+        connectSocketJob = launch(ioContext + SupervisorJob()){
             socketReconnect++
             socketManager.connect()
         }

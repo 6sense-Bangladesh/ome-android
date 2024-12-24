@@ -4,6 +4,7 @@ import android.content.Context
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.adapter.model.NetworkItemModel
 import com.ome.app.utils.isTrue
 import com.ome.app.utils.log
+import com.ome.app.utils.tryInMain
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -15,6 +16,7 @@ import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import kotlin.coroutines.coroutineContext
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 
 class SocketManager(val context: Context) {
@@ -164,7 +166,7 @@ class SocketManager(val context: Context) {
         return cipher.doFinal(encrypted)
     }
 
-    private fun reconnectSocket(retryCount: Int = 2, initialDelayMillis: Long = 3000){
+    private fun reconnectSocket(retryCount: Int = 2, initialDelayMillis: Long = 3500){
         CoroutineScope(Dispatchers.IO).launch {
             var attempts = 0
             var delayMillis = initialDelayMillis
@@ -208,12 +210,17 @@ class SocketManager(val context: Context) {
 
     fun connect(){
         "Connect to socket, isConnected: $isConnected".log(TAG)
+        tryInMain {
+            delay(40.seconds)
+            if(!isConnected)
+                onSocketConnect(false)
+        }
         if(!isConnected || socket.isClosed) {
             stopClient()
             try {
+                lastMessageSent = KnobSocketMessageType.NONE
                 socket = Socket(KNOB_IP_ADDRESS, KNOB_PORT)
                 isConnected = true
-                lastMessageSent = KnobSocketMessageType.NONE
                 mOut = DataOutputStream(socket.getOutputStream())
                 mIn = DataInputStream(socket.getInputStream())
                 onSocketConnect(true)
