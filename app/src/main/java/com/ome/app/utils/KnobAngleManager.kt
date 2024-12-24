@@ -404,7 +404,11 @@ object KnobAngleManager {
 
 
     fun calculateSweepAngle(startAngle: Int, endAngle: Int): Int {
-        return normalizeAngle(endAngle - startAngle)
+        return if (startAngle <= endAngle) {
+            endAngle - startAngle
+        } else {
+            359 - (startAngle - endAngle)
+        }
     }
 
     fun isAngleWithinSweep(angle: Int, startAngle: Int, endAngle: Int): Boolean {

@@ -304,14 +304,17 @@ class KnobView @JvmOverloads constructor(
 
 
             // Determine scaleX
-            binding.knobProgressSingleZone.scaleX = if (KnobAngleManager.isAngleWithinSweep(cal.offAngle, zone.lowAngle, zone.highAngle)) {
-                if (KnobAngleManager.calculateAngularDistance(cal.offAngle, zone.lowAngle) < KnobAngleManager.calculateAngularDistance(cal.offAngle, midpointAngle))
+            binding.knobProgressSingleZone.scaleX = if (KnobAngleManager.isAngleWithinSweep(cal.offAngle, zone.highAngle,zone.lowAngle)) {
+                if (KnobAngleManager.calculateAngularDistance(cal.offAngle, zone.lowAngle) < KnobAngleManager.calculateAngularDistance(cal.offAngle, zone.highAngle))
                     1F // Closer to lowAngle side of midpoint
+                else if (
+                    KnobAngleManager.calculateAngularDistance(cal.offAngle, zone.lowAngle) > KnobAngleManager.calculateAngularDistance(cal.offAngle, zone.highAngle))
+                    1F // Closer to highAngle side of midpoint
                 else
                     -1F // Closer to highAngle side of midpoint
             } else {
                 // Default behavior for offAngle outside sweep angle (e.g., maintain previous scaleX)
-                binding.knobProgressSingleZone.scaleX // Or 1F, or -1F, depending on your desired default
+                -1f // Or 1F, or -1F, depending on your desired default
             }
 
             // Set the rotation to the off angle
