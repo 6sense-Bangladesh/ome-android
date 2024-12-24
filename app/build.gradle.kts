@@ -163,15 +163,6 @@ dependencies {
     //Splash screen API
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-//    implementation("dev.chrisbanes.insetter:insetter:0.6.1")
-
-    val scarlet = "0.1.12"
-    implementation("com.tinder.scarlet:scarlet:$scarlet")
-    implementation("com.tinder.scarlet:stream-adapter-coroutines:$scarlet")
-    implementation("com.tinder.scarlet:message-adapter-gson:$scarlet")
-    implementation("com.tinder.scarlet:websocket-okhttp:$scarlet")
-
-    implementation("com.neovisionaries:nv-websocket-client:2.14")
     implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
 
 
