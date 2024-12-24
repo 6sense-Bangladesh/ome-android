@@ -6,6 +6,7 @@ import com.ome.app.utils.isTrue
 import com.ome.app.utils.log
 import com.ome.app.utils.tryInMain
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.io.*
@@ -46,6 +47,7 @@ class SocketManager(val context: Context) {
     var isConnected = false
 
     val networksFlow = MutableStateFlow<List<NetworkItemModel>?>(null)
+    var socketError = MutableSharedFlow<Unit>()
 
     private var socket: Socket = Socket()
 

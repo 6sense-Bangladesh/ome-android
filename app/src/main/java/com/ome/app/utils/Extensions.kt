@@ -426,7 +426,7 @@ fun Fragment.requireApplication() = requireContext().applicationContext!!
 
 fun Any?.log(tag: String = "TAG"): Any? {
     if (BuildConfig.IS_INTERNAL_TESTING)
-        Log.d("log> '$tag'", "$tag - $this : ${this?.javaClass?.name?.split('.')?.lastOrNull() ?: ""}")
+        Log.i("log> '$tag'", "$tag - $this : ${this?.javaClass?.name?.split('.')?.lastOrNull() ?: ""}")
     return this
 }
 

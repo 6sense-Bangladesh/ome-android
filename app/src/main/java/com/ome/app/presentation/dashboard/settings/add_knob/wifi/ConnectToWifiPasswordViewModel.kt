@@ -31,6 +31,9 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     private var credentialFail = 0
     private var retryWifi = 10
 
+    private var connectJob: Job? = null
+    private var connectSocketJob : Job? = null
+
     fun initListeners() {
         socketManager.messageReceived = { type, message ->
             launch(ioContext) {
@@ -63,7 +66,6 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
                 }
             }
         }
-        var connectJob: Job? = null
         networkManager.onConnectionChange = {
             loadingLiveData.value.log("NetworkManager onConnectionChange loadingLiveData")
             if (!it && !setWifiSuccess && loadingLiveData.value != false) {
@@ -166,12 +168,16 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
 
     }
 
-    private var connectSocketJob : Job? = null
     private fun connectToSocket(){
         connectSocketJob?.cancel()
         connectSocketJob = launch(ioContext + SupervisorJob()){
             socketReconnect++
-            socketManager.connect()
+            if(socketReconnect > 100) {
+                socketManager.socketError.emit(Unit)
+                connectSocketJob?.cancel()
+                connectJob?.cancel()
+                return@launch
+            } else socketManager.connect()
         }
     }
     private suspend fun connectToWifi(){
@@ -187,7 +193,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
 
         //Check whether device connected to wifi or not
         while (result?.first.isFalse() && retryWifi > 0 && !setWifiSuccess) {
-            delay(1.seconds)
+            delay(1.seconds * socketReconnect)
             connectToWifi()
             retryWifi--
         }

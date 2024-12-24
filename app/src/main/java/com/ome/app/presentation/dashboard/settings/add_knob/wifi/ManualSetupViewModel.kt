@@ -58,8 +58,10 @@ class ManualSetupViewModel @Inject constructor(
     fun initListeners() = launch(ioContext) {
         socketManager.onSocketConnect = {
             socketConnected = it
-            if(it)
+            if(it) {
+                networkManager.isConnected = true
                 sendMessage(KnobSocketMessageType.GET_MAC)
+            }
             else
                 wifiConnectedFlow.tryEmit(false)
         }

@@ -49,7 +49,7 @@ class NetworkManager(val context: Context) {
         return omeKnobSSID to inirvKnobSSID
     }
 
-    private fun isWifiEnabled(): Boolean {
+    fun isWifiEnabled(): Boolean {
         val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         return wifiManager.isWifiEnabled
     }

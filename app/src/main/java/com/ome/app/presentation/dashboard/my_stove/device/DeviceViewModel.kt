@@ -96,6 +96,7 @@ class DeviceViewModel @Inject constructor(
             stoveRepository.setSafetyLockOff(macAddress)
             stoveRepository.deleteKnob(macAddress)
             stoveRepository.knobsFlow.value = stoveRepository.knobsFlow.value.filter { it.macAddr != macAddress }
+            webSocketManager.knobState .value = webSocketManager.knobState.value.filter { it.key != macAddress }
         }
     }
 

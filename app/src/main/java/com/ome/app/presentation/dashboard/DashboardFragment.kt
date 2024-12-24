@@ -141,22 +141,25 @@ class DashboardFragment :
                 }
 
                 R.id.menuLock -> {
-                    mainViewModel.knobState.value.toList()
-                        .any { it.second.knobSetSafetyMode == true }.also {
-                        showDialog(
-                            title = if (it) getString(R.string.disable_safety_lock) else getString(R.string.enable_safety_lock),
-                            onPositiveButtonClick = {
-                                if (it) mainViewModel.setSafetyLockOff() else mainViewModel.setSafetyLockOn()
-                            },
-                            message = SpannableStringBuilder(
-                                if (it) getString(R.string.confirm_disable_safety_lock)
-                                else getString(R.string.confirm_enable_safety_lock)
-                            ),
-                            positiveButtonText = if (it) getString(R.string.yes_disable) else getString(
-                                R.string.yes_enable
-                            ),
-                            negativeButtonText = getString(R.string.no_btn)
-                        )
+                    mainViewModel.knobState.value.toList().isNotEmpty { states ->
+                        states.any { it.second.knobSetSafetyMode == true }.also {
+                            showDialog(
+                                title = if (it) getString(R.string.disable_safety_lock) else getString(R.string.enable_safety_lock),
+                                onPositiveButtonClick = {
+                                    if (it) mainViewModel.setSafetyLockOff() else mainViewModel.setSafetyLockOn()
+                                },
+                                message = SpannableStringBuilder(
+                                    if (it) getString(R.string.confirm_disable_safety_lock)
+                                    else getString(R.string.confirm_enable_safety_lock)
+                                ),
+                                positiveButtonText = if (it) getString(R.string.yes_disable) else getString(
+                                    R.string.yes_enable
+                                ),
+                                negativeButtonText = getString(R.string.no_btn)
+                            )
+                        }
+                    }.isEmpty {
+                        onError("Please add knob first to enable safety lock.")
                     }
                     true
                 }

@@ -50,7 +50,7 @@ class WifiListFragment : BaseFragment<WifiListViewModel, FragmentWifiListBinding
         viewModel.socketManager.onSocketConnect = {
             if(!it){
                 lifecycleScope.launch {
-                    mainViewModel.socketError.emit(Unit)
+                    viewModel.socketManager.socketError.emit(Unit)
                 }
             }
         }

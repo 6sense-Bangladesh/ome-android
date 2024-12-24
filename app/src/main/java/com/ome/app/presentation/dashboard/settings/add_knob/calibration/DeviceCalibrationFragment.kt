@@ -9,7 +9,6 @@ import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.snackbar.Snackbar
 import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceCalibrationBinding
@@ -75,9 +74,8 @@ class DeviceCalibrationFragment :
         binding.topAppBar.setOnMenuItemClickListener{ menu->
            when(menu.itemId){
                 R.id.action_turn_off_safety_lock -> {
-                    mainViewModel.setSafetyLockOff(params.macAddress).also {
-                        Snackbar.make(requireContext(), binding.root, "Safety lock turned off", Snackbar.LENGTH_SHORT).show()
-                    }
+                    mainViewModel.setSafetyLockOff(params.macAddress)
+                    toast("Safety lock turned off")
                     true
                 }
                 R.id.action_skip_calibration -> {

@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         subscribe(viewModel.defaultErrorLiveData){
             toast(it)
         }
-        viewModel.socketError.collectWithLifecycle {
+        viewModel.socketManager.socketError.collectWithLifecycle {
             runCatching {
                 navController?.popBackStack(R.id.connectToWifiFragment, false)
                 toast(getString(R.string.something_went_wrong_when_setting_the_knob))

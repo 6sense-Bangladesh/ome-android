@@ -7,6 +7,7 @@ import com.google.firebase.messaging.messaging
 import com.ome.app.R
 import com.ome.app.data.ConnectionStatusListener
 import com.ome.app.data.local.PreferencesProvider
+import com.ome.app.data.local.SocketManager
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.model.base.ResponseWrapper
@@ -37,6 +38,7 @@ class MainVM @Inject constructor(
     private val pref: PreferencesProvider,
     private val userRepository: UserRepository,
     private val stoveRepository: StoveRepository,
+    val socketManager: SocketManager,
     val webSocketManager: WebSocketManager,
     private val savedStateHandle: SavedStateHandle,
     val connectionStatusListener: ConnectionStatusListener
@@ -45,7 +47,6 @@ class MainVM @Inject constructor(
     var knobState =
         savedStateHandle.getStateFlow("knobState", mutableMapOf<MacAddress, KnobState>())
     var knobs = savedStateHandle.getStateFlow("knobs", listOf<KnobDto>())
-    var socketError = MutableSharedFlow<Unit>()
 
     override var defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
         if (isSplashScreenLoading)
@@ -129,12 +130,12 @@ class MainVM @Inject constructor(
     fun setSafetyLockOn() {
         launch(ioContext) {
             stoveRepository.turnOffAllKnobs()
-            stoveRepository.setSafetyLockOn(*userRepository.userFlow.value?.knobMacAddrs?.toTypedArray().orEmpty())
+            stoveRepository.setSafetyLockOn(*stoveRepository.knobsFlow.value.map { it.macAddr }.toTypedArray())
             stoveRepository.getAllKnobs()
         }
     }
 
-    fun setSafetyLockOff(vararg macAddress: String = userRepository.userFlow.value?.knobMacAddrs?.toTypedArray().orEmpty()) {
+    fun setSafetyLockOff(vararg macAddress: String = stoveRepository.knobsFlow.value.map { it.macAddr }.toTypedArray()) {
         launch(ioContext) {
             stoveRepository.setSafetyLockOff(*macAddress)
             stoveRepository.getAllKnobs()

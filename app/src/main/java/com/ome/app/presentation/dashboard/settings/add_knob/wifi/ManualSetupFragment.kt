@@ -37,16 +37,12 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
         binding.connectBtn.setOnClickListener {
             lifecycleScope.launch {
                 binding.connectBtn.startAnimation()
-                viewModel.connectToSocket()
-//                if (viewModel.isConnectedToKnobHotspot()) {
-//                    binding.connectBtn.startAnimation()
-//                    viewModel.connectToSocket()
-//                } else {
-//                    onError(getString(R.string.manual_connection_to_error))
-//                }
+                if(viewModel.networkManager.isWifiEnabled())
+                    viewModel.connectToSocket()
+                else
+                    onError("Please turn on your Wi-Fi connection.")
             }
         }
-
     }
 
     override fun setupObserver() {
