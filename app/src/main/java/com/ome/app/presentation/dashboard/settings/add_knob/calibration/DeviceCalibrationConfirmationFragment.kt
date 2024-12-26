@@ -69,13 +69,6 @@ class DeviceCalibrationConfirmationFragment :
         binding.noBtn.setBounceClickListener{
             popBackSafe()
         }
-//        binding.noBtn.setBounceClickListener {
-//            if (viewModel.currentCalibrationState.value == null) {
-//                popBackSafe()
-//            } else {
-//                viewModel.triggerCurrentStepAgain()
-//            }
-//        }
         binding.continueBtn.setBounceClickListener {
             if (viewModel.currentCalibrationState.value == null) {
                 showSuccessDialog(
@@ -85,15 +78,26 @@ class DeviceCalibrationConfirmationFragment :
                         startCalibration()
                     })
             }
-//            else if (viewModel.currentCalibrationState.value == CalibrationState.OFF && viewModel.offTriggerCount == 1) {
-//                showSuccessDialog(
-//                    title = getString(R.string.warning),
-//                    message = getString(R.string.ome_knob_manually_turn_to_the_low),
-//                    onDismiss = {
-//                        viewModel.currentCalibrationState.value = CalibrationState.LOW_SINGLE
-//                    })
-//            }
             else startCalibration()
+        }
+        binding.topAppBar.setOnMenuItemClickListener{ menu->
+            when(menu.itemId){
+                R.id.action_turn_off_safety_lock -> {
+                    mainViewModel.setSafetyLockOff(params.macAddr)
+                    toast("Safety lock turned off")
+                    true
+                }
+                R.id.action_skip_calibration -> {
+                    popBackSafe(
+                        if (params.isComeFromSettings)
+                            R.id.deviceDetailsFragment
+                        else
+                            R.id.dashboardFragment
+                    )
+                    true
+                }
+                else -> false
+            }
         }
     }
 
