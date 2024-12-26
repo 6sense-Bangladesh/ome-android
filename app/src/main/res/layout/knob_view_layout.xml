@@ -291,7 +291,7 @@
             android:gravity="center"
             android:text="@string/configure"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/safetyLock"
@@ -303,7 +303,7 @@
             android:gravity="center"
             android:text="@string/safety_locked"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="gone" />
     </LinearLayout>
 
 

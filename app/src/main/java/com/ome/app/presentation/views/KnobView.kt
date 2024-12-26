@@ -101,6 +101,14 @@ class KnobView @JvmOverloads constructor(
 
         binding.lowDualTv.text = context.getString(R.string.low_position_full)
         binding.highDualTv.text = context.getString(R.string.high_position_full)
+
+        (binding.lowSingleTv.layoutParams as MarginLayoutParams).setMargins(0, 14.dp, 0, 0)
+        (binding.mediumTv.layoutParams as MarginLayoutParams).setMargins(0, 14.dp, 0, 0)
+        (binding.highSingleTv.layoutParams as MarginLayoutParams).setMargins(0, 14.dp, 0, 0)
+
+        (binding.lowDualTv.layoutParams as MarginLayoutParams).setMargins(0, 14.dp, 0, 0)
+        (binding.highDualTv.layoutParams as MarginLayoutParams).setMargins(0, 14.dp, 0, 0)
+        (binding.knobSrc.layoutParams as MarginLayoutParams).setMargins(100)
     }
 
     fun hideLabel(label: CalibrationState? = null) {

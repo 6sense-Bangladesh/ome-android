@@ -24,7 +24,6 @@ import com.ome.app.utils.log
 import com.ome.app.utils.orMinusOne
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
@@ -59,8 +58,6 @@ class MainVM @Inject constructor(
         set(value) { savedStateHandle["startDestinationInitialized"] = value }
 
     val startDestination = savedStateHandle.getStateFlow<Int?>("startDestination", null)
-
-    val socketConnected = MutableSharedFlow<Boolean>()
 
     var isSplashScreenLoading = true
     var startDestinationJob: Job? = null

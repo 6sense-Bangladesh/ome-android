@@ -11,6 +11,7 @@ import com.ome.app.presentation.base.SingleLiveEvent
 import com.ome.app.utils.KnobAngleManager
 import com.ome.app.utils.KnobAngleManager.processDualKnob2ProtectOffOpposite
 import kotlinx.coroutines.flow.*
+import kotlin.math.min
 
 abstract class BaseCalibrationViewModel(
     private val webSocketManager: WebSocketManager,
@@ -46,7 +47,7 @@ abstract class BaseCalibrationViewModel(
     var isZoneStartFromRight: Boolean = false
     var isRightZone: Boolean = false
 
-    var rotationDir: Int? = null
+    var rotationDir: Int = -1
 
     val angleOffset = 15
     private val angleDualOffset = 31
@@ -131,11 +132,11 @@ abstract class BaseCalibrationViewModel(
 
     suspend fun setCalibration(){
         if (!isDualKnob) {
-            if (offAngle != null && lowSingleAngle != null && mediumAngle != null && highSingleAngle != null && rotationDir != null) {
+            if (offAngle != null && lowSingleAngle != null && mediumAngle != null && highSingleAngle != null) {
                 stoveRepository.setCalibration(
                     SetCalibrationRequest(
                         offAngle = offAngle!!.toInt(),
-                        rotationDir = rotationDir!!,
+                        rotationDir = min(rotationDir, Rotation.CLOCKWISE.value),
                         zones = arrayListOf(
                             Zone(
                                 highAngle = highSingleAngle!!.toInt(),
@@ -156,7 +157,6 @@ abstract class BaseCalibrationViewModel(
                 && highSingleAngle != null
                 && lowDualAngle != null
                 && highDualAngle != null
-//                && rotationDir != null
             ) {
                 stoveRepository.setCalibration(
                     SetCalibrationRequest(
@@ -191,11 +191,6 @@ abstract class BaseCalibrationViewModel(
             else error("Something went wrong")
         }
         calibrationIsDoneFlow.emit(Unit)
-    }
-
-    fun switchZone() {
-        lowSingleAngle = lowDualAngle.also { lowDualAngle = lowSingleAngle }
-        highSingleAngle = highDualAngle.also { highDualAngle = highSingleAngle }
     }
 
 }

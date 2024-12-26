@@ -49,6 +49,7 @@
                         android:id="@+id/pickerHour"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:selectionDividerHeight="0dp"
                         android:theme="@style/NumberPickerText"
                         tools:targetApi="Q" />
@@ -62,10 +63,11 @@
                         app:strokeWidth="@dimen/_2sdp" />
 
                     <TextView
-                        style="@style/Label.Small"
+                        style="@style/Label.Mini"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
+                        android:layout_marginHorizontal="@dimen/_6sdp"
                         android:background="@color/white"
                         android:gravity="center"
                         android:text="@string/hours"
@@ -95,6 +97,7 @@
                         android:id="@+id/pickerMin"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:selectionDividerHeight="0dp"
                         android:theme="@style/NumberPickerText"
                         tools:targetApi="Q" />
@@ -108,10 +111,11 @@
                         app:strokeWidth="@dimen/_2sdp" />
 
                     <TextView
-                        style="@style/Label.Small"
+                        style="@style/Label.Mini"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
+                        android:layout_marginHorizontal="@dimen/_1sdp"
                         android:background="@color/white"
                         android:gravity="center"
                         android:text="@string/minutes"
@@ -141,6 +145,7 @@
                         android:id="@+id/pickerSec"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
                         android:selectionDividerHeight="0dp"
                         android:theme="@style/NumberPickerText"
                         tools:targetApi="Q" />
@@ -154,7 +159,7 @@
                         app:strokeWidth="@dimen/_2sdp" />
 
                     <TextView
-                        style="@style/Label.Small"
+                        style="@style/Label.Mini"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"

@@ -9,10 +9,7 @@ import com.ome.app.domain.model.state.Rotation
 import com.ome.app.domain.model.state.rotation
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.orFalse
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -29,7 +26,7 @@ class DirectionSelectionFragment :
 
     override fun setupUI() {
         viewModel.macAddress = params.macAddress
-        if(params.isComeFromSettings) {
+        if(params.isEditMode) {
             mainViewModel.getKnobByMac(viewModel.macAddress)?.let {
                 viewModel.calRequest = it.calibration.toSetCalibrationRequest()
                 viewModel.calibrated = it.calibrated.orFalse()
@@ -55,7 +52,7 @@ class DirectionSelectionFragment :
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
-        binding.continueBtn.setOnClickListener {
+        binding.continueBtn.setBounceClickListener {
             if(params.isEditMode)
                 viewModel.updateDirection(onEnd = mainViewModel::getAllKnobs)
             else {
@@ -70,23 +67,13 @@ class DirectionSelectionFragment :
                         )
                     )
                 )
-//                viewModel.continueBtnClicked = true
-//                binding.continueBtn.startAnimation()
-//                if(!mainViewModel.webSocketManager.connected)
-//                    mainViewModel.connectToSocket(true)
-//                else {
-//                    lifecycleScope.launch {
-////                        delay(3.seconds)
-//                        mainViewModel.socketConnected.emit(mainViewModel.webSocketManager.connected)
-//                    }
-//                }
             }
         }
         binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if(isChecked) {
                 when (checkedId) {
-                    binding.counterClockWise.id -> viewModel.clockwiseDir = -1
-                    binding.clockWise.id -> viewModel.clockwiseDir = 1
+                    binding.counterClockWise.id -> viewModel.clockwiseDir = Rotation.COUNTER_CLOCKWISE.value
+                    binding.clockWise.id -> viewModel.clockwiseDir = Rotation.CLOCKWISE.value
                 }
             }
         }
@@ -95,22 +82,6 @@ class DirectionSelectionFragment :
 
     override fun setupObserver() {
         super.setupObserver()
-        mainViewModel.socketConnected.collectWithLifecycle {
-            binding.continueBtn.revertAnimation()
-            if(it) {
-                if(!viewModel.continueBtnClicked) return@collectWithLifecycle
-                navigateSafe(
-                    DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
-                        DeviceCalibrationFragmentParams(
-                            isComeFromSettings = params.isComeFromSettings,
-                            isDualKnob = params.isDualKnob,
-                            rotateDir = viewModel.clockwiseDir,
-                            macAddress = params.macAddress
-                        )
-                    )
-                )
-            }else onError("Socket connection failed.")
-        }
         viewModel.loadingFlow.collectWithLifecycle {
             if(it)
                 binding.continueBtn.startAnimation()

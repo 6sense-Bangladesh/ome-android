@@ -9,11 +9,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class DirectionSelectionViewModel @Inject constructor(
-    private val stoveRepository: StoveRepository
-    ): BaseViewModel() {
-    var continueBtnClicked = false
-
+class DirectionSelectionViewModel @Inject constructor(private val stoveRepository: StoveRepository) : BaseViewModel() {
     var clockwiseDir = -1
     var macAddress = ""
     var calibrated = false

@@ -5,10 +5,10 @@ import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentZoneSelectionBinding
+import com.ome.app.domain.model.state.Rotation
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
-import com.ome.app.utils.collectWithLifecycle
 import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
 import com.ome.app.utils.setBounceClickListener
@@ -47,20 +47,11 @@ class ZoneSelectionFragment :
                         DeviceCalibrationFragmentParams(
                             isComeFromSettings = params.isComeFromSettings,
                             isDualKnob = viewModel.isDualKnob,
-                            macAddress = params.macAddrs
+                            macAddress = params.macAddrs,
+                            rotateDir = Rotation.DUAL.value
                         )
                     )
                 )
-//                viewModel.continueBtnClicked = true
-//                binding.continueBtn.startAnimation()
-//                if(!mainViewModel.webSocketManager.connected)
-//                    mainViewModel.connectToSocket(true)
-//                else {
-//                    lifecycleScope.launch {
-////                        delay(3.seconds)
-//                        mainViewModel.socketConnected.emit(mainViewModel.webSocketManager.connected)
-//                    }
-//                }
             } else {
                 navigateSafe(
                     ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDirectionSelectionFragment(
@@ -81,25 +72,6 @@ class ZoneSelectionFragment :
                     binding.dualZone.id -> viewModel.isDualKnob = true
                 }
             }
-        }
-    }
-
-    override fun setupObserver() {
-        super.setupObserver()
-        mainViewModel.socketConnected.collectWithLifecycle {
-            binding.continueBtn.revertAnimation()
-            if(it) {
-                if(!viewModel.continueBtnClicked) return@collectWithLifecycle
-                navigateSafe(
-                    ZoneSelectionFragmentDirections.actionZoneSelectionFragmentToDeviceCalibrationFragment(
-                        DeviceCalibrationFragmentParams(
-                            isComeFromSettings = params.isComeFromSettings,
-                            isDualKnob = viewModel.isDualKnob,
-                            macAddress = params.macAddrs
-                        )
-                    )
-                )
-            }else onError("Socket connection failed.")
         }
     }
 

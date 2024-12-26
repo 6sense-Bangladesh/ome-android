@@ -186,7 +186,7 @@ class DeviceCalibrationFragment :
 data class DeviceCalibrationFragmentParams(
     val isComeFromSettings: Boolean = false,
     val isDualKnob: Boolean = false,
-    val rotateDir: Int? = null,
+    val rotateDir: Int = -1,
     val macAddress: String = ""
 ) : Parcelable
 
