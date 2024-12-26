@@ -43,11 +43,8 @@ android {
 
     buildTypes {
         debug {
-//            isMinifyEnabled = true
-//            isShrinkResources = true
             buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL)
             buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL)
-//            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
 
         create("demo") {
@@ -67,7 +64,6 @@ android {
             buildConfigField("String", "BASE_URL", ProjectConfig.BASE_URL)
             buildConfigField("String", "BASE_WEB_SOCKET_URL", ProjectConfig.BASE_WS_URL)
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("release")
         }
     }
     applicationVariants.all {
@@ -109,16 +105,16 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
-
-    //DI
-    implementation("com.google.dagger:hilt-android:2.53.1")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
-    ksp("com.google.dagger:hilt-compiler:2.53.1")
+
+    //DI
+    implementation("com.google.dagger:hilt-android:2.54")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    ksp("com.google.dagger:hilt-compiler:2.54")
 
     //Navigation
-    val nav = "2.8.4"
+    val nav = "2.8.5"
     implementation("androidx.navigation:navigation-fragment-ktx:$nav")
     implementation("androidx.navigation:navigation-ui-ktx:$nav")
 
@@ -139,7 +135,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.1")
 
     //UI
-    implementation("com.github.fornewid:neumorphism:0.3.2")
     implementation("com.google.android.material:material:1.12.0")
 
     // Amplify frameworks
@@ -152,19 +147,16 @@ dependencies {
     implementation("com.amplifyframework:core-kotlin:0.22.8") //Don't upgrade this version
     implementation("com.amazonaws:aws-android-sdk-pinpoint:2.77.1")
     implementation("com.apachat:loadingbutton-android:1.0.11")
-    implementation("com.jaredrummler:material-spinner:1.3.1")
 
     //image loading
     implementation("com.github.bumptech.glide:glide:4.16.0")
     ksp("com.github.bumptech.glide:ksp:4.16.0")
 
-    implementation("me.zhanghai.android.fastscroll:library:1.3.0")
-
     //Splash screen API
     implementation("androidx.core:core-splashscreen:1.0.1")
 
+    //socket data encryption
     implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
-
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
@@ -172,7 +164,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
     //Websocket Ktor
-    val ktorVersion = "3.0.2"
+    val ktorVersion = "3.0.3"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-websockets:$ktorVersion")
     implementation("io.ktor:ktor-serialization-gson:$ktorVersion")
