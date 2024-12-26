@@ -9,10 +9,7 @@ import com.ome.app.databinding.FragmentChangePasswordBinding
 import com.ome.app.domain.model.base.Validation
 import com.ome.app.domain.model.base.errorPassword
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.utils.closeKeyboard
-import com.ome.app.utils.collectWithLifecycle
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.toast
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,7 +26,7 @@ class ChangePasswordFragment:  BaseFragment<ChangePasswordViewModel, FragmentCha
 
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
-        binding.continueBtn.setOnClickListener {
+        binding.continueBtn.setBounceClickListener {
             viewModel.validatePassword(
                 binding.oldPassword.text.toString(),
                 binding.newPassword.text.toString()

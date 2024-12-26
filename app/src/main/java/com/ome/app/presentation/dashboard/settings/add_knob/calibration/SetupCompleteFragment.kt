@@ -9,6 +9,7 @@ import com.ome.app.databinding.FragmentSetupCompleteBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.makeGone
 import com.ome.app.utils.popBackSafe
+import com.ome.app.utils.setBounceClickListener
 
 class SetupCompleteFragment :
     BaseFragment<SetupCompleteViewModel, FragmentSetupCompleteBinding>(
@@ -35,12 +36,12 @@ class SetupCompleteFragment :
 
     override fun setupListener() {
 
-        binding.setupAnotherKnobBtn.setOnClickListener {
+        binding.setupAnotherKnobBtn.setBounceClickListener {
             mainViewModel.selectedBurnerIndex = null
             popBackSafe(R.id.knobWakeUpFragment, false)
         }
 
-        binding.imDoneBtn.setOnClickListener {
+        binding.imDoneBtn.setBounceClickListener {
             mainViewModel.selectedBurnerIndex = null
             if(args.isComeFromSettings)
                 popBackSafe(R.id.deviceDetailsFragment, false)

@@ -7,10 +7,7 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentKnobWakeUpBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.dashboard.settings.add_knob.metal_plate.MetalPlateInstallationParams
-import com.ome.app.utils.Constants
-import com.ome.app.utils.enableCustomTabClick
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -31,7 +28,7 @@ class KnobWakeUpFragment : BaseFragment<KnobWakeUpViewModel, FragmentKnobWakeUpB
 
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
-        binding.continueBtn.setOnClickListener{
+        binding.continueBtn.setBounceClickListener {
             navigateSafe(
                 KnobWakeUpFragmentDirections.actionKnobWakeUpFragmentToMetalPlateInstallationFragment(
                     MetalPlateInstallationParams(selectedKnobPosition = params.selectedKnobPosition)

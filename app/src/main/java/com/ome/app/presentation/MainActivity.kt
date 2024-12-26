@@ -53,15 +53,15 @@ class MainActivity : AppCompatActivity() {
                 toast(getString(R.string.something_went_wrong_when_setting_the_knob))
             }
         }
+        viewModel.startDestination.collectWithLifecycle {
+            it.log("startDestination")
+            initNavigationGraph(it)
+        }
     }
 
     override fun onResume() {
         super.onResume()
         inAppUpdate.onResume()
-        viewModel.startDestination.collectWithLifecycle {
-            it.log("startDestination")
-            initNavigationGraph(it)
-        }
     }
 
     @SuppressLint("RestrictedApi")

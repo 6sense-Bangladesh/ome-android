@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/label1Tv"
-        style="@style/Label.16sp"
+        style="@style/Label.Medium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"

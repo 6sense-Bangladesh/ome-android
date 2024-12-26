@@ -403,7 +403,7 @@ object KnobAngleManager {
     }
 
 
-    fun calculateSweepAngle(startAngle: Int, endAngle: Int): Int {
+    private fun calculateSweepAngle(startAngle: Int, endAngle: Int): Int {
         return if (startAngle <= endAngle) {
             endAngle - startAngle
         } else {

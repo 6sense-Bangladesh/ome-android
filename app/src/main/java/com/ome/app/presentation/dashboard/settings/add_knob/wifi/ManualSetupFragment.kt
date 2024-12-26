@@ -34,7 +34,7 @@ class ManualSetupFragment : BaseFragment<ManualSetupViewModel, FragmentManualSet
 
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
-        binding.connectBtn.setOnClickListener {
+        binding.connectBtn.setBounceClickListener {
             lifecycleScope.launch {
                 binding.connectBtn.startAnimation()
                 if(viewModel.networkManager.isWifiEnabled())

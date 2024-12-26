@@ -2,12 +2,8 @@ package com.ome.app.presentation.signin.forgot_password
 
 import com.ome.app.data.remote.AmplifyManager
 import com.ome.app.data.remote.AmplifyResultValue
-import com.ome.app.domain.model.base.DefaultValidation
-import com.ome.app.domain.model.base.ResponseWrapper
-import com.ome.app.domain.model.base.Validation
-import com.ome.app.domain.model.base.isValidPasswordResult
+import com.ome.app.domain.model.base.*
 import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.presentation.base.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
@@ -16,7 +12,6 @@ import javax.inject.Inject
 class ForgotPasswordViewModel @Inject constructor(private val amplifyManager: AmplifyManager) :
     BaseViewModel() {
 
-    private val passwordResetLiveData: SingleLiveEvent<AmplifyResultValue> = SingleLiveEvent()
     val validationErrorFlow = MutableSharedFlow<List<Pair<Validation, String>>>()
     val validationSuccessFlow = MutableSharedFlow<AmplifyResultValue>()
 

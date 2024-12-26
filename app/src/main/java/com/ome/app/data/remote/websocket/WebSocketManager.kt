@@ -34,7 +34,7 @@ class WebSocketManager(private val context: Context) {
 
     companion object { private const val TAG = "KnobSocketWeb" }
 
-    val client = HttpClient(OkHttp) {
+    private val client = HttpClient(OkHttp) {
         engine {
             config { followRedirects(true) }
             addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))

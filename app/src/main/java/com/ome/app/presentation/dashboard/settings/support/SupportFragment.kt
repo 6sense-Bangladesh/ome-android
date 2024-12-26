@@ -8,6 +8,7 @@ import com.ome.app.databinding.FragmentSupportBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.Constants
 import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.setBounceClickListener
 
 class SupportFragment :
     BaseFragment<SupportViewModel, FragmentSupportBinding>(FragmentSupportBinding::inflate) {
@@ -21,7 +22,7 @@ class SupportFragment :
                 viewModel.selectedTopic = viewModel.topicsArray[position]
             }
 
-        binding.sendBtn.setOnClickListener {
+        binding.sendBtn.setBounceClickListener {
             startActivity(Intent.createChooser(Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse(
                     "mailto:" + Uri.encode(Constants.SUPPORT_EMAIL) +

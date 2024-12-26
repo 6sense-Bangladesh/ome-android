@@ -34,7 +34,7 @@ class MetalPlateInstallationFragment :
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
-        binding.continueBtn.setOnClickListener {
+        binding.continueBtn.setBounceClickListener {
             if(params.selectedKnobPosition == -1) {
                 navigateSafe(
                     MetalPlateInstallationFragmentDirections.actionMetalPlateInstallationFragmentToSelectBurnerFragment(

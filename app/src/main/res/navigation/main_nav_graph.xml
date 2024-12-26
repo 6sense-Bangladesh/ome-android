@@ -412,7 +412,7 @@
         android:id="@+id/deviceDetailsFragment"
         android:name="com.ome.app.presentation.dashboard.my_stove.device.DeviceDetailsFragment"
         android:label="fragment_device_details"
-        tools:layout="@layout/fragment_device_details" >
+        tools:layout="@layout/fragment_device_details">
         <argument
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.my_stove.device.DeviceFragmentParams" />

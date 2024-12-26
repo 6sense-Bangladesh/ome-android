@@ -33,9 +33,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_20sdp"
+        app:boxBackgroundColor="@color/white"
         app:boxCornerRadiusBottomEnd="@dimen/_8sdp"
         app:boxCornerRadiusBottomStart="@dimen/_8sdp"
-        app:boxBackgroundColor="@color/white"
         app:boxCornerRadiusTopEnd="@dimen/_8sdp"
         app:boxCornerRadiusTopStart="@dimen/_8sdp"
         app:endIconDrawable="@drawable/ic_arrow_selector"
@@ -46,44 +46,14 @@
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/stoveSelector"
             style="@style/Label.Medium"
-            app:dropDownBackgroundTint="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/stove_setup_brand_label"
             android:inputType="none"
-            android:labelFor="@+id/textView3"/>
+            android:labelFor="@+id/textView3"
+            app:dropDownBackgroundTint="@color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-    <!--        android:id="@+id/stoveSelectorContainer"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:visibility="gone"-->
-    <!--        android:layout_marginHorizontal="32dp"-->
-    <!--        android:layout_marginTop="24dp"-->
-    <!--        android:background="@drawable/stove_brand_selector_shape"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/textView3">-->
-
-    <!--        <com.jaredrummler.materialspinner.MaterialSpinner-->
-    <!--            android:id="@+id/stoveSelector"-->
-    <!--            style="@style/Label.14sp"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="44dp"-->
-    <!--            android:layout_margin="1dp"-->
-    <!--            -->
-    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--            app:layout_constraintEnd_toEndOf="parent"-->
-    <!--            app:layout_constraintStart_toStartOf="parent"-->
-    <!--            app:layout_constraintTop_toTopOf="parent"-->
-    <!--            app:ms_arrow_tint="@color/gradient_end_unpressed_color"-->
-    <!--            app:ms_text_color="@color/gradient_end_unpressed_color"-->
-    <!--            tools:text="Samsung" />-->
-
-    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
 
     <com.apachat.loadingbutton.core.customViews.CircularProgressButton
         android:id="@+id/continueBtn"

@@ -15,10 +15,7 @@ import com.ome.app.databinding.FragmentKnobInstallationManualBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.base.EmptyViewModel
 import com.ome.app.presentation.dashboard.settings.add_knob.zone.ZoneSelectionFragmentParams
-import com.ome.app.utils.loadDrawable
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.popBackSafe
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
@@ -54,7 +51,7 @@ class KnobInstallationManualFragment :
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
-        binding.continueBtn.setOnClickListener {
+        binding.continueBtn.setBounceClickListener {
             navigateSafe(
                 KnobInstallationManualFragmentDirections.actionKnobInstallationManualFragmentToZoneSelectionFragment(
                     ZoneSelectionFragmentParams(

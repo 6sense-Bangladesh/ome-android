@@ -90,14 +90,14 @@ class DeviceCalibrationViewModel @Inject constructor(
                             CalibrationState.OFF -> {
                                 offAngle = angle
                                 launch(ioContext) {
-                                    rotationDir?.let { dir ->
+                                    rotationDir.let { dir ->
                                         stoveRepository.initCalibration(
                                             InitCalibrationRequest(
                                                 offAngle = angle.toInt(),
                                                 rotationDir = dir
                                             ), macAddress
                                         )
-                                    } ?: error("Something went wrong")
+                                    }
                                 }
                             }
                             CalibrationState.LOW_SINGLE -> lowSingleAngle = angle

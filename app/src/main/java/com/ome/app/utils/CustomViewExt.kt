@@ -6,9 +6,9 @@ import androidx.viewbinding.ViewBinding
 
 
 inline fun <reified VB : ViewBinding> ViewGroup.inflate() =
-    inflateBinding<VB>(LayoutInflater.from(context), this, true)
+    inflateBinding<VB>(LayoutInflater.from(context), this)
 
 inline fun <reified VB : ViewBinding> inflateBinding(
-    layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean
+    layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean = true
 ) = VB::class.java.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
         .invoke(null, layoutInflater, parent, attachToParent) as VB

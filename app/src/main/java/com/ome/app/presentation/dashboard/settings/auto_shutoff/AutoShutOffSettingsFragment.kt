@@ -25,7 +25,7 @@ class AutoShutOffSettingsFragment :
 
     override fun setupListener() {
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
-        binding.saveBtn.setOnClickListener {
+        binding.saveBtn.setBounceClickListener {
             showDialog(
                 title = getString(R.string.warning),
                 positiveButtonText = "Yes, Change",

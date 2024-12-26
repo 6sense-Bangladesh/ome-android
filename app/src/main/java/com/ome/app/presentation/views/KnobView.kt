@@ -70,12 +70,10 @@ class KnobView @JvmOverloads constructor(
     }
 
 
-    fun setKnobPosition(angle: Float, rotateClockwise: Boolean = true) {
-//        val rotationSafeAngle = if (rotateClockwise) angle else angle - 360
-        val rotationSafeAngle = angle
-        if(rotationSafeAngle != mCurrAngle){
-            "angle KnobView $rotationSafeAngle".log()
-            animateCircle(mCurrAngle, rotationSafeAngle)
+    fun setKnobPosition(angle: Float) {
+        if(angle != mCurrAngle){
+            "angle KnobView $angle".log()
+            animateCircle(mCurrAngle, angle)
         }
     }
 
@@ -306,9 +304,6 @@ class KnobView @JvmOverloads constructor(
             val zone = cal.zone1 ?: return
 
             // Calculate midpoint angle
-            val midpointAngle = KnobAngleManager.normalizeAngle(
-                (zone.lowAngle + zone.highAngle) / 2f
-            )
 
 
             // Determine scaleX
