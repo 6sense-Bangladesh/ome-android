@@ -12,6 +12,7 @@ import com.ome.app.presentation.dashboard.settings.add_knob.scanner.QrCodeScanne
 import com.ome.app.utils.loadDrawable
 import com.ome.app.utils.navigateSafe
 import com.ome.app.utils.onBackPressed
+import com.ome.app.utils.setBounceClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 

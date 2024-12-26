@@ -82,7 +82,7 @@ class MyStoveFragment :
                 setLowDualPosition(zone.lowAngle.toFloat())
             }
             setOffPosition(calibration.offAngle.toFloat())
-            setKnobPosition(knob.angle.toFloat(), calibration.rotationClockWise)
+            setKnobPosition(knob.angle.toFloat())
         }
     }
 

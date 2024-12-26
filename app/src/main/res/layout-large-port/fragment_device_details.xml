@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_horizontal"
-        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/margin_horizontal"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/_14sdp"
         app:contentPadding="@dimen/_8sdp"
@@ -43,8 +43,8 @@
 
                 <View
                     android:id="@+id/knob1"
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
+                    android:layout_width="@dimen/_9sdp"
+                    android:layout_height="@dimen/_9sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
                     android:visibility="gone"
@@ -52,8 +52,8 @@
 
                 <View
                     android:id="@+id/knob2"
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
+                    android:layout_width="@dimen/_9sdp"
+                    android:layout_height="@dimen/_9sdp"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
@@ -62,8 +62,8 @@
 
                 <View
                     android:id="@+id/knob3"
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
+                    android:layout_width="@dimen/_9sdp"
+                    android:layout_height="@dimen/_9sdp"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
@@ -75,8 +75,8 @@
 
             <View
                 android:id="@+id/knob7"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_9sdp"
+                android:layout_height="@dimen/_9sdp"
                 android:layout_gravity="center"
                 android:background="@drawable/rounded_shape"
                 android:backgroundTint="@color/cardStrokeColor"
@@ -97,8 +97,8 @@
 
                 <View
                     android:id="@+id/knob4"
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
+                    android:layout_width="@dimen/_9sdp"
+                    android:layout_height="@dimen/_9sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
                     android:visibility="gone"
@@ -106,8 +106,8 @@
 
                 <View
                     android:id="@+id/knob5"
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
+                    android:layout_width="@dimen/_9sdp"
+                    android:layout_height="@dimen/_9sdp"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
@@ -116,8 +116,8 @@
 
                 <View
                     android:id="@+id/knob6"
-                    android:layout_width="@dimen/_14sdp"
-                    android:layout_height="@dimen/_14sdp"
+                    android:layout_width="@dimen/_9sdp"
+                    android:layout_height="@dimen/_9sdp"
                     android:layout_marginStart="@dimen/_4sdp"
                     android:background="@drawable/rounded_shape"
                     android:backgroundTint="@color/cardStrokeColor"
@@ -131,6 +131,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_6sdp"
@@ -143,7 +144,7 @@
 
         <TextView
             android:id="@+id/name"
-            style="@style/Title.Small"
+            style="@style/Title.Mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/tvLevel"
@@ -156,12 +157,12 @@
             android:id="@+id/statusKnob"
             style="@style/Widget.Material3.Chip.Assist"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_height="@dimen/_24sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:clickable="false"
             android:text="@string/offline"
             android:textColor="@drawable/color_text_selector"
-            android:textSize="@dimen/_9ssp"
+            android:textSize="@dimen/_6ssp"
             app:chipBackgroundColor="@color/chip_color_state_list"
             app:chipIconTint="@drawable/color_text_selector"
             app:layout_constraintBottom_toBottomOf="@+id/name"
@@ -171,7 +172,7 @@
 
         <TextView
             android:id="@+id/tvLevel"
-            style="@style/Label.Medium"
+            style="@style/Label.MiniExtra"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/level"
@@ -183,12 +184,12 @@
             android:id="@+id/statusBurner"
             style="@style/Widget.Material3.Chip.Assist.Elevated"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_height="@dimen/_24sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:clickable="false"
             android:text="@string/off"
             android:textColor="@color/gray"
-            android:textSize="@dimen/_9ssp"
+            android:textSize="@dimen/_6ssp"
             app:chipBackgroundColor="@color/off_white"
             app:chipIconTint="@drawable/color_text_selector"
             app:layout_constraintBottom_toBottomOf="@+id/tvLevel"
@@ -198,7 +199,7 @@
 
         <TextView
             android:id="@+id/tvBattery"
-            style="@style/Label.Medium"
+            style="@style/Label.MiniExtra"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_1sdp"
@@ -209,8 +210,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/batteryIcon"
-            android:layout_width="@dimen/_16sdp"
-            android:layout_height="@dimen/_16sdp"
+            android:layout_width="@dimen/_12sdp"
+            android:layout_height="@dimen/_12sdp"
             android:src="@drawable/ic_battery_4"
             app:layout_constraintBottom_toBottomOf="@+id/tvBattery"
             app:layout_constraintEnd_toStartOf="@+id/batteryPercentage"
@@ -218,7 +219,7 @@
 
         <TextView
             android:id="@+id/batteryPercentage"
-            style="@style/Label.Mini"
+            style="@style/Label.MiniExtra"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_horizontal"
@@ -235,7 +236,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginTop="@dimen/_14sdp"
-        android:minHeight="@dimen/_45sdp"
+        android:minHeight="@dimen/_35sdp"
         android:visibility="gone"
         app:cardBackgroundColor="@color/redLight"
         app:contentPadding="@dimen/_12sdp"
@@ -249,7 +250,7 @@
             android:gravity="center">
 
             <TextView
-                style="@style/Label.Large"
+                style="@style/Label.MiniExtra"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -257,7 +258,7 @@
                 android:textColor="@color/black" />
 
             <TextView
-                style="@style/Title.Small"
+                style="@style/Title.Mini"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_5sdp"
@@ -292,7 +293,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEditTimer"
-                app:iconSize="24dp"
+                app:iconSize="36dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:iconTint="?colorControlNormal"
@@ -384,7 +385,7 @@
                 style="@style/Widget.Material3.Button.IconButton"
                 app:iconTint="?colorControlNormal"
                 app:icon="@drawable/ic_pause"
-                app:iconSize="24dp"
+                app:iconSize="36dp"
                 android:id="@+id/btnPauseResumeTimer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -393,10 +394,12 @@
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.Material3.Button.IconButton"
                 android:id="@+id/btnStopTimer"
+                app:iconSize="36dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_stop"
                 app:iconTint="@color/red" />
+
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -405,17 +408,18 @@
         android:id="@+id/knobView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:knobSize="@dimen/_220sdp"
+        app:knobSize="@dimen/_160sdp"
         app:layout_constraintBottom_toTopOf="@+id/btnTimer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/burnerSelection" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnTimer"
         style="@style/OmeButton.Blue"
         android:layout_width="wrap_content"
         android:text="@string/set_timer"
+        app:iconSize="28dp"
         app:icon="@drawable/ic_timer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.dashboard.my_stove.MyStoveFragment">
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/flexbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flexWrap="wrap"
+        app:justifyContent="space_evenly"
+        app:layout_constraintBottom_toTopOf="@id/btnTurnOff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.ome.app.presentation.views.KnobView
+            android:id="@+id/knob1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:knobSize="@dimen/_80sdp"
+            tools:visibility="visible" />
+
+        <com.ome.app.presentation.views.KnobView
+            android:id="@+id/knob2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:knobSize="@dimen/_80sdp"
+            tools:visibility="visible" />
+
+        <!--        <FrameLayout-->
+        <!--            android:id="@+id/knob1centerView"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:visibility="gone"-->
+        <!--            tools:visibility="visible">-->
+
+        <!--            <com.ome.app.presentation.views.KnobView-->
+        <!--                android:id="@+id/knob1center"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_gravity="center"-->
+        <!--                app:knobSize="@dimen/_105sdp" />-->
+        <!--        </FrameLayout>-->
+
+        <!--        <FrameLayout-->
+        <!--            android:id="@+id/knob2centerView"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:visibility="gone"-->
+        <!--            tools:visibility="visible">-->
+
+        <!--            <com.ome.app.presentation.views.KnobView-->
+        <!--                android:id="@+id/knob2center"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                app:knobSize="@dimen/_105sdp"-->
+        <!--                android:layout_gravity="center"-->
+        <!--                android:minHeight="@dimen/_105sdp" />-->
+        <!--        </FrameLayout>-->
+
+        <com.ome.app.presentation.views.KnobView
+            android:id="@+id/knob3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:knobSize="@dimen/_80sdp"
+            tools:visibility="visible" />
+
+        <com.ome.app.presentation.views.KnobView
+            android:id="@+id/knob4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:knobSize="@dimen/_80sdp"
+            tools:visibility="visible" />
+
+        <com.ome.app.presentation.views.KnobView
+            android:id="@+id/knob5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:knobSize="@dimen/_80sdp"
+            tools:visibility="visible" />
+
+        <com.ome.app.presentation.views.KnobView
+            android:id="@+id/knob6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:knobSize="@dimen/_80sdp"
+            tools:visibility="visible" />
+
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnTurnOff"
+        style="@style/OmeButton.Blue"
+        android:layout_width="wrap_content"
+        android:text="@string/turn_off"
+        app:backgroundTint="@color/red"
+        app:icon="@drawable/ic_power"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flexbox" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

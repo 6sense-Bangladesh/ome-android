@@ -211,13 +211,13 @@ class DeviceDetailsFragment :
         binding.btnPauseResumeTimer.setBounceClickListener {
             when (binding.btnPauseResumeTimer.tag) {
                 R.drawable.ic_pause -> {
-                    binding.btnPauseResumeTimer.setImageResource(R.drawable.ic_play)
+                    binding.btnPauseResumeTimer.setIconResource(R.drawable.ic_play)
                     binding.btnPauseResumeTimer.tag = R.drawable.ic_play
                     timerJob?.cancel()
                     viewModel.pauseTimer(time)
                 }
                 R.drawable.ic_play -> {
-                    binding.btnPauseResumeTimer.setImageResource(R.drawable.ic_pause)
+                    binding.btnPauseResumeTimer.setIconResource(R.drawable.ic_pause)
                     binding.btnPauseResumeTimer.tag = R.drawable.ic_pause
                     viewModel.resumeTimer()
                 }
@@ -273,7 +273,7 @@ class DeviceDetailsFragment :
             } else if(viewModel.isPauseEnabled.apply { log("isPauseEnabled") }) {
                 viewModel.pref.getPauseTime(params.macAddr).let { (hr, min, sec) ->
                     binding.btnPauseResumeTimer.tag = R.drawable.ic_play
-                    binding.btnPauseResumeTimer.setImageResource(R.drawable.ic_play)
+                    binding.btnPauseResumeTimer.setIconResource(R.drawable.ic_play)
                     binding.btnTimer.invisible()
                     binding.timerCard.animateVisible()
                     binding.hour.text = hr.toStringLocale()
