@@ -231,7 +231,12 @@ class DeviceDetailsFragment :
                 title = getString(R.string.safety_lock_is_on),
                 errorMessage = getString(R.string.turn_off_safety_lock)
             )
-        } else {
+        } else if(viewModel.currentKnob.value?.calibrated.isFalse()){
+            onError(
+                title = getString(R.string.knob_not_calibrated),
+                errorMessage = getString(R.string.complete_knob_calibration)
+            )
+        }else {
             onError(
                 title = getString(R.string.knob_is_off),
                 errorMessage = getString(R.string.manually_turn_the_knob_on)
@@ -326,6 +331,7 @@ class DeviceDetailsFragment :
             viewModel.currentKnob.collectWithLifecycle {
                 it.log("currentKnob")
                 knobView.setupKnob(it)
+                viewModel.isSafetyLockOn = it.safetyLock
             }
             mainViewModel.getKnobStateByMac(params.macAddr).collectWithLifecycleStateIn{knob ->
                 knob.log("getKnobStateByMac")
