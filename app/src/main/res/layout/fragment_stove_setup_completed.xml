@@ -62,7 +62,6 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/finishBtn"
         style="@style/OmeButton.Blue"
-        android:layout_height="@dimen/_35sdp"
         android:text="@string/continue_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

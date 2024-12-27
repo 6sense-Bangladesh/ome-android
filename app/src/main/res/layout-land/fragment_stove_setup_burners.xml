@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".presentation.stove.StoveSetupBurnersFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/Widget.App.Toolbar"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="Select Burner Type" />
+
+    <TextView
+        android:id="@+id/titleTv"
+        style="@style/Title.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="@dimen/margin_top_bar"
+        android:text="@string/how_are_the_burners_on_your_stove_organized"
+        android:textColor="?colorControlNormal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/fourBurnersIv"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_marginTop="@dimen/margin_top_bar"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ome_four_burner_selector"
+        app:layout_constraintEnd_toStartOf="@+id/fourBarBurnersIv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/fourBarBurnersIv"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ome_four_bar_burner_selector"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/fourBurnersIv"
+        app:layout_constraintTop_toTopOf="@+id/fourBurnersIv" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/fiveBurnersIv"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ome_five_burner_selector"
+        app:layout_constraintEnd_toStartOf="@+id/fourBarBurnersIv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fourBurnersIv" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/sixBurnersIv"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ome_six_burner_selector"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/fiveBurnersIv"
+        app:layout_constraintTop_toTopOf="@+id/fiveBurnersIv" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/twoBurnersHorizontalIv"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ome_two_burner_selector"
+        app:layout_constraintEnd_toStartOf="@+id/fourBarBurnersIv"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sixBurnersIv" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/twoBurnersVerticalIv"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ome_two_vertical_burner_selector"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/twoBurnersHorizontalIv"
+        app:layout_constraintTop_toTopOf="@+id/twoBurnersHorizontalIv" />
+
+
+    <TextView
+        android:id="@+id/textWarn"
+        style="@style/Label.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginBottom="@dimen/_14sdp"
+        android:text="@string/warning_can_t_change"
+        android:textColor="@color/redDeep"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/continueBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        tools:visibility="visible" />
+
+    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+        android:id="@+id/continueBtn"
+        style="@style/OmeButton.Blue"
+        android:layout_width="0dp"
+        android:text="@string/continue_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".50" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

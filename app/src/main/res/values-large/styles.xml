@@ -123,7 +123,7 @@
     </style>
 
     <style name="ShapeAppearanceOverlay.RectRound" parent="">
-        <item name="cornerSize">10dp</item>
+        <item name="cornerSize">14dp</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.Round" parent="">
