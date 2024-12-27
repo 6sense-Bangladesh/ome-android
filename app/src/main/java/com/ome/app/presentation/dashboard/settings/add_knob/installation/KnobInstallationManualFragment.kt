@@ -64,7 +64,10 @@ class KnobInstallationManualFragment :
     }
     override fun handleBackPressEvent() {
         activity?.onBackPressedDispatcher?.addCallback(this){
-            popBackSafe(if(params.isComeFromSettings) R.id.deviceDetailsFragment else R.id.dashboardFragment, false)
+            if(params.isComeFromSettings)
+                popBackSafe(R.id.deviceSettingsFragment, false) ?: popBackSafe(R.id.deviceDetailsFragment, false)
+            else
+                popBackSafe(R.id.dashboardFragment, false)
         }
     }
 }
