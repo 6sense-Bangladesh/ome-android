@@ -44,7 +44,7 @@ class SetupCompleteFragment :
         binding.imDoneBtn.setBounceClickListener {
             mainViewModel.selectedBurnerIndex = null
             if(args.isComeFromSettings)
-                popBackSafe(R.id.deviceDetailsFragment, false)
+                popBackSafe(R.id.deviceSettingsFragment, false) ?: popBackSafe(R.id.deviceDetailsFragment, false)
             else
                 popBackSafe(R.id.dashboardFragment, false)
         }

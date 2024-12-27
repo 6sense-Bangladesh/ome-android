@@ -11,7 +11,7 @@ import com.ome.app.presentation.base.recycler.ItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.SettingItemAdapter
 import com.ome.app.presentation.dashboard.settings.adapter.model.DeviceSettingsItemModel
 import com.ome.app.presentation.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
-import com.ome.app.presentation.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams
+import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiParams
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,32 +53,10 @@ class DeviceSettingsFragment :
 
     override fun setupObserver() {
         super.setupObserver()
-//        viewModel.webSocketManager.knobAngleFlow
-//            .filter { it?.macAddr == viewModel.macAddress }
-//            .collectWithLifecycle {angle ->
-//                binding.knobView.setKnobPosition(angle.value.toFloat())
-//            }
         viewModel.currentKnob.collectWithLifecycle {
             it.log("currentKnob")
             binding.knobView.changeKnobBasicStatus(it)
         }
-//        viewModel.zonesLiveData.collectWithLifecycle{
-//            binding.knobView.setOffPosition(it.offAngle.toFloat())
-//            if (it.rotation == Rotation.DUAL) {
-//                if (it.zones1 != null) {
-//                    binding.knobView.setLowSinglePosition(it.zones1.lowAngle.toFloat())
-//                    binding.knobView.setHighSinglePosition(it.zones1.highAngle.toFloat())
-//                } else if(it.zones2 != null){
-//                    binding.knobView.setLowDualPosition(it.zones2.lowAngle.toFloat())
-//                    binding.knobView.setHighDualPosition(it.zones2.highAngle.toFloat())
-//                }
-//            } else if (it.zones1 != null) {
-//                binding.knobView.setOffPosition(it.offAngle.toFloat())
-//                binding.knobView.setLowSinglePosition(it.zones1.lowAngle.toFloat())
-//                binding.knobView.setMediumPosition(it.zones1.mediumAngle.toFloat())
-//                binding.knobView.setHighSinglePosition(it.zones1.highAngle.toFloat())
-//            }
-//        }
         viewModel.knobAngle.collectWithLifecycle { angle ->
             binding.knobView.setKnobPosition(angle)
             if (viewModel.currentKnob.value?.safetyLock.isTrue()){
@@ -117,10 +95,14 @@ class DeviceSettingsFragment :
                             )
                         )
                     }
-                    DeviceSettingsItemModel.KnobOrientation -> {
+                    DeviceSettingsItemModel.KnobCalibration -> {
                         navigateSafe(
-                            DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToDirectionSelectionFragment(
-                                DirectionSelectionFragmentParams(isEditMode = true, macAddress = viewModel.macAddress)
+                            DeviceSettingsFragmentDirections.actionDeviceSettingsFragmentToKnobInstallationManualFragment(
+                                KnobInstallationManualFragmentParams(
+                                    isComeFromSettings = true,
+                                    macAddr = viewModel.macAddress
+                                )
+
                             )
                         )
                     }

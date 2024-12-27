@@ -34,6 +34,7 @@ class ConnectToWifiViewModel @Inject constructor(
     private var getListTryCount = 0
 
     init {
+        socketManager.networksFlow.value = null
         connectionStatusListener.shouldReactOnChanges = false
         setupWifi()
         launch(ioContext, showLoading = false) {

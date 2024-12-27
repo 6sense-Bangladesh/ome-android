@@ -468,13 +468,14 @@
             app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_deviceSettingsFragment_to_connectToWifiFragment"
             app:destination="@id/connectToWifiFragment" />
+
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            android:id="@+id/action_deviceSettingsFragment_to_directionSelectionFragment"
-            app:destination="@id/directionSelectionFragment" />
+            android:id="@+id/action_deviceSettingsFragment_to_knobInstallationManualFragment"
+            app:destination="@id/knobInstallationManualFragment" />
     </fragment>
 
     <fragment
@@ -510,13 +511,17 @@
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.settings.add_knob.metal_plate.MetalPlateInstallationParams" />
         <action
-            android:id="@+id/action_metalPlateInstallationFragment_to_selectBurnerFragment"
-            app:destination="@id/selectBurnerFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_metalPlateInstallationFragment_to_selectBurnerFragment"
+            app:destination="@id/selectBurnerFragment"/>
         <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_metalPlateInstallationFragment_to_qrCodeScannerFragment"
             app:destination="@id/qrCodeScannerFragment" />
     </fragment>
@@ -529,12 +534,12 @@
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams" />
         <action
-            android:id="@+id/action_selectBurnerFragment_to_qrCodeScannerFragment"
-            app:destination="@id/qrCodeScannerFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_selectBurnerFragment_to_qrCodeScannerFragment"
+            app:destination="@id/qrCodeScannerFragment" />
     </fragment>
     <fragment
         android:id="@+id/qrCodeScannerFragment"
@@ -546,12 +551,12 @@
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.settings.add_knob.scanner.QrCodeScannerParams" />
         <action
-            android:id="@+id/action_qrCodeScannerFragment_to_connectToWifiFragment"
-            app:destination="@id/connectToWifiFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_qrCodeScannerFragment_to_connectToWifiFragment"
+            app:destination="@id/connectToWifiFragment" />
     </fragment>
     <fragment
         android:id="@+id/connectToWifiFragment"
@@ -562,19 +567,26 @@
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiParams" />
         <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_connectToWifiFragment_to_manualSetupFragment"
-            app:destination="@id/manualSetupFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/manualSetupFragment" />
         <action
-            android:id="@+id/action_connectToWifiFragment_to_wifiListFragment"
-            app:destination="@id/wifiListFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_connectToWifiFragment_to_wifiListFragment"
+            app:destination="@id/wifiListFragment" />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_connectToWifiFragment_to_connectToWifiPasswordFragment"
+            app:destination="@id/connectToWifiPasswordFragment" />
     </fragment>
 
     <fragment
@@ -586,12 +598,12 @@
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiPasswordParams" />
         <action
-            android:id="@+id/action_connectToWifiPasswordFragment_to_knobInstallationManualFragment"
-            app:destination="@id/knobInstallationManualFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_connectToWifiPasswordFragment_to_knobInstallationManualFragment"
+            app:destination="@id/knobInstallationManualFragment" />
     </fragment>
     <fragment
         android:id="@+id/deviceCalibrationConfirmationFragment"
@@ -602,13 +614,12 @@
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.settings.add_knob.calibration.DeviceCalibrationConfirmationFragmentParams" />
         <action
-            android:id="@+id/action_deviceCalibrationConfirmationFragment_to_setupCompleteFragment"
-            app:destination="@id/setupCompleteFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_deviceCalibrationConfirmationFragment_to_setupCompleteFragment"
+            app:destination="@id/setupCompleteFragment" />
     </fragment>
 
 
@@ -621,12 +632,12 @@
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.settings.add_knob.wifi.ManualSetupFragmentParams" />
         <action
-            android:id="@+id/action_manualSetupFragment_to_wifiListFragment"
-            app:destination="@id/wifiListFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_manualSetupFragment_to_wifiListFragment"
+            app:destination="@id/wifiListFragment" />
     </fragment>
 
     <fragment

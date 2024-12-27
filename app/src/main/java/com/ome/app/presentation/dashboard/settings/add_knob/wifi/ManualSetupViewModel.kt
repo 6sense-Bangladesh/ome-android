@@ -29,6 +29,7 @@ class ManualSetupViewModel @Inject constructor(
     private var getListTryCount = 0
 
     init {
+        socketManager.networksFlow.value = null
         connectionStatusListener.shouldReactOnChanges = false
         launch(ioContext) {
             socketManager.networksFlow.filterNotNull().collect { list ->

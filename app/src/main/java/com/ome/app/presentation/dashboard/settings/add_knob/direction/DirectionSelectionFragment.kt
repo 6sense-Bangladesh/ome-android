@@ -26,18 +26,9 @@ class DirectionSelectionFragment :
 
     override fun setupUI() {
         viewModel.macAddress = params.macAddress
-        if(params.isEditMode) {
-            mainViewModel.getKnobByMac(viewModel.macAddress)?.let {
-                viewModel.calRequest = it.calibration.toSetCalibrationRequest()
-                viewModel.calibrated = it.calibrated.orFalse()
-                viewModel.clockwiseDir = it.calibration.rotationDir
-                changeRotationState(it.calibration.rotationDir)
-            }
-        }else{
-            mainViewModel.selectedDirection?.let {
-                viewModel.clockwiseDir = it
-                changeRotationState(it)
-            }
+        mainViewModel.selectedDirection?.let {
+            viewModel.clockwiseDir = it
+            changeRotationState(it)
         }
     }
 
@@ -53,21 +44,17 @@ class DirectionSelectionFragment :
         binding.topAppBar.setNavigationOnClickListener(::onBackPressed)
 
         binding.continueBtn.setBounceClickListener {
-            if(params.isEditMode)
-                viewModel.updateDirection(onEnd = mainViewModel::getAllKnobs)
-            else {
-                mainViewModel.selectedDirection = viewModel.clockwiseDir
-                navigateSafe(
-                    DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
-                        DeviceCalibrationFragmentParams(
-                            isComeFromSettings = params.isComeFromSettings,
-                            isDualKnob = params.isDualKnob,
-                            rotateDir = viewModel.clockwiseDir,
-                            macAddress = params.macAddress
-                        )
+            mainViewModel.selectedDirection = viewModel.clockwiseDir
+            navigateSafe(
+                DirectionSelectionFragmentDirections.actionDirectionSelectionFragmentToDeviceCalibrationFragment(
+                    DeviceCalibrationFragmentParams(
+                        isComeFromSettings = params.isComeFromSettings,
+                        isDualKnob = params.isDualKnob,
+                        rotateDir = viewModel.clockwiseDir,
+                        macAddress = params.macAddress
                     )
                 )
-            }
+            )
         }
         binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if(isChecked) {
@@ -85,11 +72,8 @@ class DirectionSelectionFragment :
         viewModel.loadingFlow.collectWithLifecycle {
             if(it)
                 binding.continueBtn.startAnimation()
-            else {
+            else
                 binding.continueBtn.revertAnimation()
-                if(params.isEditMode)
-                    onBackPressed()
-            }
         }
     }
 }
@@ -100,6 +84,5 @@ data class DirectionSelectionFragmentParams(
     val isComeFromSettings: Boolean = false,
     val isDualKnob: Boolean = false,
     val macAddress: String = "",
-    val isEditMode: Boolean = false
 ) : Parcelable
 

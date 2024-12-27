@@ -21,8 +21,8 @@ fun Settings.toItemModel(showDivider: Boolean = true) =
 @Parcelize
 enum class DeviceSettingsItemModel(val option: String, @DrawableRes val icon: Int): Parcelable, ItemModel{
     KnobPosition("Change Knob Position", R.drawable.ic_stove_mini),
-    KnobWiFI("Change Wi-Fi", R.drawable.ic_wifi),
-    KnobOrientation("Change Knob Orientation", R.drawable.ic_rotate),
+    KnobWiFI("Change Knob Wi-Fi", R.drawable.ic_wifi),
+    KnobCalibration("Change Knob Calibration", R.drawable.ic_rotate),
     DeleteKnob("Delete Knob", R.drawable.ic_delete)
 }
 

@@ -52,7 +52,7 @@ class DeviceViewModel @Inject constructor(
                 if(!isDualZone)
                     addAll(DeviceSettingsItemModel.entries.toList())
                 else
-                    addAll(DeviceSettingsItemModel.entries.toMutableList().apply { remove(DeviceSettingsItemModel.KnobOrientation) })
+                    addAll(DeviceSettingsItemModel.entries.toMutableList().apply { remove(DeviceSettingsItemModel.KnobCalibration) })
             }
         )
     }

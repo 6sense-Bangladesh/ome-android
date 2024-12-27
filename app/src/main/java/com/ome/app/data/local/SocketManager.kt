@@ -244,9 +244,8 @@ class SocketManager(val context: Context) {
     }
 
     private fun stopClient() {
-        "Stopping client".log(TAG)
         isConnected = false
-        networksFlow.value = null
+        "Stopping client, isConnected: false".log(TAG)
         try {
             mOut?.flush()
             mOut?.close()

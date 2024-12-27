@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.ome.app.BuildConfig
 import com.ome.app.databinding.FragmentConnectToWifiBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.*
@@ -104,6 +105,16 @@ class ConnectToWifiFragment : BaseFragment<ConnectToWifiViewModel, FragmentConne
 
         onDismissErrorDialog = {
             binding.connectBtn.revertAnimation()
+        }
+
+        if(BuildConfig.IS_INTERNAL_TESTING){
+            binding.imageView.setBounceClickListener {
+                navigateSafe(
+                    ConnectToWifiFragmentDirections.actionConnectToWifiFragmentToConnectToWifiPasswordFragment(
+                        ConnectToWifiPasswordParams()
+                    )
+                )
+            }
         }
     }
 
