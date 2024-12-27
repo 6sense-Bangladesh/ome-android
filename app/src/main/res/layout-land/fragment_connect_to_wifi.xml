@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".presentation.dashboard.settings.add_knob.wifi.ConnectToWifiFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/Widget.App.Toolbar"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_dashboard"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="@string/connect_to_your_wi_fi" />
+
+    <TextView
+        android:id="@+id/label1Tv"
+        style="@style/Label.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="@dimen/margin_top_bar"
+        android:text="@string/let_s_connect_to_your_local_wi_fi_network"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_marginTop="@dimen/margin_top_bar"
+        android:id="@+id/imageView6"
+        android:layout_width="@dimen/_90sdp"
+        android:layout_height="@dimen/_90sdp"
+        android:src="@drawable/ic_router"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        android:layout_marginBottom="@dimen/margin_horizontal"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
+
+    <TextView
+        android:id="@+id/label2Tv"
+        android:layout_marginTop="@dimen/margin_horizontal"
+        style="@style/Label.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:gravity="center"
+        android:text="@string/before_we_connect_label"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/Label.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:gravity="center"
+        android:text="@string/are_your_device_on"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label2Tv" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnManual"
+        style="@style/OmeButton.Blue.Outline"
+        android:layout_width="0dp"
+        android:text="@string/manual_connect"
+        app:layout_constraintBottom_toTopOf="@+id/connectBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline8" />
+
+
+    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+        android:id="@+id/connectBtn"
+        style="@style/OmeButton.Blue"
+        android:layout_width="0dp"
+        android:text="@string/yes_let_s_connect"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".45" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
