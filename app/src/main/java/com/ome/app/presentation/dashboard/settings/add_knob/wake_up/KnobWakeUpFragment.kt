@@ -6,15 +6,16 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.ome.app.databinding.FragmentKnobWakeUpBinding
 import com.ome.app.presentation.base.BaseFragment
+import com.ome.app.presentation.base.EmptyViewModel
 import com.ome.app.presentation.dashboard.settings.add_knob.metal_plate.MetalPlateInstallationParams
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
-class KnobWakeUpFragment : BaseFragment<KnobWakeUpViewModel, FragmentKnobWakeUpBinding>(FragmentKnobWakeUpBinding::inflate) {
+class KnobWakeUpFragment : BaseFragment<EmptyViewModel, FragmentKnobWakeUpBinding>(FragmentKnobWakeUpBinding::inflate) {
 
-    override val viewModel: KnobWakeUpViewModel by viewModels()
+    override val viewModel: EmptyViewModel by viewModels()
 
     private val args by navArgs<KnobWakeUpFragmentArgs>()
     val params by lazy { args.params }

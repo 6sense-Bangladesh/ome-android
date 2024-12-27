@@ -7,22 +7,20 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentMetalPlateBinding
 import com.ome.app.presentation.base.BaseFragment
+import com.ome.app.presentation.base.EmptyViewModel
 import com.ome.app.presentation.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.scanner.QrCodeScannerParams
-import com.ome.app.utils.loadDrawable
-import com.ome.app.utils.navigateSafe
-import com.ome.app.utils.onBackPressed
-import com.ome.app.utils.setBounceClickListener
+import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 
 
 @AndroidEntryPoint
 class MetalPlateInstallationFragment :
-    BaseFragment<MetalPlateInstallationViewModel, FragmentMetalPlateBinding>(
+    BaseFragment<EmptyViewModel, FragmentMetalPlateBinding>(
         FragmentMetalPlateBinding::inflate
     ) {
-    override val viewModel: MetalPlateInstallationViewModel by viewModels()
+    override val viewModel: EmptyViewModel by viewModels()
 
     private val args by navArgs<MetalPlateInstallationFragmentArgs>()
     val params by lazy { args.params }

@@ -5,7 +5,7 @@ import com.amplifyframework.auth.cognito.AWSCognitoAuthSession
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
 import com.ome.app.R
-import com.ome.app.data.ConnectionStatusListener
+import com.ome.app.data.ConnectionListener
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.local.SocketManager
 import com.ome.app.data.remote.AmplifyManager
@@ -40,7 +40,7 @@ class MainVM @Inject constructor(
     val socketManager: SocketManager,
     val webSocketManager: WebSocketManager,
     private val savedStateHandle: SavedStateHandle,
-    val connectionStatusListener: ConnectionStatusListener
+    val connectionListener: ConnectionListener
 ) : BaseViewModel() {
     var userInfo = savedStateHandle.getStateFlow("userInfo", pref.getUserData())
     var knobState =
@@ -112,7 +112,7 @@ class MainVM @Inject constructor(
     fun getAllKnobsUntilNotEmpty() {
         launch(ioContext) {
             while (true) {
-                if (!connectionStatusListener.isConnected) {
+                if (!connectionListener.isConnected) {
                     delay(1.seconds)
                     continue
                 }
@@ -255,7 +255,7 @@ class MainVM @Inject constructor(
     }
 
     fun registerConnectionListener() {
-        connectionStatusListener.registerListener()
+        connectionListener.registerListener()
     }
 }
 

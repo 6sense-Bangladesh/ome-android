@@ -14,9 +14,8 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
 import com.ome.app.BuildConfig
-import com.ome.app.MainNavGraphDirections
 import com.ome.app.R
-import com.ome.app.data.ConnectionStatusListener
+import com.ome.app.data.ConnectionListener
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -83,44 +82,33 @@ class MainActivity : AppCompatActivity() {
                  }.build()
             )
         }
-//         if(tryGet { navController.graph } == null) {
-//            val graph = inflater.inflate(R.navigation.main_nav_graph)
-//            graph.setStartDestination(startDestinationId)
-//            navController.setGraph(graph, intent.extras)
-//         }else{
-//             navController.navigate(startDestinationId, null,
-//                 NavOptions.Builder().setPopUpTo(startDestinationId, false).build()
-//             )
-//         }
         viewModel.isSplashScreenLoading = false
         if(startDestinationId != R.id.noInternetConnectionFragment)
             viewModel.startDestinationInitialized = true
     }
 
     private fun subscribeConnectionListener() {
-        viewModel.connectionStatusListener.connectionStatusFlow.collectWithLifecycle { status ->
-            if (viewModel.connectionStatusListener.shouldReactOnChanges) {
+        val networkSnackBar = crateTopSnackBar(getString(R.string.no_internet_connection))
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
+        viewModel.connectionListener.connectionStatusFlow.collectWithLifecycle { status ->
+            if (viewModel.connectionListener.shouldReactOnChanges) {
                 when (status) {
-                    ConnectionStatusListener.ConnectionStatusState.Default,
-                    ConnectionStatusListener.ConnectionStatusState.Dismissed -> Unit
+                    ConnectionListener.State.Default,
+                    ConnectionListener.State.Dismissed -> Unit
 
-                    ConnectionStatusListener.ConnectionStatusState.HasConnection ->{
+                    ConnectionListener.State.HasConnection ->{
                         if(!viewModel.isSplashScreenLoading)
                             viewModel.connectToSocket()
+                        networkSnackBar.dismiss()
                     }
 
-                    ConnectionStatusListener.ConnectionStatusState.NoConnection -> {
+                    ConnectionListener.State.NoConnection -> {
                         viewModel.startDestinationJob?.cancel()
-                        val navHostFragment =
-                            supportFragmentManager.findFragmentById(R.id.navHost) as NavHostFragment
                         if(viewModel.isSplashScreenLoading){
                             initNavigationGraph(R.id.noInternetConnectionFragment)
-                        }else{
-                            runCatching {
-                                navHostFragment.navController.navigate(
-                                    MainNavGraphDirections.actionInternetConnectionFragment(false)
-                                )
-                            }
+                        }else if(navHostFragment.navController.currentDestination?.id != R.id.noInternetConnectionFragment){
+                            if (!networkSnackBar.isShown)
+                                networkSnackBar.show()
                         }
                         viewModel.isSplashScreenLoading = false
                     }
@@ -129,14 +117,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-//        savedInstanceState.getParcelable<Parcelable>("android:support:fragments")?.let {
-//
-//        }
-//        val ss = savedInstanceState as KnobView.SavedState
-//        super.onRestoreInstanceState(ss.superState)
-//        for (i in 0 until childCount) {
-//            getChildAt(i).restoreHierarchyState(ss.childrenStates)
-//        }
-//    }
 }

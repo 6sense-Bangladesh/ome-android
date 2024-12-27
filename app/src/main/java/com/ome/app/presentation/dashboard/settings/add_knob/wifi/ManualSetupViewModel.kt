@@ -1,6 +1,6 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
-import com.ome.app.data.ConnectionStatusListener
+import com.ome.app.data.ConnectionListener
 import com.ome.app.data.local.KnobSocketMessageType
 import com.ome.app.data.local.NetworkManager
 import com.ome.app.data.local.SocketManager
@@ -18,7 +18,7 @@ import kotlin.time.Duration.Companion.seconds
 class ManualSetupViewModel @Inject constructor(
     val networkManager: NetworkManager,
     private val socketManager: SocketManager,
-    connectionStatusListener: ConnectionStatusListener
+    connectionListener: ConnectionListener
 ) : BaseViewModel() {
 
     var macAddr = ""
@@ -30,7 +30,7 @@ class ManualSetupViewModel @Inject constructor(
 
     init {
         socketManager.networksFlow.value = null
-        connectionStatusListener.shouldReactOnChanges = false
+        connectionListener.shouldReactOnChanges = false
         launch(ioContext) {
             socketManager.networksFlow.filterNotNull().collect { list ->
                 list.log("wifiNetworksList")

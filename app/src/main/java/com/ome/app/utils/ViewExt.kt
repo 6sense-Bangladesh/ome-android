@@ -1,8 +1,14 @@
 package com.ome.app.utils
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.snackbar.Snackbar
@@ -47,18 +53,33 @@ fun withDelay(delayMillis: Long, block: suspend CoroutineScope.() -> Unit) {
     }
 }
 
-fun FragmentActivity.showTopSnackBar(message: String?) {
-    if (message == null) return
-    val snackBar = Snackbar.make(window.decorView, message, Snackbar.LENGTH_LONG)
+fun FragmentActivity.crateTopSnackBar(message: String): Snackbar {
+    val snackBar = Snackbar.make(window.decorView, message, Snackbar.LENGTH_INDEFINITE)
 
-    // Set the background color to red
-    snackBar.view.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
+    snackBar.view.background = GradientDrawable().apply {
+        shape = GradientDrawable.RECTANGLE
+        cornerRadius = 0F
+    }
+
+    snackBar.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)?.apply {
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            topMargin = -30
+            bottomMargin = -30
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            textAlignment = View.TEXT_ALIGNMENT_CENTER
+        else
+            gravity = Gravity.CENTER
+    }
 
     // Adjust the position to top
     val layoutParams = snackBar.view.layoutParams as FrameLayout.LayoutParams
     layoutParams.gravity = Gravity.TOP
+    layoutParams.setMargins(0.dp, 90.dp, 0.dp, 0.dp)
     snackBar.view.layoutParams = layoutParams
-
-    snackBar.show()
+    return snackBar
 }
 

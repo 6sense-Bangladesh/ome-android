@@ -8,30 +8,44 @@
 
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/imageView"
         android:layout_width="@dimen/_160sdp"
         android:layout_height="@dimen/_160sdp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="@dimen/_120sdp"
         android:src="@drawable/ic_wifi_off"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/white" />
+        app:tint="@color/grayBlue" />
 
     <TextView
         android:id="@+id/descriptionTxt"
         style="@style/Label.LargeExtra"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="@dimen/margin_top_bar"
         android:gravity="center"
         android:text="@string/no_internet_connection"
-        android:textColor="@color/white"
+        android:textColor="?colorControlNormal"
         android:textSize="@dimen/_18sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/descriptionTxt2"
+        style="@style/Label.Large"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="center"
+        android:text="@string/connect_network"
+        android:textColor="?colorControlNormal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTxt" />
 
     <!--    <com.google.android.material.button.MaterialButton-->
     <!--        android:id="@+id/btnRetry"-->
@@ -58,10 +72,10 @@
         android:layout_marginTop="@dimen/margin_top_bar"
         android:indeterminate="true"
         android:visibility="gone"
-        app:indicatorColor="@color/white"
+        app:indicatorColor="?colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTxt"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTxt2"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

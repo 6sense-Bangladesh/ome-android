@@ -1,7 +1,7 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import com.ome.app.R
-import com.ome.app.data.ConnectionStatusListener
+import com.ome.app.data.ConnectionListener
 import com.ome.app.data.local.*
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.utils.*
@@ -17,7 +17,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     private val networkManager: NetworkManager,
     private val socketManager: SocketManager,
     private val resourceProvider: ResourceProvider,
-    private val connectionStatusListener: ConnectionStatusListener
+    private val connectionListener: ConnectionListener
 ) : BaseViewModel() {
 
     var macAddr = ""
@@ -107,7 +107,6 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     private suspend fun disconnectFromNetwork(){
         delay(3.seconds)
         MAIN { networkManager.disconnectFromKnobHotspot() }
-        connectionStatusListener.shouldReactOnChanges = true
     }
 
     private suspend fun handleWifiStatusMessage(message: String) {
@@ -182,7 +181,7 @@ class ConnectToWifiPasswordViewModel @Inject constructor(
     }
     private suspend fun connectToWifi(){
         "socketReconnect $socketReconnect".log("connectToWifi")
-        connectionStatusListener.shouldReactOnChanges = false
+        connectionListener.shouldReactOnChanges = false
         if(networkManager.isConnected) {
             if(!socketManager.isConnected)
                 connectToSocket()

@@ -11,28 +11,37 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-interface ConnectionStatusListener {
+interface ConnectionListener {
 
     var isConnected: Boolean
     var shouldReactOnChanges: Boolean
-    val connectionStatusFlow: StateFlow<ConnectionStatusState>
+    val connectionStatusFlow: StateFlow<State>
     var failureNavigationFlow: MutableSharedFlow<Throwable>
 
     fun registerListener()
     fun unregisterListener()
     fun setDismissedStatus()
 
-    enum class ConnectionStatusState {
+    enum class State {
         Default, HasConnection, NoConnection, Dismissed
     }
 }
 
-class ConnectionStatusListenerImpl(
+class ConnectionListenerImpl(
     context: Context
-) : ConnectionStatusListener {
+) : ConnectionListener {
 
     override var isConnected: Boolean = isNetworkAvailable()
     override var shouldReactOnChanges: Boolean = true
+        set(value) {
+            field = value
+            if (value && connectionStatusFlow.value != ConnectionListener.State.Default) {
+                connectionStatusFlow.value.let { oldState ->
+                    connectionStatusFlow.value = ConnectionListener.State.Default
+                    connectionStatusFlow.value = oldState
+                }
+            }
+        }
 
     override var failureNavigationFlow: MutableSharedFlow<Throwable> = MutableSharedFlow(
         replay = 1,
@@ -40,7 +49,7 @@ class ConnectionStatusListenerImpl(
     )
 
     override val connectionStatusFlow =
-        MutableStateFlow(ConnectionStatusListener.ConnectionStatusState.Default)
+        MutableStateFlow(ConnectionListener.State.Default)
 
     private val connectivityManager =
         ContextCompat.getSystemService(context.applicationContext, ConnectivityManager::class.java)
@@ -57,19 +66,15 @@ class ConnectionStatusListenerImpl(
         object : ConnectivityManager.NetworkCallback() {
             override fun onLost(network: Network) {
                 isConnected = false
-                if (connectionStatusFlow.value != ConnectionStatusListener.ConnectionStatusState.Dismissed) {
-                    connectionStatusFlow.tryEmit(
-                        ConnectionStatusListener.ConnectionStatusState.NoConnection
-                    )
+                if (connectionStatusFlow.value != ConnectionListener.State.Dismissed) {
+                    connectionStatusFlow.value = ConnectionListener.State.NoConnection
                 }
             }
 
             override fun onAvailable(network: Network) {
                 log("Network available")
                 isConnected = true
-                connectionStatusFlow.tryEmit(
-                    ConnectionStatusListener.ConnectionStatusState.HasConnection
-                )
+                connectionStatusFlow.value = ConnectionListener.State.HasConnection
             }
         }
     }
@@ -88,15 +93,11 @@ class ConnectionStatusListenerImpl(
             loge("ConnectionStatusListener unregisterListener exception: $ignore")
         }
 
-        connectionStatusFlow.tryEmit(
-            ConnectionStatusListener.ConnectionStatusState.Default
-        )
+        connectionStatusFlow.value = ConnectionListener.State.Default
     }
 
     override fun setDismissedStatus() {
-        connectionStatusFlow.tryEmit(
-            ConnectionStatusListener.ConnectionStatusState.Dismissed
-        )
+        connectionStatusFlow.value = ConnectionListener.State.Dismissed
     }
 
 
@@ -121,11 +122,11 @@ class ConnectionStatusListenerImpl(
     }
 
     private fun updateConnectionStatus() {
-        connectionStatusFlow.tryEmit(
+        connectionStatusFlow.value =(
             if (!isNetworkAvailable()) {
-                ConnectionStatusListener.ConnectionStatusState.NoConnection
+                ConnectionListener.State.NoConnection
             } else {
-                ConnectionStatusListener.ConnectionStatusState.HasConnection
+                ConnectionListener.State.HasConnection
             }
         )
     }

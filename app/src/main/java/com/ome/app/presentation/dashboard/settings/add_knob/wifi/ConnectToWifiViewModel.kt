@@ -2,7 +2,7 @@ package com.ome.app.presentation.dashboard.settings.add_knob.wifi
 
 import androidx.lifecycle.SavedStateHandle
 import com.ome.app.R
-import com.ome.app.data.ConnectionStatusListener
+import com.ome.app.data.ConnectionListener
 import com.ome.app.data.local.*
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
@@ -22,7 +22,7 @@ class ConnectToWifiViewModel @Inject constructor(
     private val stoveRepository: StoveRepository,
     private val savedStateHandle: SavedStateHandle,
     private val resourceProvider: ResourceProvider,
-    connectionStatusListener: ConnectionStatusListener
+    connectionListener: ConnectionListener
 ) : BaseViewModel() {
 
     val params by lazy { ConnectToWifiFragmentArgs.fromSavedStateHandle(savedStateHandle).params }
@@ -35,7 +35,7 @@ class ConnectToWifiViewModel @Inject constructor(
 
     init {
         socketManager.networksFlow.value = null
-        connectionStatusListener.shouldReactOnChanges = false
+        connectionListener.shouldReactOnChanges = false
         setupWifi()
         launch(ioContext, showLoading = false) {
             socketManager.networksFlow.filterNotNull().collect { list ->

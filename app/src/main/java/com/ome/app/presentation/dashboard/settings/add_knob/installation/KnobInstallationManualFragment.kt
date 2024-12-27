@@ -13,7 +13,6 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentKnobInstallationManualBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.presentation.base.EmptyViewModel
 import com.ome.app.presentation.dashboard.settings.add_knob.zone.ZoneSelectionFragmentParams
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,10 +20,10 @@ import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
 class KnobInstallationManualFragment :
-    BaseFragment<EmptyViewModel, FragmentKnobInstallationManualBinding>(
+    BaseFragment<MetalPlateInstallationViewModel, FragmentKnobInstallationManualBinding>(
         FragmentKnobInstallationManualBinding::inflate
     ) {
-    override val viewModel: EmptyViewModel by viewModels()
+    override val viewModel: MetalPlateInstallationViewModel by viewModels()
 
     private val args by navArgs<KnobInstallationManualFragmentArgs>()
     val params by lazy { args.params }

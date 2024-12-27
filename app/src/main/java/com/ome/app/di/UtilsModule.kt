@@ -1,8 +1,8 @@
 package com.ome.app.di
 
 import android.content.Context
-import com.ome.app.data.ConnectionStatusListener
-import com.ome.app.data.ConnectionStatusListenerImpl
+import com.ome.app.data.ConnectionListener
+import com.ome.app.data.ConnectionListenerImpl
 import com.ome.app.data.local.NetworkManager
 import dagger.Module
 import dagger.Provides
@@ -17,8 +17,8 @@ object UtilsModule {
 
     @Singleton
     @Provides
-    fun provideConnectionStatusListener(@ApplicationContext context: Context): ConnectionStatusListener =
-        ConnectionStatusListenerImpl(context)
+    fun provideConnectionStatusListener(@ApplicationContext context: Context): ConnectionListener =
+        ConnectionListenerImpl(context)
 
     @Provides
     @Singleton
