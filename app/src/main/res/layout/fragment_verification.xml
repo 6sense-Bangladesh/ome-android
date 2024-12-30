@@ -76,7 +76,7 @@
                 android:maxLines="1"
                 android:nextFocusForward="@id/otp2"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/field_text_size"
                 android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,7 +103,7 @@
                 android:maxLines="1"
                 android:nextFocusForward="@id/otp3"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/field_text_size"
                 android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -130,7 +130,7 @@
                 android:maxLines="1"
                 android:nextFocusForward="@id/otp4"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/field_text_size"
                 android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -167,7 +167,7 @@
                 android:maxLines="1"
                 android:nextFocusForward="@id/otp5"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/field_text_size"
                 android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -194,7 +194,7 @@
                 android:maxLines="1"
                 android:nextFocusForward="@id/otp6"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/field_text_size"
                 android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -221,7 +221,7 @@
                 android:maxLines="1"
                 android:nextFocusForward="@id/btnVerify"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/field_text_size"
                 android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>

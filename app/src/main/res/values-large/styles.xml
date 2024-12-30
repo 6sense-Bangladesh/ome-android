@@ -40,7 +40,7 @@
     </style>
 
     <style name="Title.Small">
-        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:textSize">@dimen/_11ssp</item>
     </style>
 
     <style name="Title.Mini">
@@ -54,7 +54,7 @@
     <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="titleTextAppearance">@style/Title.Small</item>
         <item name="buttonGravity">center_vertical</item>
-        <item name="android:layout_height">@dimen/_40sdp</item>
+        <item name="android:layout_height">@dimen/_36sdp</item>
         <item name="android:paddingStart">@dimen/actionBarPaddingHorizontal</item>
         <item name="android:paddingEnd">@dimen/actionBarPaddingHorizontal</item>
     </style>
@@ -67,24 +67,24 @@
 
 
     <style name="Label.LargeExtra">
-        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:textSize">@dimen/_13ssp</item>
     </style>
 
     <style name="Label.Large">
-        <item name="android:textSize">@dimen/_11ssp</item>
-    </style>
-
-    <style name="Label.Medium">
         <item name="android:textSize">@dimen/_10ssp</item>
     </style>
 
-    <style name="Label.Small">
+    <style name="Label.Medium">
         <item name="android:textSize">@dimen/_9ssp</item>
+    </style>
+
+    <style name="Label.Small">
+        <item name="android:textSize">@dimen/_8ssp</item>
         <item name="android:textColor">@color/read_message_color</item>
     </style>
 
     <style name="Label.Mini">
-        <item name="android:textSize">@dimen/_8ssp</item>
+        <item name="android:textSize">@dimen/_7ssp</item>
         <item name="android:textColor">@color/read_message_color</item>
     </style>
     <style name="Label.MiniExtra">

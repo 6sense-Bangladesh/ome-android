@@ -53,7 +53,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:nextFocusForward="@id/lastName"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/field_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,7 +79,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:nextFocusForward="@id/emailLayout"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/field_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,7 +105,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:nextFocusForward="@id/phoneInput"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/field_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -133,7 +133,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:nextFocusForward="@id/password"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/field_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -172,7 +172,7 @@
                     android:hint="@string/password"
                     android:inputType="textPassword"
                     android:nextFocusForward="@id/retypePassword"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/field_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -200,7 +200,7 @@
                     android:hint="@string/retype_password"
                     android:inputType="textPassword"
                     android:nextFocusForward="@id/signInBtn"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/field_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

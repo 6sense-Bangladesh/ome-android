@@ -2,7 +2,7 @@
 <resources>
     <dimen name="actionBarPaddingHorizontal">@dimen/_2sdp</dimen>
     <dimen name="margin_horizontal">@dimen/_15sdp</dimen>
-    <dimen name="margin_top_bar">@dimen/_30sdp</dimen>
-    <dimen name="icon_size">@dimen/_18sdp</dimen>
-    <dimen name="field_text_size">@dimen/_12ssp</dimen>
+    <dimen name="margin_top_bar">@dimen/_27sdp</dimen>
+    <dimen name="icon_size">@dimen/_14sdp</dimen>
+    <dimen name="field_text_size">@dimen/_9ssp</dimen>
 </resources>
