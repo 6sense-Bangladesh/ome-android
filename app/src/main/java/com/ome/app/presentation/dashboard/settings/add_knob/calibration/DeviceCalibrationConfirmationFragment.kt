@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.addCallback
 import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.ome.app.BuildConfig
 import com.ome.app.R
@@ -14,7 +15,9 @@ import com.ome.app.databinding.FragmentDeviceCalibrationConfirmationBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 
@@ -88,15 +91,21 @@ class DeviceCalibrationConfirmationFragment :
                     true
                 }
                 R.id.action_skip_calibration -> {
-                    popBackSafe(
-                        if (params.isComeFromSettings)
-                            R.id.deviceDetailsFragment
-                        else
-                            R.id.dashboardFragment
-                    )
+                    if (params.isComeFromSettings)
+                        popBackSafe(R.id.deviceSettingsFragment) ?: popBackSafe(R.id.deviceDetailsFragment)
+                    else
+                        popBackSafe(R.id.dashboardFragment)
                     true
                 }
                 else -> false
+            }
+        }
+        if(BuildConfig.IS_INTERNAL_TESTING){
+            binding.labelZone.setBounceClickListener {
+                binding.continueBtn.startAnimation()
+                lifecycleScope.launch(Dispatchers.IO){
+                    viewModel.setCalibration()
+                }
             }
         }
     }

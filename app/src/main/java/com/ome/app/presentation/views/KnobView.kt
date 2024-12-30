@@ -72,7 +72,7 @@ class KnobView @JvmOverloads constructor(
 
     fun setKnobPosition(angle: Float) {
         if(angle != mCurrAngle){
-            "angle KnobView $angle".log()
+            "angle KnobView setKnobPosition $angle".log()
             animateCircle(mCurrAngle, angle)
         }
     }
@@ -215,9 +215,9 @@ class KnobView @JvmOverloads constructor(
         if(calibration.isCalibrated)
             adjustKnobColorScale(calibration)
         binding.safetyLock.changeVisibility(knob.knobSetSafetyMode.orFalse())
+        knob.angle?.toFloat()?.let { setKnobPosition(it) }
         if(knob.knobSetSafetyMode.isTrue())
             setKnobPosition(calibration.offAngle.toFloat())
-        knob.angle?.toFloat()?.let { setKnobPosition(it) }
         knob.battery?.let {
             changeBatteryState(batteryLevel = it)
             if(knob.connectStatus!= null && knob.wifiStrengthPercentage != null) {
@@ -250,7 +250,7 @@ class KnobView @JvmOverloads constructor(
         changeBatteryState(batteryLevel = knob.battery)
         if(changeConnectionState(knob.connectStatus.connectionState, knob.rssi.wifiStrengthPercentage, knob.battery))
             changeConfigurationState(isCalibrated = knob.calibrated)
-        return when{ knob.battery <= 15 || knob.calibrated.isFalse() ||
+        return when{ (knob.battery != null && knob.battery <= 15) || knob.calibrated.isFalse() ||
                 ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) ||
                 knob.safetyLock.isTrue() || knob.connectStatus.connectionState == ConnectionState.Offline || knob.connectStatus.connectionState == ConnectionState.Charging  -> {
                 hideLabel()
@@ -286,7 +286,7 @@ class KnobView @JvmOverloads constructor(
             }
             setOffPosition(cal.offAngle.toFloat())
         }
-        return when{ knob.battery <= 15 || knob.calibrated.isFalse() ||
+        return when{ (knob.battery != null && knob.battery <= 15) || knob.calibrated.isFalse() ||
                 ( knob.connectStatus.connectionState == ConnectionState.Online && knob.rssi.wifiStrengthPercentage in 0..35) ||
                 knob.safetyLock.isTrue() || knob.connectStatus.connectionState == ConnectionState.Offline || knob.connectStatus.connectionState == ConnectionState.Charging  -> {
                     changeKnobState(KnobImageState.TRANSPARENT)
@@ -350,12 +350,11 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
-    fun changeBatteryState(batteryLevel: Int) {
-        if (batteryLevel <= 15) {
+    fun changeBatteryState(batteryLevel: Int?) {
+        if (batteryLevel != null && batteryLevel <= 25)
             binding.noBattery.visible()
-        }else{
+        else
             binding.noBattery.gone()
-        }
     }
 
     fun changeConfigurationState(isCalibrated: Boolean?) {
@@ -366,7 +365,7 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
-    fun changeConnectionState(connectionState: ConnectionState, wifiStrengthPercentage: Int, batteryLevel: Int): Boolean {
+    fun changeConnectionState(connectionState: ConnectionState, wifiStrengthPercentage: Int, batteryLevel: Int?): Boolean {
         return when (connectionState) {
             ConnectionState.Online -> {
                 binding.connectionStatus.gone()

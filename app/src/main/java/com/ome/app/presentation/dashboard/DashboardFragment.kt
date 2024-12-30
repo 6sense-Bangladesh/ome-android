@@ -72,7 +72,7 @@ class DashboardFragment :
     override fun setupObserver() {
         super.setupObserver()
         val menuItem = binding.topAppBar.menu?.findItem(R.id.menuLock)
-        mainViewModel.knobState.collectWithLifecycle { state ->
+        mainViewModel.webSocketManager.knobState.collectWithLifecycle { state ->
             if (binding.dashboardViewPager.currentItem != 1) return@collectWithLifecycle
             if (state.toList().any { it.second.knobSetSafetyMode == true }) {
                 menuItem?.setIcon(R.drawable.ic_safety_lock)
@@ -141,7 +141,7 @@ class DashboardFragment :
                 }
 
                 R.id.menuLock -> {
-                    mainViewModel.knobState.value.toList().isNotEmpty { states ->
+                    mainViewModel.webSocketManager.knobState.value.toList().isNotEmpty { states ->
                         states.any { it.second.knobSetSafetyMode == true }.also {
                             showDialog(
                                 title = if (it) getString(R.string.disable_safety_lock) else getString(R.string.enable_safety_lock),

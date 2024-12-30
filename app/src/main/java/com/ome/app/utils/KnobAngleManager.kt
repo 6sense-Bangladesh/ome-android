@@ -76,7 +76,26 @@ object KnobAngleManager {
      * @return The normalized angle within the range of 0 to 359 degrees.
      */
     fun normalizeAngle(angle: Number): Int {
-        return (angle.toInt() + 360) % 360
+        return (((angle.toDouble() % 360) + 360) % 360).toInt()
+    }
+
+
+    fun averageAngle(angle1: Int, angle2: Int): Int {
+        val normalizedAngle1 = normalizeAngle(angle1)
+        val normalizedAngle2 = normalizeAngle(angle2)
+
+        val delta = normalizeAngle(normalizedAngle2 - normalizedAngle1)
+
+        // Find the shortest path between the two angles
+        val average = if (delta <= 180) {
+            normalizedAngle1 + delta / 2
+        } else {
+            normalizedAngle1 - (360 - delta) / 2
+        }
+
+        return normalizeAngle(average).apply {
+            "angle1: $angle1, angle2: $angle2, averageAngle: $this".log("averageAngle")
+        }
     }
 
 
@@ -353,7 +372,7 @@ object KnobAngleManager {
      * @param angleBeta The ending angle of the range.
      * @return True if angleTheta is between angleAlpha and angleBeta, false otherwise.
      */
-    private fun Number.isInRange(angleAlpha: Number, angleBeta: Number): Boolean {
+    fun Number.isInRange(angleAlpha: Number, angleBeta: Number): Boolean {
         // Normalize all angles
         val alpha = normalizeAngle(angleAlpha)
         val beta = normalizeAngle(angleBeta)

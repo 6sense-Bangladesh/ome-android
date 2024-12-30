@@ -14,14 +14,11 @@ import com.ome.app.domain.model.base.ResponseWrapper
 import com.ome.app.domain.model.network.request.CreateUserRequest
 import com.ome.app.domain.model.network.request.StoveRequest
 import com.ome.app.domain.model.network.response.*
-import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.network.websocket.MacAddress
 import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.domain.repo.UserRepository
 import com.ome.app.presentation.base.BaseViewModel
-import com.ome.app.utils.isFalse
-import com.ome.app.utils.log
-import com.ome.app.utils.orMinusOne
+import com.ome.app.utils.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.filterNotNull
@@ -36,15 +33,13 @@ class MainVM @Inject constructor(
     private val amplifyManager: AmplifyManager,
     private val pref: PreferencesProvider,
     private val userRepository: UserRepository,
-    private val stoveRepository: StoveRepository,
+    val stoveRepository: StoveRepository,
     val socketManager: SocketManager,
     val webSocketManager: WebSocketManager,
     private val savedStateHandle: SavedStateHandle,
     val connectionListener: ConnectionListener
 ) : BaseViewModel() {
     var userInfo = savedStateHandle.getStateFlow("userInfo", pref.getUserData())
-    var knobState =
-        savedStateHandle.getStateFlow("knobState", mutableMapOf<MacAddress, KnobState>())
     var knobs = savedStateHandle.getStateFlow("knobs", listOf<KnobDto>())
 
     override var defaultErrorHandler = CoroutineExceptionHandler { _, throwable ->
@@ -90,11 +85,6 @@ class MainVM @Inject constructor(
                     lst.associateByTo(mutableMapOf(), { it.macAddr }, { it.asKnobState })
             }
         }
-        launch{
-            webSocketManager.knobState.collect {
-                savedStateHandle["knobState"] = it
-            }
-        }
     }
 
     fun getUserInfo() {
@@ -116,8 +106,12 @@ class MainVM @Inject constructor(
                     delay(1.seconds)
                     continue
                 }
-                if (stoveRepository.getAllKnobs().isNotEmpty())
+                val lst = stoveRepository.getAllKnobs()
+                if (lst.isNotEmpty()) {
+                    webSocketManager.knobState.value =
+                        lst.associateByTo(mutableMapOf(), { it.macAddr }, { it.asKnobState })
                     break
+                }
                 delay(1.seconds)
             }
         }
@@ -146,13 +140,12 @@ class MainVM @Inject constructor(
         }
     }
 
-    fun getKnobByMac(macAddress: MacAddress) = knobs.value.find { it.macAddr == macAddress }
-    fun getKnobStateByMac(macAddress: MacAddress) = knobState.map { it[macAddress] }
+    fun getKnobByMac(macAddress: MacAddress) = stoveRepository.knobsFlow.value.find { it.macAddr == macAddress }
+    fun getKnobStateByMac(macAddress: MacAddress) = webSocketManager.knobState.map { it[macAddress] }
     fun getStovePositionByMac(macAddress: MacAddress) =
-        knobs.value.find { it.macAddr == macAddress }?.stovePosition.orMinusOne()
-
+        stoveRepository.knobsFlow.value.find { it.macAddr == macAddress }?.stovePosition.orMinusOne()
     fun getKnobBurnerStatesByMac(macAddress: MacAddress) =
-        knobs.value.find { it.macAddr == macAddress }?.asBurnerState.orEmpty()
+        stoveRepository.knobsFlow.value.find { it.macAddr == macAddress }?.asBurnerState.orEmpty()
 
     fun initStartDestination() {
         if (startDestination.value != null) return
@@ -231,6 +224,8 @@ class MainVM @Inject constructor(
                         webSocketManager.initKnobWebSocket(knobs, userId)
                 }
             } catch (e: Exception) {
+                if(e is CancellationException) return@launch
+                e.loge()
                 connectToSocket()
             }
         }

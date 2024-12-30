@@ -79,12 +79,10 @@ class DeviceCalibrationFragment :
                     true
                 }
                 R.id.action_skip_calibration -> {
-                    popBackSafe(
-                        if (params.isComeFromSettings)
-                            R.id.deviceDetailsFragment
-                        else
-                            R.id.dashboardFragment
-                    )
+                    if (params.isComeFromSettings)
+                        popBackSafe(R.id.deviceSettingsFragment) ?: popBackSafe(R.id.deviceDetailsFragment)
+                    else
+                        popBackSafe(R.id.dashboardFragment)
                     true
                 }
 

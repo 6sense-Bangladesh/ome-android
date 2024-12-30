@@ -40,160 +40,6 @@
         tools:text="Knob 1" />
 
 
-    <!--    <androidx.cardview.widget.CardView-->
-    <!--        android:id="@+id/cardView"-->
-    <!--        android:layout_width="100dp"-->
-    <!--        android:layout_height="100dp"-->
-    <!--        android:layout_marginTop="48dp"-->
-    <!--        android:layout_marginEnd="32dp"-->
-    <!--        app:cardCornerRadius="12dp"-->
-    <!--        app:cardElevation="6dp"-->
-    <!--        app:cardBackgroundColor="@color/white"-->
-    <!--        app:layout_constraintEnd_toStartOf="@+id/cardView3"-->
-    <!--        app:layout_constraintHorizontal_bias="0.5"-->
-    <!--        app:layout_constraintHorizontal_chainStyle="packed"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/knobTv">-->
-
-    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-    <!--            android:id="@+id/changeKnobPositionCl"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:background="?android:attr/selectableItemBackground"-->
-    <!--            android:clickable="true"-->
-    <!--            android:focusable="true">-->
-
-    <!--            <androidx.appcompat.widget.AppCompatImageView-->
-    <!--                android:id="@+id/knobPositionIv"-->
-    <!--                android:layout_width="36dp"-->
-    <!--                android:layout_height="36dp"-->
-    <!--                android:layout_marginTop="16dp"-->
-    <!--                android:src="@drawable/ic_change_knob_position"-->
-    <!--                app:layout_constraintBottom_toTopOf="@+id/knobPositionTv"-->
-    <!--                app:layout_constraintEnd_toEndOf="parent"-->
-    <!--                app:layout_constraintStart_toStartOf="parent"-->
-    <!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/knobPositionTv"-->
-    <!--                style="@style/Label.10sp"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginHorizontal="32dp"-->
-    <!--                android:gravity="center"-->
-    <!--                android:text="@string/change_knob_position"-->
-    <!--                android:textColor="@color/black"-->
-    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--                app:layout_constraintEnd_toEndOf="parent"-->
-    <!--                app:layout_constraintHorizontal_bias="0.5"-->
-    <!--                app:layout_constraintStart_toStartOf="parent"-->
-    <!--                app:layout_constraintTop_toBottomOf="@+id/knobPositionIv" />-->
-
-
-    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-    <!--    </androidx.cardview.widget.CardView>-->
-
-    <!--    <androidx.cardview.widget.CardView-->
-    <!--        android:id="@+id/cardView3"-->
-    <!--        android:layout_width="100dp"-->
-    <!--        android:layout_height="100dp"-->
-    <!--        app:cardCornerRadius="12dp"-->
-    <!--        app:cardElevation="6dp"-->
-    <!--        app:cardBackgroundColor="@color/white"-->
-    <!--        app:layout_constraintBottom_toBottomOf="@+id/cardView"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.5"-->
-    <!--        app:layout_constraintStart_toEndOf="@+id/cardView"-->
-    <!--        app:layout_constraintTop_toTopOf="@+id/cardView">-->
-
-    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-    <!--            android:id="@+id/changeWifiCl"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:background="?android:attr/selectableItemBackground"-->
-    <!--            android:clickable="true"-->
-    <!--            android:focusable="true">-->
-
-    <!--            <androidx.appcompat.widget.AppCompatImageView-->
-    <!--                android:id="@+id/changeWifiIv"-->
-    <!--                android:layout_width="36dp"-->
-    <!--                android:layout_height="36dp"-->
-    <!--                android:layout_marginTop="16dp"-->
-    <!--                android:src="@drawable/ic_wifi"-->
-    <!--                app:layout_constraintEnd_toEndOf="parent"-->
-    <!--                app:layout_constraintHorizontal_bias="0.5"-->
-    <!--                app:layout_constraintStart_toStartOf="parent"-->
-    <!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/changeWifiTv"-->
-    <!--                style="@style/Label.10sp"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginHorizontal="32dp"-->
-    <!--                android:gravity="center"-->
-    <!--                android:text="@string/change_wifi"-->
-    <!--                android:textColor="@color/black"-->
-    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--                app:layout_constraintEnd_toEndOf="parent"-->
-    <!--                app:layout_constraintHorizontal_bias="0.5"-->
-    <!--                app:layout_constraintStart_toStartOf="parent"-->
-    <!--                app:layout_constraintTop_toBottomOf="@+id/changeWifiIv" />-->
-
-    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-    <!--    </androidx.cardview.widget.CardView>-->
-
-    <!--    <androidx.cardview.widget.CardView-->
-    <!--        android:id="@+id/cardView4"-->
-    <!--        android:layout_width="100dp"-->
-    <!--        android:layout_height="100dp"-->
-    <!--        app:cardCornerRadius="12dp"-->
-    <!--        android:layout_marginTop="32dp"-->
-    <!--        app:cardElevation="6dp"-->
-    <!--        app:cardBackgroundColor="@color/white"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.5"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/cardView">-->
-
-    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-    <!--            android:id="@+id/changeKnobOrientationCl"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:background="?android:attr/selectableItemBackground"-->
-    <!--            android:clickable="true"-->
-    <!--            android:focusable="true">-->
-
-    <!--            <androidx.appcompat.widget.AppCompatImageView-->
-    <!--                android:id="@+id/changeKnobOrientationIv"-->
-    <!--                android:layout_width="36dp"-->
-    <!--                android:layout_height="36dp"-->
-    <!--                android:layout_marginTop="16dp"-->
-    <!--                android:src="@drawable/ic_change_knob_orientation"-->
-    <!--                app:layout_constraintEnd_toEndOf="parent"-->
-    <!--                app:layout_constraintHorizontal_bias="0.5"-->
-    <!--                app:layout_constraintStart_toStartOf="parent"-->
-    <!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--            <TextView-->
-    <!--                android:id="@+id/changeKnobOrientationTv"-->
-    <!--                style="@style/Label.10sp"-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginHorizontal="32dp"-->
-    <!--                android:gravity="center"-->
-    <!--                android:text="@string/change_knob_orientation"-->
-    <!--                android:textColor="@color/black"-->
-    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--                app:layout_constraintEnd_toEndOf="parent"-->
-    <!--                app:layout_constraintHorizontal_bias="0.5"-->
-    <!--                app:layout_constraintStart_toStartOf="parent"-->
-    <!--                app:layout_constraintTop_toBottomOf="@+id/changeKnobOrientationIv" />-->
-
-
-    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-    <!--    </androidx.cardview.widget.CardView>-->
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -203,7 +49,6 @@
         android:paddingHorizontal="@dimen/_10sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/macAddressTv"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/knobTv"
         tools:listitem="@layout/settings_item" />
@@ -218,7 +63,6 @@
         android:layout_marginVertical="@dimen/margin_horizontal"
         android:textColor="@color/gray"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="MAC ID: 588E812C2466" />
 

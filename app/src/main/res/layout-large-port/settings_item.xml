@@ -16,11 +16,11 @@
         android:layout_marginVertical="@dimen/_5sdp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="8dp"
-        app:contentPadding="15dp">
+        app:contentPadding="13dp">
 
         <TextView
             android:id="@+id/optionTv"
-            style="@style/Label.Mini"
+            style="@style/Label.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@+id/arrowIv"

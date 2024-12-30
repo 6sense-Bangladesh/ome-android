@@ -49,10 +49,7 @@ class DeviceViewModel @Inject constructor(
         savedStateHandle.getStateFlow("deviceSettingsList",
             buildList {
                 add(SettingsTitleItemModel(title = "Settings"))
-                if(!isDualZone)
-                    addAll(DeviceSettingsItemModel.entries.toList())
-                else
-                    addAll(DeviceSettingsItemModel.entries.toMutableList().apply { remove(DeviceSettingsItemModel.KnobCalibration) })
+                addAll(DeviceSettingsItemModel.entries.toList())
             }
         )
     }

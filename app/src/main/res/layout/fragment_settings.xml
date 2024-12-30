@@ -10,8 +10,11 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:nestedScrollingEnabled="false"
         android:paddingHorizontal="@dimen/actionBarPaddingHorizontal"
+        android:paddingTop="@dimen/_5sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/settings_item" />

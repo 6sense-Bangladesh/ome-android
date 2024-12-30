@@ -24,7 +24,6 @@ import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.parcelize.Parcelize
-import kotlin.math.abs
 import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
@@ -373,7 +372,11 @@ class DeviceDetailsFragment :
     }
 
     private fun changeBurnerStatus(currentAngle: Int, vararg states: BurnerState = burnerStates.toTypedArray()) {
-        states.minByOrNull { abs(it.level - currentAngle) }?.apply {
+        states.minByOrNull {
+            KnobAngleManager.normalizeAngle(it.level - currentAngle).let { dif ->
+                minOf(dif, 360 - dif)
+            }
+        }?.apply {
             binding.statusBurner.applyState()  // Let the state apply its specific styles
             viewModel.isEnable.value = type != BurnerState.State.Off
             if(type == BurnerState.State.Off)

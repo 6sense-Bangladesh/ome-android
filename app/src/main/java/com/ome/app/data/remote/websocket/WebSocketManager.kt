@@ -9,7 +9,6 @@ import com.ome.app.domain.model.network.response.asKnobState
 import com.ome.app.domain.model.network.websocket.*
 import com.ome.app.domain.model.state.*
 import com.ome.app.utils.log
-import com.ome.app.utils.orMinusOne
 import com.ome.app.utils.tryInMain
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -34,24 +33,30 @@ class WebSocketManager(private val context: Context) {
 
     companion object { private const val TAG = "KnobSocketWeb" }
 
-    private val client = HttpClient(OkHttp) {
-        engine {
-            config { followRedirects(true) }
-            addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
-            addInterceptor(ChuckerInterceptor(context))
-            preconfigured = OkHttpClient.Builder()
-                .pingInterval(interval = 5000L, TimeUnit.MILLISECONDS)
-                .build()
+    private val client by lazy {
+        HttpClient(OkHttp) {
+            engine {
+                config { followRedirects(true) }
+                addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
+                addInterceptor(ChuckerInterceptor(context))
+                preconfigured = OkHttpClient.Builder()
+                    .pingInterval(interval = 5000L, TimeUnit.MILLISECONDS)
+                    .build()
+            }
+            install(WebSockets) {contentConverter = GsonWebsocketContentConverter() }
+            install(DefaultRequest) { header("x-inirv-vsn", "6") }
         }
-        install(WebSockets) {contentConverter = GsonWebsocketContentConverter() }
-        install(DefaultRequest) { header("x-inirv-vsn", "6") }
     }
 
     private var webSocketJob: DefaultClientWebSocketSession? = null
     private val webSocketScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
     suspend fun initKnobWebSocket(knobs: List<KnobDto>, userId: String) {
-        tryInMain { delay(1.2.minutes) ; onSocketConnect(connected) }
+        tryInMain {
+            delay(1.2.minutes)
+            if(!connected)
+                onSocketConnect(false)
+        }
         val knobMacs = knobs.joinToString(separator = ",") { knob -> knob.macAddr }
         val knobStates = knobs.associateBy { it.macAddr }.mapValues { it.value.asKnobState }
         knobState.value = knobStates
@@ -98,7 +103,7 @@ class WebSocketManager(private val context: Context) {
                                     if (it.macAddr == null) return@also
                                     knobState.value = knobState.value.toMutableMap().apply {
                                         val currentKnobState = this[it.macAddr]
-                                        val value = it.value.toString().toIntOrNull().orMinusOne()
+                                        val value = it.value.toString().toDoubleOrNull()?.toInt()
                                         this[it.macAddr] = currentKnobState?.copy(battery = value)
                                             ?: KnobState(battery = value)
                                     }.toMap()
@@ -208,6 +213,7 @@ class WebSocketManager(private val context: Context) {
                     }
                 }
             }.onFailure {
+                if(it is CancellationException) return@launch
                 it.printStackTrace()
             }
         }

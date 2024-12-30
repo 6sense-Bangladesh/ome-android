@@ -8,6 +8,7 @@ import com.ome.app.domain.model.network.request.SetCalibrationRequest
 import com.ome.app.domain.model.network.request.Zone
 import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.state.*
+import com.ome.app.utils.KnobAngleManager
 import com.ome.app.utils.isFalse
 import com.ome.app.utils.orFalse
 import kotlinx.parcelize.Parcelize
@@ -16,7 +17,7 @@ import java.util.UUID
 @Parcelize
 data class KnobDto(
     @SerializedName("angle") val angle: Int = 0,
-    @SerializedName("battery") val battery: Int = 0,
+    @SerializedName("battery") val battery: Int? = null,
     @SerializedName("batteryVolts") val batteryVolts: Double = 0.0,
     @SerializedName("calibrated") val calibrated: Boolean? = null,
     @SerializedName("calibration") val calibration: CalibrationDto = CalibrationDto(),
@@ -114,8 +115,8 @@ val KnobDto.asBurnerState
             add(BurnerState.Medium(cal.zone1.mediumAngle))
             add(BurnerState.High(cal.zone1.highAngle))
             if(cal.rotation != Rotation.DUAL) {
-                add(BurnerState.LowMid((cal.zone1.lowAngle + cal.zone1.mediumAngle)/2))
-                add(BurnerState.HighMid((cal.zone1.highAngle + cal.zone1.mediumAngle)/2))
+                add(BurnerState.LowMid(KnobAngleManager.averageAngle(cal.zone1.lowAngle, cal.zone1.mediumAngle)))
+                add(BurnerState.HighMid(KnobAngleManager.averageAngle(cal.zone1.mediumAngle, cal.zone1.highAngle)))
             }
         }
         if(cal.zone2 != null){

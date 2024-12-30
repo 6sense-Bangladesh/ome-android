@@ -135,11 +135,10 @@ class MyStoveFragment :
             var getKnobStateScope : CoroutineScope? = null
             val listOfFiveBurners = listOf(knob1, knob2, knob4, knob5, knob3)
             val listOfSixBurners = listOf(knob1, knob2, knob3, knob4, knob5, knob6)
-            mainViewModel.knobs.collectWithLifecycle {knobs->
+            mainViewModel.stoveRepository.knobsFlow.collectWithLifecycle {knobs->
                 getKnobStateScope?.cancel()
                 val currentStovePositions = knobs.map { it.stovePosition }
                 currentStovePositions.log("stovePositions current")
-                viewModel.lastStovePositions.log("stovePositions last")
                 listOf(1,2,3,4,5,6).minus(currentStovePositions.toSet()).apply { log("stovePositions minus") }.forEach {
                     when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
                         StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS ->
@@ -148,7 +147,6 @@ class MyStoveFragment :
                             listOfSixBurners.getOrNull(it-1)?.resetKnobState()
                     }
                 }
-                viewModel.lastStovePositions = currentStovePositions
                 knobs.forEach { knob->
                     when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
                         StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS ->
@@ -156,25 +154,17 @@ class MyStoveFragment :
                         else ->
                             listOfSixBurners.getOrNull(knob.stovePosition-1)?.setupKnob(knob)
                     }
-                    mainViewModel.getKnobStateByMac(knob.macAddr).collectWithLifecycleStateIn {knobState ->
+                    mainViewModel.getKnobStateByMac(knob.macAddr).collectWithLifecycleNoRepeat {knobState ->
                         getKnobStateScope = this
-                        if(knobState.angle == null) return@collectWithLifecycleStateIn
+                        if(knobState.angle == null) return@collectWithLifecycleNoRepeat
                         when(mainViewModel.userInfo.value.stoveOrientation.stoveOrientation){
                             StoveOrientation.FIVE_BURNERS, StoveOrientation.FOUR_BAR_BURNERS -> {
                                 listOfFiveBurners.getOrNull(knob.stovePosition - 1)
-                                    ?.apply{
-                                        changeKnobState(knobState, knob.calibration.toCalibration(knob.calibrated))
-                                        if(knobState.knobSetSafetyMode.isTrue())
-                                            setKnobPosition( knob.calibration.offAngle.toFloat())
-                                    }
+                                    ?.changeKnobState(knobState, knob.calibration.toCalibration(knob.calibrated))
                             }
                             else -> {
                                 listOfSixBurners.getOrNull(knob.stovePosition - 1)
-                                    ?.apply{
-                                        changeKnobState(knobState, knob.calibration.toCalibration(knob.calibrated))
-                                        if(knobState.knobSetSafetyMode.isTrue())
-                                            setKnobPosition( knob.calibration.offAngle.toFloat())
-                                    }
+                                    ?.changeKnobState(knobState, knob.calibration.toCalibration(knob.calibrated))
                             }
                         }
                         /*if(knobState.knobSetSafetyMode.isTrue()){
