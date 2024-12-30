@@ -5,6 +5,24 @@
     android:id="@+id/mainNavGraph"
     app:startDestination="@id/deviceDetailsFragment">
 
+    <action
+        android:id="@+id/actionInternetConnectionFragment"
+        app:destination="@id/noInternetConnectionFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
+    <action
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        android:id="@+id/actionDashboardFragment"
+        app:destination="@id/dashboardFragment"
+        app:launchSingleTop="true"
+        app:popUpTo="@+id/mainNavGraph"
+        app:popUpToInclusive="true" />
 
     <fragment
         android:id="@+id/launchFragment"
@@ -293,9 +311,6 @@
         android:label="DashboardFragment"
         tools:layout="@layout/fragment_dashboard">
 
-<!--        <argument android:name="nav_arg" app:argType="string" />-->
-<!--        <deepLink app:uri="ome://navigation/dashboard/{nav_arg}" />-->
-
         <action
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -376,16 +391,12 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_dashboardFragment_to_welcomeFragment"
-            app:destination="@id/welcomeFragment" />
+            app:destination="@id/welcomeFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/mainNavGraph"
+            app:popUpToInclusive="true"  />
     </fragment>
 
-    <action
-        android:id="@+id/actionInternetConnectionFragment"
-        app:destination="@id/noInternetConnectionFragment"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right" />
     <fragment
         android:id="@+id/noInternetConnectionFragment"
         android:name="com.ome.app.presentation.internet_error.NoInternetConnectionFragment"
@@ -501,6 +512,16 @@
             android:id="@+id/action_knobWakeUpFragment_to_metalPlateInstallationFragment"
             app:destination="@id/metalPlateInstallationFragment"
             />
+        <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_knobWakeUpFragment_to_setupCompleteFragment"
+            app:destination="@id/setupCompleteFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/mainNavGraph"
+            app:popUpToInclusive="true"  />
     </fragment>
     <fragment
         android:id="@+id/metalPlateInstallationFragment"
@@ -682,19 +703,19 @@
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.settings.add_knob.zone.ZoneSelectionFragmentParams" />
         <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_zoneSelectionFragment_to_directionSelectionFragment"
-            app:destination="@id/directionSelectionFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:destination="@id/directionSelectionFragment" />
         <action
-            android:id="@+id/action_zoneSelectionFragment_to_deviceCalibrationFragment"
-            app:destination="@id/deviceCalibrationFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_zoneSelectionFragment_to_deviceCalibrationFragment"
+            app:destination="@id/deviceCalibrationFragment" />
 
     </fragment>
     <fragment
@@ -707,12 +728,12 @@
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.settings.add_knob.direction.DirectionSelectionFragmentParams" />
         <action
-            android:id="@+id/action_directionSelectionFragment_to_deviceCalibrationFragment"
-            app:destination="@id/deviceCalibrationFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_directionSelectionFragment_to_deviceCalibrationFragment"
+            app:destination="@id/deviceCalibrationFragment" />
     </fragment>
 
 
@@ -736,12 +757,12 @@
             android:name="params"
             app:argType="com.ome.app.presentation.dashboard.settings.add_knob.wifi.WifiListFragmentParams" />
         <action
-            android:id="@+id/action_wifiListFragment_to_connectToWifiPasswordFragment"
-            app:destination="@id/connectToWifiPasswordFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            app:popExitAnim="@anim/slide_out_right"
+            android:id="@+id/action_wifiListFragment_to_connectToWifiPasswordFragment"
+            app:destination="@id/connectToWifiPasswordFragment"/>
     </fragment>
 
 

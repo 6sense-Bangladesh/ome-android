@@ -82,7 +82,7 @@ class DeviceCalibrationFragment :
                     if (params.isComeFromSettings)
                         popBackSafe(R.id.deviceSettingsFragment) ?: popBackSafe(R.id.deviceDetailsFragment)
                     else
-                        popBackSafe(R.id.dashboardFragment)
+                        popBackSafe(R.id.dashboardFragment, false) ?: navigateSafe(R.id.actionDashboardFragment)
                     true
                 }
 

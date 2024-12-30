@@ -7,9 +7,7 @@ import androidx.navigation.fragment.navArgs
 import com.ome.app.R
 import com.ome.app.databinding.FragmentSetupCompleteBinding
 import com.ome.app.presentation.base.BaseFragment
-import com.ome.app.utils.makeGone
-import com.ome.app.utils.popBackSafe
-import com.ome.app.utils.setBounceClickListener
+import com.ome.app.utils.*
 
 class SetupCompleteFragment :
     BaseFragment<SetupCompleteViewModel, FragmentSetupCompleteBinding>(
@@ -46,7 +44,7 @@ class SetupCompleteFragment :
             if(args.isComeFromSettings)
                 popBackSafe(R.id.deviceSettingsFragment, false) ?: popBackSafe(R.id.deviceDetailsFragment, false)
             else
-                popBackSafe(R.id.dashboardFragment, false)
+                popBackSafe(R.id.dashboardFragment, false) ?: navigateSafe(R.id.actionDashboardFragment)
         }
 
     }

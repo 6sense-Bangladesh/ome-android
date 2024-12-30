@@ -66,7 +66,7 @@ class KnobInstallationManualFragment :
             if(params.isComeFromSettings)
                 popBackSafe()
             else
-                popBackSafe(R.id.dashboardFragment, false)
+                popBackSafe(R.id.dashboardFragment, false) ?: navigateSafe(R.id.actionDashboardFragment)
         }
     }
 }

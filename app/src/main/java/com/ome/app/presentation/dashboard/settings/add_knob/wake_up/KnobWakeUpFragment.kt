@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.ome.app.BuildConfig
 import com.ome.app.databinding.FragmentKnobWakeUpBinding
 import com.ome.app.presentation.base.BaseFragment
 import com.ome.app.presentation.base.EmptyViewModel
@@ -35,6 +36,11 @@ class KnobWakeUpFragment : BaseFragment<EmptyViewModel, FragmentKnobWakeUpBindin
                     MetalPlateInstallationParams(selectedKnobPosition = params.selectedKnobPosition)
                 )
             )
+        }
+        if(BuildConfig.IS_INTERNAL_TESTING){
+            binding.shaftIv.setBounceClickListener {
+                navigateSafe(KnobWakeUpFragmentDirections.actionKnobWakeUpFragmentToSetupCompleteFragment(false))
+            }
         }
     }
 

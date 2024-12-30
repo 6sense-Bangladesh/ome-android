@@ -101,7 +101,8 @@ class MainVM @Inject constructor(
 
     fun getAllKnobsUntilNotEmpty() {
         launch(ioContext) {
-            while (true) {
+            var retryCount = 0
+            while (retryCount < 10) {
                 if (!connectionListener.isConnected) {
                     delay(1.seconds)
                     continue
@@ -112,7 +113,8 @@ class MainVM @Inject constructor(
                         lst.associateByTo(mutableMapOf(), { it.macAddr }, { it.asKnobState })
                     break
                 }
-                delay(1.seconds)
+                delay(1.seconds * retryCount)
+                retryCount++
             }
         }
     }
@@ -216,11 +218,11 @@ class MainVM @Inject constructor(
 
     fun connectToSocket(needStatus: Boolean = false) {
         launch(ioContext, needStatus) {
-            val knobs = stoveRepository.getAllKnobs()
+            val knobs = tryGet { stoveRepository.getAllKnobs() }
             loadingLiveData.postValue(false)
             try {
                 pref.getUserId()?.let { userId ->
-                    if (knobs.isNotEmpty())
+                    if (!knobs.isNullOrEmpty())
                         webSocketManager.initKnobWebSocket(knobs, userId)
                 }
             } catch (e: Exception) {
