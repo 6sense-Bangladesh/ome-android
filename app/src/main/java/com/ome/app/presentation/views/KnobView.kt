@@ -304,28 +304,25 @@ class KnobView @JvmOverloads constructor(
         if (calibration.rotation != Rotation.DUAL) {
             val zone = calibration.zone1 ?: return
             binding.knobProgressSingleZone.setupArc(
-                lowAngle = zone.lowAngle.toFloat(),
-                highAngle = zone.highAngle.toFloat(),
-                offAngle = calibration.offAngle.toFloat()
+                lowAngle = zone.lowAngle,
+                highAngle = zone.highAngle,
+                offAngle = calibration.offAngle
             )
 
         } else {
             val zone1 = calibration.zone1 ?: return
             val zone2 = calibration.zone2 ?: return
 
-            val view1 = binding.knobProgressFirstZone
-            val view2 = binding.knobProgressSecondZone
-
             binding.knobProgressFirstZone.setupArc(
-                lowAngle = zone1.lowAngle.toFloat(),
-                highAngle = zone1.highAngle.toFloat(),
-                offAngle = calibration.offAngle.toFloat()
+                lowAngle = zone1.lowAngle,
+                highAngle = zone1.highAngle,
+                offAngle = calibration.offAngle
             )
 
             binding.knobProgressSecondZone.setupArc(
-                lowAngle = zone2.lowAngle.toFloat(),
-                highAngle = zone2.highAngle.toFloat(),
-                offAngle = calibration.offAngle.toFloat()
+                lowAngle = zone2.lowAngle,
+                highAngle = zone2.highAngle,
+                offAngle = calibration.offAngle
             )
         }
     }

@@ -54,6 +54,7 @@ class HeatArcDrawer {
         startAngle: Float,
         endAngle: Float,
         offAngle: Float,
+        strokeSize: Float = 10f.dp,
         extensionDegrees: Float = 10f
     ) {
         val reversePath = shouldDrawReversePath(startAngle, endAngle, offAngle)
@@ -84,7 +85,7 @@ class HeatArcDrawer {
         val paint = Paint().apply {
             style = Paint.Style.STROKE
             strokeCap = Paint.Cap.ROUND
-            strokeWidth = 10f.dp
+            strokeWidth = strokeSize
             isAntiAlias = true
             setShader(shader)
         }
@@ -134,6 +135,7 @@ class HeatArcDrawer {
 class KnobHeatArc @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
+
     private val gradientArcDrawer = HeatArcDrawer()
 
     init {
@@ -144,11 +146,11 @@ class KnobHeatArc @JvmOverloads constructor(
     private var highAngle: Float = 0f
     private var offAngle: Float = 0f
 
-    fun setupArc(lowAngle: Float, highAngle: Float, offAngle: Float){
+    fun setupArc(lowAngle: Int, highAngle: Int, offAngle: Int){
         "l-$lowAngle h-$highAngle o-$offAngle".log("KnobProgressView")
-        this.lowAngle = lowAngle
-        this.highAngle = highAngle
-        this.offAngle = offAngle
+        this.lowAngle = lowAngle.toFloat()
+        this.highAngle = highAngle.toFloat()
+        this.offAngle = offAngle.toFloat()
         invalidate()
     }
 

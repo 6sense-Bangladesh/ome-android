@@ -2,7 +2,7 @@
 <resources>
     <dimen name="actionBarPaddingHorizontal">@dimen/_2sdp</dimen>
     <dimen name="margin_horizontal">@dimen/_15sdp</dimen>
-    <dimen name="margin_top_bar">@dimen/_27sdp</dimen>
+    <dimen name="margin_top_bar">@dimen/_25sdp</dimen>
     <dimen name="icon_size">@dimen/_12sdp</dimen>
     <dimen name="field_text_size">@dimen/_9ssp</dimen>
     <dimen name="toolbar_height">@dimen/_36sdp</dimen>

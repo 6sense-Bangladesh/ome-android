@@ -1493,7 +1493,7 @@ fun FragmentActivity.crateTopSnackBar(message: String, length : Int = Snackbar.L
 
     // Adjust the position to top
     val layoutParams = snackBar.view.layoutParams as FrameLayout.LayoutParams
-    layoutParams.gravity = Gravity.TOP
+    layoutParams.gravity = Gravity.TOP or Gravity.CENTER
     lifecycleScope.launch {
         layoutParams.setMargins(0.dp, resources.getDimensionPixelSize(R.dimen.toolbar_height) + statusBarsSize() - 5.dp, 0.dp, 0.dp) //90.dp
         snackBar.view.layoutParams = layoutParams
