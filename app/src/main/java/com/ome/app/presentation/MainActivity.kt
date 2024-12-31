@@ -94,12 +94,16 @@ class MainActivity : AppCompatActivity() {
             if (viewModel.connectionListener.shouldReactOnChanges) {
                 when (status) {
                     ConnectionListener.State.Default,
-                    ConnectionListener.State.Dismissed -> Unit
+                    ConnectionListener.State.Dismissed -> {
+                        if (networkSnackBar.isShown)
+                            networkSnackBar.dismiss()
+                    }
 
                     ConnectionListener.State.HasConnection ->{
                         if(!viewModel.isSplashScreenLoading)
                             viewModel.connectToSocket()
-                        networkSnackBar.dismiss()
+                        if (networkSnackBar.isShown)
+                            networkSnackBar.dismiss()
                     }
 
                     ConnectionListener.State.NoConnection -> {
@@ -107,7 +111,8 @@ class MainActivity : AppCompatActivity() {
                         if(viewModel.isSplashScreenLoading){
                             initNavigationGraph(R.id.noInternetConnectionFragment)
                         }else if(navHostFragment.navController.currentDestination?.id != R.id.noInternetConnectionFragment){
-                            if (!networkSnackBar.isShown)
+                            toast(getString(R.string.no_internet_connection))
+//                            if (!networkSnackBar.isShown)
                                 networkSnackBar.show()
                         }
                         viewModel.isSplashScreenLoading = false

@@ -303,14 +303,12 @@ class KnobView @JvmOverloads constructor(
 
         if (calibration.rotation != Rotation.DUAL) {
             val zone = calibration.zone1 ?: return
-            val view = binding.knobProgressSingleZone
+            binding.knobProgressSingleZone.setupArc(
+                lowAngle = zone.lowAngle.toFloat(),
+                highAngle = zone.highAngle.toFloat(),
+                offAngle = calibration.offAngle.toFloat()
+            )
 
-            view.lowAngle = zone.lowAngle.toFloat()
-            view.highAngle = zone.highAngle.toFloat()
-            view.offAngle = calibration.offAngle.toFloat()
-            view.rotation = -90f
-
-            view.invalidate()
         } else {
             val zone1 = calibration.zone1 ?: return
             val zone2 = calibration.zone2 ?: return
@@ -318,18 +316,17 @@ class KnobView @JvmOverloads constructor(
             val view1 = binding.knobProgressFirstZone
             val view2 = binding.knobProgressSecondZone
 
-            view1.lowAngle = zone1.lowAngle.toFloat()
-            view1.highAngle = zone1.highAngle.toFloat()
-            view1.offAngle = calibration.offAngle.toFloat()
-            view1.rotation = -90f
+            binding.knobProgressFirstZone.setupArc(
+                lowAngle = zone1.lowAngle.toFloat(),
+                highAngle = zone1.highAngle.toFloat(),
+                offAngle = calibration.offAngle.toFloat()
+            )
 
-            view2.lowAngle = zone2.lowAngle.toFloat()
-            view2.highAngle = zone2.highAngle.toFloat()
-            view2.offAngle = calibration.offAngle.toFloat()
-            view2.rotation = -90f
-
-            view1.invalidate()
-            view2.invalidate()
+            binding.knobProgressSecondZone.setupArc(
+                lowAngle = zone2.lowAngle.toFloat(),
+                highAngle = zone2.highAngle.toFloat(),
+                offAngle = calibration.offAngle.toFloat()
+            )
         }
     }
 

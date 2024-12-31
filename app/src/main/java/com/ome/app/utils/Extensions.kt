@@ -9,6 +9,7 @@ import android.app.Activity
 import android.content.*
 import android.content.Context.VIBRATOR_SERVICE
 import android.content.pm.PackageManager
+import android.graphics.drawable.GradientDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -48,9 +49,11 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayout
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ome.app.BuildConfig
+import com.ome.app.R
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
@@ -65,6 +68,7 @@ import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.coroutines.resume
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -958,7 +962,7 @@ inline fun <T> tryGet(data: () -> T): T? =
         null
     }
 
-inline fun <T> tryInMain(crossinline data: suspend () -> T) =
+inline fun <T> tryInMain(crossinline data: suspend CoroutineScope.() -> T) =
     CoroutineScope(Dispatchers.Main.immediate).launch {
         try {
             data()
@@ -1449,9 +1453,53 @@ val FragmentActivity?.keyboardState: StateFlow<Triple<Boolean, Int, Insets>>
             WindowInsetsCompat.CONSUMED
         }
 
-
         return keyboardState
     }
+
+suspend fun FragmentActivity.statusBarsSize() = suspendCancellableCoroutine {
+    ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { _, insets ->
+        val statusBarsSize = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+        // Use the systemBarsTop value as needed
+        println("System Bars Top Size: $statusBarsSize")
+        if(it.isActive)
+            it.resume(statusBarsSize)
+        // Remove the listener since we only need the value once
+        ViewCompat.setOnApplyWindowInsetsListener(window.decorView, null)
+        insets
+    }
+}
+
+fun FragmentActivity.crateTopSnackBar(message: String, length : Int = Snackbar.LENGTH_INDEFINITE): Snackbar {
+    val snackBar = Snackbar.make(window.decorView, message, length)
+
+    snackBar.view.background = GradientDrawable().apply {
+        shape = GradientDrawable.RECTANGLE
+        cornerRadius = 0F
+    }
+
+    snackBar.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)?.apply {
+        layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            topMargin = -30
+            bottomMargin = -30
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            textAlignment = View.TEXT_ALIGNMENT_CENTER
+        else
+            gravity = Gravity.CENTER
+    }
+
+    // Adjust the position to top
+    val layoutParams = snackBar.view.layoutParams as FrameLayout.LayoutParams
+    layoutParams.gravity = Gravity.TOP
+    lifecycleScope.launch {
+        layoutParams.setMargins(0.dp, resources.getDimensionPixelSize(R.dimen.toolbar_height) + statusBarsSize() - 5.dp, 0.dp, 0.dp) //90.dp
+        snackBar.view.layoutParams = layoutParams
+    }
+    return snackBar
+}
 
 
 //fun isConnectedToInternet(): Boolean {

@@ -5,4 +5,5 @@
     <dimen name="margin_top_bar">@dimen/_30sdp</dimen>
     <dimen name="icon_size">@dimen/_18sdp</dimen>
     <dimen name="field_text_size">@dimen/_12ssp</dimen>
+    <dimen name="toolbar_height">@dimen/_50sdp</dimen>
 </resources>

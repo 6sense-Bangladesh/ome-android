@@ -1,10 +1,16 @@
 <resources>
 
-    <style name="OmeButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">52dp</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:letterSpacing">.01</item>
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="titleTextAppearance">@style/Title.Medium</item>
+        <item name="buttonGravity">center_vertical</item>
+        <item name="android:layout_height">@dimen/toolbar_height</item>
+        <item name="android:paddingStart">@dimen/actionBarPaddingHorizontal</item>
+        <item name="android:paddingEnd">@dimen/actionBarPaddingHorizontal</item>
+    </style>
+
+    <style name="AppTheme.CustomMenuPopup" parent="Widget.Material3.PopupMenu">
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="horizontalOffset">@dimen/_16sdp</item>
     </style>
 
 
@@ -51,20 +57,6 @@
         <item name="android:textSize">@dimen/_8ssp</item>
     </style>
 
-    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
-        <item name="titleTextAppearance">@style/Title.Medium</item>
-        <item name="buttonGravity">center_vertical</item>
-        <item name="android:layout_height">@dimen/_50sdp</item>
-        <item name="android:paddingStart">@dimen/actionBarPaddingHorizontal</item>
-        <item name="android:paddingEnd">@dimen/actionBarPaddingHorizontal</item>
-    </style>
-
-    <style name="AppTheme.CustomMenuPopup" parent="Widget.Material3.PopupMenu">
-        <item name="android:backgroundTint">@color/white</item>
-        <item name="horizontalOffset">@dimen/_16sdp</item>
-    </style>
-
-
 
     <style name="Label.LargeExtra">
         <item name="android:textSize">@dimen/_15ssp</item>
@@ -92,8 +84,15 @@
         <item name="android:textColor">@color/read_message_color</item>
     </style>
 
-    <style name="OmeButton.Blue">
+
+    <style name="OmeButton">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/_35sdp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">.01</item>
+    </style>
+
+    <style name="OmeButton.Blue">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_margin">@dimen/margin_horizontal</item>
         <item name="android:textSize">@dimen/_11ssp</item>

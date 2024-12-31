@@ -1,16 +1,11 @@
 package com.ome.app.presentation.views
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.LinearGradient
-import android.graphics.Paint
-import android.graphics.RectF
-import android.graphics.Shader
+import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import com.ome.app.utils.dp
+import com.ome.app.utils.log
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.sin
@@ -141,26 +136,21 @@ class KnobHeatArc @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
     private val gradientArcDrawer = HeatArcDrawer()
 
-    var lowAngle: Float = 0f
-        set(value) {
-            field = value
-            Log.d("KnobProgressView", "Low angle set to: $value")
-            invalidate()
-        }
+    init {
+        rotation = -90f
+    }
 
-    var highAngle: Float = 0f
-        set(value) {
-            field = value
-            Log.d("KnobProgressView", "High angle set to: $value")
-            invalidate()
-        }
+    private var lowAngle: Float = 0f
+    private var highAngle: Float = 0f
+    private var offAngle: Float = 0f
 
-    var offAngle: Float = 0f
-        set(value) {
-            field = value
-            Log.d("KnobProgressView", "Off angle set to: $value")
-            invalidate()
-        }
+    fun setupArc(lowAngle: Float, highAngle: Float, offAngle: Float){
+        "l-$lowAngle h-$highAngle o-$offAngle".log("KnobProgressView")
+        this.lowAngle = lowAngle
+        this.highAngle = highAngle
+        this.offAngle = offAngle
+        invalidate()
+    }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)

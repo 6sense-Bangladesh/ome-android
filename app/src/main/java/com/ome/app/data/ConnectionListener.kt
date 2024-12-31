@@ -5,11 +5,14 @@ import android.net.*
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.ome.app.utils.log
-import com.ome.app.utils.loge
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 
 interface ConnectionListener {
 
@@ -56,25 +59,30 @@ class ConnectionListenerImpl(
 
     private val networkRequest = NetworkRequest.Builder()
         .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        .apply {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+        }.addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+        .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
         .addTransportType(NetworkCapabilities.TRANSPORT_ETHERNET)
         .addTransportType(NetworkCapabilities.TRANSPORT_BLUETOOTH)
-        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-        .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
         .build()
 
     private val networkCallback by lazy {
         object : ConnectivityManager.NetworkCallback() {
             override fun onLost(network: Network) {
-                isConnected = false
-                if (connectionStatusFlow.value != ConnectionListener.State.Dismissed) {
-                    connectionStatusFlow.value = ConnectionListener.State.NoConnection
-                }
+                "Network lost".log("ConnectionListener")
+                updateConnectionStatus()
             }
 
             override fun onAvailable(network: Network) {
-                log("Network available")
-                isConnected = true
-                connectionStatusFlow.value = ConnectionListener.State.HasConnection
+                "Network available".log("ConnectionListener")
+                updateConnectionStatus()
+            }
+
+            override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+                "Network capabilities changed".log("ConnectionListener")
+                updateConnectionStatus()
             }
         }
     }
@@ -84,13 +92,12 @@ class ConnectionListenerImpl(
         updateConnectionStatus()
     }
 
-
     override fun unregisterListener() {
         try {
             connectivityManager?.unregisterNetworkCallback(networkCallback)
         } catch (ignore: IllegalArgumentException) {
-            // ignore: NetworkCallback was not registered
-            loge("ConnectionStatusListener unregisterListener exception: $ignore")
+            // Ignore: NetworkCallback was not registered
+            "ConnectionListener unregisterListener exception: $ignore".log("ConnectionListener")
         }
 
         connectionStatusFlow.value = ConnectionListener.State.Default
@@ -104,30 +111,43 @@ class ConnectionListenerImpl(
     @Suppress("DEPRECATION")
     private fun isNetworkAvailable(): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val nw = connectivityManager?.activeNetwork ?: return false
-            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
-            return when {
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                //for other device how are able to connect with Ethernet
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                //for check internet over Bluetooth
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
-                else -> false
-            }
+            val activeNetwork = connectivityManager?.activeNetwork ?: return false
+            val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+            return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                    networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
         } else {
             val nwInfo = connectivityManager?.activeNetworkInfo ?: return false
             return nwInfo.isConnected
         }
     }
 
-    private fun updateConnectionStatus() {
-        connectionStatusFlow.value =(
-            if (!isNetworkAvailable()) {
-                ConnectionListener.State.NoConnection
-            } else {
-                ConnectionListener.State.HasConnection
+    private suspend fun hasInternetAccess(): Boolean {
+        return try {
+            withContext(Dispatchers.IO) {
+                val url = URL("https://www.google.com")
+                val connection = url.openConnection() as HttpURLConnection
+                connection.connectTimeout = 2000
+                connection.connect()
+                connection.responseCode == 200
             }
-        )
+        } catch (e: IOException) {
+            false
+        }
+    }
+
+    private var statusJob : Job? = null
+    private val statusScope = CoroutineScope(Dispatchers.IO)
+
+    private fun updateConnectionStatus() {
+        statusJob?.cancel()
+        statusJob = statusScope.launch {
+            val networkAvailable = isNetworkAvailable()
+            isConnected = if (networkAvailable) hasInternetAccess() else false
+            connectionStatusFlow.value = if (isConnected) {
+                ConnectionListener.State.HasConnection
+            } else {
+                ConnectionListener.State.NoConnection
+            }
+        }
     }
 }

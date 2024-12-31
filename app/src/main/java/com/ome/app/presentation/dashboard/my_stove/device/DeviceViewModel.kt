@@ -13,6 +13,7 @@ import com.ome.app.domain.repo.StoveRepository
 import com.ome.app.presentation.base.BaseViewModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.DeviceSettingsItemModel
 import com.ome.app.presentation.dashboard.settings.adapter.model.SettingsTitleItemModel
+import com.ome.app.utils.isTrue
 import com.ome.app.utils.log
 import com.ome.app.utils.toTimer
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -90,7 +91,8 @@ class DeviceViewModel @Inject constructor(
                 params = KnobRequest(calibrated = false),
                 macAddress = macAddress
             )
-            stoveRepository.setSafetyLockOff(macAddress)
+            if(stoveRepository.knobsFlow.value.find { it.macAddr == macAddress }?.safetyLock.isTrue())
+                stoveRepository.setSafetyLockOff(macAddress)
             stoveRepository.deleteKnob(macAddress)
             stoveRepository.knobsFlow.value = stoveRepository.knobsFlow.value.filter { it.macAddr != macAddress }
             webSocketManager.knobState .value = webSocketManager.knobState.value.filter { it.key != macAddress }
