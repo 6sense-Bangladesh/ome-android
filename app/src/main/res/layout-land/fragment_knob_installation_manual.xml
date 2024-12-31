@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragment">
+
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        style="@style/Widget.App.Toolbar"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_back"
+        app:title="@string/replace_knob_top" />
+
+
+    <TextView
+        android:id="@+id/labelTv"
+        style="@style/Title.Small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="@dimen/margin_top_bar"
+        android:text="@string/replace_knob_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_marginTop="@dimen/margin_top_bar"
+        android:id="@+id/shaftIv"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_160sdp"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toStartOf="@+id/guideline12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.RectRound"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <com.apachat.loadingbutton.core.customViews.CircularProgressButton
+        android:id="@+id/continueBtn"
+        style="@style/OmeButton.Blue"
+        android:layout_width="0dp"
+        android:text="@string/continue_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline12" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+       app:layout_constraintGuide_percent=".45"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
