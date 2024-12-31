@@ -35,7 +35,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
+                android:layout_marginVertical="@dimen/_20sdp"
                 app:layout_constraintBottom_toTopOf="@+id/btnCancel"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -56,11 +56,11 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_height="55dp"
                         android:layout_gravity="center"
                         app:cardBackgroundColor="@android:color/transparent"
                         app:strokeColor="?colorPrimary"
-                        app:strokeWidth="@dimen/_2sdp" />
+                        app:strokeWidth="2.5dp" />
 
                     <TextView
                         style="@style/Label.Mini"
@@ -104,11 +104,11 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_height="55dp"
                         android:layout_gravity="center"
                         app:cardBackgroundColor="@android:color/transparent"
                         app:strokeColor="?colorPrimary"
-                        app:strokeWidth="@dimen/_2sdp" />
+                        app:strokeWidth="2.5dp" />
 
                     <TextView
                         style="@style/Label.Mini"
@@ -152,11 +152,11 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_height="55dp"
                         android:layout_gravity="center"
                         app:cardBackgroundColor="@android:color/transparent"
                         app:strokeColor="?colorPrimary"
-                        app:strokeWidth="@dimen/_2sdp" />
+                        app:strokeWidth="2.5dp" />
 
                     <TextView
                         style="@style/Label.Mini"

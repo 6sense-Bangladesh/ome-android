@@ -54,7 +54,7 @@ class HeatArcDrawer {
         startAngle: Float,
         endAngle: Float,
         offAngle: Float,
-        strokeSize: Float = 10f.dp,
+        strokeSize: Int = 10.dp,
         extensionDegrees: Float = 10f
     ) {
         val reversePath = shouldDrawReversePath(startAngle, endAngle, offAngle)
@@ -85,7 +85,7 @@ class HeatArcDrawer {
         val paint = Paint().apply {
             style = Paint.Style.STROKE
             strokeCap = Paint.Cap.ROUND
-            strokeWidth = strokeSize
+            strokeWidth = strokeSize.toFloat()
             isAntiAlias = true
             setShader(shader)
         }
@@ -133,7 +133,7 @@ class HeatArcDrawer {
 //
 
 class KnobHeatArc @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    private val context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
     private val gradientArcDrawer = HeatArcDrawer()
@@ -145,12 +145,20 @@ class KnobHeatArc @JvmOverloads constructor(
     private var lowAngle: Float = 0f
     private var highAngle: Float = 0f
     private var offAngle: Float = 0f
+    private var strokeSize: Int = 10
 
-    fun setupArc(lowAngle: Int, highAngle: Int, offAngle: Int){
+    enum class Size(val value: Int){
+        Large(12.dp),
+        Medium(10.dp),
+        Small(7.dp)
+    }
+
+    fun setupArc(lowAngle: Int, highAngle: Int, offAngle: Int, size: Size = Size.Large){
         "l-$lowAngle h-$highAngle o-$offAngle".log("KnobProgressView")
         this.lowAngle = lowAngle.toFloat()
         this.highAngle = highAngle.toFloat()
         this.offAngle = offAngle.toFloat()
+        strokeSize = size.value
         invalidate()
     }
 
@@ -165,6 +173,7 @@ class KnobHeatArc @JvmOverloads constructor(
             startAngle = highAngle,
             endAngle = lowAngle,
             offAngle = offAngle,
+            strokeSize = strokeSize,
             extensionDegrees = if (max(lowAngle, highAngle) == 0f) 0f else 10f
         )
     }

@@ -30,31 +30,31 @@
     </style>
 
     <style name="Title.ExtraLarge">
-        <item name="android:textSize">@dimen/_30ssp</item>
+        <item name="android:textSize">@dimen/_28ssp</item>
     </style>
 
     <style name="Title.Large">
-        <item name="android:textSize">@dimen/_18ssp</item>
-    </style>
-
-    <style name="Title.MediumExtra">
         <item name="android:textSize">@dimen/_16ssp</item>
     </style>
 
-    <style name="Title.Medium">
+    <style name="Title.MediumExtra">
         <item name="android:textSize">@dimen/_14ssp</item>
     </style>
 
+    <style name="Title.Medium">
+        <item name="android:textSize">@dimen/_12ssp</item>
+    </style>
+
     <style name="Title.Small">
-        <item name="android:textSize">@dimen/_11ssp</item>
+        <item name="android:textSize">@dimen/_9ssp</item>
     </style>
 
     <style name="Title.Mini">
-        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:textSize">@dimen/_8ssp</item>
     </style>
 
     <style name="Title.MiniExtra">
-        <item name="android:textSize">@dimen/_8ssp</item>
+        <item name="android:textSize">@dimen/_6ssp</item>
     </style>
 
     <style name="Label.LargeExtra">

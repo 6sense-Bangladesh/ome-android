@@ -2,6 +2,7 @@ package com.ome.app.presentation.dashboard.my_stove
 
 import android.text.SpannableStringBuilder
 import androidx.fragment.app.viewModels
+import com.google.android.gms.common.util.DeviceProperties.isTablet
 import com.ome.app.R
 import com.ome.app.databinding.FragmentMyStoveBinding
 import com.ome.app.domain.model.network.response.KnobDto
@@ -90,6 +91,8 @@ class MyStoveFragment :
     private fun initKnob(vararg knob : KnobView) {
         knob.forEach {
             it.resetKnobState()
+            if(isTablet(requireContext()))
+                it.setFontSize(resources.getDimension(com.intuit.ssp.R.dimen._4ssp))
         }
     }
 

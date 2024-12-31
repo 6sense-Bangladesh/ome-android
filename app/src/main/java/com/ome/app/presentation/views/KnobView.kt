@@ -213,7 +213,7 @@ class KnobView @JvmOverloads constructor(
 
     fun changeKnobState(knob: KnobState, calibration: Calibration): Boolean {
         if(calibration.isCalibrated)
-            adjustKnobColorScale(calibration)
+            adjustKnobColorScale(calibration, KnobHeatArc.Size.Small)
         binding.safetyLock.changeVisibility(knob.knobSetSafetyMode.orFalse())
         knob.angle?.toFloat()?.let { setKnobPosition(it) }
         if(knob.knobSetSafetyMode.isTrue())
@@ -243,7 +243,7 @@ class KnobView @JvmOverloads constructor(
     fun changeKnobStatus(knob: KnobDto): Boolean {
         val cal = knob.calibration.toCalibration(knob.calibrated)
         if(cal.isCalibrated)
-            adjustKnobColorScale(cal)
+            adjustKnobColorScale(cal, KnobHeatArc.Size.Small)
         binding.safetyLock.changeVisibility(knob.safetyLock.orFalse())
         if(knob.safetyLock)
             setKnobPosition(knob.calibration.offAngle.toFloat())
@@ -266,14 +266,14 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
-    fun changeKnobBasicStatus(knob: KnobDto): Boolean {
+    fun changeKnobBasicStatus(knob: KnobDto, strokeSize: KnobHeatArc.Size = KnobHeatArc.Size.Large): Boolean {
         stovePosition = knob.stovePosition
         val cal = knob.calibration.toCalibration(knob.calibrated)
         changeKnobProgressVisibility(true, cal.rotation == Rotation.DUAL)
         if(knob.safetyLock)
             setKnobPosition(knob.calibration.offAngle.toFloat())
         if(cal.isCalibrated) {
-            adjustKnobColorScale(cal)
+            adjustKnobColorScale(cal, strokeSize)
             cal.zone1?.let { zone ->
                 setHighSinglePosition(zone.highAngle.toFloat())
                 if(cal.rotation != Rotation.DUAL)
@@ -299,14 +299,15 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
-    private fun adjustKnobColorScale(calibration: Calibration) {
+    private fun adjustKnobColorScale(calibration: Calibration, strokeSize: KnobHeatArc.Size = KnobHeatArc.Size.Large) {
 
         if (calibration.rotation != Rotation.DUAL) {
             val zone = calibration.zone1 ?: return
             binding.knobProgressSingleZone.setupArc(
                 lowAngle = zone.lowAngle,
                 highAngle = zone.highAngle,
-                offAngle = calibration.offAngle
+                offAngle = calibration.offAngle,
+                size = strokeSize
             )
 
         } else {
@@ -316,13 +317,15 @@ class KnobView @JvmOverloads constructor(
             binding.knobProgressFirstZone.setupArc(
                 lowAngle = zone1.lowAngle,
                 highAngle = zone1.highAngle,
-                offAngle = calibration.offAngle
+                offAngle = calibration.offAngle,
+                size = strokeSize
             )
 
             binding.knobProgressSecondZone.setupArc(
                 lowAngle = zone2.lowAngle,
                 highAngle = zone2.highAngle,
-                offAngle = calibration.offAngle
+                offAngle = calibration.offAngle,
+                size = strokeSize
             )
         }
     }

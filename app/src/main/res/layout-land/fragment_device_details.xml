@@ -171,7 +171,7 @@
 
         <TextView
             android:id="@+id/tvLevel"
-            style="@style/Label.MiniExtra"
+            style="@style/Label.Mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/level"
@@ -198,7 +198,7 @@
 
         <TextView
             android:id="@+id/tvBattery"
-            style="@style/Label.MiniExtra"
+            style="@style/Label.Mini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_1sdp"
@@ -251,7 +251,7 @@
             android:gravity="center">
 
             <TextView
-                style="@style/Label.MiniExtra"
+                style="@style/Label.Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

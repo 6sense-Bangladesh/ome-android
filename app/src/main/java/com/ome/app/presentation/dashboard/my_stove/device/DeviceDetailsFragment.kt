@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.common.util.DeviceProperties.isTablet
 import com.ome.app.BuildConfig
 import com.ome.app.R
 import com.ome.app.databinding.DialogTimerBinding
@@ -53,7 +54,12 @@ class DeviceDetailsFragment :
 
     override fun setupUI() {
         viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
-        binding.knobView.setFontSize(17F)
+        binding.knobView.setFontSize(resources.getDimension(
+            if(isTablet(requireContext()))
+                com.intuit.ssp.R.dimen._6ssp
+            else
+                com.intuit.ssp.R.dimen._4ssp
+        ))
         val selectedColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
         setupTimer()
         activeTimer()

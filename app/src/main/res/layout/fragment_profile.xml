@@ -71,7 +71,8 @@
                     android:hint="@string/first_name"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:nextFocusForward="@id/lastName" />
+                    android:nextFocusForward="@id/lastName"
+                    android:textSize="@dimen/field_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -95,7 +96,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/last_name"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textSize="@dimen/field_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,7 +119,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/email"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textSize="@dimen/field_text_size" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

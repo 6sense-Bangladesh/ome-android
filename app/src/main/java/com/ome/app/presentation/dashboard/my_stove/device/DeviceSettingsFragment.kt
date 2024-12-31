@@ -4,6 +4,7 @@ import android.content.Context
 import android.text.SpannableStringBuilder
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.common.util.DeviceProperties.isTablet
 import com.ome.app.R
 import com.ome.app.databinding.FragmentDeviceSettingsBinding
 import com.ome.app.presentation.base.BaseFragment
@@ -13,6 +14,7 @@ import com.ome.app.presentation.dashboard.settings.adapter.model.DeviceSettingsI
 import com.ome.app.presentation.dashboard.settings.add_knob.burner.SelectBurnerFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.installation.KnobInstallationManualFragmentParams
 import com.ome.app.presentation.dashboard.settings.add_knob.wifi.ConnectToWifiParams
+import com.ome.app.presentation.views.KnobHeatArc
 import com.ome.app.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,9 +33,8 @@ class DeviceSettingsFragment :
         binding.apply {
             viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
 //            name.text = params.name
-            mainViewModel.knobs.value.find { it.macAddr == params.macAddr }?.let { knob ->
-//                knobView.setFontSize(18F)
-            }
+            if(isTablet(requireContext()))
+                binding.knobView.setFontSize(resources.getDimension(com.intuit.ssp.R.dimen._5ssp))
             recyclerView.adapter = adapter
             knobTv.text = getString(R.string.knob_, viewModel.stovePosition)
             macAddressTv.text = getString(R.string.knob_mac_addr_label, params.macAddr)
@@ -55,7 +56,7 @@ class DeviceSettingsFragment :
         super.setupObserver()
         viewModel.currentKnob.collectWithLifecycle {
             it.log("currentKnob")
-            binding.knobView.changeKnobBasicStatus(it)
+            binding.knobView.changeKnobBasicStatus(it, KnobHeatArc.Size.Medium)
         }
         viewModel.knobAngle.collectWithLifecycle { angle ->
             binding.knobView.setKnobPosition(angle)
