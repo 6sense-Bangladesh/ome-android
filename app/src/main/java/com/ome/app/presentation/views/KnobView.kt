@@ -299,44 +299,37 @@ class KnobView @JvmOverloads constructor(
         }
     }
 
-    fun adjustKnobColorScale(cal: Calibration) {
-        if (cal.rotation != Rotation.DUAL) {
-            val zone = cal.zone1 ?: return
+    private fun adjustKnobColorScale(calibration: Calibration) {
 
-            // Calculate midpoint angle
+        if (calibration.rotation != Rotation.DUAL) {
+            val zone = calibration.zone1 ?: return
+            val view = binding.knobProgressSingleZone
 
+            view.lowAngle = zone.lowAngle.toFloat()
+            view.highAngle = zone.highAngle.toFloat()
+            view.offAngle = calibration.offAngle.toFloat()
+            view.rotation = -90f
 
-            // Determine scaleX
-            binding.knobProgressSingleZone.scaleX = if (KnobAngleManager.isAngleWithinSweep(cal.offAngle, zone.highAngle,zone.lowAngle)) {
-                if (KnobAngleManager.calculateAngularDistance(cal.offAngle, zone.lowAngle) < KnobAngleManager.calculateAngularDistance(cal.offAngle, zone.highAngle))
-                    1F // Closer to lowAngle side of midpoint
-                else if (
-                    KnobAngleManager.calculateAngularDistance(cal.offAngle, zone.lowAngle) > KnobAngleManager.calculateAngularDistance(cal.offAngle, zone.highAngle))
-                    1F // Closer to highAngle side of midpoint
-                else
-                    -1F // Closer to highAngle side of midpoint
-            } else {
-                // Default behavior for offAngle outside sweep angle (e.g., maintain previous scaleX)
-                -1f // Or 1F, or -1F, depending on your desired default
-            }
+            view.invalidate()
+        } else {
+            val zone1 = calibration.zone1 ?: return
+            val zone2 = calibration.zone2 ?: return
 
-            // Set the rotation to the off angle
-            binding.knobProgressSingleZone.rotation = cal.offAngle.toFloat()
-        }
-        else if (cal.zone1 != null && cal.zone2 != null) {
-            // Calculate the shortest angular distance between lowAngle and highAngle
-            val distanceToLow1 = KnobAngleManager.calculateAngularDistance(cal.offAngle, cal.zone1.lowAngle)
-            val distanceToHigh1 = KnobAngleManager.calculateAngularDistance(cal.offAngle, cal.zone1.highAngle)
-            // Calculate the shortest angular distance between lowAngle and highAngle
-            val distanceToLow2 = KnobAngleManager.calculateAngularDistance(cal.offAngle, cal.zone2.lowAngle)
-            val distanceToHigh2 = KnobAngleManager.calculateAngularDistance(cal.offAngle, cal.zone2.highAngle)
+            val view1 = binding.knobProgressFirstZone
+            val view2 = binding.knobProgressSecondZone
 
-            // Compare which angle (low or high) is closer to the off angle
-            binding.knobProgressFirstZone.scaleY = if (distanceToLow1 < distanceToHigh1) 1F else -1F
-            binding.knobProgressSecondZone.scaleY = if (distanceToLow2 < distanceToHigh2) 1F else -1F
+            view1.lowAngle = zone1.lowAngle.toFloat()
+            view1.highAngle = zone1.highAngle.toFloat()
+            view1.offAngle = calibration.offAngle.toFloat()
+            view1.rotation = -90f
 
-            binding.knobProgressFirstZone.rotation = cal.offAngle.toFloat()
-            binding.knobProgressSecondZone.rotation = cal.offAngle.toFloat()
+            view2.lowAngle = zone2.lowAngle.toFloat()
+            view2.highAngle = zone2.highAngle.toFloat()
+            view2.offAngle = calibration.offAngle.toFloat()
+            view2.rotation = -90f
+
+            view1.invalidate()
+            view2.invalidate()
         }
     }
 
@@ -404,9 +397,12 @@ class KnobView @JvmOverloads constructor(
         if(isDualZone){
             binding.knobProgressFirstZone.changeVisibility(isVisible)
             binding.knobProgressSecondZone.changeVisibility(isVisible)
+            binding.knobProgressSingleZone.changeVisibility(!isVisible)
         }
         else {
             binding.knobProgressSingleZone.changeVisibility(isVisible)
+            binding.knobProgressFirstZone.changeVisibility(!isVisible)
+            binding.knobProgressSecondZone.changeVisibility(!isVisible)
         }
     }
 
