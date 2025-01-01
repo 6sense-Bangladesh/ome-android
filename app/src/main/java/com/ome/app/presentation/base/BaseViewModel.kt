@@ -1,6 +1,7 @@
 package com.ome.app.presentation.base
 
 import androidx.annotation.MainThread
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.*
 import androidx.navigation.NavDestination
 import com.amplifyframework.auth.AuthException
@@ -12,6 +13,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel: ViewModel() {
+
+    var lastDialog : AlertDialog.Builder? = null
 
     val defaultErrorLiveData: SingleLiveEvent<String?> = SingleLiveEvent()
     val successMessageLiveData: SingleLiveEvent<String?> = SingleLiveEvent()

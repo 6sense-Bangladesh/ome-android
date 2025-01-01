@@ -57,6 +57,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
     override fun onResume() {
         super.onResume()
         setupUI()
+        viewModel.lastDialog?.show()
     }
 
     open fun setupUI() = Unit
@@ -114,15 +115,19 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
         MaterialAlertDialogBuilder(it)
             .setTitle(title)
             .setMessage(message)
+            .setCancelable(false)
             .setPositiveButton(
                 getString(R.string.continue_btn)
             ) { dialog, _ ->
+                viewModel.lastDialog = null
+                dialog.cancel()
+            }.setOnDismissListener {
                 onDismissSuccessDialog()
                 onDismiss()
-                dialog.cancel()
+            }.apply {
+                viewModel.lastDialog = this
+                show()
             }
-            .setOnDismissListener { onDismissSuccessDialog() }
-            .show()
     }
 
     protected open fun showDialog(
@@ -139,8 +144,12 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
             .setMessage(message)
             .setPositiveButton(positiveButtonText) { _, _ ->
                 onPositiveButtonClick()
+                viewModel.lastDialog = null
             }.setNegativeButton(negativeButtonText) { _, _ ->
                 onNegativeButtonClick()
+                viewModel.lastDialog = null
+            }.apply {
+                viewModel.lastDialog = this
             }.create().apply {
                 show()
                 if (isRedPositiveButton) {
@@ -155,17 +164,15 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
         MaterialAlertDialogBuilder(it)
             .setTitle(title)
             .setMessage(errorMessage ?: "Something went wrong.")
-            .setPositiveButton(
-                "Close"
-            ) { dialog, _ ->
-                onDismissErrorDialog()
+            .setPositiveButton("Close") { dialog, _ ->
                 dialog.cancel()
-            }
-            .setOnDismissListener {
+                viewModel.lastDialog = null
+            }.setOnDismissListener {
                 isErrorShowing = false
                 onDismissErrorDialog()
             }.applyIf(!isErrorShowing){
                 show()
+                viewModel.lastDialog = this
                 isErrorShowing = true
             }
     }

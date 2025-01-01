@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
+import kotlin.time.Duration.Companion.seconds
 
 interface ConnectionListener {
 
@@ -142,7 +143,16 @@ class ConnectionListenerImpl(
         statusJob?.cancel()
         statusJob = statusScope.launch {
             val networkAvailable = isNetworkAvailable()
+            var retryCount = 0
             isConnected = if (networkAvailable) hasInternetAccess() else false
+
+            while (!isConnected && retryCount < 6) {
+                retryCount++
+                delay(1.seconds * retryCount)
+                isConnected = hasInternetAccess()
+                if (isConnected) break
+            }
+
             connectionStatusFlow.value = if (isConnected) {
                 ConnectionListener.State.HasConnection
             } else {

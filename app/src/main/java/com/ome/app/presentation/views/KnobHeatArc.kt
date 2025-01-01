@@ -133,7 +133,7 @@ class HeatArcDrawer {
 //
 
 class KnobHeatArc @JvmOverloads constructor(
-    private val context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
     private val gradientArcDrawer = HeatArcDrawer()

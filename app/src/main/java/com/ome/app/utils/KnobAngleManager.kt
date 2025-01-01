@@ -302,7 +302,7 @@ object KnobAngleManager {
         firstDiv: Int,
         angleDualOffset: Int,
         offAngle: Int,
-        isRightZone: Boolean? = null,
+        isRightZone: Boolean? = null
     ): Float {
         val secondDiv = normalizeAngle(offAngle + 180)
         // Normalize the input angle to the 0–360 range
@@ -316,7 +316,7 @@ object KnobAngleManager {
             } else if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(firstDiv - angleDualOffset), angleBeta = normalizeAngle(firstDiv + 90)).ifTrue{ log("processDualKnobResult else if 1st") }) {
                 offAngle.toFloat()
             } else //if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(secondDiv + angleDualOffset), angleBeta = normalizeAngle(secondDiv + 90)).ifTrue{ log("processDualKnobResult !else if 2nd") }) {
-                (secondDiv - angleDualOffset).toFloat()
+                normalizeAngle(secondDiv - angleDualOffset).toFloat()
         } else {
             if (normalizedAngle.isInRange(angleAlpha = secondDiv + angleDualOffset, angleBeta = normalizeAngle(firstDiv - angleDualOffset)).ifTrue { log("processDualKnobResult !if") }) {
                 normalizedAngle.toFloat()
@@ -324,7 +324,7 @@ object KnobAngleManager {
             else if (normalizedAngle.isInRange(angleAlpha = firstDiv + angleDualOffset, angleBeta = firstDiv + 90).ifTrue { log("processDualKnobResult !else if 1st") }) {
                 offAngle.toFloat()
             } else //if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(firstDiv + 90), angleBeta = normalizeAngle( secondDiv + angleDualOffset)).ifTrue { log("processDualKnobResult !else if 2nd") }) {
-                (secondDiv + angleDualOffset).toFloat()
+                normalizeAngle(secondDiv + angleDualOffset).toFloat()
         }
     }
 
