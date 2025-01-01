@@ -7,12 +7,12 @@ object ProjectConfig {
     const val compileSdk = 35
     const val targetSdk = 35
 
-    const val versionCode = 40
-    const val versionName = "1.0.046-ome-dev"
+    const val versionCode = 41
+    const val versionName = "1.0.047-ome-dev"
 
     val javaVersion = JavaVersion.VERSION_21
 
-    /** Don't change this field before the final release. `WILL` will be mad. */
+    /** Don't change this field before the final release. Otherwise `WILL` will be mad. */
     var IS_INTERNAL_TESTING = true
 
     const val BASE_URL_DEV = "\"https://app-dev.api.omekitchen.com\""
