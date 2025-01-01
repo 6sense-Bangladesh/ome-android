@@ -1,8 +1,7 @@
 package com.ome.app.utils
 
+import com.ome.app.domain.model.base.Pointer
 import com.ome.app.presentation.dashboard.settings.add_knob.calibration.CalibrationState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -114,7 +113,7 @@ object KnobAngleManager {
      * @param angleDualOffset The offset angle applied in dual knob mode.
      * @return The adjusted angle value.
      */
-    fun processDualKnobResult(
+    fun processDualKnobRotation(
         angleValue: Float,
         firstDiv: Int,
         secondDiv: Int,
@@ -266,20 +265,20 @@ object KnobAngleManager {
         return angle
     }
 
-    fun processDualKnobRotation(
-        initAngle: StateFlow<Int?>,
-        newAngle: Float,
-        offAngle: Int,
-        angleDualOffset: Int = 25
-    ): Float {
-        return processDualKnobResult(
-            initAngle = initAngle,
-            newAngle = newAngle,
-            firstDiv = offAngle,
-            angleDualOffset = angleDualOffset,
-            offAngle = offAngle
-        )
-    }
+//    fun processDualKnobRotation(
+//        initAngle: StateFlow<Int?>,
+//        newAngle: Float,
+//        offAngle: Int,
+//        angleDualOffset: Int = 25
+//    ): Float {
+//        return processDualKnobResult(
+//            initAngle = initAngle,
+//            newAngle = newAngle,
+//            firstDiv = offAngle,
+//            angleDualOffset = angleDualOffset,
+//            offAngle = offAngle
+//        )
+//    }
 
     private var oldAngle = 0F
     fun processDualKnob2ProtectOffOpposite(
@@ -296,14 +295,14 @@ object KnobAngleManager {
             oldAngle
     }
 
-    fun processDualKnobResult(
-        initAngle: StateFlow<Int?>,
+    fun processDualKnobRotation(
+        initAngle: Pointer<Int>,
         newAngle: Float,
-        firstDiv: Int,
-        angleDualOffset: Int,
-        offAngle: Int,
+        offAngle: Int, //firstDiv
+        angleDualOffset: Int = 25,
         isRightZone: Boolean? = null
     ): Float {
+        val firstDiv = normalizeAngle(offAngle)
         val secondDiv = normalizeAngle(offAngle + 180)
         // Normalize the input angle to the 0–360 range
         val isFirstZone = isRightZone ?: initAngle.isRightZone(offAngle) ?: return newAngle
@@ -311,24 +310,23 @@ object KnobAngleManager {
         println("normalizedAngle: $normalizedAngle, angleValue: $newAngle, firstDiv: $firstDiv, secondDiv: $secondDiv".log("processDualKnobResult"))
         return if (isFirstZone) {
             // If keeping between first and second division, apply the offset within the range
-            if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(firstDiv + angleDualOffset), angleBeta = normalizeAngle(secondDiv - angleDualOffset)).ifTrue { log("processDualKnobResult if") }) {
+            if (normalizedAngle.isInRange(angleAlpha = firstDiv + angleDualOffset, angleBeta = secondDiv - angleDualOffset).ifTrue { log("processDualKnobResult if") })
                 normalizedAngle.toFloat()
-            } else if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(firstDiv - angleDualOffset), angleBeta = normalizeAngle(firstDiv + 90)).ifTrue{ log("processDualKnobResult else if 1st") }) {
+            else if (normalizedAngle.isInRange(angleAlpha = firstDiv - 90, angleBeta = firstDiv + angleDualOffset).ifTrue{ log("processDualKnobResult else if 1st") })
                 offAngle.toFloat()
-            } else //if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(secondDiv + angleDualOffset), angleBeta = normalizeAngle(secondDiv + 90)).ifTrue{ log("processDualKnobResult !else if 2nd") }) {
+            else //if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(secondDiv + angleDualOffset), angleBeta = normalizeAngle(secondDiv + 90)).ifTrue{ log("processDualKnobResult !else if 2nd") }) {
                 normalizeAngle(secondDiv - angleDualOffset).toFloat()
         } else {
-            if (normalizedAngle.isInRange(angleAlpha = secondDiv + angleDualOffset, angleBeta = normalizeAngle(firstDiv - angleDualOffset)).ifTrue { log("processDualKnobResult !if") }) {
+            if (normalizedAngle.isInRange(angleAlpha = secondDiv + angleDualOffset, angleBeta = firstDiv - angleDualOffset).ifTrue { log("processDualKnobResult !if") })
                 normalizedAngle.toFloat()
-            }
-            else if (normalizedAngle.isInRange(angleAlpha = firstDiv + angleDualOffset, angleBeta = firstDiv + 90).ifTrue { log("processDualKnobResult !else if 1st") }) {
+            else if (normalizedAngle.isInRange(angleAlpha = firstDiv - angleDualOffset, angleBeta = firstDiv + 90).ifTrue { log("processDualKnobResult !else if 1st") })
                 offAngle.toFloat()
-            } else //if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(firstDiv + 90), angleBeta = normalizeAngle( secondDiv + angleDualOffset)).ifTrue { log("processDualKnobResult !else if 2nd") }) {
+            else //if (normalizedAngle.isInRange(angleAlpha = normalizeAngle(firstDiv + 90), angleBeta = normalizeAngle( secondDiv + angleDualOffset)).ifTrue { log("processDualKnobResult !else if 2nd") }) {
                 normalizeAngle(secondDiv + angleDualOffset).toFloat()
         }
     }
 
-    fun StateFlow<Int?>.isRightZone(
+    fun Pointer<Int>.isRightZone(
         offAngle: Int,
     ): Boolean? = value?.isInRange(offAngle, normalizeAngle(offAngle + 180))
 
@@ -448,7 +446,7 @@ object KnobAngleManager {
 fun main() {
     println(
         KnobAngleManager.processDualKnobRotation(
-            initAngle = MutableStateFlow(320),
+            initAngle = Pointer(320),
             newAngle = 160F,
             offAngle = 0
         )

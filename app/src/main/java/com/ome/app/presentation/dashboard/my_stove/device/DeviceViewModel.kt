@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.ome.app.data.local.PreferencesProvider
 import com.ome.app.data.remote.websocket.WebSocketManager
 import com.ome.app.domain.TAG
+import com.ome.app.domain.model.base.Pointer
 import com.ome.app.domain.model.network.request.ChangeKnobAngle
 import com.ome.app.domain.model.network.request.KnobRequest
 import com.ome.app.domain.model.network.response.KnobDto
@@ -30,7 +31,7 @@ class DeviceViewModel @Inject constructor(
 ) : BaseViewModel() {
     var stovePosition: Int  = -1
     val isEnable = MutableStateFlow(false)
-    val initAngle = MutableStateFlow<Int?>(null)
+    val initAngle = Pointer<Int>()
     val showTimer = MutableSharedFlow<Unit>()
     var isSafetyLockOn = false
 
@@ -72,6 +73,16 @@ class DeviceViewModel @Inject constructor(
                 if (webSocketManager.knobAngleFlow.value == null) {
                     knobAngle.value = foundKnob.angle.toFloat()
                 }
+            }
+        }
+    }
+
+    fun initCurrentKnob(){
+        stoveRepository.knobsFlow.value.find { it.macAddr == macAddress }?.let { foundKnob ->
+            savedStateHandle["currentKnob"] = foundKnob
+            isSafetyLockOn = foundKnob.safetyLock
+            if (webSocketManager.knobAngleFlow.value == null) {
+                knobAngle.value = foundKnob.angle.toFloat()
             }
         }
     }

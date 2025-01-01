@@ -5,7 +5,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.chip.Chip
 import com.ome.app.R
 
-sealed class BurnerState(val level: Int, val type: State) {
+sealed class BurnerState(val level: Int, val type: State, val zone: Int) {
     enum class State(@ColorRes val background: Int, @ColorRes val text: Int){
         Off(R.color.off_white , R.color.gray),
         High(R.color.colorHigh , R.color.white),
@@ -25,10 +25,10 @@ sealed class BurnerState(val level: Int, val type: State) {
         }
     }
 
-    class Off(level: Int) : BurnerState(level, State.Off)
-    class High(level: Int) : BurnerState(level, State.High)
-    class HighMid(level: Int) : BurnerState(level, State.HighMid)
-    class Medium(level: Int) : BurnerState(level, State.Medium)
-    class Low(level: Int) : BurnerState(level, State.Low)
-    class LowMid(level: Int) : BurnerState(level, State.LowMid)
+    class Off(level: Int) : BurnerState(level, State.Off, 0)
+    class High(level: Int, zone: Int) : BurnerState(level, State.High, zone)
+    class HighMid(level: Int) : BurnerState(level, State.HighMid, 1)
+    class Medium(level: Int, zone: Int) : BurnerState(level, State.Medium, zone)
+    class Low(level: Int, zone: Int) : BurnerState(level, State.Low, zone)
+    class LowMid(level: Int) : BurnerState(level, State.LowMid, 1)
 }

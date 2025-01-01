@@ -111,19 +111,19 @@ val KnobDto.asBurnerState
         val cal = calibration.toCalibration(calibrated)
         add(BurnerState.Off(cal.offAngle))
         if(cal.zone1 != null){
-            add(BurnerState.Low(cal.zone1.lowAngle))
-            add(BurnerState.Medium(cal.zone1.mediumAngle))
-            add(BurnerState.High(cal.zone1.highAngle))
+            add(BurnerState.Low(cal.zone1.lowAngle,1))
+            add(BurnerState.Medium(cal.zone1.mediumAngle,1))
+            add(BurnerState.High(cal.zone1.highAngle,1))
             if(cal.rotation != Rotation.DUAL) {
                 add(BurnerState.LowMid(KnobAngleManager.averageAngle(cal.zone1.lowAngle, cal.zone1.mediumAngle)))
                 add(BurnerState.HighMid(KnobAngleManager.averageAngle(cal.zone1.mediumAngle, cal.zone1.highAngle)))
             }
         }
         if(cal.zone2 != null){
-            add(BurnerState.Low(cal.zone2.lowAngle))
-            add(BurnerState.Medium(cal.zone2.mediumAngle))
+            add(BurnerState.Low(cal.zone2.lowAngle, 2))
+            add(BurnerState.Medium(cal.zone2.mediumAngle, 2))
 //            add(BurnerState.Medium(KnobAngleManager.generateMediumAngle(cal.zone2.lowAngle, cal.zone2.highAngle)))
-            add(BurnerState.High(cal.zone2.highAngle))
+            add(BurnerState.High(cal.zone2.highAngle, 2))
         }
     }
 

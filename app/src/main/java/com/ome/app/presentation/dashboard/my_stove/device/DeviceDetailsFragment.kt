@@ -54,6 +54,7 @@ class DeviceDetailsFragment :
 
     override fun setupUI() {
         viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
+        viewModel.initCurrentKnob()
         binding.knobView.setFontSize(if(isTablet(resources)) 13f.sp else 6f.sp)
         val selectedColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
         setupTimer()
@@ -372,6 +373,7 @@ class DeviceDetailsFragment :
         }
     }
 
+    private var lastKnownZone :Int? = null
     private fun changeBurnerStatus(currentAngle: Int, vararg states: BurnerState = burnerStates.toTypedArray()) {
         states.minByOrNull {
             KnobAngleManager.normalizeAngle(it.level - currentAngle).let { dif ->
@@ -382,6 +384,9 @@ class DeviceDetailsFragment :
             viewModel.isEnable.value = type != BurnerState.State.Off
             if(type == BurnerState.State.Off)
                 viewModel.initAngle.value = null
+            if(lastKnownZone != null && lastKnownZone != zone)
+                viewModel.initAngle.value = currentAngle
+            lastKnownZone = zone
         }
     }
 

@@ -19,6 +19,7 @@ import com.ome.app.R
 import com.ome.app.data.local.NetworkManager.Companion.wifiStrengthPercentage
 import com.ome.app.databinding.KnobViewLayoutBinding
 import com.ome.app.domain.TAG
+import com.ome.app.domain.model.base.Pointer
 import com.ome.app.domain.model.network.response.Calibration
 import com.ome.app.domain.model.network.response.KnobDto
 import com.ome.app.domain.model.network.websocket.KnobState
@@ -102,6 +103,8 @@ class KnobView @JvmOverloads constructor(
 
         val sdp30 = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._30sdp)
         val sdp14 = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._14sdp)
+
+        (binding.offTv.layoutParams as MarginLayoutParams).setMargins(0, sdp14, 0, 0)
 
         (binding.lowSingleTv.layoutParams as MarginLayoutParams).setMargins(0, sdp14, 0, 0)
         (binding.mediumTv.layoutParams as MarginLayoutParams).setMargins(0, sdp14, 0, 0)
@@ -448,7 +451,7 @@ class KnobView @JvmOverloads constructor(
     @SuppressLint("ClickableViewAccessibility")
     fun doOnRotationChange(
         doRotate: StateFlow<Boolean>,
-        initAngle: StateFlow<Int?>,
+        initAngle: Pointer<Int>,
         calibration: Calibration?,
     ) = callbackFlow{
 
@@ -483,7 +486,7 @@ class KnobView @JvmOverloads constructor(
             Log.d(TAG, "setOnTouchListener: $angle")
             if(doRotate.value) {
                 val processedAngle = KnobAngleManager.processDualKnobRotation(initAngle = initAngle, newAngle = angle, offAngle = calibration?.offAngle.orZero())
-                Log.e(TAG, "doOnRotationChange: processedAngle $processedAngle, angle $angle, offAngle $calibration.offAngle, initAngle ${initAngle.value}")
+                Log.e(TAG, "doOnRotationChange: processedAngle $processedAngle, angle $angle, offAngle ${calibration?.offAngle}, initAngle ${initAngle.value}, ${calibration?.rotation}")
                 setKnobPosition(if(calibration?.rotation == Rotation.DUAL) processedAngle else angle)
                 performSmallHaptic()
             }

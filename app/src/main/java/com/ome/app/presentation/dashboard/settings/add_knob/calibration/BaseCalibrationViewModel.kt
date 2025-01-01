@@ -2,6 +2,7 @@ package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 
 import androidx.lifecycle.viewModelScope
 import com.ome.app.data.remote.websocket.WebSocketManager
+import com.ome.app.domain.model.base.Pointer
 import com.ome.app.domain.model.network.request.SetCalibrationRequest
 import com.ome.app.domain.model.network.request.Zone
 import com.ome.app.domain.model.state.Rotation
@@ -52,7 +53,7 @@ abstract class BaseCalibrationViewModel(
     val angleOffset = 15
     private val angleDualOffset = 31
 
-    val initAngle = MutableStateFlow<Int?>(null)
+    val initAngle = Pointer<Int>()
 
     val calibrationStatesSequenceSingleZone = listOf(
         CalibrationState.OFF,
@@ -97,10 +98,9 @@ abstract class BaseCalibrationViewModel(
                 )
             }
             else if(offAngle != null){
-                KnobAngleManager.processDualKnobResult(
-                    initAngle = MutableStateFlow(null),
+                KnobAngleManager.processDualKnobRotation(
+                    initAngle = Pointer(),
                     newAngle = angle,
-                    firstDiv = firstDiv,
                     angleDualOffset = angleDualOffset,
                     offAngle = offAngle!!.toInt(),
                     isRightZone = isRightZone

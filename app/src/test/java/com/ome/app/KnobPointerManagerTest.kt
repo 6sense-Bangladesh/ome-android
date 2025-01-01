@@ -6,7 +6,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class KnobAngleManagerTest {
+class KnobPointerManagerTest {
 
     @Test
     fun validateSingleKnobAngle_ReturnsTrue() {
@@ -56,7 +56,7 @@ class KnobAngleManagerTest {
     @Test
     fun validateDualKnobAngle_OffPositionSet_ReturnsTrue() {
         assertTrue(
-            KnobAngleManager.processDualKnobResult(
+            KnobAngleManager.processDualKnobRotation(
                 angleValue = 187f,
                 firstDiv = 0,
                 secondDiv = 180,
@@ -71,7 +71,7 @@ class KnobAngleManagerTest {
     @Test
     fun validateDualKnobAngle_HighSinglePositionSetOppositeBottomAngle_ReturnsTrue() {
         assertTrue(
-            KnobAngleManager.processDualKnobResult(
+            KnobAngleManager.processDualKnobRotation(
                 angleValue = 211f,
                 firstDiv = 0,
                 secondDiv = 180,
@@ -86,7 +86,7 @@ class KnobAngleManagerTest {
     @Test
     fun validateDualKnobAngle_HighSinglePositionSetOppositeTopAngle_ReturnsTrue() {
         assertTrue(
-            KnobAngleManager.processDualKnobResult(
+            KnobAngleManager.processDualKnobRotation(
                 angleValue = 336f,
                 firstDiv = 0,
                 secondDiv = 180,
@@ -102,7 +102,7 @@ class KnobAngleManagerTest {
     @Test
     fun validateDualKnobAngle_LowSingleSetPointerInSingleSection_ReturnsTrue() {
         assertTrue(
-            KnobAngleManager.processDualKnobResult(
+            KnobAngleManager.processDualKnobRotation(
                 angleValue = 84f,
                 firstDiv = 0,
                 secondDiv = 180,
