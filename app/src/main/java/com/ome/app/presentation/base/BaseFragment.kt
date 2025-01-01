@@ -35,6 +35,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
 
     protected val mainViewModel: MainVM by activityViewModels()
     private var isErrorShowing = false
+    private var activeDialog = 0
     protected var onDismissErrorDialog: () -> Unit = {}
     protected var onDismissSuccessDialog: () -> Unit = {}
     protected val isFromDeepLink by lazy { arguments?.containsKey(NavController.KEY_DEEP_LINK_INTENT) ?: false }
@@ -57,7 +58,10 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
     override fun onResume() {
         super.onResume()
         setupUI()
-        viewModel.lastDialog?.show()
+        if(activeDialog == 0) {
+            viewModel.lastDialog?.show()
+            activeDialog++
+        }
     }
 
     open fun setupUI() = Unit
@@ -121,12 +125,14 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
             ) { dialog, _ ->
                 viewModel.lastDialog = null
                 dialog.cancel()
-            }.setOnDismissListener {
                 onDismissSuccessDialog()
                 onDismiss()
+            }.setOnDismissListener {
+                activeDialog--
             }.apply {
                 viewModel.lastDialog = this
                 show()
+                activeDialog++
             }
     }
 
@@ -148,10 +154,13 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
             }.setNegativeButton(negativeButtonText) { _, _ ->
                 onNegativeButtonClick()
                 viewModel.lastDialog = null
+            }.setOnDismissListener {
+                activeDialog--
             }.apply {
                 viewModel.lastDialog = this
             }.create().apply {
                 show()
+                activeDialog++
                 if (isRedPositiveButton) {
                     val pBtn = getButton(DialogInterface.BUTTON_POSITIVE)
                     pBtn?.setTextColor(Color.RED)
@@ -168,10 +177,12 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewBinding>(
                 dialog.cancel()
                 viewModel.lastDialog = null
             }.setOnDismissListener {
+                activeDialog--
                 isErrorShowing = false
                 onDismissErrorDialog()
             }.applyIf(!isErrorShowing){
                 show()
+                activeDialog++
                 viewModel.lastDialog = this
                 isErrorShowing = true
             }

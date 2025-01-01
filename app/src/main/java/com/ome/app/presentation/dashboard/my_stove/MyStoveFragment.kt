@@ -91,8 +91,8 @@ class MyStoveFragment :
     private fun initKnob(vararg knob : KnobView) {
         knob.forEach {
             it.resetKnobState()
-            if(isTablet(requireContext()))
-                it.setFontSize(resources.getDimension(com.intuit.ssp.R.dimen._4ssp))
+            if(isTablet(resources))
+                it.setFontSize(9f.sp)
         }
     }
 

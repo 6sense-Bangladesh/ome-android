@@ -33,8 +33,8 @@ class DeviceSettingsFragment :
         binding.apply {
             viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
 //            name.text = params.name
-            if(isTablet(requireContext()))
-                binding.knobView.setFontSize(resources.getDimension(com.intuit.ssp.R.dimen._5ssp))
+            if(isTablet(resources))
+                binding.knobView.setFontSize(11f.sp)
             recyclerView.adapter = adapter
             knobTv.text = getString(R.string.knob_, viewModel.stovePosition)
             macAddressTv.text = getString(R.string.knob_mac_addr_label, params.macAddr)

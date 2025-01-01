@@ -19,7 +19,7 @@ import com.ome.app.BuildConfig
 /**
  * name : Yamin Mahdi
  * date : 31/08/24 9:50 AM
- * email: yamin_khan@mail.com
+ * email: yamin_khan@aisa.com
  */
 
 /**

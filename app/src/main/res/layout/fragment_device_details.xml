@@ -292,12 +292,12 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEditTimer"
-                app:iconSize="24dp"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:iconTint="?colorControlNormal"
-                style="@style/Widget.Material3.Button.IconButton"
-                app:icon="@drawable/ic_edit" />
+                app:icon="@drawable/ic_edit"
+                app:iconSize="24dp"
+                app:iconTint="?colorControlNormal" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -381,18 +381,18 @@
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPauseResumeTimer"
                 style="@style/Widget.Material3.Button.IconButton"
-                app:iconTint="?colorControlNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:icon="@drawable/ic_pause"
                 app:iconSize="24dp"
-                android:id="@+id/btnPauseResumeTimer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                app:iconTint="?colorControlNormal" />
 
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Widget.Material3.Button.IconButton"
                 android:id="@+id/btnStopTimer"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_stop"

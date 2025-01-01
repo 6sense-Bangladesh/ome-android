@@ -1,12 +1,11 @@
 package com.ome.app.presentation.dashboard.settings.add_knob.calibration
 
 import android.content.Context
-import android.os.Bundle
 import android.os.Parcelable
-import android.view.View
 import androidx.activity.addCallback
 import androidx.annotation.Keep
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.ome.app.BuildConfig
@@ -52,10 +51,6 @@ class DeviceCalibrationConfirmationFragment :
             getString(R.string.dual_zone_knob)
         else
             getString(R.string.single_zone_knob)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         if (viewModel.currentCalibrationState.value == null) {
             showSuccessDialog(
                 title = getString(R.string.warning),
@@ -64,7 +59,6 @@ class DeviceCalibrationConfirmationFragment :
                     startCalibration()
                 })
         }
-
     }
 
     override fun setupListener() {
@@ -111,6 +105,7 @@ class DeviceCalibrationConfirmationFragment :
     }
 
     private fun startCalibration() {
+        if(!viewLifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) return
         viewModel.nextStep()
         binding.continueBtn.startAnimation()
     }

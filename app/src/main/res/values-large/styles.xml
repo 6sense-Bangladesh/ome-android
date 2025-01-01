@@ -42,15 +42,15 @@
     </style>
 
     <style name="Title.Medium">
-        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:textSize">@dimen/_10ssp</item>
     </style>
 
     <style name="Title.Small">
-        <item name="android:textSize">@dimen/_9ssp</item>
+        <item name="android:textSize">@dimen/_8ssp</item>
     </style>
 
     <style name="Title.Mini">
-        <item name="android:textSize">@dimen/_8ssp</item>
+        <item name="android:textSize">@dimen/_7ssp</item>
     </style>
 
     <style name="Title.MiniExtra">
@@ -58,28 +58,28 @@
     </style>
 
     <style name="Label.LargeExtra">
-        <item name="android:textSize">@dimen/_13ssp</item>
+        <item name="android:textSize">@dimen/_12ssp</item>
     </style>
 
     <style name="Label.Large">
-        <item name="android:textSize">@dimen/_10ssp</item>
-    </style>
-
-    <style name="Label.Medium">
         <item name="android:textSize">@dimen/_9ssp</item>
     </style>
 
-    <style name="Label.Small">
+    <style name="Label.Medium">
         <item name="android:textSize">@dimen/_8ssp</item>
+    </style>
+
+    <style name="Label.Small">
+        <item name="android:textSize">@dimen/_7ssp</item>
         <item name="android:textColor">@color/read_message_color</item>
     </style>
 
     <style name="Label.Mini">
-        <item name="android:textSize">@dimen/_7ssp</item>
+        <item name="android:textSize">@dimen/_6ssp</item>
         <item name="android:textColor">@color/read_message_color</item>
     </style>
     <style name="Label.MiniExtra">
-        <item name="android:textSize">@dimen/_6ssp</item>
+        <item name="android:textSize">@dimen/_5ssp</item>
         <item name="android:textColor">@color/read_message_color</item>
     </style>
 

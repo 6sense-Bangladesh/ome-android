@@ -54,12 +54,7 @@ class DeviceDetailsFragment :
 
     override fun setupUI() {
         viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
-        binding.knobView.setFontSize(resources.getDimension(
-            if(isTablet(requireContext()))
-                com.intuit.ssp.R.dimen._6ssp
-            else
-                com.intuit.ssp.R.dimen._4ssp
-        ))
+        binding.knobView.setFontSize(if(isTablet(resources)) 13f.sp else 6f.sp)
         val selectedColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
         setupTimer()
         activeTimer()

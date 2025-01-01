@@ -372,7 +372,7 @@ object KnobAngleManager {
      * @param angleBeta The ending angle of the range.
      * @return True if angleTheta is between angleAlpha and angleBeta, false otherwise.
      */
-    fun Number.isInRange(angleAlpha: Number, angleBeta: Number): Boolean {
+    private fun Number.isInRange(angleAlpha: Number, angleBeta: Number): Boolean {
         // Normalize all angles
         val alpha = normalizeAngle(angleAlpha)
         val beta = normalizeAngle(angleBeta)

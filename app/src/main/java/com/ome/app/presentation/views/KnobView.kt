@@ -100,13 +100,16 @@ class KnobView @JvmOverloads constructor(
         binding.lowDualTv.text = context.getString(R.string.low_position_full)
         binding.highDualTv.text = context.getString(R.string.high_position_full)
 
-        (binding.lowSingleTv.layoutParams as MarginLayoutParams).setMargins(0, 14.dp, 0, 0)
-        (binding.mediumTv.layoutParams as MarginLayoutParams).setMargins(0, 14.dp, 0, 0)
-        (binding.highSingleTv.layoutParams as MarginLayoutParams).setMargins(0, 14.dp, 0, 0)
+        val sdp30 = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._30sdp)
+        val sdp14 = resources.getDimensionPixelSize(com.intuit.sdp.R.dimen._14sdp)
 
-        (binding.lowDualTv.layoutParams as MarginLayoutParams).setMargins(0, 14.dp, 0, 0)
-        (binding.highDualTv.layoutParams as MarginLayoutParams).setMargins(0, 14.dp, 0, 0)
-        (binding.knobSrc.layoutParams as MarginLayoutParams).setMargins(100)
+        (binding.lowSingleTv.layoutParams as MarginLayoutParams).setMargins(0, sdp14, 0, 0)
+        (binding.mediumTv.layoutParams as MarginLayoutParams).setMargins(0, sdp14, 0, 0)
+        (binding.highSingleTv.layoutParams as MarginLayoutParams).setMargins(0, sdp14, 0, 0)
+
+        (binding.lowDualTv.layoutParams as MarginLayoutParams).setMargins(0, sdp14, 0, 0)
+        (binding.highDualTv.layoutParams as MarginLayoutParams).setMargins(0, sdp14, 0, 0)
+        (binding.knobSrc.layoutParams as MarginLayoutParams).setMargins(sdp30)
     }
 
     fun hideLabel(label: CalibrationState? = null) {
