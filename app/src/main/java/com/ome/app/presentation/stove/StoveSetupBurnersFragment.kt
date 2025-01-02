@@ -106,11 +106,6 @@ class StoveSetupBurnersFragment :
         resetAllButtons()
         view.isSelected = true
         binding.continueBtn.isEnabled = true
-//        ContextCompat.getDrawable(requireContext(), R.drawable.ome_gradient_button_unpressed_color)
-//            ?.let {
-//                binding.continueBtn.drawableBackground = it
-//            }
-//        binding.continueBtn.setBackgroundResource(R.drawable.ome_gradient_button_unpressed_color)
     }
 
 

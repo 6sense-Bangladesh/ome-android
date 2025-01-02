@@ -14,7 +14,6 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Base64
-import android.util.Log
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
@@ -28,8 +27,6 @@ import kotlinx.coroutines.*
 import okhttp3.HttpUrl
 import java.io.File
 import java.io.FileNotFoundException
-import java.io.InputStream
-import java.net.URL
 import java.nio.ByteBuffer
 
 typealias Base64Img = String
@@ -42,23 +39,23 @@ fun Base64Img.getBitmap(): Bitmap {
     return decodedBitmap
 }
 
-fun String?.getDrawable(success: (Drawable?) -> Unit) {
-    MainScope().launch(Dispatchers.IO) {
-        try {
-            val `is` = URL(this@getDrawable).content as InputStream
-            val drawable = Drawable.createFromStream(`is`, "dp")
-            //val x = BitmapFactory.decodeStream(`is`)
-            withContext(Dispatchers.Main) {
-                success.invoke(drawable)
-            }
-        } catch (e: Exception) {
-            Log.d("getDrawable", "$e")
-            withContext(Dispatchers.Main) {
-                success.invoke(null)
-            }
-        }
-    }
-}
+//fun String?.getDrawable(success: (Drawable?) -> Unit) {
+//    MainScope().launch(Dispatchers.IO) {
+//        try {
+//            val `is` = URL(this@getDrawable).content as InputStream
+//            val drawable = Drawable.createFromStream(`is`, "dp")
+//            //val x = BitmapFactory.decodeStream(`is`)
+//            withContext(Dispatchers.Main) {
+//                success.invoke(drawable)
+//            }
+//        } catch (e: Exception) {
+//            Log.d("getDrawable", "$e")
+//            withContext(Dispatchers.Main) {
+//                success.invoke(null)
+//            }
+//        }
+//    }
+//}
 
 fun Context.getBitmap(drawableId: Int): Bitmap {
     val drawable = ContextCompat.getDrawable(this, drawableId)

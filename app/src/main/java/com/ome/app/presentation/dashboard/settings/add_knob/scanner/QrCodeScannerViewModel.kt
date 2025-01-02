@@ -2,6 +2,7 @@ package com.ome.app.presentation.dashboard.settings.add_knob.scanner
 
 import androidx.lifecycle.SavedStateHandle
 import com.ome.app.R
+import com.ome.app.data.ConnectionListener
 import com.ome.app.data.local.ResourceProvider
 import com.ome.app.domain.model.network.request.KnobRequest
 import com.ome.app.domain.model.state.KnobStatus
@@ -17,7 +18,8 @@ import javax.inject.Inject
 class QrCodeScannerViewModel @Inject constructor(
     val stoveRepository: StoveRepository,
     private val resourceProvider: ResourceProvider,
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val connectionListener: ConnectionListener
 ) : BaseViewModel() {
 
     val params by lazy { QrCodeScannerFragmentArgs.fromSavedStateHandle(savedStateHandle).params }
@@ -28,6 +30,7 @@ class QrCodeScannerViewModel @Inject constructor(
     val isKnobAddedFlow = MutableStateFlow<Unit?>(null)
 
     fun checkKnobOwnership(mac: String) = launch(ioContext) {
+        if(!connectionListener.isConnected) error("No Internet Connection.")
         val response = stoveRepository.getKnobOwnership(mac)
         when (response.status.knobStatus) {
             KnobStatus.InUsedByAnotherUser -> {
