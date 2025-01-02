@@ -67,7 +67,6 @@ class DeviceSettingsFragment :
             }
         }
 
-        viewModel.isDualZone = mainViewModel.getKnobByMac(params.macAddr)?.calibration?.rotationDir == 2
         viewModel.deviceSettingsList.collectWithLifecycle{
             adapter.submitList(it)
         }

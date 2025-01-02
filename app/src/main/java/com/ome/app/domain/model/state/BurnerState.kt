@@ -18,6 +18,13 @@ sealed class BurnerState(val level: Int, val type: State, val zone: Int) {
     private val State.nm get() = name.replace(Regex("([a-z])([A-Z])"), "$1-$2")
 
     fun Chip.applyState(){
+//        val zoneName = when (zone) {
+//            1 -> " First"
+//            2 -> " Second"
+//            else -> ""
+//        }
+//
+//        text = if(isDualZone) type.nm + zoneName else type.nm
         text = type.nm
         context?.let {
             chipBackgroundColor = ContextCompat.getColorStateList(it, type.background)

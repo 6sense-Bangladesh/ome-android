@@ -7,7 +7,6 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
-import android.content.Context.VIBRATOR_SERVICE
 import android.content.pm.PackageManager
 import android.graphics.drawable.GradientDrawable
 import android.location.Address
@@ -824,7 +823,7 @@ fun Context.shakeItBaby() {
         vibratorManager.defaultVibrator
     } else {
         @Suppress("DEPRECATION")
-        getSystemService(VIBRATOR_SERVICE) as Vibrator
+        getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         vib.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE))
@@ -1651,11 +1650,42 @@ fun TextView.enableCustomTabClick(url: String, urlText: String, fullText: String
 val String?.asHtml
     get() = HtmlCompat.fromHtml(orEmpty(), HtmlCompat.FROM_HTML_MODE_COMPACT)
 
+val View.hapticEnabled: Boolean
+    get() {
+        return if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val vibratorManager = context
+                .getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            val vibrator = vibratorManager.defaultVibrator
 
-fun View.performSmallHaptic() = performHapticFeedback(
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1)
+            vibrator.hasVibrator()
+        } else {
+            @Suppress("DEPRECATION")
+            Settings.System.getInt(context.contentResolver, Settings.System.HAPTIC_FEEDBACK_ENABLED) == 1
+        }
+    }
+
+
+fun View.performSmallHaptic() {
+    val hapticType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1)
         HapticFeedbackConstants.TEXT_HANDLE_MOVE
     else
         HapticFeedbackConstants.KEYBOARD_TAP
-)
+
+    if(!performHapticFeedback(hapticType)){
+        val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager
+            vibratorManager?.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator?.vibrate(VibrationEffect.createOneShot(5, 1))
+        } else {
+            @Suppress("DEPRECATION")
+            vibrator?.vibrate(5) // Legacy vibration API
+        }
+    }
+}
+
 

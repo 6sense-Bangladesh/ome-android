@@ -81,11 +81,9 @@ class DashboardFragment :
             }
         }
         mainViewModel.loadingFlow.collectWithLifecycle {
-            binding.loadingLayout.root.changeVisibility(it)
-        }
-        subscribe(mainViewModel.loadingLiveData) {
             binding.pullToRefresh.isRefreshing = it
         }
+
     }
 
     override fun setupUI() {
@@ -110,7 +108,7 @@ class DashboardFragment :
 
     override fun setupListener() {
         binding.pullToRefresh.setOnRefreshListener {
-            mainViewModel.connectToSocket()
+            mainViewModel.connectToSocket(true)
         }
     }
 

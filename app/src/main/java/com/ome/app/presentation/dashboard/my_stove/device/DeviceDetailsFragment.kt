@@ -54,6 +54,7 @@ class DeviceDetailsFragment :
 
     override fun setupUI() {
         viewModel.stovePosition = mainViewModel.getStovePositionByMac(viewModel.macAddress)
+        viewModel.isDualZone = mainViewModel.getKnobByMac(params.macAddr)?.calibration?.rotationDir == 2
         viewModel.initCurrentKnob()
         binding.knobView.setFontSize(if(isTablet(resources)) 13f.sp else 6f.sp)
         val selectedColor = ContextCompat.getColorStateList(requireContext(), R.color.colorPrimary)
