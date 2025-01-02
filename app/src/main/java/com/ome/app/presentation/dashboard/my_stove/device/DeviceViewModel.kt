@@ -103,7 +103,7 @@ class DeviceViewModel @Inject constructor(
                 macAddress = macAddress
             )
             if(stoveRepository.knobsFlow.value.find { it.macAddr == macAddress }?.safetyLock.isTrue())
-                stoveRepository.setSafetyLockOff(macAddress)
+                stoveRepository.setSafetyLockOff(listOf(macAddress))
             stoveRepository.deleteKnob(macAddress)
             stoveRepository.knobsFlow.value = stoveRepository.knobsFlow.value.filter { it.macAddr != macAddress }
             webSocketManager.knobState .value = webSocketManager.knobState.value.filter { it.key != macAddress }

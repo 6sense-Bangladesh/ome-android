@@ -123,14 +123,14 @@ class MainVM @Inject constructor(
     fun setSafetyLockOn() {
         launch(ioContext) {
             stoveRepository.turnOffAllKnobs()
-            stoveRepository.setSafetyLockOn(*stoveRepository.knobsFlow.value.map { it.macAddr }.toTypedArray())
+            stoveRepository.setSafetyLockOn(stoveRepository.knobsFlow.value.map { it.macAddr })
             stoveRepository.getAllKnobs()
         }
     }
 
-    fun setSafetyLockOff(vararg macAddress: String = stoveRepository.knobsFlow.value.map { it.macAddr }.toTypedArray()) {
+    fun setSafetyLockOff(macAddress: List<String> = stoveRepository.knobsFlow.value.map { it.macAddr }) {
         launch(ioContext) {
-            stoveRepository.setSafetyLockOff(*macAddress)
+            stoveRepository.setSafetyLockOff(macAddress)
             stoveRepository.getAllKnobs()
         }
     }

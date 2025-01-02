@@ -80,7 +80,7 @@ class DeviceCalibrationConfirmationFragment :
         binding.topAppBar.setOnMenuItemClickListener{ menu->
             when(menu.itemId){
                 R.id.action_turn_off_safety_lock -> {
-                    mainViewModel.setSafetyLockOff(params.macAddr)
+                    mainViewModel.setSafetyLockOff(listOf(params.macAddr))
                     toast("Safety lock turned off")
                     true
                 }
