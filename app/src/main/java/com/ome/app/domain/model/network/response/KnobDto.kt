@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.ome.app.data.local.NetworkManager.Companion.wifiStrengthPercentage
 import com.ome.app.data.local.Rssi
-import com.ome.app.domain.model.network.request.SetCalibrationRequest
 import com.ome.app.domain.model.network.request.Zone
 import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.state.*
@@ -75,11 +74,6 @@ data class KnobDto(
                 zone1 = zones.find { it.zoneNumber == 1 },
                 zone2 = zones.find { it.zoneNumber == 2 }
             )
-        fun toSetCalibrationRequest() = SetCalibrationRequest(
-            offAngle = offAngle,
-            rotationDir = rotationDir,
-            zones = zones.map { it.toZone() }
-        )
     }
 
     override fun hashCode(): Int {
