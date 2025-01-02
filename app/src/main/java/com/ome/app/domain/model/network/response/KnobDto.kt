@@ -4,10 +4,10 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.ome.app.data.local.NetworkManager.Companion.wifiStrengthPercentage
 import com.ome.app.data.local.Rssi
-import com.ome.app.domain.model.network.request.Zone
 import com.ome.app.domain.model.network.websocket.KnobState
 import com.ome.app.domain.model.state.*
 import com.ome.app.utils.KnobAngleManager
+import com.ome.app.utils.KnobAngleManager.isInRange
 import com.ome.app.utils.isFalse
 import com.ome.app.utils.orFalse
 import kotlinx.parcelize.Parcelize
@@ -52,15 +52,7 @@ data class KnobDto(
             @SerializedName("mediumAngle") val mediumAngle: Int = 0,
             @SerializedName("zoneName") val zoneName: String = "",
             @SerializedName("zoneNumber") val zoneNumber: Int = 0
-        ) : Parcelable{
-            fun toZone() = Zone(
-                highAngle = highAngle,
-                lowAngle = lowAngle,
-                mediumAngle = mediumAngle,
-                zoneName = zoneName,
-                zoneNumber = zoneNumber
-            )
-        }
+        ) : Parcelable
 
         fun toCalibration(isCalibrated: Boolean?) =
             Calibration(
@@ -109,6 +101,12 @@ val KnobDto.asBurnerState
             add(BurnerState.Medium(cal.zone1.mediumAngle,1))
             add(BurnerState.High(cal.zone1.highAngle,1))
             if(cal.rotation != Rotation.DUAL) {
+                val isHigh2Low = cal.offAngle.isInRange(cal.zone1.lowAngle, cal.zone1.highAngle)
+                val adjustment = if (isHigh2Low) 30 else -30
+                val offLow = KnobAngleManager.normalizeAngle(cal.zone1.lowAngle + adjustment)
+                val offHigh = KnobAngleManager.normalizeAngle(cal.zone1.highAngle - adjustment)
+                add(BurnerState.Off(offLow))
+                add(BurnerState.Off(offHigh))
                 add(BurnerState.LowMid(KnobAngleManager.averageAngle(cal.zone1.lowAngle, cal.zone1.mediumAngle)))
                 add(BurnerState.HighMid(KnobAngleManager.averageAngle(cal.zone1.mediumAngle, cal.zone1.highAngle)))
             }
